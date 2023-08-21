@@ -73,16 +73,21 @@ class SetupController extends AbstractController
         }
         else
         {
-            $doctrinemigrations = $this->em->createQueryBuilder()
+            try {
+                $doctrinemigrations = $this->em->createQueryBuilder()
                 ->select('m.version')
                 ->from(DoctrineMigrationVersions::class, 'm')
                 ->orderBy('m.version', 'ASC')
                 ->getQuery()
                 ->getResult();
-            $migrations=array();
-            foreach ($doctrinemigrations as $migration) {
-                $migrations[] = $migration['version'];
+                $migrations=array();
+                foreach ($doctrinemigrations as $migration) {
+                    $migrations[] = $migration['version'];
+                }
+            } catch (\Exception $e) {
+                $migrations=array();
             }
+
 
             $migrationfiles=array();
             $finder = new Finder();
@@ -110,31 +115,35 @@ class SetupController extends AbstractController
                 $setup['missingmigrations_list'] = $migrationdifferences_missingfiles;
             }
 
-            // check if there are users in the database
-            $number_of_users = $this->em->getRepository(Users::class)->getTotalRows();
-            if($number_of_users > 0){
-                $setup['users'] = true;
-            } else {
-                $setup['users'] = false;
-                $form = $this->createForm(RegistrationFormType::class);
+            try {
+                // check if there are users in the database
+                $number_of_users = $this->em->getRepository(Users::class)->getTotalRows();
+                if($number_of_users > 0){
+                    $setup['users'] = true;
+                } else {
+                    $setup['users'] = false;
+                    $form = $this->createForm(RegistrationFormType::class);
 
-                $form->handleRequest($request);
-                if ($form->isSubmitted() && $form->isValid()){
-                    $formdata = $form->getData();
-                    $formdata->setPassword(
-                        $userPasswordHasher->hashPassword(
-                            $formdata,
-                            $form->get('plainPassword')->getData()
-                        )
-                    );
-                    $formdata->SetRoles(array('ROLE_ADMIN'));
-                    $formdata->setIsVerified(true);
-                    $this->em->persist($formdata);
-                    $this->em->flush();
+                    $form->handleRequest($request);
+                    if ($form->isSubmitted() && $form->isValid()){
+                        $formdata = $form->getData();
+                        $formdata->setPassword(
+                            $userPasswordHasher->hashPassword(
+                                $formdata,
+                                $form->get('plainPassword')->getData()
+                            )
+                        );
+                        $formdata->SetRoles(array('ROLE_ADMIN'));
+                        $formdata->setIsVerified(true);
+                        $this->em->persist($formdata);
+                        $this->em->flush();
 
-                    return $this->redirectToRoute('app_setup');
+                        return $this->redirectToRoute('app_setup');
+                    }
+                    $setup['users_form'] = $form->createView();
                 }
-                $setup['users_form'] = $form->createView();
+            } catch (\Exception $e) {
+                $setup['users'] = false;
             }
         }
 
