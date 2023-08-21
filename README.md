@@ -39,6 +39,10 @@ Setup is pretty easy
    ```
 3. point the webserver root to the public/ directory
 4. point your webbrowser to http(s)://[yourhost]/setup and follow instructions
+5. after setup add the following command to a schedule of your liking
+   ```sh
+   php [root path of this project]\bin\console app:checkmailbox
+   ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
