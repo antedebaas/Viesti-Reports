@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit user {{ user.email }}{% endblock %}
+
+{% block stylesheets %}{% endblock %}
+{% block javascripts_header %}{% endblock %}
+{% block javascripts_footer %}
+{% endblock %}
+
+{% block body %}
+                {{ form_start(form) }}
+                <div class="row my-4">
+                    <div class="col-6 col-md-6 col-lg-6 mb-4 mb-lg-0">
+                        <div class="card">
+                            <h5 class="card-header">Edit user</h5>
+                            <div class="card-body">
+                              <p class="card-text">
+                                {{ form_row(form.email) }}
+                                {{ form_row(form.password1) }}
+                                {{ form_row(form.password2) }}
+                                {{ form_row(form.isVerified) }}
+                              </p>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-6 col-md-6 col-lg-6 mb-4 mb-lg-0">
+                        <div class="card">
+                            <h5 class="card-header">Edit roles</h5>
+                            <div class="card-body">
+                              <p class="card-text">
+                                {{ form_row(form.roles) }}
+                                {{ form_row(form.isAdmin) }}
+                              </p>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+                <p></p>
+                <button class="btn btn-success" type="submit">{{ 'Edit user'|trans }}</button>
+                {{ form_end(form) }}
+{% endblock %}

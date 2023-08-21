@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block stylesheets %}{% endblock %}
+{% block javascripts_header %}{% endblock %}
+{% block javascripts_footer %}
+{% endblock %}
+
+{% block body %}
+                {# <div class="row my-4">
+                    <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+                        <div class="card">
+                            <h5 class="card-header">Reports</h5>
+                            <div class="card-body">
+                              <h5 class="card-title">345k</h5>
+                              <p class="card-text"></p>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
+                        <div class="card">
+                            <h5 class="card-header">E-Mails reported</h5>
+                            <div class="card-body">
+                              <h5 class="card-title">$2.4k</h5>
+                              <p class="card-text"></p>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
+                        <div class="card">
+                            <h5 class="card-header">SPF Results</h5>
+                            <div class="card-body">
+                              <h5 class="card-title">43</h5>
+                              <p class="card-text"></p>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
+                        <div class="card">
+                            <h5 class="card-header">DKIM Results</h5>
+                            <div class="card-body">
+                              <h5 class="card-title">64k</h5>
+                              <p class="card-text"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div> #}
+                <div class="row">
+                    <div class="col-6 col-xl-6 mb-4 mb-lg-0">
+                        <div class="card">
+                            <h5 class="card-header">Latest reports</h5>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                          <tr>
+                                            <th scope="col">Id</th>
+                                            <th scope="col">Domain</th>
+                                            <th scope="col">Reporting Organisation</th>
+                                            <th scope="col">Messages</th>
+                                            <th scope="col">Results</th>
+                                            <th scope="col"></th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for report in reports %}
+                                          <tr {% if report.id not in reportsseen %}class="table-warning"{% endif%}>
+                                            <th scope="row">{{ report.id }}</th>
+                                            <td>{{ report.domain.fqdn }}</td>
+                                            <td>{{ report.organisation }}</td>
+                                            <td>{{ report.records.count }}</td>
+                                            <td>
+                                              {% set dkim_pass = true %}
+                                              {% set spf_pass = true %}
+                                              {% for record in report.records %}
+                                                  {% if record.policydkim != "pass" %}
+                                                    {% set dkim_pass = false %}
+                                                  {% endif %}
+                                                  {% if record.policyspf != "pass" %}
+                                                    {% set spf_pass = false %}
+                                                  {% endif %}
+                                              {% endfor %}
+                                              <span class="btn btn-sm btn-{% if spf_pass %}success{% else %}danger{% endif %}">spf</span>
+                                              <span class="btn btn-sm btn-{% if dkim_pass %}success{% else %}danger{% endif %}">dkim</span>
+                                            </td>
+                                            <td><a href="{{ path('app_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a></td>
+                                          </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                      </table>
+                                </div>
+                                <a href="{{ path('app_reports') }}" class="btn btn-block btn-secondary">View all</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-6 mb-4 mb-lg-0">
+                        <div class="card">
+                            <h5 class="card-header">Latest logs</h5>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                          <tr>
+                                            <th scope="col">Id</th>
+                                            <th scope="col">Date &amp; Time</th>
+                                            <th scope="col">Message</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for log in logs %}
+                                          <tr>
+                                            <th scope="row">{{ log.id }}</th>
+                                            <td>{{ log.time|date("d-M-Y h:i:s") }}</td>
+                                            <td>{{ log.message }}</td>
+                                          </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                      </table>
+                                </div>
+                                <a href="{{ path('app_reports') }}" class="btn btn-block btn-secondary">View all</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+{% endblock %}

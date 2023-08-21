@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Users{% endblock %}
+
+{% block body %}
+                <div class="row">
+                    <div class="col-12 col-xl-12 mb-4 mb-lg-0">
+                        <div class="card">
+                            <h5 class="card-header">Users</h5>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                          <tr>
+                                            <th scope="col">E-Mail</th>
+                                            <th scope="col">Verified</th>
+                                            <th scope="col">Roles</th>
+                                            <th scope="col">Action</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for user in users %}
+                                          <tr>
+                                            <th scope="row">{{ user.email }}</th>
+                                            <td>
+                                                {% if user.verified %}
+                                                    <span class="text-success">Verified</span>
+                                                {% else %}
+                                                    <span class="text-danger">Not verified</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% for role in user.roles %}
+                                                    {% if role == "ROLE_ADMIN" %}
+                                                        <span class="text-danger">Admin</span>
+                                                    {% elseif role == "ROLE_USER" %}
+                                                    {% elseif role matches '/[0-9]+/'%}
+                                                        {{ role|idtodomain }}
+                                                    {% endif %}
+                                                    {% if loop.index < loop.length -1 %},{% endif %}
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                <a href="{{ path('app_user_edit', {id: user.id}) }}" class="btn btn-sm btn-secondary">Edit</a>
+                                                <a href="{{ path('app_user_delete', {id: user.id}) }}" class="btn btn-sm btn-danger"  onclick="return confirm('{{'Are you sure? this can not be undone'|trans}}');">Delete</a>
+                                          </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                      </table>
+                                </div>
+                                <div class="clearfix">
+                                  <span class="float-start">&nbsp;</span>
+                                  <span class="float-end">
+                                  {% if pages.prev %}
+                                    <a href="{{ path('app_logs', {page: pages.page - 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&lt;</a>
+                                  {% else %}
+                                    <a href="#" class="btn btn-sm btn-light" disabled>&lt;</a>
+                                  {% endif %}
+                                  {% if pages.next %}
+                                    <a href="{{ path('app_logs', {page: pages.page + 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&gt;</a>
+                                  {% else %}
+                                    <a href="#" class="btn btn-sm btn-light" disabled>&gt;</a>
+                                  {% endif %}
+                                  </span>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+{% endblock %}

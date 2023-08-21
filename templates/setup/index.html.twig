@@ -1,0 +1,140 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Setup{% endblock %}
+
+{% block body %}
+                <div class="row my-4">
+                    <div class="col-12 col-md-12 col-lg-6 mb-4 mb-lg-0">
+                      <div class="card">
+                          <h5 class="card-header">Validating installation</h5>
+                          <div class="card-body">
+                            <p class="card-text">
+                              <ul class="list-group">
+                                <li class="list-group-item">
+                                  <div class="clearfix">
+                                    <span class="float-start"><b>Checking if .env.local file exists: </b> </span>
+                                    <span class="float-end">
+                                        {% if setup.envfile %}
+                                            <span class="text-success">OK</span>
+                                        {% else %}
+                                            <span class="text-danger">Missing</span>
+                                        {% endif %}
+                                    </span>
+                                  </div>
+                                </li>
+{% if setup.envfile %}
+                                <li class="list-group-item">
+                                  <div class="clearfix">
+                                    <span class="float-start"><b>Checking for missing migration files:</b> </span>
+                                    <span class="float-end">
+                                        {% if setup.missingmigrations %}
+                                            <span class="text-success">OK</span>
+                                        {% else %}
+                                            <span class="text-danger">Missing {{ setup.missingmigrations_list|length }}</span>
+                                        {% endif %}
+                                    </span>
+                                  </div>
+                                </li>
+                                <li class="list-group-item">
+                                  <div class="clearfix">
+                                    <span class="float-start"><b>Checking if database schema is up to date: </b> </span>
+                                    <span class="float-end">
+                                        {% if setup.database %}
+                                            <span class="text-success">OK</span>
+                                        {# {% elseif setup.missingmigrations == false %}
+                                            <span class="text-danger">Can not verify because of missing migrations</span> #}
+                                        {% else %}
+                                            <span class="text-warning">Updates found</span>
+                                        {% endif %}
+                                    </span>
+                                  </div>
+                                </li>
+                                <li class="list-group-item">
+                                  <div class="clearfix">
+                                    <span class="float-start"><b>Checking if there are users present: </b> </span>
+                                    <span class="float-end">
+                                        {% if setup.users %}
+                                            <span class="text-success">OK</span>
+                                        {% else %}
+                                            <span class="text-danger">No users created</span>
+                                        {% endif %}
+                                    </span>
+                                  </div>
+                                </li>
+{% endif %}
+                              </ul> 
+                            </p>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-12 col-lg-6 mb-4 mb-lg-0">
+{% if setup.envfile == false %}
+                        <div class="card">
+                            <h5 class="card-header">Setup instance</h5>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    {{ form_start(setup.users_form) }}
+                                    {{ form_row(setup.users_form) }}
+                                    <p></p>
+                                    <button class="btn btn-success" type="submit">{{ 'Create environment file'|trans }}</button>
+                                    {{ form_end(setup.users_form) }}
+                                </p>
+                            </div>
+                        </div>
+                        <p></p>
+{% endif %}
+{% if setup.database == false and setup.envfile %}
+                        <div class="card">
+                            <h5 class="card-header">Database schema updates</h5>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    {{ 'there are new schema updates availibe '|trans }}<br>
+                                    {{ 'The following migrations have not been processed:'|trans }}<br>
+                                    <ul>
+                                    {% for migration in setup.database_list %}
+                                        <li>{{ migration }}</li>
+                                    {% endfor %}
+                                </p>
+                                <a href="{{ path('app_setup_migrate') }}"><button class="btn btn-success" type="submit">{{ 'Update database schema'|trans }}</button></a>
+                            </div>
+                        </div>
+                        <p></p>
+{% endif %}
+{% if setup.missingmigrations == false and setup.envfile %}
+                        <div class="card">
+                            <h5 class="card-header">Missing database migrations</h5>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    {{ 'There are missing migration files and can thus not confirm if the database schema is correct'|trans }}<br>
+                                    {{ 'The following files are missing:'|trans }}<br>
+                                    <ul>
+                                        {% for migration in setup.missingmigrations_list %}
+                                            <li>{{ migration }}</li>
+                                        {% endfor %}
+                                </p>
+                            </div>
+                        </div>
+                        <p></p>
+{% endif %}
+{% if setup.users == false and setup.envfile and setup.database and setup.missingmigrations %}
+                        <div class="card">
+                            <h5 class="card-header">Create admin user</h5>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    {{ form_start(setup.users_form) }}
+                                    {{ form_row(setup.users_form) }}
+                                    <p></p>
+                                    <button class="btn btn-success" type="submit">{{ 'Create user'|trans }}</button>
+                                    {{ form_end(setup.users_form) }}
+                                </p>
+                            </div>
+                        </div>
+                        <p></p>
+{% endif %}
+                    </div>
+                    {% if setup.all %}
+                      <p></p>
+                      <a href="{{ path('app_login') }}"><button class="btn btn-success" type="submit">{{ 'Login'|trans }}</button></a>
+                    {% endif %}
+                </div>
+{% endblock %}

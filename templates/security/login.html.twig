@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DMARC Reports - {{ 'Login'|trans }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item active" aria-current="page">{{ 'Login'|trans }}</li>
+                    </ol>
+                </nav>
+                <div class="row">
+                    <form method="post">
+                        {% if app.user %}
+                            <div class="mb-3">
+                                {{ 'You are logged in as {{username}}'|trans({'{{username}}': app.user.userIdentifier}) }}<br>
+                                <a href="{{ path('app_dashboard') }}">{{ 'Dashbaord'|trans }}</a> - <a href="{{ path('app_logout') }}">{{ 'Logout'|trans }}</a>
+                            </div>
+                        {% else %}
+
+                        <h1 class="h3 mb-3 font-weight-normal">{{ 'Please sign in'|trans }}</h1>
+                        <label for="inputEmail">{{ 'Email'|trans }}</label>
+                        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                        <label for="inputPassword">{{ 'Password'|trans }}</label>
+                        <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+
+                        <input type="hidden" name="_csrf_token"
+                            value="{{ csrf_token('authenticate') }}"
+                        >
+                        <p></p>
+                        <div class="clearfix">
+                            <span class="float-start">
+                                <button class="btn btn-secondary" type="submit">
+                                    {{ 'Login'|trans }}
+                                </button>
+                            </span>
+                            <span class="float-end">
+                                <a href="{{ path('app_register') }}"><button class="btn btn-secondary" type="button">
+                                    {{ 'Register'|trans }}
+                                </button></a>
+                            </span>
+                        </div>
+                        {% endif %}
+                    </form>                    
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>

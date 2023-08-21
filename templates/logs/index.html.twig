@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Logs{% endblock %}
+
+{% block body %}
+                <div class="row">
+                    <div class="col-12 col-xl-12 mb-4 mb-lg-0">
+                        <div class="card">
+                            <h5 class="card-header">Logs</h5>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                          <tr>
+                                            <th scope="col">Id</th>
+                                            <th scope="col">Date &amp; Time</th>
+                                            <th scope="col">Message</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for log in logs %}
+                                          <tr>
+                                            <th scope="row">{{ log.id }}</th>
+                                            <td>{{ log.time|date("d-M-Y h:i:s") }}</td>
+                                            <td>{{ log.message }}</td>
+                                          </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                      </table>
+                                </div>
+                                <div class="clearfix">
+                                  <span class="float-start">&nbsp;</span>
+                                  <span class="float-end">
+                                  {% if pages.prev %}
+                                    <a href="{{ path('app_logs', {page: pages.page - 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&lt;</a>
+                                  {% else %}
+                                    <a href="#" class="btn btn-sm btn-light" disabled>&lt;</a>
+                                  {% endif %}
+                                  {% if pages.next %}
+                                    <a href="{{ path('app_logs', {page: pages.page + 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&gt;</a>
+                                  {% else %}
+                                    <a href="#" class="btn btn-sm btn-light" disabled>&gt;</a>
+                                  {% endif %}
+                                  </span>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+{% endblock %}
