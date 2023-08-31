@@ -35,7 +35,7 @@
                                                         <span class="text-danger">Admin</span>
                                                     {% elseif role == "ROLE_USER" %}
                                                     {% elseif role matches '/[0-9]+/'%}
-                                                        {{ role|idtodomain }}
+                                                        {{ role|idroletodomain }}
                                                     {% endif %}
                                                     {% if loop.index < loop.length -1 %},{% endif %}
                                                 {% endfor %}

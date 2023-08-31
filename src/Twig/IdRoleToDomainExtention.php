@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Domains;
 
-class DomainRoleFromIdExtention extends AbstractExtension
+class IdRoleToDomainExtention extends AbstractExtension
 {
     private $em;
 
@@ -20,11 +20,11 @@ class DomainRoleFromIdExtention extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('idtodomain', [$this, 'idtodomain']),
+            new TwigFilter('idroletodomain', [$this, 'idroletodomain']),
         ];
     }
 
-    public function idtodomain(int $id): string
+    public function idroletodomain(int $id): string
     {
         $repository = $this->em->getRepository(Domains::class);
         $domain = $repository->findOneBy(array('id' => $id));
