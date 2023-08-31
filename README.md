@@ -33,16 +33,17 @@ Setup is pretty easy
    ```sh
    git clone https://github.com/antedebaas/DMARC-Reports.git
    ```
-2. run composer install
+2. run update.sh to update project, clear its cache, this prevents symfony caching issues
    ```sh
-   composer install
+   bash [root path of this project]/update.sh
    ```
 3. point the webserver root to the public/ directory
 4. point your webbrowser to http(s)://[yourhost]/setup and follow instructions
-5. after setup add the following command to a schedule of your liking
+5. run installservice.sh to install the systemd service and timer 
    ```sh
-   php [root path of this project]/bin/console app:checkmailbox
+   bash [root path of this project]/installservice.sh
    ```
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
