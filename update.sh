@@ -5,9 +5,6 @@ git pull
 echo "Install composer dependencies"
 composer install
 
-echo "Install service"
-bash installservice.sh
-
 echo "clear cache"
 php bin/console cache:clear
 
