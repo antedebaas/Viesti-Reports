@@ -1,0 +1,9 @@
+[Unit]
+Description=Check mail for new dmarc reports on schedule
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+
+[Install]
+WantedBy=timers.target
