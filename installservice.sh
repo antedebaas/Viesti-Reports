@@ -6,4 +6,6 @@ cp $SCRIPT_DIR/systemd/dmarcmailcheck.timer /usr/lib/systemd/system/dmarcmailche
 echo "Reloading systemd daemon..."
 systemctl daemon-reload
 echo "enable dmarcmailcheck service..."
-systemctl enable dmarcmailcheck.timer
+systemctl enable dmarcmailcheck
+echo "start dmarcmailcheck timer..."
+systemctl start dmarcmailcheck.timer
