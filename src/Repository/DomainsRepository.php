@@ -55,4 +55,13 @@ class DomainsRepository extends ServiceEntityRepository
            ->getResult()
        ;
    }
+
+   public function getTotalRows(): int
+   {
+       return $this->createQueryBuilder('d')
+           ->select('count(d.id)')
+           ->getQuery()
+           ->getOneOrNullResult()[1]
+       ;
+   }
 }
