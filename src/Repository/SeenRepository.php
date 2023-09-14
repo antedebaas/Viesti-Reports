@@ -30,7 +30,7 @@ class SeenRepository extends ServiceEntityRepository
 //            ->andWhere('s.exampleField = :val')
 //            ->setParameter('val', $value)
 //            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
+//            ->setMaxDMARC_Results(10)
 //            ->getQuery()
 //            ->getResult()
 //        ;

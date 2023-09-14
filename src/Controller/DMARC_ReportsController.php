@@ -10,14 +10,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-use App\Entity\Reports;
+use App\Entity\DMARC_Reports;
 use App\Entity\Seen;
 use App\Entity\Domains;
 
-use App\Repository\ReportsRepository;
+use App\Repository\DMARC_ReportsRepository;
 use App\Repository\SeenRepository;
 
-class ReportsController extends AbstractController
+class DMARC_ReportsController extends AbstractController
 {
     private $em;
     private $router;
@@ -30,7 +30,7 @@ class ReportsController extends AbstractController
         $this->translator = $translator;
     }
 
-    #[Route(path: '/reports', name: 'app_reports', methods: ['GET'])]
+    #[Route(path: '/reports/dmarc', name: 'app_dmarc_reports', methods: ['GET'])]
     public function index(): Response
     {
         $pages=array("page"=>1,"next" => false,"prev" => false);
@@ -52,7 +52,7 @@ class ReportsController extends AbstractController
         $repository = $this->em->getRepository(Domains::class);
         $domains = $repository->findBy(array('id' => $this->getUser()->getRoles()));
 
-        $repository = $this->em->getRepository(Reports::class);
+        $repository = $this->em->getRepository(DMARC_Reports::class);
         if(in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
             $reports = $repository->findBy(array(),array('id' => 'DESC'),$pages["perpage"], ($pages["page"]-1)*$pages["perpage"]);
         } else {
@@ -63,23 +63,26 @@ class ReportsController extends AbstractController
         $repository = $this->em->getRepository(Seen::class);
         $reportsseen = $repository->getSeen($reports, $this->getUser()->getId());
 
-        if(count($reports) == 0 && $totalreports != 0 && $pages["page"] != 1) { return $this->redirectToRoute('app_reports'); }
+        if(count($reports) == 0 && $totalreports != 0 && $pages["page"] != 1) { return $this->redirectToRoute('app_dmarc_reports'); }
         
         if($totalreports/$pages['perpage'] > $pages["page"]) { $pages["next"] = true; }
         if($pages["page"]-1 > 0) { $pages["prev"] = true; }
 
-        return $this->render('reports/index.html.twig', [
+        return $this->render('dmarc_reports/index.html.twig', [
             'reports' => $reports,
             'pages' => $pages,
             'reportsseen' => $reportsseen,
             'menuactive' => 'reports',
-            'breadcrumbs' => array('0' => array('name' => $this->translator->trans("Reports"), 'url' => $this->router->generate('app_reports'))),
+            'breadcrumbs' => array(
+                array('name' => $this->translator->trans("Reports"), 'url' => $this->router->generate('app_dmarc_reports')),
+                array('name' => $this->translator->trans("DMARC"), 'url' => $this->router->generate('app_dmarc_reports'))
+            ),
         ]);
     }
 
-    #[Route(path: '/reports/report/{report}', name: 'app_reports_report', methods: ['GET'])]
+    #[Route(path: '/reports/dmarc/report/{report}', name: 'app_dmarc_reports_report', methods: ['GET'])]
     public function report(
-        #[MapQueryParameter(filter: FILTER_VALIDATE_INT)] Reports $report
+        #[MapQueryParameter(filter: FILTER_VALIDATE_INT)] DMARC_Reports $report
     ): Response
     {
         $repository = $this->em->getRepository(Seen::class);
@@ -92,12 +95,14 @@ class ReportsController extends AbstractController
             $this->em->flush();
         }
 
-        return $this->render('reports/report.html.twig', [
+        return $this->render('dmarc_reports/report.html.twig', [
             'menuactive' => 'reports',
             'breadcrumbs' => array(
-                '1' => array('name' => $this->translator->trans("Reports"), 'url' => $this->router->generate('app_reports')),
-                '0' => array('name' => $this->translator->trans("Report")." #".$report->getId(), 'url' => $this->router->generate('app_reports'))
+                array('name' => $this->translator->trans("Reports"), 'url' => $this->router->generate('app_dmarc_reports')),
+                array('name' => $this->translator->trans("DMARC"), 'url' => $this->router->generate('app_dmarc_reports')),
+                array('name' => $this->translator->trans("Report")." #".$report->getId(), 'url' => $this->router->generate('app_dmarc_reports'))
             ),
+
             'report' => $report
         ]);
     }

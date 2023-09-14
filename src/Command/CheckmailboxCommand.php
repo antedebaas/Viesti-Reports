@@ -14,9 +14,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use SecIT\ImapBundle\Service\Imap;
 
 use App\Entity\Domains;
-use App\Entity\Reports;
-use App\Entity\Records;
-use App\Entity\Results;
+use App\Entity\DMARC_Reports;
+use App\Entity\DMARC_Records;
+use App\Entity\DMARC_Results;
 use App\Entity\Logs;
 
 #[AsCommand(
@@ -71,7 +71,7 @@ class CheckmailboxCommand extends Command
                 $this->em->persist($dbdomain);
                 $this->em->flush();
             }
-            $dbreport = new Reports;
+            $dbreport = new DMARC_Reports;
             $dbreport->setBeginTime((new \DateTime)->setTimestamp($report->report_metadata->date_range->begin->__toString()));
             $dbreport->setEndTime((new \DateTime)->setTimestamp($report->report_metadata->date_range->end->__toString()));
             $dbreport->setOrganisation($report->report_metadata->org_name->__toString());
@@ -90,7 +90,7 @@ class CheckmailboxCommand extends Command
             foreach($report->record as $record){
                 $stats['new_records']++;
 
-                $dbrecord = new Records;
+                $dbrecord = new DMARC_Records;
                 $dbrecord->setReport($dbreport);
                 $dbrecord->setSourceIp($record->row->source_ip->__toString());
                 $dbrecord->setCount($record->row->count->__toString());
@@ -106,7 +106,7 @@ class CheckmailboxCommand extends Command
                 foreach($record->auth_results->dkim as $dkim_result){
                     $stats['new_results']++;
 
-                    $dbresult = new Results;
+                    $dbresult = new DMARC_Results;
                     $dbresult->setRecord($dbrecord);
                     $dbresult->setDomain($dkim_result->domain->__toString());
                     $dbresult->setType('dkim');
@@ -118,7 +118,7 @@ class CheckmailboxCommand extends Command
                 foreach($record->auth_results->spf as $spf_result){
                     $stats['new_results']++;
 
-                    $dbresult = new Results;
+                    $dbresult = new DMARC_Results;
                     $dbresult->setRecord($dbrecord);
                     $dbresult->setDomain($spf_result->domain->__toString());
                     $dbresult->setType('spf');
@@ -162,19 +162,36 @@ class CheckmailboxCommand extends Command
     {
         $reports = array();
         $ziparchive = new \ZipArchive;
+        $filecontents = null;
         
         if ($ziparchive->open($file) === TRUE) {
             for($i=0; $i<$ziparchive->numFiles; $i++){
                 $stat = $ziparchive->statIndex($i);
-                $reports[] = new \SimpleXMLElement(file_get_contents("zip://$file#".$stat["name"]));
+                $filecontents = file_get_contents("zip://$file#".$stat["name"]);
             }
         } elseif($gzarchive = gzopen($file, 'r')) {
             $gzcontents=null;
             while (!feof($gzarchive)) {
                 $gzcontents .= gzread($gzarchive, filesize($file));
             }
-            $reports[] = new \SimpleXMLElement($gzcontents);
+            $filecontents = $gzcontents;
         }
+
+        if(substr($filecontents, 0, 5) == "<?xml") {
+            //Expecting an DMARC XML Report
+            $reports[] = new \SimpleXMLElement($filecontents);
+        }
+        elseif($this->isJson($filecontents)) {
+            //Expecting an MTS-STS JSON Report
+            
+            //TODO: Implement MTS-STS JSON Report
+        }
+
         return $reports;
     }
+
+    private function isJson($string) {
+        json_decode($string);
+        return json_last_error() === JSON_ERROR_NONE;
+     }
 }

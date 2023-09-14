@@ -61,7 +61,7 @@ class DomainsController extends AbstractController
             'domains' => $domains,
             'pages' => $pages,
             'menuactive' => 'domains',
-            'breadcrumbs' => array('0' => array('name' => $this->translator->trans("Domains"), 'url' => $this->router->generate('app_domains'))),
+            'breadcrumbs' => array(array('name' => $this->translator->trans("Domains"), 'url' => $this->router->generate('app_domains'))),
         ]);
     }
 }

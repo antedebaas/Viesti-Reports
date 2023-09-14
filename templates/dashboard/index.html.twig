@@ -69,11 +69,11 @@
                                             <th scope="row">{{ report.id }}</th>
                                             <td>{{ report.domain.fqdn }}</td>
                                             <td>{{ report.organisation }}</td>
-                                            <td>{{ report.records.count }}</td>
+                                            <td>{{ report.dmarc_records.count }}</td>
                                             <td>
                                               {% set dkim_pass = true %}
                                               {% set spf_pass = true %}
-                                              {% for record in report.records %}
+                                              {% for record in report.dmarc_records %}
                                                   {% if record.policydkim != "pass" %}
                                                     {% set dkim_pass = false %}
                                                   {% endif %}
@@ -84,13 +84,13 @@
                                               <span class="btn btn-sm btn-{% if spf_pass %}success{% else %}danger{% endif %}">spf</span>
                                               <span class="btn btn-sm btn-{% if dkim_pass %}success{% else %}danger{% endif %}">dkim</span>
                                             </td>
-                                            <td><a href="{{ path('app_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a></td>
+                                            <td><a href="{{ path('app_dmarc_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a></td>
                                           </tr>
                                         {% endfor %}
                                         </tbody>
                                       </table>
                                 </div>
-                                <a href="{{ path('app_reports') }}" class="btn btn-block btn-secondary">View all</a>
+                                <a href="{{ path('app_dmarc_reports') }}" class="btn btn-block btn-secondary">View all</a>
                             </div>
                         </div>
                     </div>

@@ -18,7 +18,7 @@ class Domains
     #[ORM\Column(length: 255)]
     private ?string $fqdn = null;
 
-    #[ORM\OneToMany(mappedBy: 'domain', targetEntity: Reports::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'domain', targetEntity: DMARC_Reports::class, orphanRemoval: true)]
     private Collection $reports;
 
     public function __construct()
@@ -44,14 +44,14 @@ class Domains
     }
 
     /**
-     * @return Collection<int, Reports>
+     * @return Collection<int, DMARC_Reports>
      */
-    public function getReports(): Collection
+    public function getDMARC_Reports(): Collection
     {
         return $this->reports;
     }
 
-    public function addReport(Reports $report): static
+    public function addReport(DMARC_Reports $report): static
     {
         if (!$this->reports->contains($report)) {
             $this->reports->add($report);
@@ -61,7 +61,7 @@ class Domains
         return $this;
     }
 
-    public function removeReport(Reports $report): static
+    public function removeReport(DMARC_Reports $report): static
     {
         if ($this->reports->removeElement($report)) {
             // set the owning side to null (unless already changed)

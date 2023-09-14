@@ -15,7 +15,7 @@ class Seen
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Reports $report = null;
+    private ?DMARC_Reports $report = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
@@ -26,12 +26,12 @@ class Seen
         return $this->id;
     }
 
-    public function getReport(): ?Reports
+    public function getReport(): ?DMARC_Reports
     {
         return $this->report;
     }
 
-    public function setReport(?Reports $report): static
+    public function setReport(?DMARC_Reports $report): static
     {
         $this->report = $report;
 

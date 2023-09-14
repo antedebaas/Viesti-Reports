@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Domains;
-use App\Entity\Reports;
+use App\Entity\DMARC_Reports;
 use App\Entity\Seen;
 use App\Entity\Logs;
 
@@ -42,7 +42,7 @@ class DashboardController extends AbstractController
         $repository = $this->em->getRepository(Domains::class);
         $domains = $repository->findBy(array('id' => $this->getUser()->getRoles()));
 
-        $repository = $this->em->getRepository(Reports::class);
+        $repository = $this->em->getRepository(DMARC_Reports::class);
         if(in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
             $reports = $repository->findBy(array(),array('id' => 'DESC'),10,0);
         } else {
@@ -59,7 +59,7 @@ class DashboardController extends AbstractController
 
         return $this->render('dashboard/index.html.twig', [
             'menuactive' => 'dashboard',
-            'breadcrumbs' => array('0' => array('name' => $this->translator->trans("Dashboard"), 'url' => $this->router->generate('app_dashboard'))),
+            'breadcrumbs' => array(array('name' => $this->translator->trans("Dashboard"), 'url' => $this->router->generate('app_dashboard'))),
             'reports' => $reports,
             'reportsseen' => $reportsseen,
             'logs' => $logs,

@@ -35,11 +35,11 @@
                                             </td>
                                             <td>{{ report.organisation }}</td>
                                             <td>{{ report.externalid }}</td>
-                                            <td>{{ report.records.count }}</td>
+                                            <td>{{ report.dmarc_records.count }}</td>
                                             <td>
                                               {% set dkim_pass = true %}
                                               {% set spf_pass = true %}
-                                              {% for record in report.records %}
+                                              {% for record in report.dmarc_records %}
                                                   {% if record.policydkim != "pass" %}
                                                     {% set dkim_pass = false %}
                                                   {% endif %}
@@ -50,7 +50,7 @@
                                               <span class="btn btn-sm btn-{% if spf_pass %}success{% else %}danger{% endif %}">spf</span>
                                               <span class="btn btn-sm btn-{% if dkim_pass %}success{% else %}danger{% endif %}">dkim</span>
                                             </td>
-                                            <td><a href="{{ path('app_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a></td>
+                                            <td><a href="{{ path('app_dmarc_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a></td>
                                           </tr>
                                         {% endfor %}
                                         </tbody>
@@ -60,12 +60,12 @@
                                   <span class="float-start">&nbsp;</span>
                                   <span class="float-end">
                                   {% if pages.prev %}
-                                    <a href="{{ path('app_reports', {page: pages.page - 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&lt;</a>
+                                    <a href="{{ path('app_dmarc_reports', {page: pages.page - 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&lt;</a>
                                   {% else %}
                                     <a href="#" class="btn btn-sm btn-light" disabled>&lt;</a>
                                   {% endif %}
                                   {% if pages.next %}
-                                    <a href="{{ path('app_reports', {page: pages.page + 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&gt;</a>
+                                    <a href="{{ path('app_dmarc_reports', {page: pages.page + 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&gt;</a>
                                   {% else %}
                                     <a href="#" class="btn btn-sm btn-light" disabled>&gt;</a>
                                   {% endif %}

@@ -48,7 +48,7 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
 //            ->andWhere('u.exampleField = :val')
 //            ->setParameter('val', $value)
 //            ->orderBy('u.id', 'ASC')
-//            ->setMaxResults(10)
+//            ->setMaxDMARC_Results(10)
 //            ->getQuery()
 //            ->getResult()
 //        ;

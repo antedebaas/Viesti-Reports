@@ -61,7 +61,7 @@ class LogsController extends AbstractController
             'logs' => $logs,
             'pages' => $pages,
             'menuactive' => 'logs',
-            'breadcrumbs' => array('0' => array('name' => $this->translator->trans("Logs"), 'url' => $this->router->generate('app_logs'))),
+            'breadcrumbs' => array(array('name' => $this->translator->trans("Logs"), 'url' => $this->router->generate('app_logs'))),
         ]);
     }
 }
