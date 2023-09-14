@@ -182,9 +182,9 @@ class CheckmailboxCommand extends Command
             $reports[] = new \SimpleXMLElement($filecontents);
         }
         elseif($this->isJson($filecontents)) {
-            //Expecting an MTS-STS JSON Report
+            //Expecting an MTA-STS JSON Report
             
-            //TODO: Implement MTS-STS JSON Report
+            //TODO: Implement MTA-STS JSON Report
         }
 
         return $reports;

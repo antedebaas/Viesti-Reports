@@ -74,7 +74,7 @@ class DMARC_ReportsController extends AbstractController
             'reportsseen' => $reportsseen,
             'menuactive' => 'reports',
             'breadcrumbs' => array(
-                array('name' => $this->translator->trans("Reports"), 'url' => $this->router->generate('app_dmarc_reports')),
+                array('name' => $this->translator->trans("Reports"), 'url' => $this->router->generate('app_reports')),
                 array('name' => $this->translator->trans("DMARC"), 'url' => $this->router->generate('app_dmarc_reports'))
             ),
         ]);
@@ -98,7 +98,7 @@ class DMARC_ReportsController extends AbstractController
         return $this->render('dmarc_reports/report.html.twig', [
             'menuactive' => 'reports',
             'breadcrumbs' => array(
-                array('name' => $this->translator->trans("Reports"), 'url' => $this->router->generate('app_dmarc_reports')),
+                array('name' => $this->translator->trans("Reports"), 'url' => $this->router->generate('app_reports')),
                 array('name' => $this->translator->trans("DMARC"), 'url' => $this->router->generate('app_dmarc_reports')),
                 array('name' => $this->translator->trans("Report")." #".$report->getId(), 'url' => $this->router->generate('app_dmarc_reports'))
             ),
