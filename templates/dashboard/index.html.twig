@@ -111,7 +111,7 @@
                                         {% for log in logs %}
                                           <tr>
                                             <th scope="row">{{ log.id }}</th>
-                                            <td>{{ log.time|date("d-M-Y h:i:s") }}</td>
+                                            <td>{{ log.time|date("d-M-Y H:i:s") }}</td>
                                             <td>{{ log.message }}</td>
                                           </tr>
                                         {% endfor %}
