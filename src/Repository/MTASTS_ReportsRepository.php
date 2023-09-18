@@ -88,15 +88,16 @@ class MTASTS_ReportsRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function getTotalRows(array $domains): int
+    public function getTotalRows(array $domains, array $roles): int
     {
         $qb = $this->createQueryBuilder('r')
-        ->select('count(r.id)')
-        ->addSelect('')->from(MTASTS_Policies::class, 'pol');
-        if(!empty($domains)) {
-            $qb->andWhere('r.id = pol.report');
-            $qb->andWhere('pol.policy_domain IN (:domains)')
-            ->setParameter('domains', $domains);
+           ->select('count(r.id)');
+        
+        if(!empty($domains) && !in_array("ROLE_ADMIN", $roles)) {
+            $qb->addSelect('')->from(MTASTS_Policies::class, 'pol')
+               ->andWhere('r.id = pol.report')
+               ->andWhere('pol.policy_domain IN (:domains)')
+               ->setParameter('domains', $domains);
         }
         return $qb->getQuery()
             ->getOneOrNullResult()[1]

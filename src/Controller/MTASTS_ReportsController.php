@@ -58,7 +58,7 @@ class MTASTS_ReportsController extends AbstractController
         } else {
             $reports = $repository->findOwnedBy(array('domain' => $domains),array('id' => 'DESC'),$pages["perpage"], ($pages["page"]-1)*$pages["perpage"]);
         }
-        $totalreports = $repository->getTotalRows($domains);
+        $totalreports = $repository->getTotalRows($domains, $this->getUser()->getRoles());
         
         $repository = $this->em->getRepository(MTASTS_Seen::class);
         $reportsseen = $repository->getSeen($reports, $this->getUser()->getId());

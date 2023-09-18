@@ -63,7 +63,7 @@ class DashboardController extends AbstractController
         } else {
             $mtastsreports = $repository->findOwnedBy(array('domain' => $domains),array('id' => 'DESC'),10,0);
         }
-        $totalreports = $repository->getTotalRows($domains);
+        $totalreports = $repository->getTotalRows($domains, $this->getUser()->getRoles());
 
         $repository = $this->em->getRepository(MTASTS_Seen::class);
         $mtastsreportsseen = $repository->getSeen($mtastsreports, $this->getUser()->getId());
