@@ -21,9 +21,17 @@ class Domains
     #[ORM\OneToMany(mappedBy: 'domain', targetEntity: DMARC_Reports::class, orphanRemoval: true)]
     private Collection $reports;
 
+    #[ORM\OneToMany(mappedBy: 'policy_domain', targetEntity: MTASTS_Policies::class, orphanRemoval: true)]
+    private Collection $MTASTS_Policies;
+
+    #[ORM\OneToMany(mappedBy: 'Domain', targetEntity: MXRecords::class, orphanRemoval: true)]
+    private Collection $MXRecords;
+
     public function __construct()
     {
         $this->reports = new ArrayCollection();
+        $this->MTASTS_Policies = new ArrayCollection();
+        $this->MXRecords = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -67,6 +75,66 @@ class Domains
             // set the owning side to null (unless already changed)
             if ($report->getDomain() === $this) {
                 $report->setDomain(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MTASTS_Policies>
+     */
+    public function getMTASTS_Policies(): Collection
+    {
+        return $this->MTASTS_Policies;
+    }
+
+    public function addMTASTS_Policy(MTASTS_Policies $MTASTS_Policy): static
+    {
+        if (!$this->MTASTS_Policies->contains($MTASTS_Policy)) {
+            $this->MTASTS_Policies->add($MTASTS_Policy);
+            $MTASTS_Policy->setPolicyDomain($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMTASTS_Policy(MTASTS_Policies $MTASTS_Policy): static
+    {
+        if ($this->MTASTS_Policies->removeElement($MTASTS_Policy)) {
+            // set the owning side to null (unless already changed)
+            if ($MTASTS_Policy->getPolicyDomain() === $this) {
+                $MTASTS_Policy->setPolicyDomain(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MXRecords>
+     */
+    public function getMXRecords(): Collection
+    {
+        return $this->MXRecords;
+    }
+
+    public function addMXRecord(MXRecords $MXRecord): static
+    {
+        if (!$this->MXRecords->contains($MXRecord)) {
+            $this->MXRecords->add($MXRecord);
+            $MXRecord->setDomain($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMXRecord(MXRecords $MXRecord): static
+    {
+        if ($this->MXRecords->removeElement($MXRecord)) {
+            // set the owning side to null (unless already changed)
+            if ($MXRecord->getDomain() === $this) {
+                $MXRecord->setDomain(null);
             }
         }
 
