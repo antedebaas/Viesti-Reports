@@ -1,0 +1,212 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Report #{{ report.id }}{% endblock %}
+
+{% block body %}
+                <div class="row my-4">
+                    <div class="col-12 col-md-12 col-lg-6 mb-4 mb-lg-0">
+                      <div class="card">
+                          <h5 class="card-header">Reporting organization: {{report.organisation}}</h5>
+                          <div class="card-body">
+                            <p class="card-text">
+                              <ul class="list-group">
+                                <li class="list-group-item">
+                                  <div class="clearfix">
+                                    <span class="float-start"><b>Reporting for: </b> </span>
+                                    <span class="float-end"> {{ report.domain.fqdn }}</span>
+                                  </div>
+                                </li>
+                                <li class="list-group-item">
+                                  <div class="clearfix">
+                                    <span class="float-start"><b>Report ID: </b> </span>
+                                    <span class="float-end"> {{ report.externalid }}</span>
+                                  </div>
+                                </li>
+                                <li class="list-group-item">
+                                  <div class="clearfix">
+                                    <span class="float-start"><b>E-Mail: </b> </span>
+                                    <span class="float-end"> {{ report.email }}</span>
+                                  </div>
+                                </li>
+                                <li class="list-group-item">
+                                  <div class="clearfix">
+                                    <span class="float-start"><b>Contact Info: </b> </span>
+                                    <span class="float-end">{{ report.contactinfo }}</span>
+                                  </div>
+                                </li>
+                              </ul> 
+                            </p>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-8 col-lg-4 mb-4 mb-lg-0">
+                      <div class="card">
+                          <h5 class="card-header">Report timings</h5>
+                          <div class="card-body">
+                            <p class="card-text">
+                              <ul class="list-group">
+                                <li class="list-group-item">
+                                  <div class="clearfix">
+                                    <span class="float-start"><b>Begin time: </b> </span>
+                                    <span class="float-end"> {{ report.begintime|date("d-M-Y h:i:s") }}</span>
+                                  </div>
+                                </li>
+                                <li class="list-group-item">
+                                  <div class="clearfix">
+                                    <span class="float-start"><b>End time: </b> </span>
+                                    <span class="float-end"> {{ report.endtime|date("d-M-Y h:i:s") }}</span>
+                                  </div>
+                                </li>
+                              </ul> 
+                            </p>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 col-lg-2 mb-4 mb-lg-0">
+                      <div class="card">
+                          <h5 class="card-header">Published policy</h5>
+                          <div class="card-body">
+                            <p class="card-text">
+                              <ul class="list-group">
+                                <li class="list-group-item">
+                                  <div class="clearfix">
+                                    <span class="float-start" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="The optional adkim tag is the alignment mode for the DKIM protocol. A sample tag is adkim=r."><b>adkim: </b>
+                                      <svg class="help_info" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                                      </svg>
+                                    </span>
+                                    <span class="float-end">{{ report.policyadkim }}</span>
+                                  </div>
+                                </li>
+                                <li class="list-group-item">
+                                  <div class="clearfix">
+                                    <span class="float-start" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="The aspf tag represents alignment mode for SPF. An optional tag, aspf=r is a common example of its configuration."><b>aspf: </b>
+                                      <svg class="help_info" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                                      </svg>
+                                    </span>
+                                    <span class="float-end">{{ report.policyaspf }}</span>
+                                  </div>
+                                </li>
+                                <li class="list-group-item">
+                                  <div class="clearfix">
+                                    <span class="float-start" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="The required p tag demonstrates the policy for domain (or requested handling policy). It directs the receiver to report, quarantine, or reject emails that fail authentication checks. Policy options are: 1) None 2) Quarantine or 3) Reject."><b>p: </b>
+                                      <svg class="help_info" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                                      </svg>
+                                    </span>
+                                    <span class="float-end">{{ report.policyp }}</span>
+                                  </div>
+                                </li>
+                                <li class="list-group-item">
+                                  <div class="clearfix">
+                                    <span class="float-start" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="This tag represents the requested handling policy for subdomains."><b>sp: </b>
+                                      <svg class="help_info" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                                      </svg>
+                                    </span>
+                                    <span class="float-end">{{ report.policysp }}</span>
+                                  </div>
+                                </li>
+                                <li class="list-group-item">
+                                  <div class="clearfix">
+                                    <span class="float-start" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="This DMARC tag specifies the percentage of email messages subjected to filtering. For example, pct=25 means a quarter of your company’s emails will be filtered by the recipient."><b>pct: </b>
+                                      <svg class="help_info" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                                      </svg>
+                                    </span>
+                                    <span class="float-end">{{ report.policypct }}</span>
+                                  </div>
+                                </li>
+                              </ul> 
+                            </p>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-4">
+                  {% for record in report.dmarc_records|reverse %}
+                    <div class="col-12 col-md-12 col-lg-12 mb-4 mb-lg-0">
+                      <div class="card">
+                          <h5 class="card-header">Record #{{ record.count }}</h5>
+                          <div class="card-body">
+                            <div class="row my-0">
+                              <div class="col-12 col-md-6 col-lg-6 mb-4 mb-lg-0">
+                                <ul class="list-group">
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <span class="float-start"><b>Policy evaluation: </b> </span>
+                                      <span class="float-end">
+                                          {% set dkim_pass = true %}
+                                          {% set spf_pass = true %}
+                                          {% if record.policydkim != "pass" %}
+                                            {% set dkim_pass = false %}
+                                          {% endif %}
+                                          {% if record.policyspf != "pass" %}
+                                            {% set spf_pass = false %}
+                                          {% endif %}
+                                          <span class="btn btn-sm btn-{% if spf_pass %}success{% else %}danger{% endif %}">spf</span>
+                                          <span class="btn btn-sm btn-{% if dkim_pass %}success{% else %}danger{% endif %}">dkim</span>
+                                          <span class="btn btn-sm btn-{% if record.policydisposition == 0 %}success{% elseif record.policydisposition == 1 %}warning{% else %}danger{% endif %}">
+                                            disposition: {% if record.policydisposition == 0 %}none{% elseif record.policydisposition == 1 %}quarantine{% else %}reject{% endif %}
+                                          </span>
+                                      </span>
+                                    </div>
+                                  </li>
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <span class="float-start"><b>Envelope to: </b> </span>
+                                      <span class="float-end"> {{ record.envelopeto }}</span>
+                                    </div>
+                                  </li>
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <span class="float-start"><b>Envelope from: </b> </span>
+                                      <span class="float-end"> {{ record.envelopefrom }}</span>
+                                    </div>
+                                  </li>
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <span class="float-start"><b>Header from: </b> </span>
+                                      <span class="float-end"> {{ record.headerfrom }}</span>
+                                    </div>
+                                  </li>
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <span class="float-start"><b>IP Adress: </b> </span>
+                                      <span class="float-end"> {{ record.sourceip }}</span>
+                                    </div>
+                                  </li>
+                                </ul> 
+                              </div>
+                              <div class="col-12 col-md-6 col-lg-6 mb-4 mb-lg-0">
+                                <ul class="list-group">
+                                  {% for result in record.dmarc_results %}
+                                    <li class="list-group-item">
+                                      <div class="row my-0">
+                                        <div class="col-12 col-md-6 col-lg-5 mb-4 mb-lg-0">
+                                          <b>Domain: </b> {{ result.domain }}
+                                        </div>
+                                        <div class="col-6 col-md-3 col-lg-2 mb-4 mb-lg-0">
+                                          {{ result.type }}
+                                        </div>
+                                        <div class="col-6 col-md-3 col-lg-2 mb-4 mb-lg-0">
+                                          <span class="btn btn-sm btn-{% if result.result == "pass" %}success{% else %}danger{% endif %}">{{ result.result }}</span>
+                                        </div>
+                                        <div class="col-6 col-md-3 col-lg-3 mb-4 mb-lg-0">
+                                          {% if result.type == "dkim" %}<b>Selector: </b> {{ result.dkimselector }}{% endif %}
+                                        </div>
+                                      </div>
+                                    </li>
+                                  {% endfor %}
+                                </ul>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                    </div>
+                    <p></p>
+                  {% endfor %}
+                </div>
+{% endblock %}

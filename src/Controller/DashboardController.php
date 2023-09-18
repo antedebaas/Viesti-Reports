@@ -12,7 +12,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Domains;
 use App\Entity\DMARC_Reports;
-use App\Entity\Seen;
+use App\Entity\DMARC_Seen;
 use App\Entity\Logs;
 
 class DashboardController extends AbstractController
@@ -51,8 +51,8 @@ class DashboardController extends AbstractController
         $totalreports = $repository->getTotalRows($domains);   
 
 
-        $repository = $this->em->getRepository(Seen::class);
-        $reportsseen = $repository->getSeen($reports, $this->getUser()->getId());
+        $repository = $this->em->getRepository(DMARC_Seen::class);
+        $reportsseen = $repository->getDMARC_Seen($reports, $this->getUser()->getId());
 
         $repository = $this->em->getRepository(Logs::class);
         $logs = $repository->findBy(array(),array('id' => 'DESC'),10, 0);

@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Seen;
+use App\Entity\MTASTS_Seen;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,11 +14,11 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Seen[]    findAll()
  * @method Seen[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SeenRepository extends ServiceEntityRepository
+class MTASTS_SeenRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Seen::class);
+        parent::__construct($registry, MTASTS_Seen::class);
     }
 
 //    /**
@@ -30,7 +30,7 @@ class SeenRepository extends ServiceEntityRepository
 //            ->andWhere('s.exampleField = :val')
 //            ->setParameter('val', $value)
 //            ->orderBy('s.id', 'ASC')
-//            ->setMaxDMARC_Results(10)
+//            ->setMaxMTASTS_Results(10)
 //            ->getQuery()
 //            ->getResult()
 //        ;

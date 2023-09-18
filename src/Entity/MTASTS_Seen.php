@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\SeenRepository;
+use App\Repository\MTASTS_SeenRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: SeenRepository::class)]
-class Seen
+#[ORM\Entity(repositoryClass: MTASTS_SeenRepository::class)]
+class MTASTS_Seen
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -15,7 +15,7 @@ class Seen
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?DMARC_Reports $report = null;
+    private ?MTASTS_Reports $report = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
@@ -26,12 +26,12 @@ class Seen
         return $this->id;
     }
 
-    public function getReport(): ?DMARC_Reports
+    public function getReport(): ?MTASTS_Reports
     {
         return $this->report;
     }
 
-    public function setReport(?DMARC_Reports $report): static
+    public function setReport(?MTASTS_Reports $report): static
     {
         $this->report = $report;
 

@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reports{% endblock %}
+{% block title %}MTASTS Reports{% endblock %}
 
 {% block body %}
                 <div class="row">
                     <div class="col-12 col-xl-12 mb-4 mb-lg-0">
                         <div class="card">
-                            <h5 class="card-header">DMARC Reports</h5>
+                            <h5 class="card-header">MTASTS Reports</h5>
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table">
@@ -17,7 +17,6 @@
                                             <th scope="col">Date/Time Range</th>
                                             <th scope="col">Reporting Organisation</th>
                                             <th scope="col">External Report Id</th>
-                                            <th scope="col">Messages</th>
                                             <th scope="col">Results</th>
                                             <th scope="col"></th>
                                           </tr>
@@ -26,7 +25,7 @@
                                         {% for report in reports %}
                                           <tr {% if report.id not in reportsseen %}class="table-warning"{% endif%}>
                                             <th scope="row">{{ report.id }}</th>
-                                            <td>{{ report.domain.fqdn }}</td>
+                                            <td></td>
                                             <td>
                                               <div class="clearfix">
                                                 <span class="float-start">{{ report.begintime|date("d-M-Y h:i:s") }}</span>
@@ -35,20 +34,20 @@
                                             </td>
                                             <td>{{ report.organisation }}</td>
                                             <td>{{ report.externalid }}</td>
-                                            <td>{{ report.dmarc_records.count }}</td>
                                             <td>
-                                              {% set dkim_pass = true %}
-                                              {% set spf_pass = true %}
-                                              {% for record in report.dmarc_records %}
-                                                  {% if record.policydkim != "pass" %}
-                                                    {% set dkim_pass = false %}
-                                                  {% endif %}
-                                                  {% if record.policyspf != "pass" %}
-                                                    {% set spf_pass = false %}
+                                              {% set sts_type = false %}
+                                              {% set sts_version = true %}
+                                              {% set sts_mode = true %}
+                                              {% for policy in report.mtastspolicies %}
+                                                  {% if policy.policytype == 'no-policy-found' %}
+                                                    <span class="btn btn-sm btn-danger">no-policy-found</span>
+                                                  {% else %}
+                                                    {% if policy.policystringversion == 'STSv1' %}
+                                                      <span class="btn btn-sm btn-success">STSv1</span>
+                                                    {% endif %}
+                                                    <span class="btn btn-sm btn-{% if policy.policystringmode == 'enforce' %}success{% elseif policy.policystringmode == 'testing' %}warning{% else %}danger{% endif %}">{{ policy.policystringmode }}</span>
                                                   {% endif %}
                                               {% endfor %}
-                                              <span class="btn btn-sm btn-{% if spf_pass %}success{% else %}danger{% endif %}">spf</span>
-                                              <span class="btn btn-sm btn-{% if dkim_pass %}success{% else %}danger{% endif %}">dkim</span>
                                             </td>
                                             <td><a href="{{ path('app_dmarc_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a></td>
                                           </tr>
