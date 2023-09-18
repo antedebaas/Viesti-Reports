@@ -13,6 +13,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Entity\Domains;
 use App\Entity\DMARC_Reports;
 use App\Entity\DMARC_Seen;
+use App\Entity\MTASTS_Reports;
+use App\Entity\MTASTS_Seen;
 use App\Entity\Logs;
 
 class DashboardController extends AbstractController
@@ -44,24 +46,38 @@ class DashboardController extends AbstractController
 
         $repository = $this->em->getRepository(DMARC_Reports::class);
         if(in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
-            $reports = $repository->findBy(array(),array('id' => 'DESC'),10,0);
+            $dmarcreports = $repository->findBy(array(),array('id' => 'DESC'),10,0);
         } else {
-            $reports = $repository->findBy(array('domain' => $domains),array('id' => 'DESC'),10,0);
+            $dmarcreports = $repository->findBy(array('domain' => $domains),array('id' => 'DESC'),10,0);
         }
-        $totalreports = $repository->getTotalRows($domains);   
-
+        $totalreports = $repository->getTotalRows($domains);
 
         $repository = $this->em->getRepository(DMARC_Seen::class);
-        $reportsseen = $repository->getDMARC_Seen($reports, $this->getUser()->getId());
+        $dmarcreportsseen = $repository->getSeen($dmarcreports, $this->getUser()->getId());
+
+
+
+        $repository = $this->em->getRepository(MTASTS_Reports::class);
+        if(in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
+            $mtastsreports = $repository->findBy(array(),array('id' => 'DESC'),10,0);
+        } else {
+            $mtastsreports = $repository->findOwnedBy(array('domain' => $domains),array('id' => 'DESC'),10,0);
+        }
+        $totalreports = $repository->getTotalRows($domains);
+
+        $repository = $this->em->getRepository(MTASTS_Seen::class);
+        $mtastsreportsseen = $repository->getSeen($mtastsreports, $this->getUser()->getId());
 
         $repository = $this->em->getRepository(Logs::class);
-        $logs = $repository->findBy(array(),array('id' => 'DESC'),10, 0);
+        $logs = $repository->findBy(array(),array('id' => 'DESC'),3, 0);
 
         return $this->render('dashboard/index.html.twig', [
             'menuactive' => 'dashboard',
             'breadcrumbs' => array(array('name' => $this->translator->trans("Dashboard"), 'url' => $this->router->generate('app_dashboard'))),
-            'reports' => $reports,
-            'reportsseen' => $reportsseen,
+            'dmarcreports' => $dmarcreports,
+            'dmarcreportsseen' => $dmarcreportsseen,
+            'mtastsreports' => $mtastsreports,
+            'mtastsreportsseen' => $mtastsreportsseen,
             'logs' => $logs,
         ]);
     }

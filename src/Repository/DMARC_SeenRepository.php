@@ -46,7 +46,7 @@ class DMARC_SeenRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-    public function getDMARC_Seen(array $reports, int $user)
+    public function getSeen(array $reports, int $user)
     {
         $seen = $this
             ->createQueryBuilder('s')

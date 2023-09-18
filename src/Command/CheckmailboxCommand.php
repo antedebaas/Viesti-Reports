@@ -209,23 +209,10 @@ class CheckmailboxCommand extends Command
                         $this->em->flush();
                     }
                 }
-
-
             }
-
-            // $domain_repository = $this->em->getRepository(Domains::class);
-            // $dbdomain = $domain_repository->findOneBy(array('fqdn' => $mtastsreport->policies->domain->__toString()));
-            // if(!$dbdomain){
-            //     $stats['new_domains']++;
-
-            //     $dbdomain = new Domains;
-            //     $dbdomain->setFqdn($mtastsreport->policies->domain->__toString());
-            //     $this->em->persist($dbdomain);
-            //     $this->em->flush();
-            // }
         }
 
-        $message = 'Mailbox checked: '.$stats['new_emails'].' new emails ('.$stats['new_domains'].' domains, '.$stats['new_dmarc_reports'].' mx), '.$stats['new_mxrecords'].' new dmarc reports ('.$stats['new_dmarc_records'].' records, '.$stats['new_dmarc_results'].' results), '.$stats['new_mtasts_reports'].' new mtasts reports ('.$stats['new_mtasts_policies'].' policies, '.$stats['new_mtasts_mxmapping'].' mxmapping)';
+        $message = 'Mailbox checked: '.$stats['new_emails'].' new emails ('.$stats['new_domains'].' domains, '.$stats['new_mxrecords'].' mx), '.$stats['new_dmarc_reports'].' new dmarc reports ('.$stats['new_dmarc_records'].' records, '.$stats['new_dmarc_results'].' results), '.$stats['new_mtasts_reports'].' new mtasts reports ('.$stats['new_mtasts_policies'].' policies, '.$stats['new_mtasts_mxmapping'].' mxmapping)';
 
         $log = new Logs;
         $log->setTime(new \DateTime);

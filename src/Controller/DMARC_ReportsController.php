@@ -61,7 +61,7 @@ class DMARC_ReportsController extends AbstractController
         $totalreports = $repository->getTotalRows($domains);
         
         $repository = $this->em->getRepository(DMARC_Seen::class);
-        $reportsseen = $repository->getDMARC_Seen($reports, $this->getUser()->getId());
+        $reportsseen = $repository->getSeen($reports, $this->getUser()->getId());
 
         if(count($reports) == 0 && $totalreports != 0 && $pages["page"] != 1) { return $this->redirectToRoute('app_dmarc_reports'); }
         
