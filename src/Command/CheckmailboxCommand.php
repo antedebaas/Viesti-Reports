@@ -225,7 +225,7 @@ class CheckmailboxCommand extends Command
             // }
         }
 
-        $message = 'Mailbox checked: '.$stats['new_emails'].' new emails, '.$stats['new_domains'].' new domains, '.$stats['new_dmarc_reports'].' new dmarc reports ('.$stats['new_dmarc_records'].' records, '.$stats['new_dmarc_results'].' results)';
+        $message = 'Mailbox checked: '.$stats['new_emails'].' new emails ('.$stats['new_domains'].' domains, '.$stats['new_dmarc_reports'].' mx), '.$stats['new_mxrecords'].' new dmarc reports ('.$stats['new_dmarc_records'].' records, '.$stats['new_dmarc_results'].' results), '.$stats['new_mtasts_reports'].' new mtasts reports ('.$stats['new_mtasts_policies'].' policies, '.$stats['new_mtasts_mxmapping'].' mxmapping)';
 
         $log = new Logs;
         $log->setTime(new \DateTime);
@@ -242,7 +242,7 @@ class CheckmailboxCommand extends Command
     {
         $num_emails=0;
         $mailbox = $imap->get('default');
-        $mailsIds = $mailbox->searchMailbox('SEEN');
+        $mailsIds = $mailbox->searchMailbox('UNSEEN');
         $dmarc_reports = array();
         $mtasts_reports = array();
         foreach($mailsIds as $mailId) {
