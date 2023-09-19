@@ -96,7 +96,7 @@
                     </div>
                     <div class="col-12 col-xl-6 mb-4 mb-lg-4">
                         <div class="card">
-                            <h5 class="card-header">Latest MTA-STS reports</h5>
+                            <h5 class="card-header">Latest SMTP-TLS reports</h5>
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table">
@@ -110,8 +110,8 @@
                                           </tr>
                                         </thead>
                                         <tbody>
-                                        {% for report in mtastsreports %}
-                                          <tr {% if report.id not in mtastsreportsseen %}class="table-warning"{% endif%}>
+                                        {% for report in smtptlsreports %}
+                                          <tr {% if report.id not in smtptlsreportsseen %}class="table-warning"{% endif%}>
                                             <th scope="row">{{ report.id }}</th>
                                             <td></td>
                                             <td>{{ report.organisation }}</td>
@@ -119,7 +119,7 @@
                                               {% set sts_type = false %}
                                               {% set sts_version = true %}
                                               {% set sts_mode = true %}
-                                              {% for policy in report.mtasts_policies %}
+                                              {% for policy in report.smtptls_policies %}
                                                   {% if policy.policytype == 'no-policy-found' %}
                                                     <span class="btn btn-sm btn-danger">no-policy-found</span>
                                                   {% else %}
@@ -130,13 +130,13 @@
                                                   {% endif %}
                                               {% endfor %}
                                             </td>
-                                            <td><a href="{{ path('app_mtasts_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a></td>
+                                            <td><a href="{{ path('app_smtptls_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a></td>
                                           </tr>
                                         {% endfor %}
                                         </tbody>
                                       </table>
                                 </div>
-                                <a href="{{ path('app_mtasts_reports') }}" class="btn btn-block btn-secondary">View all</a>
+                                <a href="{{ path('app_smtptls_reports') }}" class="btn btn-block btn-secondary">View all</a>
                             </div>
                         </div>
                     </div>

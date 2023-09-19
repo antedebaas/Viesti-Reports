@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}MTASTS Reports{% endblock %}
+{% block title %}smtptls Reports{% endblock %}
 
 {% block body %}
                 <div class="row">
                     <div class="col-12 col-xl-12 mb-4 mb-lg-0">
                         <div class="card">
-                            <h5 class="card-header">MTASTS Reports</h5>
+                            <h5 class="card-header">SMTP-TLS Reports</h5>
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table">
@@ -38,7 +38,7 @@
                                               {% set sts_type = false %}
                                               {% set sts_version = true %}
                                               {% set sts_mode = true %}
-                                              {% for policy in report.mtasts_policies %}
+                                              {% for policy in report.smtptls_policies %}
                                                   {% if policy.policytype == 'no-policy-found' %}
                                                     <span class="btn btn-sm btn-danger">no-policy-found</span>
                                                   {% else %}
@@ -49,7 +49,7 @@
                                                   {% endif %}
                                               {% endfor %}
                                             </td>
-                                            <td><a href="{{ path('app_mtasts_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a></td>
+                                            <td><a href="{{ path('app_smtptls_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a></td>
                                           </tr>
                                         {% endfor %}
                                         </tbody>

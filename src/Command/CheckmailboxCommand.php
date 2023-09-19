@@ -18,9 +18,9 @@ use App\Entity\MXRecords;
 use App\Entity\DMARC_Reports;
 use App\Entity\DMARC_Records;
 use App\Entity\DMARC_Results;
-use App\Entity\MTASTS_Reports;
-use App\Entity\MTASTS_Policies;
-use App\Entity\MTASTS_MXRecords;
+use App\Entity\SMTPTLS_Reports;
+use App\Entity\SMTPTLS_Policies;
+use App\Entity\SMTPTLS_MXRecords;
 use App\Entity\Logs;
 
 #[AsCommand(
@@ -58,16 +58,16 @@ class CheckmailboxCommand extends Command
             'new_dmarc_reports' => 0,
             'new_dmarc_records' => 0,
             'new_dmarc_results' => 0,
-            'new_mtasts_reports' => 0,
-            'new_mtasts_policies' => 0,
-            'new_mtasts_mxmapping' => 0,
+            'new_smtptls_reports' => 0,
+            'new_smtptls_policies' => 0,
+            'new_smtptls_mxmapping' => 0,
         );
 
         $mailresult = $this->open_mailbox($this->imap);
         $stats['new_emails'] = $mailresult['num_emails'];
 
         // dump($mailresult['reports']['dmarc_reports']);
-        // dump($mailresult['reports']['mtasts_reports']);
+        // dump($mailresult['reports']['smtptls_reports']);
         // dd();
         
         foreach($mailresult['reports']['dmarc_reports'] as $dmarcreport){
@@ -141,20 +141,20 @@ class CheckmailboxCommand extends Command
             }
         }
 
-        foreach($mailresult['reports']['mtasts_reports'] as $mtastsreport){
-            $stats['new_mtasts_reports']++;
+        foreach($mailresult['reports']['smtptls_reports'] as $smtptlsreport){
+            $stats['new_smtptls_reports']++;
 
-            $dbreport = new MTASTS_Reports;
-            $dbreport->setOrganisation($mtastsreport->{'organization-name'});
-            $dbreport->setContactInfo($mtastsreport->{'contact-info'});
-            $dbreport->setExternalId($mtastsreport->{'report-id'});
-            $dbreport->setBeginTime(new \DateTime($mtastsreport->{'date-range'}->{'start-datetime'}));
-            $dbreport->setEndTime(new \DateTime($mtastsreport->{'date-range'}->{'end-datetime'}));
+            $dbreport = new SMTPTLS_Reports;
+            $dbreport->setOrganisation($smtptlsreport->{'organization-name'});
+            $dbreport->setContactInfo($smtptlsreport->{'contact-info'});
+            $dbreport->setExternalId($smtptlsreport->{'report-id'});
+            $dbreport->setBeginTime(new \DateTime($smtptlsreport->{'date-range'}->{'start-datetime'}));
+            $dbreport->setEndTime(new \DateTime($smtptlsreport->{'date-range'}->{'end-datetime'}));
             $this->em->persist($dbreport);
             $this->em->flush();
 
-            foreach($mtastsreport->policies as $policy){
-                $stats['new_mtasts_policies']++;
+            foreach($smtptlsreport->policies as $policy){
+                $stats['new_smtptls_policies']++;
                 
                 $domain_repository = $this->em->getRepository(Domains::class);
                 $dbdomain = $domain_repository->findOneBy(array('fqdn' => $policy->policy->{'policy-domain'}));
@@ -167,7 +167,7 @@ class CheckmailboxCommand extends Command
                     $this->em->flush();
                 }
 
-                $dbpolicy = new MTASTS_Policies;
+                $dbpolicy = new SMTPTLS_Policies;
                 $dbpolicy->setReport($dbreport);
                 $dbpolicy->setPolicyType($policy->policy->{'policy-type'});
                 $dbpolicy->setPolicyDomain($dbdomain);
@@ -186,7 +186,7 @@ class CheckmailboxCommand extends Command
                     
                     $i=0;
                     foreach($mxrecords as $mxrecord){
-                        $stats['new_mtasts_mxmapping']++;
+                        $stats['new_smtptls_mxmapping']++;
                         $i++;
 
                         $mx_repository = $this->em->getRepository(MXRecords::class);
@@ -201,7 +201,7 @@ class CheckmailboxCommand extends Command
                             $this->em->flush();
                         }
 
-                        $dbmx = new MTASTS_MXRecords;
+                        $dbmx = new SMTPTLS_MXRecords;
                         $dbmx->setMXRecord($dbmxrecord);
                         $dbmx->setPolicy($dbpolicy);
                         $dbmx->setPriority($i);
@@ -212,7 +212,7 @@ class CheckmailboxCommand extends Command
             }
         }
 
-        $message = 'Mailbox checked: '.$stats['new_emails'].' new emails ('.$stats['new_domains'].' domains, '.$stats['new_mxrecords'].' mx), '.$stats['new_dmarc_reports'].' new dmarc reports ('.$stats['new_dmarc_records'].' records, '.$stats['new_dmarc_results'].' results), '.$stats['new_mtasts_reports'].' new mtasts reports ('.$stats['new_mtasts_policies'].' policies, '.$stats['new_mtasts_mxmapping'].' mxmapping)';
+        $message = 'Mailbox checked: '.$stats['new_emails'].' new emails ('.$stats['new_domains'].' domains, '.$stats['new_mxrecords'].' mx), '.$stats['new_dmarc_reports'].' new dmarc reports ('.$stats['new_dmarc_records'].' records, '.$stats['new_dmarc_results'].' results), '.$stats['new_smtptls_reports'].' new smtptls reports ('.$stats['new_smtptls_policies'].' policies, '.$stats['new_smtptls_mxmapping'].' mxmapping)';
 
         $log = new Logs;
         $log->setTime(new \DateTime);
@@ -231,7 +231,7 @@ class CheckmailboxCommand extends Command
         $mailbox = $imap->get('default');
         $mailsIds = $mailbox->searchMailbox('UNSEEN');
         $dmarc_reports = array();
-        $mtasts_reports = array();
+        $smtptls_reports = array();
         foreach($mailsIds as $mailId) {
             $num_emails++;
             $mail = $mailbox->getMail($mailId);
@@ -239,17 +239,17 @@ class CheckmailboxCommand extends Command
             foreach ($attachments as $attachment) {
                 $new_reports = $this->open_archive($attachment->filePath);
                 $dmarc_reports = array_merge($dmarc_reports,$new_reports['dmarc_reports']);
-                $mtasts_reports = array_merge($mtasts_reports,$new_reports['mtasts_reports']);
+                $smtptls_reports = array_merge($smtptls_reports,$new_reports['smtptls_reports']);
                 unlink($attachment->filePath);
             }
         }
-        return array('num_emails' => $num_emails, 'reports' => array('dmarc_reports' => $dmarc_reports, 'mtasts_reports' => $mtasts_reports));
+        return array('num_emails' => $num_emails, 'reports' => array('dmarc_reports' => $dmarc_reports, 'smtptls_reports' => $smtptls_reports));
     }
 
     private function open_archive($file): array
     {
         $dmarc_reports = array();
-        $mtasts_reports = array();
+        $smtptls_reports = array();
         $ziparchive = new \ZipArchive;
         $filecontents = null;
         
@@ -271,11 +271,11 @@ class CheckmailboxCommand extends Command
             $dmarc_reports[] = new \SimpleXMLElement($filecontents);
         }
         elseif($this->isJson($filecontents)) {
-            //Expecting an MTA-STS JSON Report
-            $mtasts_reports[] = json_decode($filecontents);
+            //Expecting an SMTP-TLS JSON Report
+            $smtptls_reports[] = json_decode($filecontents);
         }
 
-        return array('dmarc_reports' => $dmarc_reports, 'mtasts_reports' => $mtasts_reports);
+        return array('dmarc_reports' => $dmarc_reports, 'smtptls_reports' => $smtptls_reports);
     }
 
     private function isJson($string) {

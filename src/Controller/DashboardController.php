@@ -13,8 +13,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Entity\Domains;
 use App\Entity\DMARC_Reports;
 use App\Entity\DMARC_Seen;
-use App\Entity\MTASTS_Reports;
-use App\Entity\MTASTS_Seen;
+use App\Entity\SMTPTLS_Reports;
+use App\Entity\SMTPTLS_Seen;
 use App\Entity\Logs;
 
 class DashboardController extends AbstractController
@@ -57,16 +57,16 @@ class DashboardController extends AbstractController
 
 
 
-        $repository = $this->em->getRepository(MTASTS_Reports::class);
+        $repository = $this->em->getRepository(SMTPTLS_Reports::class);
         if(in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
-            $mtastsreports = $repository->findBy(array(),array('id' => 'DESC'),10,0);
+            $smtptlsreports = $repository->findBy(array(),array('id' => 'DESC'),10,0);
         } else {
-            $mtastsreports = $repository->findOwnedBy(array('domain' => $domains),array('id' => 'DESC'),10,0);
+            $smtptlsreports = $repository->findOwnedBy(array('domain' => $domains),array('id' => 'DESC'),10,0);
         }
         $totalreports = $repository->getTotalRows($domains, $this->getUser()->getRoles());
 
-        $repository = $this->em->getRepository(MTASTS_Seen::class);
-        $mtastsreportsseen = $repository->getSeen($mtastsreports, $this->getUser()->getId());
+        $repository = $this->em->getRepository(SMTPTLS_Seen::class);
+        $smtptlsreportsseen = $repository->getSeen($smtptlsreports, $this->getUser()->getId());
 
         $repository = $this->em->getRepository(Logs::class);
         $logs = $repository->findBy(array(),array('id' => 'DESC'),3, 0);
@@ -76,8 +76,8 @@ class DashboardController extends AbstractController
             'breadcrumbs' => array(array('name' => $this->translator->trans("Dashboard"), 'url' => $this->router->generate('app_dashboard'))),
             'dmarcreports' => $dmarcreports,
             'dmarcreportsseen' => $dmarcreportsseen,
-            'mtastsreports' => $mtastsreports,
-            'mtastsreportsseen' => $mtastsreportsseen,
+            'smtptlsreports' => $smtptlsreports,
+            'smtptlsreportsseen' => $smtptlsreportsseen,
             'logs' => $logs,
         ]);
     }

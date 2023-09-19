@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\MTASTSMXRecordsRepository;
+use App\Repository\SMTPTLSMXRecordsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: MTASTSMXRecordsRepository::class)]
-class MTASTS_MXRecords
+#[ORM\Entity(repositoryClass: SMTPTLSMXRecordsRepository::class)]
+class SMTPTLS_MXRecords
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -19,7 +19,7 @@ class MTASTS_MXRecords
 
     #[ORM\ManyToOne(inversedBy: 'mTASTSMXRecords')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?MTASTS_Policies $policy = null;
+    private ?SMTPTLS_Policies $policy = null;
 
     #[ORM\Column]
     private ?int $priority = null;
@@ -41,12 +41,12 @@ class MTASTS_MXRecords
         return $this;
     }
 
-    public function getPolicy(): ?MTASTS_Policies
+    public function getPolicy(): ?SMTPTLS_Policies
     {
         return $this->policy;
     }
 
-    public function setPolicy(?MTASTS_Policies $policy): static
+    public function setPolicy(?SMTPTLS_Policies $policy): static
     {
         $this->policy = $policy;
 

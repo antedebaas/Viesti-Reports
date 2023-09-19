@@ -2,27 +2,27 @@
 
 namespace App\Repository;
 
-use App\Entity\MTASTS_MXRecords;
+use App\Entity\SMTPTLS_Policies;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<MTASTS_MXRecords>
+ * @extends ServiceEntityRepository<SMTPTLS_Policies>
  *
- * @method MTASTS_MXRecords|null find($id, $lockMode = null, $lockVersion = null)
- * @method MTASTS_MXRecords|null findOneBy(array $criteria, array $orderBy = null)
- * @method MTASTS_MXRecords[]    findAll()
- * @method MTASTS_MXRecords[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method SMTPTLS_Policies|null find($id, $lockMode = null, $lockVersion = null)
+ * @method SMTPTLS_Policies|null findOneBy(array $criteria, array $orderBy = null)
+ * @method SMTPTLS_Policies[]    findAll()
+ * @method SMTPTLS_Policies[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MTASTS_MXRecordsRepository extends ServiceEntityRepository
+class SMTPTLS_PoliciesRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, MTASTS_MXRecords::class);
+        parent::__construct($registry, SMTPTLS_Policies::class);
     }
 
 //    /**
-//     * @return MTASTS_MXRecords[] Returns an array of MTASTS_MXRecords objects
+//     * @return SMTPTLS_Policies[] Returns an array of SMTPTLS_Policies objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -36,7 +36,7 @@ class MTASTS_MXRecordsRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?MTASTS_MXRecords
+//    public function findOneBySomeField($value): ?SMTPTLS_Policies
 //    {
 //        return $this->createQueryBuilder('m')
 //            ->andWhere('m.exampleField = :val')

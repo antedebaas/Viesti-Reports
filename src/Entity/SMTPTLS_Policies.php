@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\MTASTS_PoliciesRepository;
+use App\Repository\SMTPTLS_PoliciesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: MTASTS_PoliciesRepository::class)]
-class MTASTS_Policies
+#[ORM\Entity(repositoryClass: SMTPTLS_PoliciesRepository::class)]
+class SMTPTLS_Policies
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,7 +27,7 @@ class MTASTS_Policies
     #[ORM\Column(nullable: true)]
     private ?int $policy_string_maxage = null;
 
-    #[ORM\ManyToOne(inversedBy: 'MTASTS_Policies')]
+    #[ORM\ManyToOne(inversedBy: 'SMTPTLS_Policies')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Domains $policy_domain = null;
 
@@ -37,29 +37,29 @@ class MTASTS_Policies
     #[ORM\Column]
     private ?int $summary_failed_count = null;
 
-    #[ORM\OneToMany(mappedBy: 'policy', targetEntity: MTASTS_MXRecords::class, orphanRemoval: true)]
-    private Collection $MTASTS_MXRecords;
+    #[ORM\OneToMany(mappedBy: 'policy', targetEntity: SMTPTLS_MXRecords::class, orphanRemoval: true)]
+    private Collection $SMTPTLS_MXRecords;
 
     public function __construct()
     {
-        $this->MTASTS_MXRecords = new ArrayCollection();
+        $this->SMTPTLS_MXRecords = new ArrayCollection();
     }
 
-    #[ORM\ManyToOne(inversedBy: 'MTASTS_Policies')]
+    #[ORM\ManyToOne(inversedBy: 'SMTPTLS_Policies')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?MTASTS_Reports $report = null;
+    private ?SMTPTLS_Reports $report = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
     
-    public function getReport(): ?MTASTS_Reports
+    public function getReport(): ?SMTPTLS_Reports
     {
         return $this->report;
     }
 
-    public function setReport(?MTASTS_Reports $report): static
+    public function setReport(?SMTPTLS_Reports $report): static
     {
         $this->report = $report;
 
@@ -151,29 +151,29 @@ class MTASTS_Policies
     }
 
     /**
-     * @return Collection<int, MTASTS_MXRecords>
+     * @return Collection<int, SMTPTLS_MXRecords>
      */
-    public function getMTASTS_MXRecords(): Collection
+    public function getSMTPTLS_MXRecords(): Collection
     {
-        return $this->MTASTS_MXRecords;
+        return $this->SMTPTLS_MXRecords;
     }
 
-    public function addMTASTS_MXRecord(MTASTS_MXRecords $MTASTS_MXRecord): static
+    public function addSMTPTLS_MXRecord(SMTPTLS_MXRecords $SMTPTLS_MXRecord): static
     {
-        if (!$this->MTASTS_MXRecords->contains($MTASTS_MXRecord)) {
-            $this->MTASTS_MXRecords->add($MTASTS_MXRecord);
-            $MTASTS_MXRecord->setPolicy($this);
+        if (!$this->SMTPTLS_MXRecords->contains($SMTPTLS_MXRecord)) {
+            $this->SMTPTLS_MXRecords->add($SMTPTLS_MXRecord);
+            $SMTPTLS_MXRecord->setPolicy($this);
         }
 
         return $this;
     }
 
-    public function removeMTASTS_MXRecord(MTASTS_MXRecords $MTASTS_MXRecord): static
+    public function removeSMTPTLS_MXRecord(SMTPTLS_MXRecords $SMTPTLS_MXRecord): static
     {
-        if ($this->MTASTS_MXRecords->removeElement($MTASTS_MXRecord)) {
+        if ($this->SMTPTLS_MXRecords->removeElement($SMTPTLS_MXRecord)) {
             // set the owning side to null (unless already changed)
-            if ($MTASTS_MXRecord->getPolicy() === $this) {
-                $MTASTS_MXRecord->setPolicy(null);
+            if ($SMTPTLS_MXRecord->getPolicy() === $this) {
+                $SMTPTLS_MXRecord->setPolicy(null);
             }
         }
 

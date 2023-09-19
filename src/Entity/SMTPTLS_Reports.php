@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\MTASTS_ReportsRepository;
+use App\Repository\SMTPTLS_ReportsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: MTASTS_ReportsRepository::class)]
-class MTASTS_Reports
+#[ORM\Entity(repositoryClass: SMTPTLS_ReportsRepository::class)]
+class SMTPTLS_Reports
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -31,12 +31,12 @@ class MTASTS_Reports
     #[ORM\Column(length: 255)]
     private ?string $external_id = null;
 
-    #[ORM\OneToMany(mappedBy: 'report', targetEntity: MTASTS_Policies::class, orphanRemoval: true)]
-    private Collection $MTASTS_Policies;
+    #[ORM\OneToMany(mappedBy: 'report', targetEntity: SMTPTLS_Policies::class, orphanRemoval: true)]
+    private Collection $SMTPTLS_Policies;
 
     public function __construct()
     {
-        $this->MTASTS_Policies = new ArrayCollection();
+        $this->SMTPTLS_Policies = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -105,29 +105,29 @@ class MTASTS_Reports
     }
 
     /**
-     * @return Collection<int, MTASTS_Policies>
+     * @return Collection<int, SMTPTLS_Policies>
      */
-    public function getMTASTS_Policies(): Collection
+    public function getSMTPTLS_Policies(): Collection
     {
-        return $this->MTASTS_Policies;
+        return $this->SMTPTLS_Policies;
     }
 
-    public function addMTASTSPolicy(MTASTS_Policies $MTASTS_Policy): static
+    public function addSMTPTLSPolicy(SMTPTLS_Policies $SMTPTLS_Policy): static
     {
-        if (!$this->MTASTS_Policies->contains($MTASTS_Policy)) {
-            $this->MTASTS_Policies->add($MTASTS_Policy);
-            $MTASTS_Policy->setReport($this);
+        if (!$this->SMTPTLS_Policies->contains($SMTPTLS_Policy)) {
+            $this->SMTPTLS_Policies->add($SMTPTLS_Policy);
+            $SMTPTLS_Policy->setReport($this);
         }
 
         return $this;
     }
 
-    public function removeMTASTSPolicy(MTASTS_Policies $MTASTS_Policy): static
+    public function removeSMTPTLSPolicy(SMTPTLS_Policies $SMTPTLS_Policy): static
     {
-        if ($this->MTASTS_Policies->removeElement($MTASTS_Policy)) {
+        if ($this->SMTPTLS_Policies->removeElement($SMTPTLS_Policy)) {
             // set the owning side to null (unless already changed)
-            if ($MTASTS_Policy->getReport() === $this) {
-                $MTASTS_Policy->setReport(null);
+            if ($SMTPTLS_Policy->getReport() === $this) {
+                $SMTPTLS_Policy->setReport(null);
             }
         }
 

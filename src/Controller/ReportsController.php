@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\DMARC_Reports;
-use App\Entity\MTASTS_Reports;
+use App\Entity\SMTPTLS_Reports;
 use App\Entity\Domains;
 
 class ReportsController extends AbstractController
@@ -36,13 +36,13 @@ class ReportsController extends AbstractController
         $repository = $this->em->getRepository(DMARC_Reports::class);
         $dmarc_count = $repository->getTotalRows($domains);
 
-        $repository = $this->em->getRepository(MTASTS_Reports::class);
-        $mtasts_count = $repository->getTotalRows($domains, $this->getUser()->getRoles());
+        $repository = $this->em->getRepository(SMTPTLS_Reports::class);
+        $smtptls_count = $repository->getTotalRows($domains, $this->getUser()->getRoles());
 
         return $this->render('reports/index.html.twig', [
             'menuactive' => 'reports',
             'dmarc_count' => $dmarc_count,
-            'mtasts_count' => $mtasts_count,
+            'smtptls_count' => $smtptls_count,
             'breadcrumbs' => array(array('name' => $this->translator->trans("Reports"), 'url' => $this->router->generate('app_reports'))),
         ]);
     }

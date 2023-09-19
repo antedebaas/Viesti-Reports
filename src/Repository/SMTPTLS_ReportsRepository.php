@@ -2,28 +2,28 @@
 
 namespace App\Repository;
 
-use App\Entity\MTASTS_Reports;
-use App\Entity\MTASTS_Policies;
+use App\Entity\SMTPTLS_Reports;
+use App\Entity\SMTPTLS_Policies;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<MTASTS_Reports>
+ * @extends ServiceEntityRepository<SMTPTLS_Reports>
  *
- * @method MTASTS_Reports|null find($id, $lockMode = null, $lockVersion = null)
- * @method MTASTS_Reports|null findOneBy(array $criteria, array $orderBy = null)
- * @method MTASTS_Reports[]    findAll()
- * @method MTASTS_Reports[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method SMTPTLS_Reports|null find($id, $lockMode = null, $lockVersion = null)
+ * @method SMTPTLS_Reports|null findOneBy(array $criteria, array $orderBy = null)
+ * @method SMTPTLS_Reports[]    findAll()
+ * @method SMTPTLS_Reports[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MTASTS_ReportsRepository extends ServiceEntityRepository
+class SMTPTLS_ReportsRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, MTASTS_Reports::class);
+        parent::__construct($registry, SMTPTLS_Reports::class);
     }
 
 //    /**
-//     * @return MTASTS_Reports[] Returns an array of MTASTS_Reports objects
+//     * @return SMTPTLS_Reports[] Returns an array of SMTPTLS_Reports objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -37,7 +37,7 @@ class MTASTS_ReportsRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?MTASTS_Reports
+//    public function findOneBySomeField($value): ?SMTPTLS_Reports
 //    {
 //        return $this->createQueryBuilder('m')
 //            ->andWhere('m.exampleField = :val')
@@ -52,7 +52,7 @@ class MTASTS_ReportsRepository extends ServiceEntityRepository
     //     //$domains = array("1","2");
     //     $qb = $this->createQueryBuilder('r')
     //     ->select('')
-    //     ->addSelect('')->from(MTASTS_Policies::class, 'pol');
+    //     ->addSelect('')->from(SMTPTLS_Policies::class, 'pol');
     //     if(!empty($domains)) {
     //         $qb->andWhere('r.id = pol.report');
     //         $qb->andWhere('pol.policy_domain IN (:domains)')
@@ -70,7 +70,7 @@ class MTASTS_ReportsRepository extends ServiceEntityRepository
         $domains = array("1","2");
         $qb = $this->createQueryBuilder('r')
         ->select('r')
-        ->addSelect('')->from(MTASTS_Policies::class, 'p');
+        ->addSelect('')->from(SMTPTLS_Policies::class, 'p');
         if(!empty($domains)) {
             $qb->andWhere('r.id = p.report');
             $qb->andWhere('p.policy_domain IN (:domains)')
@@ -94,7 +94,7 @@ class MTASTS_ReportsRepository extends ServiceEntityRepository
            ->select('count(r.id)');
         
         if(!empty($domains) && !in_array("ROLE_ADMIN", $roles)) {
-            $qb->addSelect('')->from(MTASTS_Policies::class, 'pol')
+            $qb->addSelect('')->from(SMTPTLS_Policies::class, 'pol')
                ->andWhere('r.id = pol.report')
                ->andWhere('pol.policy_domain IN (:domains)')
                ->setParameter('domains', $domains);

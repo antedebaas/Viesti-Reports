@@ -23,6 +23,7 @@ final class Version20230914181942 extends AbstractMigration
         $this->addSql('RENAME TABLE records TO dmarc_records');
         $this->addSql('RENAME TABLE reports TO dmarc_reports');
         $this->addSql('RENAME TABLE results TO dmarc_results');
+        $this->addSql('RENAME TABLE seen TO dmarc_seen');
     }
 
     public function down(Schema $schema): void
@@ -31,6 +32,7 @@ final class Version20230914181942 extends AbstractMigration
         $this->addSql('RENAME TABLE dmarc_records TO records');
         $this->addSql('RENAME TABLE dmarc_reports TO reports');
         $this->addSql('RENAME TABLE dmarc_results TO results');
+        $this->addSql('RENAME TABLE dmarc_seen TO seen');
     }
 
     public function isTransactional(): bool

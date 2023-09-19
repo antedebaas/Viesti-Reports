@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\MTASTS_Seen;
+use App\Entity\SMTPTLS_Seen;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,11 +14,11 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Seen[]    findAll()
  * @method Seen[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MTASTS_SeenRepository extends ServiceEntityRepository
+class SMTPTLS_SeenRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, MTASTS_Seen::class);
+        parent::__construct($registry, SMTPTLS_Seen::class);
     }
 
 //    /**
@@ -30,7 +30,7 @@ class MTASTS_SeenRepository extends ServiceEntityRepository
 //            ->andWhere('s.exampleField = :val')
 //            ->setParameter('val', $value)
 //            ->orderBy('s.id', 'ASC')
-//            ->setMaxMTASTS_Results(10)
+//            ->setMaxSMTPTLS_Results(10)
 //            ->getQuery()
 //            ->getResult()
 //        ;

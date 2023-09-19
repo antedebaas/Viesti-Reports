@@ -21,8 +21,8 @@ class Domains
     #[ORM\OneToMany(mappedBy: 'domain', targetEntity: DMARC_Reports::class, orphanRemoval: true)]
     private Collection $reports;
 
-    #[ORM\OneToMany(mappedBy: 'policy_domain', targetEntity: MTASTS_Policies::class, orphanRemoval: true)]
-    private Collection $MTASTS_Policies;
+    #[ORM\OneToMany(mappedBy: 'policy_domain', targetEntity: SMTPTLS_Policies::class, orphanRemoval: true)]
+    private Collection $SMTPTLS_Policies;
 
     #[ORM\OneToMany(mappedBy: 'Domain', targetEntity: MXRecords::class, orphanRemoval: true)]
     private Collection $MXRecords;
@@ -30,7 +30,7 @@ class Domains
     public function __construct()
     {
         $this->reports = new ArrayCollection();
-        $this->MTASTS_Policies = new ArrayCollection();
+        $this->SMTPTLS_Policies = new ArrayCollection();
         $this->MXRecords = new ArrayCollection();
     }
 
@@ -82,29 +82,29 @@ class Domains
     }
 
     /**
-     * @return Collection<int, MTASTS_Policies>
+     * @return Collection<int, SMTPTLS_Policies>
      */
-    public function getMTASTS_Policies(): Collection
+    public function getSMTPTLS_Policies(): Collection
     {
-        return $this->MTASTS_Policies;
+        return $this->SMTPTLS_Policies;
     }
 
-    public function addMTASTS_Policy(MTASTS_Policies $MTASTS_Policy): static
+    public function addSMTPTLS_Policy(SMTPTLS_Policies $SMTPTLS_Policy): static
     {
-        if (!$this->MTASTS_Policies->contains($MTASTS_Policy)) {
-            $this->MTASTS_Policies->add($MTASTS_Policy);
-            $MTASTS_Policy->setPolicyDomain($this);
+        if (!$this->SMTPTLS_Policies->contains($SMTPTLS_Policy)) {
+            $this->SMTPTLS_Policies->add($SMTPTLS_Policy);
+            $SMTPTLS_Policy->setPolicyDomain($this);
         }
 
         return $this;
     }
 
-    public function removeMTASTS_Policy(MTASTS_Policies $MTASTS_Policy): static
+    public function removeSMTPTLS_Policy(SMTPTLS_Policies $SMTPTLS_Policy): static
     {
-        if ($this->MTASTS_Policies->removeElement($MTASTS_Policy)) {
+        if ($this->SMTPTLS_Policies->removeElement($SMTPTLS_Policy)) {
             // set the owning side to null (unless already changed)
-            if ($MTASTS_Policy->getPolicyDomain() === $this) {
-                $MTASTS_Policy->setPolicyDomain(null);
+            if ($SMTPTLS_Policy->getPolicyDomain() === $this) {
+                $SMTPTLS_Policy->setPolicyDomain(null);
             }
         }
 
