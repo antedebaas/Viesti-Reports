@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\RecordsRepository;
+use App\Repository\DMARC_RecordsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: RecordsRepository::class)]
-class Records
+#[ORM\Entity(repositoryClass: DMARC_RecordsRepository::class)]
+class DMARC_Records
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,7 +18,7 @@ class Records
 
     #[ORM\ManyToOne(inversedBy: 'records')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Reports $Report = null;
+    private ?DMARC_Reports $Report = null;
 
     #[ORM\Column(length: 255)]
     private ?string $source_ip = null;
@@ -56,7 +56,7 @@ class Records
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $auth_spf = null;
 
-    #[ORM\OneToMany(mappedBy: 'record', targetEntity: Results::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'record', targetEntity: DMARC_Results::class, orphanRemoval: true)]
     private Collection $results;
 
     public function __construct()
@@ -71,12 +71,12 @@ class Records
         return $this->id;
     }
 
-    public function getReport(): ?Reports
+    public function getReport(): ?DMARC_Reports
     {
         return $this->Report;
     }
 
-    public function setReport(?Reports $Report): static
+    public function setReport(?DMARC_Reports $Report): static
     {
         $this->Report = $Report;
 
@@ -207,14 +207,14 @@ class Records
     }
 
     /**
-     * @return Collection<int, Results>
+     * @return Collection<int, DMARC_Results>
      */
-    public function getResults(): Collection
+    public function getDMARC_Results(): Collection
     {
         return $this->results;
     }
 
-    public function addResult(Results $result): static
+    public function addResult(DMARC_Results $result): static
     {
         if (!$this->results->contains($result)) {
             $this->results->add($result);
@@ -224,7 +224,7 @@ class Records
         return $this;
     }
 
-    public function removeResult(Results $result): static
+    public function removeResult(DMARC_Results $result): static
     {
         if ($this->results->removeElement($result)) {
             // set the owning side to null (unless already changed)

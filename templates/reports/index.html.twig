@@ -1,78 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reports{% endblock %}
+{% block title %}Logs{% endblock %}
 
 {% block body %}
                 <div class="row">
-                    <div class="col-12 col-xl-12 mb-4 mb-lg-0">
+                    <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
                         <div class="card">
-                            <h5 class="card-header">reports</h5>
+                            <h5 class="card-header">DMARC Reports</h5>
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                          <tr>
-                                            <th scope="col">Id</th>
-                                            <th scope="col">Domain</th>
-                                            <th scope="col">Date/Time Range</th>
-                                            <th scope="col">Reporting Organisation</th>
-                                            <th scope="col">External Report Id</th>
-                                            <th scope="col">Messages</th>
-                                            <th scope="col">Results</th>
-                                            <th scope="col"></th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for report in reports %}
-                                          <tr {% if report.id not in reportsseen %}class="table-warning"{% endif%}>
-                                            <th scope="row">{{ report.id }}</th>
-                                            <td>{{ report.domain.fqdn }}</td>
-                                            <td>
-                                              <div class="clearfix">
-                                                <span class="float-start">{{ report.begintime|date("d-M-Y h:i:s") }}</span>
-                                                <span class="float-end">{{ report.endtime|date("d-M-Y h:i:s") }}</span>
-                                              </div>
-                                            </td>
-                                            <td>{{ report.organisation }}</td>
-                                            <td>{{ report.externalid }}</td>
-                                            <td>{{ report.records.count }}</td>
-                                            <td>
-                                              {% set dkim_pass = true %}
-                                              {% set spf_pass = true %}
-                                              {% for record in report.records %}
-                                                  {% if record.policydkim != "pass" %}
-                                                    {% set dkim_pass = false %}
-                                                  {% endif %}
-                                                  {% if record.policyspf != "pass" %}
-                                                    {% set spf_pass = false %}
-                                                  {% endif %}
-                                              {% endfor %}
-                                              <span class="btn btn-sm btn-{% if spf_pass %}success{% else %}danger{% endif %}">spf</span>
-                                              <span class="btn btn-sm btn-{% if dkim_pass %}success{% else %}danger{% endif %}">dkim</span>
-                                            </td>
-                                            <td><a href="{{ path('app_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a></td>
-                                          </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                      </table>
-                                </div>
-                                <div class="clearfix">
-                                  <span class="float-start">&nbsp;</span>
-                                  <span class="float-end">
-                                  {% if pages.prev %}
-                                    <a href="{{ path('app_reports', {page: pages.page - 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&lt;</a>
-                                  {% else %}
-                                    <a href="#" class="btn btn-sm btn-light" disabled>&lt;</a>
-                                  {% endif %}
-                                  {% if pages.next %}
-                                    <a href="{{ path('app_reports', {page: pages.page + 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&gt;</a>
-                                  {% else %}
-                                    <a href="#" class="btn btn-sm btn-light" disabled>&gt;</a>
-                                  {% endif %}
-                                  </span>
-                                </div>
-                                
+                              <h5 class="card-title">{{dmarc_count}} Reports</h5>
+                              <p class="card-text"></p>
+                              <td><a href="{{ path('app_dmarc_reports') }}" class="btn btn-sm btn-primary">Open DMARC Reports</a></td>
                             </div>
-                        </div>
+                          </div>
                     </div>
+                    <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+                        <div class="card">
+                            <h5 class="card-header">SMTP-TLS Reports</h5>
+                            <div class="card-body">
+                              <h5 class="card-title">{{smtptls_count}} Reports</h5>
+                              <p class="card-text"></p>
+                              <td><a href="{{ path('app_smtptls_reports') }}" class="btn btn-sm btn-primary">Open SMTP-TLS Reports</a></td>
+                            </div>
+                          </div>
+                    </div>
+                </div> 
 {% endblock %}

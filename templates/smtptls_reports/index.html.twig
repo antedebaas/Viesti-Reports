@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}smtptls Reports{% endblock %}
+
+{% block body %}
+                <div class="row">
+                    <div class="col-12 col-xl-12 mb-4 mb-lg-0">
+                        <div class="card">
+                            <h5 class="card-header">SMTP-TLS Reports</h5>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                          <tr>
+                                            <th scope="col">Id</th>
+                                            <th scope="col">Domain</th>
+                                            <th scope="col">Date/Time Range</th>
+                                            <th scope="col">Reporting Organisation</th>
+                                            <th scope="col">External Report Id</th>
+                                            <th scope="col">Results</th>
+                                            <th scope="col"></th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for report in reports %}
+                                          <tr {% if report.id not in reportsseen %}class="table-warning"{% endif%}>
+                                            <th scope="row">{{ report.id }}</th>
+                                            <td></td>
+                                            <td>
+                                              <div class="clearfix">
+                                                <span class="float-start">{{ report.begintime|date("d-M-Y h:i:s") }}</span>
+                                                <span class="float-end">{{ report.endtime|date("d-M-Y h:i:s") }}</span>
+                                              </div>
+                                            </td>
+                                            <td>{{ report.organisation }}</td>
+                                            <td>{{ report.externalid }}</td>
+                                            <td>
+                                              {% set sts_type = false %}
+                                              {% set sts_version = true %}
+                                              {% set sts_mode = true %}
+                                              {% for policy in report.smtptls_policies %}
+                                                  {% if policy.policytype == 'no-policy-found' %}
+                                                    <span class="btn btn-sm btn-danger">no-policy-found</span>
+                                                  {% else %}
+                                                    {% if policy.policystringversion == 'STSv1' %}
+                                                      <span class="btn btn-sm btn-success">STSv1</span>
+                                                    {% endif %}
+                                                    <span class="btn btn-sm btn-{% if policy.policystringmode == 'enforce' %}success{% elseif policy.policystringmode == 'testing' %}warning{% else %}danger{% endif %}">{{ policy.policystringmode }}</span>
+                                                  {% endif %}
+                                              {% endfor %}
+                                            </td>
+                                            <td><a href="{{ path('app_smtptls_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a></td>
+                                          </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                      </table>
+                                </div>
+                                <div class="clearfix">
+                                  <span class="float-start">&nbsp;</span>
+                                  <span class="float-end">
+                                  {% if pages.prev %}
+                                    <a href="{{ path('app_dmarc_reports', {page: pages.page - 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&lt;</a>
+                                  {% else %}
+                                    <a href="#" class="btn btn-sm btn-light" disabled>&lt;</a>
+                                  {% endif %}
+                                  {% if pages.next %}
+                                    <a href="{{ path('app_dmarc_reports', {page: pages.page + 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&gt;</a>
+                                  {% else %}
+                                    <a href="#" class="btn btn-sm btn-light" disabled>&gt;</a>
+                                  {% endif %}
+                                  </span>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+{% endblock %}

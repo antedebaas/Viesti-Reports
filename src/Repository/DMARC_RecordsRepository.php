@@ -2,27 +2,27 @@
 
 namespace App\Repository;
 
-use App\Entity\Results;
+use App\Entity\DMARC_Records;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Results>
+ * @extends ServiceEntityRepository<DMARC_Records>
  *
- * @method Results|null find($id, $lockMode = null, $lockVersion = null)
- * @method Results|null findOneBy(array $criteria, array $orderBy = null)
- * @method Results[]    findAll()
- * @method Results[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method DMARC_Records|null find($id, $lockMode = null, $lockVersion = null)
+ * @method DMARC_Records|null findOneBy(array $criteria, array $orderBy = null)
+ * @method DMARC_Records[]    findAll()
+ * @method DMARC_Records[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ResultsRepository extends ServiceEntityRepository
+class DMARC_RecordsRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Results::class);
+        parent::__construct($registry, DMARC_Records::class);
     }
 
 //    /**
-//     * @return Results[] Returns an array of Results objects
+//     * @return DMARC_Records[] Returns an array of DMARC_Records objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -30,13 +30,13 @@ class ResultsRepository extends ServiceEntityRepository
 //            ->andWhere('r.exampleField = :val')
 //            ->setParameter('val', $value)
 //            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
+//            ->setMaxDMARC_Results(10)
 //            ->getQuery()
 //            ->getResult()
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Results
+//    public function findOneBySomeField($value): ?DMARC_Records
 //    {
 //        return $this->createQueryBuilder('r')
 //            ->andWhere('r.exampleField = :val')

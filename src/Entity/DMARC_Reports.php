@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\ReportsRepository;
+use App\Repository\DMARC_ReportsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ReportsRepository::class)]
-class Reports
+#[ORM\Entity(repositoryClass: DMARC_ReportsRepository::class)]
+class DMARC_Reports
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -49,7 +49,7 @@ class Reports
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $policy_pct = null;
 
-    #[ORM\OneToMany(mappedBy: 'Report', targetEntity: Records::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'Report', targetEntity: DMARC_Records::class, orphanRemoval: true)]
     private Collection $records;
 
     #[ORM\ManyToOne(inversedBy: 'reports')]
@@ -200,14 +200,14 @@ class Reports
     }
 
     /**
-     * @return Collection<int, Records>
+     * @return Collection<int, DMARC_Records>
      */
-    public function getRecords(): Collection
+    public function getDMARC_Records(): Collection
     {
         return $this->records;
     }
 
-    public function addRecord(Records $record): static
+    public function addRecord(DMARC_Records $record): static
     {
         if (!$this->records->contains($record)) {
             $this->records->add($record);
@@ -217,7 +217,7 @@ class Reports
         return $this;
     }
 
-    public function removeRecord(Records $record): static
+    public function removeRecord(DMARC_Records $record): static
     {
         if ($this->records->removeElement($record)) {
             // set the owning side to null (unless already changed)

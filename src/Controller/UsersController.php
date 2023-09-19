@@ -66,7 +66,7 @@ class UsersController extends AbstractController
             'users' => $users,
             'pages' => $pages,
             'menuactive' => 'users',
-            'breadcrumbs' => array('0' => array('name' => $this->translator->trans("Users"), 'url' => $this->router->generate('app_users'))),
+            'breadcrumbs' => array(array('name' => $this->translator->trans("Users"), 'url' => $this->router->generate('app_users'))),
         ]);
     }
 
@@ -115,8 +115,8 @@ class UsersController extends AbstractController
             'user' => $user,
             'form' => $form,
             'breadcrumbs' => array(
-                '1' => array('name' => $this->translator->trans("Users"), 'url' => $this->router->generate('app_users')),
-                '0' => array('name' => $user->getEmail(), 'url' => $this->router->generate('app_users'))
+                array('name' => $this->translator->trans("Users"), 'url' => $this->router->generate('app_users')),
+                array('name' => $user->getEmail(), 'url' => $this->router->generate('app_users'))
             ),
         ]);
     }

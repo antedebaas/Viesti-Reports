@@ -1,0 +1,194 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Report #{{ report.id }}{% endblock %}
+
+{% block body %}
+                <div class="row my-4">
+                    <div class="col-12 col-md-12 col-lg-6 mb-4 mb-lg-0">
+                      <div class="card">
+                          <h5 class="card-header">Reporting organization: {{report.organisation}}</h5>
+                          <div class="card-body">
+                            <p class="card-text">
+                              <ul class="list-group">
+                                <li class="list-group-item">
+                                  <div class="clearfix">
+                                    <span class="float-start"><b>Report ID: </b> </span>
+                                    <span class="float-end"> {{ report.externalid }}</span>
+                                  </div>
+                                </li>
+                                <li class="list-group-item">
+                                  <div class="clearfix">
+                                    <span class="float-start"><b>Contact Info: </b> </span>
+                                    <span class="float-end">{{ report.contactinfo }}</span>
+                                  </div>
+                                </li>
+                              </ul> 
+                            </p>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-8 col-lg-6 mb-6 mb-lg-0">
+                      <div class="card">
+                          <h5 class="card-header">Report timings</h5>
+                          <div class="card-body">
+                            <p class="card-text">
+                              <ul class="list-group">
+                                <li class="list-group-item">
+                                  <div class="clearfix">
+                                    <span class="float-start"><b>Begin time: </b> </span>
+                                    <span class="float-end"> {{ report.begintime|date("d-M-Y h:i:s") }}</span>
+                                  </div>
+                                </li>
+                                <li class="list-group-item">
+                                  <div class="clearfix">
+                                    <span class="float-start"><b>End time: </b> </span>
+                                    <span class="float-end"> {{ report.endtime|date("d-M-Y h:i:s") }}</span>
+                                  </div>
+                                </li>
+                              </ul> 
+                            </p>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-4">
+                  {% for policy in report.smtptls_policies|reverse %}
+                    <div class="col-12 col-md-12 col-lg-12 mb-4 mb-lg-0">
+                      <div class="card">
+                          <h5 class="card-header">Policy #{{ loop.index }}</h5>
+                          <div class="card-body">
+                            <div class="row my-0">
+                              <div class="col-12 col-md-6 col-lg-6 mb-4 mb-lg-0">
+                                <ul class="list-group">
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <span class="float-start"><b>Domain: </b> </span>
+                                      <span class="float-end">
+                                          {{ policy.policydomain.fqdn }}
+                                      </span>
+                                    </div>
+                                  </li>
+                                  {% for mxrecord in policy.smtptls_mxrecords|sort((a, b) => a.priority <=> b.priority) %}
+                                    <li class="list-group-item">
+                                      <div class="clearfix">
+                                        <span class="float-start"><b>MX: </b> </span>
+                                        <span class="float-end"> {{ mxrecord.mxrecord.name }}</span>
+                                      </div>
+                                    </li>
+                                  {% endfor %}
+                                  {% if policy.policystringmaxage %}
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <span class="float-start"><b>String max age: </b> </span>
+                                      <span class="float-end"> {{ policy.policystringmaxage }} sec</span>
+                                    </div>
+                                  </li>
+                                  {% endif %}
+                                </ul> 
+                              </div>
+                              <div class="col-12 col-md-6 col-lg-6 mb-4 mb-lg-0">
+                                <ul class="list-group">
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <span class="float-start"><b>Policy type: </b> </span>
+                                      <span class="float-end">
+                                          <span class="btn btn-sm btn-{% if policy.policytype == 'no-policy-found' %}danger{% else %}success{% endif %}">{{ policy.policytype }}</span>
+                                      </span>
+                                    </div>
+                                  </li>
+                                  {% if policy.policystringversion %}
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <span class="float-start"><b>String version: </b> </span>
+                                      <span class="float-end">
+                                        {% if policy.policystringversion == 'STSv1' %}
+                                          <span class="btn btn-sm btn-success">STSv1</span>
+                                        {% endif %}
+                                      </span>
+                                    </div>
+                                  </li>
+                                  {% endif %}
+                                  {% if policy.policystringmode %}
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <span class="float-start"><b>String mode: </b> </span>
+                                      <span class="float-end">
+                                        <span class="btn btn-sm btn-{% if policy.policystringmode == 'enforce' %}success{% elseif policy.policystringmode == 'testing' %}warning{% else %}danger{% endif %}">{{ policy.policystringmode }}</span>
+                                      </span>
+                                    </div>
+                                  </li>
+                                  {% endif %}
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <span class="float-start"><b>Summary sucessful count: </b> </span>
+                                      <span class="float-end"> {{ policy.summarysuccessfulcount }}</span>
+                                    </div>
+                                  </li>
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <span class="float-start"><b>Summary failed count: </b> </span>
+                                      <span class="float-end">
+                                        {% if policy.summaryfailedcount < 1 %}<span class="text-success">{% else %}<span class="text-danger">{% endif %}{{ policy.summaryfailedcount }}</span>
+                                      </span>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                            {% for failuredetail in policy.smtptls_failuredetails|sort((a, b) => a.resulttype <=> b.resulttype) %}
+                            <div class="col-12 col-md-12 col-lg-12 mt-4">
+                              <div class="card border-danger">
+                                  <h5 class="card-header bg-danger">Failure detail message #{{ loop.index }}</h5>
+                                  <div class="card-body">
+                                    <div class="row ">
+                                      <div class="col-12 col-md-6 col-lg-6 my-2">
+                                        <ul class="list-group">
+                                            <li class="list-group-item">
+                                              <div class="clearfix">
+                                                <span class="float-start"><b>Receiving MX Hostname: </b> </span>
+                                                <span class="float-end"> {{ failuredetail.receivingmxhostname.name }}</span>
+                                              </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                              <div class="clearfix">
+                                                <span class="float-start"><b>Result: </b> </span>
+                                                <span class="float-end"> {{ failuredetail.resulttype }}</span>
+                                              </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                              <div class="clearfix">
+                                                <span class="float-start"><b>Failed Session Count: </b> </span>
+                                                <span class="float-end"> {{ failuredetail.failedsessioncount }}</span>
+                                              </div>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                        <div class="col-12 col-md-6 col-lg-6 mb-4 mb-lg-0 my-2">
+                                          <ul class="list-group">
+                                            <li class="list-group-item">
+                                              <div class="clearfix">
+                                                <span class="float-start"><b>Sending MTA IP: </b> </span>
+                                                <span class="float-end"> {{ failuredetail.sendingmtaip }}</span>
+                                              </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                              <div class="clearfix">
+                                                <span class="float-start"><b>Receiving IP: </b> </span>
+                                                <span class="float-end"> {{ failuredetail.receivingip }}</span>
+                                              </div>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      
+                                    </div>
+                                  </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    <p></p>
+                  {% endfor %}
+                </div>
+{% endblock %}

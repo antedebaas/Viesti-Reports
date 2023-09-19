@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ResultsRepository;
+use App\Repository\DMARC_ResultsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ResultsRepository::class)]
-class Results
+#[ORM\Entity(repositoryClass: DMARC_ResultsRepository::class)]
+class DMARC_Results
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -15,7 +15,7 @@ class Results
 
     #[ORM\ManyToOne(inversedBy: 'results')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Records $record = null;
+    private ?DMARC_Records $record = null;
 
     #[ORM\Column(length: 255)]
     private ?string $domain = null;
@@ -34,12 +34,12 @@ class Results
         return $this->id;
     }
 
-    public function getRecord(): ?Records
+    public function getRecord(): ?DMARC_Records
     {
         return $this->record;
     }
 
-    public function setRecord(?Records $record): static
+    public function setRecord(?DMARC_Records $record): static
     {
         $this->record = $record;
 

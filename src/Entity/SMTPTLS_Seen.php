@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\SeenRepository;
+use App\Repository\SMTPTLS_SeenRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: SeenRepository::class)]
-class Seen
+#[ORM\Entity(repositoryClass: SMTPTLS_SeenRepository::class)]
+class SMTPTLS_Seen
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -15,7 +15,7 @@ class Seen
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Reports $report = null;
+    private ?SMTPTLS_Reports $report = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
@@ -26,12 +26,12 @@ class Seen
         return $this->id;
     }
 
-    public function getReport(): ?Reports
+    public function getReport(): ?SMTPTLS_Reports
     {
         return $this->report;
     }
 
-    public function setReport(?Reports $report): static
+    public function setReport(?SMTPTLS_Reports $report): static
     {
         $this->report = $report;
 

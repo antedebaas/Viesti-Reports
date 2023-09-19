@@ -2,27 +2,27 @@
 
 namespace App\Repository;
 
-use App\Entity\Seen;
+use App\Entity\DMARC_Seen;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Seen>
+ * @extends ServiceEntityRepository<DMARC_Seen>
  *
- * @method Seen|null find($id, $lockMode = null, $lockVersion = null)
- * @method Seen|null findOneBy(array $criteria, array $orderBy = null)
- * @method Seen[]    findAll()
- * @method Seen[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method DMARC_Seen|null find($id, $lockMode = null, $lockVersion = null)
+ * @method DMARC_Seen|null findOneBy(array $criteria, array $orderBy = null)
+ * @method DMARC_Seen[]    findAll()
+ * @method DMARC_Seen[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SeenRepository extends ServiceEntityRepository
+class DMARC_SeenRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Seen::class);
+        parent::__construct($registry, DMARC_Seen::class);
     }
 
 //    /**
-//     * @return Seen[] Returns an array of Seen objects
+//     * @return DMARC_Seen[] Returns an array of DMARC_Seen objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -30,13 +30,13 @@ class SeenRepository extends ServiceEntityRepository
 //            ->andWhere('s.exampleField = :val')
 //            ->setParameter('val', $value)
 //            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
+//            ->setMaxDMARC_Results(10)
 //            ->getQuery()
 //            ->getResult()
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Seen
+//    public function findOneBySomeField($value): ?DMARC_Seen
 //    {
 //        return $this->createQueryBuilder('s')
 //            ->andWhere('s.exampleField = :val')

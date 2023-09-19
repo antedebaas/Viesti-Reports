@@ -49,7 +49,7 @@
                 <div class="row">
                     <div class="col-12 col-xl-6 mb-4 mb-lg-4">
                         <div class="card">
-                            <h5 class="card-header">Latest reports</h5>
+                            <h5 class="card-header">Latest DMARC reports</h5>
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table">
@@ -64,16 +64,16 @@
                                           </tr>
                                         </thead>
                                         <tbody>
-                                        {% for report in reports %}
-                                          <tr {% if report.id not in reportsseen %}class="table-warning"{% endif%}>
+                                        {% for report in dmarcreports %}
+                                          <tr {% if report.id not in dmarcreportsseen %}class="table-warning"{% endif%}>
                                             <th scope="row">{{ report.id }}</th>
                                             <td>{{ report.domain.fqdn }}</td>
                                             <td>{{ report.organisation }}</td>
-                                            <td>{{ report.records.count }}</td>
+                                            <td>{{ report.dmarc_records.count }}</td>
                                             <td>
                                               {% set dkim_pass = true %}
                                               {% set spf_pass = true %}
-                                              {% for record in report.records %}
+                                              {% for record in report.dmarc_records %}
                                                   {% if record.policydkim != "pass" %}
                                                     {% set dkim_pass = false %}
                                                   {% endif %}
@@ -84,17 +84,65 @@
                                               <span class="btn btn-sm btn-{% if spf_pass %}success{% else %}danger{% endif %}">spf</span>
                                               <span class="btn btn-sm btn-{% if dkim_pass %}success{% else %}danger{% endif %}">dkim</span>
                                             </td>
-                                            <td><a href="{{ path('app_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a></td>
+                                            <td><a href="{{ path('app_dmarc_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a></td>
                                           </tr>
                                         {% endfor %}
                                         </tbody>
                                       </table>
                                 </div>
-                                <a href="{{ path('app_reports') }}" class="btn btn-block btn-secondary">View all</a>
+                                <a href="{{ path('app_dmarc_reports') }}" class="btn btn-block btn-secondary">View all</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-12 col-xl-6 mb-4 mb-lg-4">
+                        <div class="card">
+                            <h5 class="card-header">Latest SMTP-TLS reports</h5>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                          <tr>
+                                            <th scope="col">Id</th>
+                                            <th scope="col">Domain</th>
+                                            <th scope="col">Reporting Organisation</th>
+                                            <th scope="col">Results</th>
+                                            <th scope="col"></th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for report in smtptlsreports %}
+                                          <tr {% if report.id not in smtptlsreportsseen %}class="table-warning"{% endif%}>
+                                            <th scope="row">{{ report.id }}</th>
+                                            <td></td>
+                                            <td>{{ report.organisation }}</td>
+                                            <td>
+                                              {% set sts_type = false %}
+                                              {% set sts_version = true %}
+                                              {% set sts_mode = true %}
+                                              {% for policy in report.smtptls_policies %}
+                                                  {% if policy.policytype == 'no-policy-found' %}
+                                                    <span class="btn btn-sm btn-danger">no-policy-found</span>
+                                                  {% else %}
+                                                    {% if policy.policystringversion == 'STSv1' %}
+                                                      <span class="btn btn-sm btn-success">STSv1</span>
+                                                    {% endif %}
+                                                    <span class="btn btn-sm btn-{% if policy.policystringmode == 'enforce' %}success{% elseif policy.policystringmode == 'testing' %}warning{% else %}danger{% endif %}">{{ policy.policystringmode }}</span>
+                                                  {% endif %}
+                                              {% endfor %}
+                                            </td>
+                                            <td><a href="{{ path('app_smtptls_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a></td>
+                                          </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                      </table>
+                                </div>
+                                <a href="{{ path('app_smtptls_reports') }}" class="btn btn-block btn-secondary">View all</a>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12 col-xl-12 mb-12 mb-lg-12">
                         <div class="card">
                             <h5 class="card-header">Latest logs</h5>
                             <div class="card-body">

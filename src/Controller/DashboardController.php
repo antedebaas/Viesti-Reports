@@ -11,8 +11,10 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Domains;
-use App\Entity\Reports;
-use App\Entity\Seen;
+use App\Entity\DMARC_Reports;
+use App\Entity\DMARC_Seen;
+use App\Entity\SMTPTLS_Reports;
+use App\Entity\SMTPTLS_Seen;
 use App\Entity\Logs;
 
 class DashboardController extends AbstractController
@@ -42,26 +44,40 @@ class DashboardController extends AbstractController
         $repository = $this->em->getRepository(Domains::class);
         $domains = $repository->findBy(array('id' => $this->getUser()->getRoles()));
 
-        $repository = $this->em->getRepository(Reports::class);
+        $repository = $this->em->getRepository(DMARC_Reports::class);
         if(in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
-            $reports = $repository->findBy(array(),array('id' => 'DESC'),10,0);
+            $dmarcreports = $repository->findBy(array(),array('id' => 'DESC'),10,0);
         } else {
-            $reports = $repository->findBy(array('domain' => $domains),array('id' => 'DESC'),10,0);
+            $dmarcreports = $repository->findBy(array('domain' => $domains),array('id' => 'DESC'),10,0);
         }
-        $totalreports = $repository->getTotalRows($domains);   
+        $totalreports = $repository->getTotalRows($domains);
+
+        $repository = $this->em->getRepository(DMARC_Seen::class);
+        $dmarcreportsseen = $repository->getSeen($dmarcreports, $this->getUser()->getId());
 
 
-        $repository = $this->em->getRepository(Seen::class);
-        $reportsseen = $repository->getSeen($reports, $this->getUser()->getId());
+
+        $repository = $this->em->getRepository(SMTPTLS_Reports::class);
+        if(in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
+            $smtptlsreports = $repository->findBy(array(),array('id' => 'DESC'),10,0);
+        } else {
+            $smtptlsreports = $repository->findOwnedBy(array('domain' => $domains),array('id' => 'DESC'),10,0);
+        }
+        $totalreports = $repository->getTotalRows($domains, $this->getUser()->getRoles());
+
+        $repository = $this->em->getRepository(SMTPTLS_Seen::class);
+        $smtptlsreportsseen = $repository->getSeen($smtptlsreports, $this->getUser()->getId());
 
         $repository = $this->em->getRepository(Logs::class);
-        $logs = $repository->findBy(array(),array('id' => 'DESC'),10, 0);
+        $logs = $repository->findBy(array(),array('id' => 'DESC'),3, 0);
 
         return $this->render('dashboard/index.html.twig', [
             'menuactive' => 'dashboard',
-            'breadcrumbs' => array('0' => array('name' => $this->translator->trans("Dashboard"), 'url' => $this->router->generate('app_dashboard'))),
-            'reports' => $reports,
-            'reportsseen' => $reportsseen,
+            'breadcrumbs' => array(array('name' => $this->translator->trans("Dashboard"), 'url' => $this->router->generate('app_dashboard'))),
+            'dmarcreports' => $dmarcreports,
+            'dmarcreportsseen' => $dmarcreportsseen,
+            'smtptlsreports' => $smtptlsreports,
+            'smtptlsreportsseen' => $smtptlsreportsseen,
             'logs' => $logs,
         ]);
     }

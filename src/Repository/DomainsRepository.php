@@ -30,7 +30,7 @@ class DomainsRepository extends ServiceEntityRepository
 //            ->andWhere('d.exampleField = :val')
 //            ->setParameter('val', $value)
 //            ->orderBy('d.id', 'ASC')
-//            ->setMaxResults(10)
+//            ->setMaxDMARC_Results(10)
 //            ->getQuery()
 //            ->getResult()
 //        ;

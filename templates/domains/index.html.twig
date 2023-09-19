@@ -14,7 +14,8 @@
                                           <tr>
                                             <th scope="col">Id</th>
                                             <th scope="col">Domain FQDN</th>
-                                            <th scope="col">Total reports</th>
+                                            <th scope="col">Total DMARC reports</th>
+                                            <th scope="col">Total SMTP-TLS reports</th>
                                           </tr>
                                         </thead>
                                         <tbody>
@@ -22,7 +23,8 @@
                                           <tr>
                                             <th scope="row">{{ domain.id }}</th>
                                             <td>{{ domain.fqdn }}</td>
-                                            <td>{{ domain.reports|length }}</td>
+                                            <td>{{ domain.dmarc_reports|length }}</td>
+                                            <td>{{ domain.dmarc_reports|length }}</td>
                                           </tr>
                                         {% endfor %}
                                         </tbody>
