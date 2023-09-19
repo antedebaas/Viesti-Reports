@@ -119,7 +119,7 @@
                                               {% set sts_type = false %}
                                               {% set sts_version = true %}
                                               {% set sts_mode = true %}
-                                              {% for policy in report.mtastspolicies %}
+                                              {% for policy in report.mtasts_policies %}
                                                   {% if policy.policytype == 'no-policy-found' %}
                                                     <span class="btn btn-sm btn-danger">no-policy-found</span>
                                                   {% else %}

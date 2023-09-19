@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method MTASTS_MXRecords[]    findAll()
  * @method MTASTS_MXRecords[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MTASTSMXRecordsRepository extends ServiceEntityRepository
+class MTASTS_MXRecordsRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
