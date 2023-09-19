@@ -37,7 +37,7 @@ class MTASTS_Policies
     #[ORM\Column]
     private ?int $summary_failed_count = null;
 
-    #[ORM\OneToMany(mappedBy: 'Policy', targetEntity: MTASTS_MXRecords::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'policy', targetEntity: MTASTS_MXRecords::class, orphanRemoval: true)]
     private Collection $MTASTS_MXRecords;
 
     public function __construct()
@@ -153,27 +153,27 @@ class MTASTS_Policies
     /**
      * @return Collection<int, MTASTS_MXRecords>
      */
-    public function getMTASTSMXRecords(): Collection
+    public function getMTASTS_MXRecords(): Collection
     {
         return $this->MTASTS_MXRecords;
     }
 
-    public function addMTASTSMXRecord(MTASTS_MXRecords $MTASTSMXRecord): static
+    public function addMTASTS_MXRecord(MTASTS_MXRecords $MTASTS_MXRecord): static
     {
-        if (!$this->MTASTS_MXRecords->contains($MTASTSMXRecord)) {
-            $this->MTASTS_MXRecords->add($MTASTSMXRecord);
-            $MTASTSMXRecord->setPolicy($this);
+        if (!$this->MTASTS_MXRecords->contains($MTASTS_MXRecord)) {
+            $this->MTASTS_MXRecords->add($MTASTS_MXRecord);
+            $MTASTS_MXRecord->setPolicy($this);
         }
 
         return $this;
     }
 
-    public function removeMTASTSMXRecord(MTASTS_MXRecords $MTASTSMXRecord): static
+    public function removeMTASTS_MXRecord(MTASTS_MXRecords $MTASTS_MXRecord): static
     {
-        if ($this->MTASTS_MXRecords->removeElement($MTASTSMXRecord)) {
+        if ($this->MTASTS_MXRecords->removeElement($MTASTS_MXRecord)) {
             // set the owning side to null (unless already changed)
-            if ($MTASTSMXRecord->getPolicy() === $this) {
-                $MTASTSMXRecord->setPolicy(null);
+            if ($MTASTS_MXRecord->getPolicy() === $this) {
+                $MTASTS_MXRecord->setPolicy(null);
             }
         }
 

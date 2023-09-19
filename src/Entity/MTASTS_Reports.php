@@ -105,29 +105,29 @@ class MTASTS_Reports
     }
 
     /**
-     * @return Collection<int, MTASTSPolicies>
+     * @return Collection<int, MTASTS_Policies>
      */
-    public function getMTASTSPolicies(): Collection
+    public function getMTASTS_Policies(): Collection
     {
         return $this->MTASTS_Policies;
     }
 
-    public function addMTASTSPolicy(MTASTS_Policies $mTASTSPolicy): static
+    public function addMTASTSPolicy(MTASTS_Policies $MTASTS_Policy): static
     {
-        if (!$this->MTASTS_Policies->contains($mTASTSPolicy)) {
-            $this->MTASTS_Policies->add($mTASTSPolicy);
-            $mTASTSPolicy->setReport($this);
+        if (!$this->MTASTS_Policies->contains($MTASTS_Policy)) {
+            $this->MTASTS_Policies->add($MTASTS_Policy);
+            $MTASTS_Policy->setReport($this);
         }
 
         return $this;
     }
 
-    public function removeMTASTSPolicy(MTASTS_Policies $mTASTSPolicy): static
+    public function removeMTASTSPolicy(MTASTS_Policies $MTASTS_Policy): static
     {
-        if ($this->MTASTS_Policies->removeElement($mTASTSPolicy)) {
+        if ($this->MTASTS_Policies->removeElement($MTASTS_Policy)) {
             // set the owning side to null (unless already changed)
-            if ($mTASTSPolicy->getReport() === $this) {
-                $mTASTSPolicy->setReport(null);
+            if ($MTASTS_Policy->getReport() === $this) {
+                $MTASTS_Policy->setReport(null);
             }
         }
 

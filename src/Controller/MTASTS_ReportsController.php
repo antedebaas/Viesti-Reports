@@ -95,6 +95,8 @@ class MTASTS_ReportsController extends AbstractController
             $this->em->flush();
         }
 
+        #dd($report->getMTASTS_Policies()->getMTASTS_MXRecords());
+
         return $this->render('mtasts_reports/report.html.twig', [
             'menuactive' => 'reports',
             'breadcrumbs' => array(
@@ -102,7 +104,6 @@ class MTASTS_ReportsController extends AbstractController
                 array('name' => $this->translator->trans("MTASTS"), 'url' => $this->router->generate('app_mtasts_reports')),
                 array('name' => $this->translator->trans("Report")." #".$report->getId(), 'url' => $this->router->generate('app_mtasts_reports'))
             ),
-
             'report' => $report
         ]);
     }
