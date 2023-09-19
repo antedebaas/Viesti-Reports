@@ -50,73 +50,12 @@
                           </div>
                         </div>
                     </div>
-                    {# <div class="col-12 col-md-4 col-lg-2 mb-4 mb-lg-0">
-                      <div class="card">
-                          <h5 class="card-header">Published policy</h5>
-                          <div class="card-body">
-                            <p class="card-text">
-                              <ul class="list-group">
-                                <li class="list-group-item">
-                                  <div class="clearfix">
-                                    <span class="float-start" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="The optional adkim tag is the alignment mode for the DKIM protocol. A sample tag is adkim=r."><b>adkim: </b>
-                                      <svg class="help_info" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
-                                      </svg>
-                                    </span>
-                                    <span class="float-end">{{ report.smtptls_policies.policy_domain.fqdn }}</span>
-                                  </div>
-                                </li>
-                                <li class="list-group-item">
-                                  <div class="clearfix">
-                                    <span class="float-start" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="The aspf tag represents alignment mode for SPF. An optional tag, aspf=r is a common example of its configuration."><b>aspf: </b>
-                                      <svg class="help_info" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
-                                      </svg>
-                                    </span>
-                                    <span class="float-end">{{ report.policyaspf }}</span>
-                                  </div>
-                                </li>
-                                <li class="list-group-item">
-                                  <div class="clearfix">
-                                    <span class="float-start" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="The required p tag demonstrates the policy for domain (or requested handling policy). It directs the receiver to report, quarantine, or reject emails that fail authentication checks. Policy options are: 1) None 2) Quarantine or 3) Reject."><b>p: </b>
-                                      <svg class="help_info" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
-                                      </svg>
-                                    </span>
-                                    <span class="float-end">{{ report.policyp }}</span>
-                                  </div>
-                                </li>
-                                <li class="list-group-item">
-                                  <div class="clearfix">
-                                    <span class="float-start" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="This tag represents the requested handling policy for subdomains."><b>sp: </b>
-                                      <svg class="help_info" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
-                                      </svg>
-                                    </span>
-                                    <span class="float-end">{{ report.policysp }}</span>
-                                  </div>
-                                </li>
-                                <li class="list-group-item">
-                                  <div class="clearfix">
-                                    <span class="float-start" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="This DMARC tag specifies the percentage of email messages subjected to filtering. For example, pct=25 means a quarter of your company’s emails will be filtered by the recipient."><b>pct: </b>
-                                      <svg class="help_info" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
-                                      </svg>
-                                    </span>
-                                    <span class="float-end">{{ report.policypct }}</span>
-                                  </div>
-                                </li>
-                              </ul> 
-                            </p>
-                          </div>
-                        </div>
-                    </div>
-                </div> #}
+                </div>
                 <div class="row my-4">
                   {% for policy in report.smtptls_policies|reverse %}
                     <div class="col-12 col-md-12 col-lg-12 mb-4 mb-lg-0">
                       <div class="card">
-                          <h5 class="card-header">Policy #{{ policy|length }}</h5>
+                          <h5 class="card-header">Policy #{{ loop.index }}</h5>
                           <div class="card-body">
                             <div class="row my-0">
                               <div class="col-12 col-md-6 col-lg-6 mb-4 mb-lg-0">
@@ -188,13 +127,64 @@
                                   <li class="list-group-item">
                                     <div class="clearfix">
                                       <span class="float-start"><b>Summary failed count: </b> </span>
-                                      <span class="float-end"> {{ policy.summaryfailedcount }}</span>
+                                      <span class="float-end">
+                                        {% if policy.summaryfailedcount < 1 %}<span class="text-success">{% else %}<span class="text-danger">{% endif %}{{ policy.summaryfailedcount }}</span>
+                                      </span>
                                     </div>
                                   </li>
                                 </ul>
                               </div>
                             </div>
-
+                            {% for failuredetail in policy.smtptls_failuredetails|sort((a, b) => a.resulttype <=> b.resulttype) %}
+                            <div class="col-12 col-md-12 col-lg-12 mt-4">
+                              <div class="card border-danger">
+                                  <h5 class="card-header bg-danger">Failure detail message #{{ loop.index }}</h5>
+                                  <div class="card-body">
+                                    <div class="row ">
+                                      <div class="col-12 col-md-6 col-lg-6 my-2">
+                                        <ul class="list-group">
+                                            <li class="list-group-item">
+                                              <div class="clearfix">
+                                                <span class="float-start"><b>Receiving MX Hostname: </b> </span>
+                                                <span class="float-end"> {{ failuredetail.receivingmxhostname.name }}</span>
+                                              </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                              <div class="clearfix">
+                                                <span class="float-start"><b>Result: </b> </span>
+                                                <span class="float-end"> {{ failuredetail.resulttype }}</span>
+                                              </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                              <div class="clearfix">
+                                                <span class="float-start"><b>Failed Session Count: </b> </span>
+                                                <span class="float-end"> {{ failuredetail.failedsessioncount }}</span>
+                                              </div>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                        <div class="col-12 col-md-6 col-lg-6 mb-4 mb-lg-0 my-2">
+                                          <ul class="list-group">
+                                            <li class="list-group-item">
+                                              <div class="clearfix">
+                                                <span class="float-start"><b>Sending MTA IP: </b> </span>
+                                                <span class="float-end"> {{ failuredetail.sendingmtaip }}</span>
+                                              </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                              <div class="clearfix">
+                                                <span class="float-start"><b>Receiving IP: </b> </span>
+                                                <span class="float-end"> {{ failuredetail.receivingip }}</span>
+                                              </div>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      
+                                    </div>
+                                  </div>
+                                </div>
+                                {% endfor %}
+                            </div>
                           </div>
                         </div>
                     </div>
