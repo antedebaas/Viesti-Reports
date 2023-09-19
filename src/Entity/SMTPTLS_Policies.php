@@ -43,11 +43,15 @@ class SMTPTLS_Policies
     public function __construct()
     {
         $this->SMTPTLS_MXRecords = new ArrayCollection();
+        $this->SMTPTLS_FailureDetails = new ArrayCollection();
     }
 
     #[ORM\ManyToOne(inversedBy: 'SMTPTLS_Policies')]
     #[ORM\JoinColumn(nullable: false)]
     private ?SMTPTLS_Reports $report = null;
+
+    #[ORM\OneToMany(mappedBy: 'policy', targetEntity: SMTPTLS_FailureDetails::class, orphanRemoval: true)]
+    private Collection $SMTPTLS_FailureDetails;
 
     public function getId(): ?int
     {
@@ -174,6 +178,36 @@ class SMTPTLS_Policies
             // set the owning side to null (unless already changed)
             if ($SMTPTLS_MXRecord->getPolicy() === $this) {
                 $SMTPTLS_MXRecord->setPolicy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SMTPTLS_FailureDetails>
+     */
+    public function getSMTPTLS_FailureDetails(): Collection
+    {
+        return $this->SMTPTLS_FailureDetails;
+    }
+
+    public function addSMTPTLSFailureDetail(SMTPTLS_FailureDetails $SMTPTLS_FailureDetail): static
+    {
+        if (!$this->SMTPTLS_FailureDetails->contains($SMTPTLS_FailureDetail)) {
+            $this->SMTPTLS_FailureDetails->add($SMTPTLS_FailureDetail);
+            $SMTPTLS_FailureDetail->setPolicy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSMTPTLSFailureDetail(SMTPTLS_FailureDetails $SMTPTLS_FailureDetail): static
+    {
+        if ($this->SMTPTLS_FailureDetails->removeElement($SMTPTLS_FailureDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($SMTPTLS_FailureDetail->getPolicy() === $this) {
+                $SMTPTLS_FailureDetail->setPolicy(null);
             }
         }
 
