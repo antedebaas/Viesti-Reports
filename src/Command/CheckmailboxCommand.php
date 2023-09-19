@@ -21,6 +21,7 @@ use App\Entity\DMARC_Results;
 use App\Entity\SMTPTLS_Reports;
 use App\Entity\SMTPTLS_Policies;
 use App\Entity\SMTPTLS_MXRecords;
+use App\Entity\SMTPTLS_FailureDetails;
 use App\Entity\Logs;
 
 #[AsCommand(
@@ -61,6 +62,7 @@ class CheckmailboxCommand extends Command
             'new_smtptls_reports' => 0,
             'new_smtptls_policies' => 0,
             'new_smtptls_mxmapping' => 0,
+            'new_smtptls_failuredetails' => 0
         );
 
         $mailresult = $this->open_mailbox($this->imap);
@@ -209,10 +211,37 @@ class CheckmailboxCommand extends Command
                         $this->em->flush();
                     }
                 }
+                if(property_exists($policy, 'failure-details')){
+                    foreach($policy->{'failure-details'} as $failure){
+                        $stats['new_smtptls_failuredetails']++;
+
+                        $mx_repository = $this->em->getRepository(MXRecords::class);
+                        $dbmxrecord = $mx_repository->findOneBy(array('domain' => $dbdomain, 'name' => $mxrecord));
+                        if(!$dbmxrecord){
+                            $stats['new_mxrecords']++;
+        
+                            $dbmxrecord = new MXRecords;
+                            $dbmxrecord->setDomain($dbdomain);
+                            $dbmxrecord->setName($mxrecord);
+                            $this->em->persist($dbmxrecord);
+                            $this->em->flush();
+                        }
+
+                        $dbfailure = new SMTPTLS_FailureDetails;
+                        $dbfailure->setPolicy($dbpolicy);
+                        $dbfailure->setResultType($failure->{'result-type'});
+                        $dbfailure->setSendingMtaIp($failure->{'sending-mta-ip'});
+                        $dbfailure->setReceivingIp($failure->{'receiving-ip'});
+                        $dbfailure->setReceivingMxHostname($dbmxrecord);
+                        $dbfailure->setFailedSessionCount($failure->{'failed-session-count'});
+                        $this->em->persist($dbfailure);
+                        $this->em->flush();
+                    }
+                }
             }
         }
 
-        $message = 'Mailbox checked: '.$stats['new_emails'].' new emails ('.$stats['new_domains'].' domains, '.$stats['new_mxrecords'].' mx), '.$stats['new_dmarc_reports'].' new dmarc reports ('.$stats['new_dmarc_records'].' records, '.$stats['new_dmarc_results'].' results), '.$stats['new_smtptls_reports'].' new smtptls reports ('.$stats['new_smtptls_policies'].' policies, '.$stats['new_smtptls_mxmapping'].' mxmapping)';
+        $message = 'Mailbox checked: '.$stats['new_emails'].' new emails ('.$stats['new_domains'].' domains, '.$stats['new_mxrecords'].' mx), '.$stats['new_dmarc_reports'].' new dmarc reports ('.$stats['new_dmarc_records'].' records, '.$stats['new_dmarc_results'].' results), '.$stats['new_smtptls_reports'].' new smtptls reports ('.$stats['new_smtptls_policies'].' policies, '.$stats['new_smtptls_mxmapping'].' mxmapping, '.$stats['new_smtptls_failuredetails'].' failure details)';
 
         $log = new Logs;
         $log->setTime(new \DateTime);
