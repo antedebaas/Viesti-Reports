@@ -3,7 +3,7 @@ services:
   dmarc-reports:
     image: antedebaas/dmarc-reports:latest
     volumes:
-      - /var/www/html/.env.local:/root/your.env.local:rw
+      - /root/your.env.local:/var/www/html/.env.local:rw
     ports:
         - 0.0.0.0:8080:8080
     environment:

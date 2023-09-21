@@ -1,4 +1,4 @@
-FROM alpine:3.17
+FROM alpine:3.18
 
 LABEL Maintainer="Ante de Baas @antedebaas on GitHub>" \
       Description="DMARC & SMTP-TLS Reports processor and visualizer"
@@ -47,9 +47,11 @@ COPY dockerfiles/php.ini /etc/php81/conf.d/custom.ini
 RUN wget https://getcomposer.org/composer-stable.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer
 
 COPY dockerfiles/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY dockerfiles/checkmail.sh /etc/periodic/15min/checkmail.sh
+
 COPY dockerfiles/genenvlocal.sh /usr/local/bin/genenvlocal.sh
-RUN chmod +x /etc/periodic/15min/checkmail.sh
+
+COPY dockerfiles/checkmail.sh /etc/periodic/daily/checkmail.sh
+RUN chmod +x /etc/periodic/daily/checkmail.sh
 
 RUN mkdir -p /var/www/html
 RUN chown -R nobody.nobody /var/www/html && \
@@ -57,10 +59,9 @@ RUN chown -R nobody.nobody /var/www/html && \
   chown -R nobody.nobody /var/lib/nginx && \
   chown -R nobody.nobody /var/log/nginx
 
-USER nobody
-
 WORKDIR /var/www/html
 COPY --chown=nobody . /var/www/html/
+
 RUN /usr/local/bin/composer install
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
