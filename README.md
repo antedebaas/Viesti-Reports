@@ -2,6 +2,7 @@
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
+[![Docker][docker-shield]][docker-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
@@ -9,11 +10,12 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![DMARC-Reports][report-screenshot]
+![DMARC-Reports][screenshot-dmarc]
+![SMTP-TLS-Reports][screenshot-smtptls]
 
-I needed a quick and easy way to view my dmarc reports.
+I needed a quick and easy way to view my dmarc and smtp tls reports.
 This is a simple symfony project that can read the inbox for new reports and process them.
-I you use it you should use it with a special sole-purpose email adress for dmarc reports.
+I you use it you should use it with a special sole-purpose email adress.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -81,4 +83,7 @@ Distributed under the GPL v2 License. See `LICENSE.txt` for more information.
 [issues-url]: https://github.com/antedebaas/DMARC-Reports/issues
 [license-shield]: https://img.shields.io/github/license/antedebaas/DMARC-Reports.svg?style=for-the-badge
 [license-url]: https://github.com/antedebaas/DMARC-Reports/blob/master/LICENSE.txt
-[report-screenshot]: reportscreenshot.png
+[docker-shield]: https://img.shields.io/docker/pulls/antedebaas/dmarc-reports.svg?style=for-the-badge
+[docker-url]: https://hub.docker.com/repository/docker/antedebaas/dmarc-reports/general
+[screenshot-dmarc]: screenshot-dmarc.png
+[screenshot-smtptls]: screenshot-smtptls.png
