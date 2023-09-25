@@ -6,6 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use App\Kernel;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -45,5 +50,23 @@ class ReportsController extends AbstractController
             'smtptls_count' => $smtptls_count,
             'breadcrumbs' => array(array('name' => $this->translator->trans("Reports"), 'url' => $this->router->generate('app_reports'))),
         ]);
+    }
+
+    #[Route('/reports/checkmailnow', name: 'app_checkmailnow')]
+    public function checkmailboxnow(): Response
+    {
+        $kernel = new Kernel($_ENV['APP_ENV'], (bool) $_ENV['APP_DEBUG']);
+
+        $application = new Application($kernel);
+        $application->setAutoExit(false);
+    
+        $input = new ArrayInput(array(
+            'command' => 'app:checkmailbox'
+        ));
+    
+        $output = new BufferedOutput();
+        $application->run($input, $output);
+        
+        return $this->redirectToRoute('app_dashboard');
     }
 }
