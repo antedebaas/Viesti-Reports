@@ -37,6 +37,7 @@ RUN apk --no-cache add \
         php81-dom \
         php81-tokenizer \
         php81-session \
+        php81-zip \
         nginx \
         supervisor \
         curl
