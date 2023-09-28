@@ -49,7 +49,7 @@ RUN wget https://getcomposer.org/composer-stable.phar -O /usr/local/bin/composer
 
 COPY dockerfiles/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-COPY dockerfiles/genenvlocal.sh /usr/local/bin/genenvlocal.sh
+COPY dockerfiles/containerstartup.sh /usr/local/bin/containerstartup.sh
 
 COPY dockerfiles/checkmail.sh /etc/periodic/daily/checkmail.sh
 RUN chmod +x /etc/periodic/daily/checkmail.sh
