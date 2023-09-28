@@ -23,7 +23,7 @@
             
         </div>
         <div class="col-12 col-md-5 col-lg-8 d-flex align-items-center justify-content-md-end mt-3 mt-md-0">
-        {% if 'ROLE_ADMIN' in app.user.getroles()  %}
+        {% if app.user.getroles is defined and 'ROLE_ADMIN' in app.user.getroles() %}
         <a href="{{ path('app_checkmailnow') }}" class="btn btn-sm btn-primary mx-4">Check mailbox now</a>
         {% endif %}
           {% if app.user.email is defined %}
