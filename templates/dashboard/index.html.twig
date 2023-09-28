@@ -113,7 +113,11 @@
                                         {% for report in smtptlsreports %}
                                           <tr {% if report.id not in smtptlsreportsseen %}class="table-warning"{% endif%}>
                                             <th scope="row">{{ report.id }}</th>
-                                            <td></td>
+                                            <td>
+                                              {% for policy in report.smtptls_policies %}
+                                                {{policy.policydomain.fqdn}}<br>
+                                              {% endfor %}
+                                            </td>
                                             <td>{{ report.organisation }}</td>
                                             <td>
                                               {% set sts_type = false %}
@@ -128,6 +132,7 @@
                                                     {% endif %}
                                                     <span class="btn btn-sm btn-{% if policy.policystringmode == 'enforce' %}success{% elseif policy.policystringmode == 'testing' %}warning{% else %}danger{% endif %}">{{ policy.policystringmode }}</span>
                                                   {% endif %}
+                                              <br>
                                               {% endfor %}
                                             </td>
                                             <td><a href="{{ path('app_smtptls_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a></td>

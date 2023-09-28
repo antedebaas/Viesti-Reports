@@ -24,8 +24,17 @@ class Domains
     #[ORM\OneToMany(mappedBy: 'policy_domain', targetEntity: SMTPTLS_Policies::class, orphanRemoval: true)]
     private Collection $SMTPTLS_Policies;
 
-    #[ORM\OneToMany(mappedBy: 'Domain', targetEntity: MXRecords::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'domain', targetEntity: MXRecords::class, orphanRemoval: true)]
     private Collection $MXRecords;
+
+    #[ORM\Column(length: 255, options: ['default' => 'STSv1'])]
+    private ?string $sts_version = null;
+
+    #[ORM\Column(length: 255, options: ['default' => 'enforce'])]
+    private ?string $sts_mode = null;
+
+    #[ORM\Column(options: ['default' => '86400'])]
+    private ?int $sts_maxage = null;
 
     public function __construct()
     {
@@ -137,6 +146,42 @@ class Domains
                 $MXRecord->setDomain(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStsVersion(): ?string
+    {
+        return $this->sts_version;
+    }
+
+    public function setStsVersion(string $sts_version): static
+    {
+        $this->sts_version = $sts_version;
+
+        return $this;
+    }
+
+    public function getStsMode(): ?string
+    {
+        return $this->sts_mode;
+    }
+
+    public function setStsMode(string $sts_mode): static
+    {
+        $this->sts_mode = $sts_mode;
+
+        return $this;
+    }
+
+    public function getStsMaxage(): ?int
+    {
+        return $this->sts_maxage;
+    }
+
+    public function setStsMaxage(int $sts_maxage): static
+    {
+        $this->sts_maxage = $sts_maxage;
 
         return $this;
     }

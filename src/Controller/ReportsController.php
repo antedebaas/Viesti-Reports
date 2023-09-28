@@ -55,6 +55,8 @@ class ReportsController extends AbstractController
     #[Route('/reports/checkmailnow', name: 'app_checkmailnow')]
     public function checkmailboxnow(): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         $kernel = new Kernel($_ENV['APP_ENV'], (bool) $_ENV['APP_DEBUG']);
 
         $application = new Application($kernel);
