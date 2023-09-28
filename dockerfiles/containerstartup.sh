@@ -1,4 +1,6 @@
 #!/bin/sh
+
+echo "Generate .env.local file"
 if [ ! -f "/var/www/html/.env.local" ]; then
     APP_SECRET=$(echo "$RANDOM" | md5sum | head -c 32)
     echo "APP_ENV=prod" >> /var/www/html/.env.local
@@ -9,3 +11,6 @@ if [ ! -f "/var/www/html/.env.local" ]; then
     echo "MAILBOX_USERNAME=\"$MAILER_USER\"" >> /var/www/html/.env.local
     echo "MAILBOX_PASSWORD=\"$MAILER_PASSWORD\"" >> /var/www/html/.env.local
 fi
+
+echo "Run migrations"
+php /var/www/html/bin/console doctrine:migrations:migrate --no-interaction
