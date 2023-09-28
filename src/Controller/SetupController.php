@@ -97,7 +97,7 @@ class SetupController extends AbstractController
             }
 
             //if there are migrations in the filesystem that are not in the database this will show them
-            $migrationdifferences_todo = array_diff_assoc($migrationfiles, $migrations);
+            $migrationdifferences_todo = array_diff($migrationfiles, $migrations);
             if(count($migrationdifferences_todo) == 0){
                 $setup['database'] = true;
             } else {
@@ -107,7 +107,7 @@ class SetupController extends AbstractController
             }
 
             //if there are migrations in the database that are not in the filesystem this will show them
-            $migrationdifferences_missingfiles = array_diff_assoc($migrations,$migrationfiles);
+            $migrationdifferences_missingfiles = array_diff($migrations,$migrationfiles);
             if(count($migrationdifferences_missingfiles) == 0){
                 $setup['missingmigrations'] = true;
             } else {
