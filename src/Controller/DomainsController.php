@@ -69,7 +69,6 @@ class DomainsController extends AbstractController
         ]);
     }
 
-
     #[Route('/domains/edit/{id}', name: 'app_domains_edit')]
     public function edit(Domains $domain, Request $request): Response
     {
@@ -78,37 +77,6 @@ class DomainsController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $formdata = $form->getData();
-            // foreach($formdata->getMXRecords() as $mxrecord_name) {
-            //     #$repository = $this->em->getRepository(MXRecords::class);
-            //     #$mxrecord = $repository->findBy(array('domain' => $formdata->getId()));
-            //     //gets all MX Records, now forece write and add/remove elements
-            //     dump($mxrecord_name);
-            // }
-            #dd($formdata);
-
-            // $password1 = $form->get("password1")->getData();
-            // $password2 = $form->get("password2")->getData();
-
-            // if($password1 == $password2 && $password1 != ""){
-            //     $formdata->setPassword(
-            //         $userPasswordHasher->hashPassword(
-            //             $formdata,
-            //             $form->get('password1')->getData()
-            //         )
-            //     );
-            // }
-
-            // $is_admin = $form->get("isAdmin")->getData();
-
-            // $domain_roles = $form->get("roles")->getData();
-            // $roles = array();
-            // foreach($domain_roles as $domain_role) {
-            //     array_push($roles,$domain_role->getId());
-            // }
-            // if($is_admin == true) {
-            //     array_push($roles,"ROLE_ADMIN");
-            // }
-            // $formdata->setRoles($roles);
 
             $this->em->persist($formdata);
             $this->em->flush();
@@ -132,8 +100,6 @@ class DomainsController extends AbstractController
     // public function delete(Domains $domain ): Response
     // {
     //     $this->denyAccessUnlessGranted('ROLE_ADMIN');
-
-
 
     //     $this->em->remove($domain);
     //     $this->em->flush();
