@@ -52,7 +52,7 @@ class DomainFormType extends AbstractType
                 ),
             ])
             ->add('mx_records', CollectionType::class, [
-                'label' => "MX Records",
+                'label' => false,
                 'entry_type' => MXRecordsEmbeddedFormType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
