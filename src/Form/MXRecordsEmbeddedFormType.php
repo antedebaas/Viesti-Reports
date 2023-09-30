@@ -7,6 +7,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+
 class MXRecordsEmbeddedFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -14,6 +16,10 @@ class MXRecordsEmbeddedFormType extends AbstractType
         $builder
             ->add('name', null, [
                 'label' => false,
+                'required' => true,
+            ])
+            ->add('in_sts', CheckboxType::class, [
+                'label' => 'In STS policy',
                 'required' => false,
             ])
         ;

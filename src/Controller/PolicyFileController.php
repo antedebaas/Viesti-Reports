@@ -29,7 +29,9 @@ class PolicyFileController extends AbstractController
         $domain = $repository->findOneBy(array('fqdn' => $domainname));
 
         foreach($domain->getMxRecords() as $mxrecord){
-            $mxnames[] = $mxrecord->getName();
+            if($mxrecord->isInSTS()){
+                $mxnames[] = $mxrecord->getName();
+            }
         }
         
         if($domain){

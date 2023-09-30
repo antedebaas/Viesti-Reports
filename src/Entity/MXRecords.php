@@ -24,6 +24,9 @@ class MXRecords
     #[ORM\JoinColumn(nullable: false)]
     private ?Domains $domain = null;
 
+    #[ORM\Column(options: ['default' => true])]
+    private ?bool $inSTS = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -49,6 +52,18 @@ class MXRecords
     public function setDomain(?Domains $domain): static
     {
         $this->domain = $domain;
+
+        return $this;
+    }
+
+    public function isInSTS(): ?bool
+    {
+        return $this->inSTS;
+    }
+
+    public function setInSTS(bool $inSTS): static
+    {
+        $this->inSTS = $inSTS;
 
         return $this;
     }
