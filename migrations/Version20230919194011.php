@@ -17,6 +17,11 @@ final class Version20230919194011 extends AbstractMigration
         return '';
     }
 
+    public function isTransactional(): bool
+    {
+        return false;
+    }
+
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
@@ -83,10 +88,5 @@ final class Version20230919194011 extends AbstractMigration
         $this->addSql('DROP TABLE smtptls_policies');
         $this->addSql('DROP TABLE smtptls_reports');
         $this->addSql('DROP TABLE smtptls_seen');
-    }
-
-    public function isTransactional(): bool
-    {
-        return false;
     }
 }

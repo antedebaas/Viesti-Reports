@@ -17,6 +17,11 @@ final class Version20230809184012 extends AbstractMigration
         return '';
     }
 
+    public function isTransactional(): bool
+    {
+        return false;
+    }
+
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
@@ -49,10 +54,5 @@ final class Version20230809184012 extends AbstractMigration
         $this->addSql('DROP TABLE results');
         $this->addSql('DROP TABLE seen');
         $this->addSql('DROP TABLE users');
-    }
-
-    public function isTransactional(): bool
-    {
-        return false;
     }
 }
