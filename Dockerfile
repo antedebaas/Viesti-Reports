@@ -56,15 +56,16 @@ COPY dockerfiles/checkmail.sh /etc/periodic/daily/checkmail.sh
 RUN chmod +x /etc/periodic/daily/checkmail.sh
 
 RUN mkdir -p /var/www/html
-RUN chown -R nobody.nobody /var/www/html && \
-  chown -R nobody.nobody /run && \
-  chown -R nobody.nobody /var/lib/nginx && \
-  chown -R nobody.nobody /var/log/nginx
 
 WORKDIR /var/www/html
 COPY --chown=nobody . /var/www/html/
 
 RUN /usr/local/bin/composer install
+
+RUN chown -R nobody.nobody /var/www/html && \
+  chown -R nobody.nobody /run && \
+  chown -R nobody.nobody /var/lib/nginx && \
+  chown -R nobody.nobody /var/log/nginx
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
