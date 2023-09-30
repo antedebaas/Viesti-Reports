@@ -43,6 +43,7 @@
                                             <td>
                                                 <a href="{{ path('app_user_edit', {id: user.id}) }}" class="btn btn-sm btn-secondary">Edit</a>
                                                 <a href="{{ path('app_user_delete', {id: user.id}) }}" class="btn btn-sm btn-danger"  onclick="return confirm('{{'Are you sure? this can not be undone'|trans}}');">Delete</a>
+                                            </td>
                                           </tr>
                                         {% endfor %}
                                         </tbody>

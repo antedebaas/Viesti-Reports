@@ -1,0 +1,110 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit domain {{ domain.fqdn }}{% endblock %}
+
+{% block stylesheets %}{% endblock %}
+{% block javascripts_header %}
+{{ parent() }}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+{% endblock %}
+{% block javascripts_footer %}
+{{ parent() }}
+<script>
+    $(document).ready(function() {
+        var $wrapper = $('.js-mxrecord-wrapper');
+        $wrapper.on('click', '.js-remove-mxrecord', function(e) {
+            e.preventDefault();
+            $(this).closest('.js-mxrecord-item')
+                .fadeOut()
+                .remove();
+        });
+        
+        $wrapper.on('click', '.js-mxrecord-add', function(e) {
+            e.preventDefault();
+            var prototype = $wrapper.data('prototype');
+            var index = $wrapper.data('index');
+            var newForm = prototype.replace(/__name__/g, index);
+            $wrapper.data('index', index + 1);
+            $(this).before(newForm);
+        });
+    });
+</script>
+{% endblock %}
+
+{% block body %}
+                {{ form_start(form) }}
+                <div class="row my-4">
+                  <div class="col-6 col-md-6 col-lg-6 mb-4 mb-lg-0">
+                    <div class="card">
+                        <h5 class="card-header">Edit domain</h5>
+                        <div class="card-body">
+                          <p class="card-text">
+                            {{ form_row(form.fqdn) }}
+                          </p>
+                        </div>
+                      </div>
+                      <p></p>
+                      <div class="card">
+                        <h5 class="card-header">Edit MX-Records</h5>
+                        <div class="card-body">
+                          <p class="card-text">
+                            <span class="text-muted">You can not remove MX-Records that are bound to an MTA-TLS report. Trying to do so will result in a 500 error.</span>
+                            <div class="js-mxrecord-wrapper"
+                              data-prototype="<div class='col-xs-4 clearfix js-mxrecord-item'>
+                                      <span class='float-start w-75'>
+                                        {{ form_widget(form.mx_records.vars.prototype)|e('html_attr') }}
+                                      </span>
+                                      <span class='float-end'>
+                                        <a href='#' class='js-remove-mxrecord'>
+                                          <svg width='20px' height='20px' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' class='w-6 h-6'>
+                                            <path stroke-linecap='round' stroke-linejoin='round' d='M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0'/>
+                                          </svg>
+                                        </a>
+                                      </span>
+                                    </div>"
+                              data-index="{{ form.mx_records|length }}">
+                                {% for mxrecordFrom in form.mx_records %}
+                                    <div class="col-xs-4 clearfix js-mxrecord-item">
+                                      <span class="float-start w-75">
+                                        {{ form_errors(mxrecordFrom) }}
+                                        {{ form_row(mxrecordFrom.name) }}
+                                      </span>
+                                      <span class="float-end">
+                                        <a href="#" class="js-remove-mxrecord">
+                                          <svg height="20px" width="20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                          </svg>
+                                        </a>
+                                      </span>
+                                    </div>
+                              {% endfor %}
+                              <a href="#" class="js-mxrecord-add">
+                                <button class="btn btn-primary" type="button">
+                                  <svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                  </svg>
+                                  Add MX-Record    
+                                </button>
+                              </a>
+                            </div>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-6 col-lg-6 mb-4 mb-lg-0">
+                        <div class="card">
+                            <h5 class="card-header">STS Policy</h5>
+                            <div class="card-body">
+                              <p class="card-text">
+                                {{ form_row(form.sts_version) }}
+                                {{ form_row(form.sts_mode) }}
+                                {{ form_row(form.sts_maxage) }}
+                              </p>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+                <p></p>
+                <button class="btn btn-success" type="submit">{{ 'Edit domain'|trans }}</button>
+                {{ form_end(form) }}
+{% endblock %}

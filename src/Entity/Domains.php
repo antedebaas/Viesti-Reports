@@ -24,7 +24,7 @@ class Domains
     #[ORM\OneToMany(mappedBy: 'policy_domain', targetEntity: SMTPTLS_Policies::class, orphanRemoval: true)]
     private Collection $SMTPTLS_Policies;
 
-    #[ORM\OneToMany(mappedBy: 'domain', targetEntity: MXRecords::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'domain', targetEntity: MXRecords::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $MXRecords;
 
     #[ORM\Column(length: 255, options: ['default' => 'STSv1'])]
