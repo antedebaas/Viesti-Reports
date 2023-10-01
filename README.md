@@ -27,13 +27,29 @@ Setup is pretty easy
 ### Prerequisites
 
 * php 8.1 (or higher)
+* php-fpm
+* php-pdo
+* php-pdo_mysql
+* php-imap
+* php-phar
+* php-mbstring
+* php-iconv
+* php-ctype
+* php-fileinfo
+* php-xml
+* php-xmlwriter
+* php-simplexml
+* php-dom
+* php-tokenizer
+* php-session
+* php-zip
 * composer
 
 ### Installation
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/antedebaas/DMARC-Reports.git
+   git clone https://github.com/antedebaas/DMARC-SMTPTLS-Reports.git
    ```
 2. run update.sh to update project, clear its cache, this prevents symfony caching issues
    ```sh
@@ -41,10 +57,12 @@ Setup is pretty easy
    ```
 3. point the webserver root to the public/ directory
 4. point your webbrowser to http(s)://[yourhost]/setup and follow instructions
-5. run installservice.sh to install the systemd service and timer 
+5. run installservice.sh to install the systemd service and timer for automated mail checking
    ```sh
    bash [root path of this project]/installservice.sh
    ```
+6. if you put it on https://mta-sts.yourmdomain.ext it will provide an mta-sts policy file (https://mta-sts.yourmdomain.ext/.well-known/mta-sts.txt)
+   you can edit the policy on the domain edit page.
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -73,16 +91,16 @@ Distributed under the GPL v2 License. See `LICENSE.txt` for more information.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[contributors-shield]: https://img.shields.io/github/contributors/antedebaas/DMARC-Reports.svg?style=for-the-badge
-[contributors-url]: https://github.com/antedebaas/DMARC-Reports/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/antedebaas/DMARC-Reports.svg?style=for-the-badge
-[forks-url]: https://github.com/antedebaas/DMARC-Reports/network/members
-[stars-shield]: https://img.shields.io/github/stars/antedebaas/DMARC-Reports.svg?style=for-the-badge
-[stars-url]: https://github.com/antedebaas/DMARC-Reports/stargazers
-[issues-shield]: https://img.shields.io/github/issues/antedebaas/DMARC-Reports.svg?style=for-the-badge
-[issues-url]: https://github.com/antedebaas/DMARC-Reports/issues
-[license-shield]: https://img.shields.io/github/license/antedebaas/DMARC-Reports.svg?style=for-the-badge
-[license-url]: https://github.com/antedebaas/DMARC-Reports/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/antedebaas/DMARC-SMTPTLS-Reports.svg?style=for-the-badge
+[contributors-url]: https://github.com/antedebaas/DMARC-SMTPTLS-Reports/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/antedebaas/DMARC-SMTPTLS-Reports.svg?style=for-the-badge
+[forks-url]: https://github.com/antedebaas/DMARC-SMTPTLS-Reports/network/members
+[stars-shield]: https://img.shields.io/github/stars/antedebaas/DMARC-SMTPTLS-Reports.svg?style=for-the-badge
+[stars-url]: https://github.com/antedebaas/DMARC-SMTPTLS-Reports/stargazers
+[issues-shield]: https://img.shields.io/github/issues/antedebaas/DMARC-SMTPTLS-Reports.svg?style=for-the-badge
+[issues-url]: https://github.com/antedebaas/DMARC-SMTPTLS-Reports/issues
+[license-shield]: https://img.shields.io/github/license/antedebaas/DMARC-SMTPTLS-Reports.svg?style=for-the-badge
+[license-url]: https://github.com/antedebaas/DMARC-SMTPTLS-Reports/blob/master/LICENSE.txt
 [docker-shield]: https://img.shields.io/docker/pulls/antedebaas/dmarc-reports.svg?style=for-the-badge
 [docker-url]: https://hub.docker.com/repository/docker/antedebaas/dmarc-reports/general
 [screenshot-dmarc]: screenshot-dmarc.png
