@@ -1,4 +1,4 @@
-FROM alpine:3.18
+FROM alpine:latest
 
 LABEL Maintainer="Ante de Baas @antedebaas on GitHub>" \
       Description="DMARC & SMTP-TLS Reports processor and visualizer"
@@ -19,47 +19,43 @@ ENV MAILER_PASSWORD=
 
 RUN apk --update add ca-certificates
 RUN apk --no-cache add \
+        curl \
+        nginx \
         php81 \
+        php81-ctype \
+        php81-dom \
+        php81-fileinfo \
         php81-fpm \
+        php81-iconv \
+        php81-imap \
+        php81-mbstring \
         php81-pdo \
         php81-pdo_mysql \
         php81-pdo_pgsql \
-        php81-pdo_sqlite \ 
-        php81-imap \
+        php81-pdo_sqlite \
         php81-phar \
-        php81-mbstring \
-        php81-iconv \
-        php81-ctype \
-        php81-fileinfo \
+        php81-session \
+        php81-simplexml \
+        php81-tokenizer \
         php81-xml \
         php81-xmlwriter \
-        php81-simplexml \
-        php81-dom \
-        php81-tokenizer \
-        php81-session \
         php81-zip \
-        nginx \
-        supervisor \
-        curl
-COPY dockerfiles/nginx.conf /etc/nginx/nginx.conf
+        supervisor
 
+COPY dockerfiles/nginx.conf /etc/nginx/nginx.conf
 COPY dockerfiles/fpm-pool.conf /etc/php81/php-fpm.d/www.conf
 COPY dockerfiles/php.ini /etc/php81/conf.d/custom.ini
-RUN wget https://getcomposer.org/composer-stable.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer
-
 COPY dockerfiles/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
 COPY dockerfiles/containerstartup.sh /usr/local/bin/containerstartup.sh
 RUN chmod +x /usr/local/bin/containerstartup.sh
-
 COPY dockerfiles/checkmail.sh /etc/periodic/daily/checkmail.sh
 RUN chmod +x /etc/periodic/daily/checkmail.sh
 
 RUN mkdir -p /var/www/html
-
 WORKDIR /var/www/html
 COPY --chown=nobody . /var/www/html/
 
+RUN wget https://getcomposer.org/composer-stable.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer
 RUN /usr/local/bin/composer install
 
 RUN chown -R nobody.nobody /var/www/html && \

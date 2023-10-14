@@ -26,24 +26,25 @@ Setup is pretty easy
 
 ### Prerequisites
 
+* composer
+* mariadb/mysql database server
 * php 8.1 (or higher)
+* php-ctype
+* php-dom
+* php-fileinfo
 * php-fpm
+* php-iconv
+* php-imap
+* php-mbstring
 * php-pdo
 * php-pdo_mysql
-* php-imap
 * php-phar
-* php-mbstring
-* php-iconv
-* php-ctype
-* php-fileinfo
+* php-session
+* php-simplexml
+* php-tokenizer
 * php-xml
 * php-xmlwriter
-* php-simplexml
-* php-dom
-* php-tokenizer
-* php-session
 * php-zip
-* composer
 
 ### Installation
 
