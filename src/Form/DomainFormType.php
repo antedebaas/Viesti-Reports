@@ -30,6 +30,9 @@ class DomainFormType extends AbstractType
             ->add('fqdn', TextType::class, [
                 'label' => 'Domain name',
             ])
+            ->add('mailhost', TextType::class, [
+                'label' => 'Mailhost',
+            ])
             ->add('sts_version', ChoiceType::class, [
                 'choices'  => [
                     'STSv1' => 'STSv1'

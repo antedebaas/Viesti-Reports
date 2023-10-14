@@ -14,6 +14,7 @@
                                           <tr>
                                             <th scope="col">Id</th>
                                             <th scope="col">Domain FQDN</th>
+                                            <th scope="col">Mailhost</th>
                                             <th scope="col">MX Records</th>
                                             <th scope="col">Total DMARC reports</th>
                                             <th scope="col">Total SMTP-TLS policies</th>
@@ -25,6 +26,7 @@
                                           <tr>
                                             <th scope="row">{{ domain.id }}</th>
                                             <td>{{ domain.fqdn }}</td>
+                                            <td>{{ domain.mailhost }}</td>
                                             <td>
                                               {% for mx in domain.mxrecords %}
                                                 {{ mx.name }}<br>
