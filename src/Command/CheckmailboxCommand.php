@@ -68,10 +68,6 @@ class CheckmailboxCommand extends Command
         $mailresult = $this->open_mailbox($this->imap);
         $stats['new_emails'] = $mailresult['num_emails'];
 
-        // dump($mailresult['reports']['dmarc_reports']);
-        // dump($mailresult['reports']['smtptls_reports']);
-        // dd();
-        
         foreach($mailresult['reports']['dmarc_reports'] as $dmarcreport){
             $stats['new_dmarc_reports']++;
 
