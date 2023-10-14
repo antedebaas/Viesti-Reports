@@ -87,7 +87,7 @@ class DomainsController extends AbstractController
 
         $dns_info = array(
             'now' => new \DateTime('now'),
-            'ip' => $request->server->get('REMOTE_ADDR'),
+            'ip' => $request->server->get('SERVER_ADDR'),
             'email' => $this->getParameter('app.mailbox_username'),
         );
 
