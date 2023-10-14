@@ -52,6 +52,7 @@ class PolicyFileController extends AbstractController
     public function autodiscoverfile(Request $request, EntityManagerInterface $em): Response
     {
         $domain = str_replace("autodiscover.", "",$request->getHost());
+        $domain = str_replace("autoconfig.", "",$domain);
         $repository = $this->em->getRepository(Domains::class);
         $domain = $repository->findOneBy(array('fqdn' => $domain));
         if($domain){
