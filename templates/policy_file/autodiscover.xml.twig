@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
+   <Response xmlns="http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a">
+       <Account>
+           <AccountType>email</AccountType>
+           <Action>settings</Action>
+           <Protocol>
+               <Type>IMAP</Type>
+               <Server>{{ mailsubdomain }}</Server>
+               <Port>993</Port>
+               <DomainRequired>off</DomainRequired>
+               <LoginName>{{ loginname }}</LoginName>
+               <SPA>off</SPA>
+               <SSL>on</SSL>
+               <AuthRequired>on</AuthRequired>
+           </Protocol>
+           <Protocol>
+               <Type>SMTP</Type>
+               <Server>{{ mailsubdomain }}</Server>
+               <Port>587</Port>
+               <DomainRequired>off</DomainRequired>
+               <LoginName>{{ loginname }}</LoginName>
+               <SPA>off</SPA>
+               <Encryption>TLS</Encryption>
+               <AuthRequired>on</AuthRequired>
+               <UsePOPAuth>off</UsePOPAuth>
+               <SMTPLast>off</SMTPLast>
+           </Protocol>
+       </Account>
+   </Response>
+</Autodiscover>
+{# https://apache.tutorials24x7.com/blog/outlook-autodiscover-using-apache-virtual-host #}
+{# Input is the following
+<Autodiscover xmlns="https://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006">
+   <Request>
+     <EMailAddress>user@domain.ext</EMailAddress>
+     <AcceptableResponseSchema>https://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a</AcceptableResponseSchema>
+   </Request>
+ </Autodiscover>
+source: https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/pox-autodiscover-request-for-exchange
+#}

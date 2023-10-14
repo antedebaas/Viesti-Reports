@@ -85,9 +85,16 @@ class DomainsController extends AbstractController
         }
         $setup['users_form'] = $form->createView();
 
+        $dns_info = array(
+            'now' => new \DateTime('now'),
+            'ip' => $request->server->get('SERVER_ADDR'),
+            'email' => $this->getParameter('app.mailbox_username'),
+        );
+
         return $this->render('domains/edit.html.twig', [
             'menuactive' => 'domains',
             'domain' => $domain,
+            'dns_info' => $dns_info,
             'form' => $form,
             'breadcrumbs' => array(
                 array('name' => $this->translator->trans("Domains"), 'url' => $this->router->generate('app_domains')),

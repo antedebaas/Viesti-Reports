@@ -47,4 +47,35 @@ class PolicyFileController extends AbstractController
         $response->headers->set('Content-Type', 'text/plain');
             return $response;
     }
+
+    #[Route('/autodiscover/autodiscover.xml', name: 'app_autodiscover_file')]
+    public function autodiscoverfile(Request $request, EntityManagerInterface $em): Response
+    {
+        $domain = str_replace("autodiscover.", "",$request->getHost());
+        $domain = str_replace("autoconfig.", "",$domain);
+        $repository = $this->em->getRepository(Domains::class);
+        $domain = $repository->findOneBy(array('fqdn' => $domain));
+        if($domain){
+            preg_match("/\<EMailAddress\>(.*?)\<\/EMailAddress\>/", file_get_contents("php://input"), $matches);
+            if(!array_key_exists('1', $matches)){
+                $matches[1] = "";
+            }
+    
+            $response = $this->render('policy_file/autodiscover.xml.twig', [
+                'loginname' => $matches[1],
+                'mailsubdomain' => $domain->getMailhost(),
+            ]);
+        }
+        else {
+            $response = $this->render('policy_file/autodiscover.xml.twig', [
+                'loginname' => "",
+                'mailsubdomain' => ""
+            ]);
+        }
+
+
+        $response->headers->set('Content-Type', 'application/xml');
+
+        return $response;
+    }
 }

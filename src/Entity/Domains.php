@@ -36,6 +36,9 @@ class Domains
     #[ORM\Column(options: ['default' => '86400'])]
     private ?int $sts_maxage = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $mailhost = null;
+
     public function __construct()
     {
         $this->reports = new ArrayCollection();
@@ -182,6 +185,18 @@ class Domains
     public function setStsMaxage(int $sts_maxage): static
     {
         $this->sts_maxage = $sts_maxage;
+
+        return $this;
+    }
+
+    public function getMailhost(): ?string
+    {
+        return $this->mailhost;
+    }
+
+    public function setMailhost(string $mailhost): static
+    {
+        $this->mailhost = $mailhost;
 
         return $this;
     }
