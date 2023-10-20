@@ -15,7 +15,7 @@
                                             <th scope="col">Id</th>
                                             <th scope="col">Domain</th>
                                             <th scope="col">Date/Time Range</th>
-                                            <th scope="col">Reporting Organisation</th>
+                                            <th scope="col">Reporter</th>
                                             <th scope="col">External Report Id</th>
                                             <th scope="col">Results</th>
                                             <th scope="col"></th>
@@ -43,6 +43,8 @@
                                               {% set sts_version = true %}
                                               {% set sts_mode = true %}
                                               {% for policy in report.smtptls_policies %}
+                                                  <span class="btn btn-sm btn-{% if policy.summarysuccessfulcount == 0 %}secondary{% else %}success{% endif %}">{{ policy.summarysuccessfulcount }} Sucessful</span>
+                                                  <span class="btn btn-sm btn-{% if policy.summarysuccessfulcount == 0 %}danger{% else %}success{% endif %}">{{ policy.summaryfailedcount }} Failed</span>
                                                   {% if policy.policytype == 'no-policy-found' %}
                                                     <span class="btn btn-sm btn-danger">no-policy-found</span>
                                                   {% else %}
