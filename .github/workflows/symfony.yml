@@ -36,8 +36,8 @@ jobs:
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
     - name: Create Database
       run: |
-        mkdir -p /home/runner/work/DMARC-Reports/DMARC-Reports/var/data
-        touch /home/runner/work/DMARC-Reports/DMARC-Reports/var/data/database.sqlite
+        mkdir -p /home/runner/work/project/var/data
+        touch /home/runner/work/project/var/data/database.sqlite
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
         DATABASE_URL: sqlite:///%kernel.project_dir%/var/data.db
