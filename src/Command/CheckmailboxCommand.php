@@ -26,7 +26,7 @@ use App\Entity\Logs;
 
 #[AsCommand(
     name: 'app:checkmailbox',
-    description: 'Add a short description for your command',
+    description: 'Checks the mailbox for new reports',
 )]
 class CheckmailboxCommand extends Command
 {
