@@ -17,7 +17,7 @@ class SMTPTLS_MXRecords
     #[ORM\JoinColumn(nullable: false)]
     private ?MXRecords $MXRecord = null;
 
-    #[ORM\ManyToOne(inversedBy: 'mTASTSMXRecords')]
+    #[ORM\ManyToOne(inversedBy: 'SMTPTLS_MXRecords')]
     #[ORM\JoinColumn(nullable: false)]
     private ?SMTPTLS_Policies $policy = null;
 
