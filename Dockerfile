@@ -55,6 +55,7 @@ RUN mkdir -p /var/www/html
 WORKDIR /var/www/html
 COPY --chown=nobody . /var/www/html/
 
+RUN ln -s /usr/bin/php81 /usr/bin/php
 RUN wget https://getcomposer.org/composer-stable.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer
 RUN /usr/local/bin/composer install
 
