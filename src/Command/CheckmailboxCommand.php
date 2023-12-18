@@ -78,6 +78,10 @@ class CheckmailboxCommand extends Command
 
                 $dbdomain = new Domains;
                 $dbdomain->setFqdn($dmarcreport->policy_published->domain->__toString());
+                $dbdomain->setStsVersion("STSv1");
+                $dbdomain->setStsMode("enforce");
+                $dbdomain->setStsMaxAge(86400);
+                $dbdomain->setMailhost($policy->policy->{'policy-domain'});
                 $this->em->persist($dbdomain);
                 $this->em->flush();
             }
@@ -161,6 +165,10 @@ class CheckmailboxCommand extends Command
 
                     $dbdomain = new Domains;
                     $dbdomain->setFqdn($policy->policy->{'policy-domain'});
+                    $dbdomain->setStsVersion("STSv1");
+                    $dbdomain->setStsMode("enforce");
+                    $dbdomain->setStsMaxAge(86400);
+                    $dbdomain->setMailhost($policy->policy->{'policy-domain'});
                     $this->em->persist($dbdomain);
                     $this->em->flush();
                 }
@@ -195,6 +203,7 @@ class CheckmailboxCommand extends Command
                             $dbmxrecord = new MXRecords;
                             $dbmxrecord->setDomain($dbdomain);
                             $dbmxrecord->setName($mxrecord);
+                            $dbmxrecord->setInSts(true);
                             $this->em->persist($dbmxrecord);
                             $this->em->flush();
                         }
