@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     app.mailbox_username: '%env(MAILBOX_USERNAME)%'
+    app.delete_processed_mails: '%env(DELETE_PROCESSED_MAILS)%'
 
 services:
     # default configuration for services in *this* file
