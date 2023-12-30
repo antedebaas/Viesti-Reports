@@ -81,7 +81,7 @@ class CheckmailboxCommand extends Command
                 $dbdomain->setStsVersion("STSv1");
                 $dbdomain->setStsMode("enforce");
                 $dbdomain->setStsMaxAge(86400);
-                $dbdomain->setMailhost($policy->policy->{'policy-domain'});
+                $dbdomain->setMailhost($dmarcreport->policy_published->domain->__toString());
                 $this->em->persist($dbdomain);
                 $this->em->flush();
             }
