@@ -12,6 +12,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 use Doctrine\ORM\EntityManagerInterface;
 use SecIT\ImapBundle\Service\Imap;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 use App\Entity\Domains;
 use App\Entity\MXRecords;
@@ -32,11 +33,13 @@ class CheckmailboxCommand extends Command
 {
     private $em;
     private $imap;
+    private $params;
 
-    public function __construct(EntityManagerInterface $em, Imap $imap)
+    public function __construct(EntityManagerInterface $em, Imap $imap, ParameterBagInterface $params)
     {
         $this->em = $em;
         $this->imap = $imap;
+        $this->params = $params;
         parent::__construct();
     }
 
@@ -275,6 +278,10 @@ class CheckmailboxCommand extends Command
                 $dmarc_reports = array_merge($dmarc_reports,$new_reports['dmarc_reports']);
                 $smtptls_reports = array_merge($smtptls_reports,$new_reports['smtptls_reports']);
                 unlink($attachment->filePath);
+            }
+            
+            if ($this->params->get('app.delete_processed_mails') == "true") {
+                $mailbox->deleteMail($mailId);
             }
         }
         return array('num_emails' => $num_emails, 'reports' => array('dmarc_reports' => $dmarc_reports, 'smtptls_reports' => $smtptls_reports));
