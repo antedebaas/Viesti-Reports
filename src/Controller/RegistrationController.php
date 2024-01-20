@@ -20,16 +20,23 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
+    private $em;
     private EmailVerifier $emailVerifier;
 
-    public function __construct(EmailVerifier $emailVerifier)
+    public function __construct(EntityManagerInterface $em, EmailVerifier $emailVerifier)
     {
+        $this->em = $em;
         $this->emailVerifier = $emailVerifier;
     }
 
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, Authenticator $authenticator, EntityManagerInterface $entityManager): Response
     {
+        $repository = $this->em->getRepository(Users::class);
+        if(!file_exists(dirname(__FILE__).'/../../.env.local') || $repository->count([]) == 0) {
+            return $this->redirectToRoute('app_setup');
+        }
+
         $user = new Users();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);

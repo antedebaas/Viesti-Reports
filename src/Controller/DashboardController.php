@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use App\Entity\Users;
 use App\Entity\Domains;
 use App\Entity\DMARC_Reports;
 use App\Entity\DMARC_Seen;
@@ -34,6 +35,11 @@ class DashboardController extends AbstractController
     public function index(): Response
     {
         if (!file_exists(dirname(__FILE__).'/../../.env.local')) {
+            return $this->redirectToRoute('app_setup');
+        }
+
+        $repository = $this->em->getRepository(Users::class);
+        if($repository->count([]) == 0) {
             return $this->redirectToRoute('app_setup');
         }
 

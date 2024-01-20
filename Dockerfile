@@ -16,49 +16,50 @@ ENV MAILER_SMTPPORT=25
 ENV MAILER_IMAPPORT=993
 ENV MAILER_USER=
 ENV MAILER_PASSWORD=
-ENV DELETE_PROCESSED_MAILS=
+ENV DELETE_PROCESSED_MAILS=false
 
-RUN apk --update add ca-certificates
-RUN apk --no-cache add \
+RUN apk --update add ca-certificates && \
+    apk --no-cache add \
         curl \
         nginx \
-        php81 \
-        php81-ctype \
-        php81-dom \
-        php81-fileinfo \
-        php81-fpm \
-        php81-iconv \
-        php81-imap \
-        php81-mbstring \
-        php81-pdo \
-        php81-pdo_mysql \
-        php81-pdo_pgsql \
-        php81-pdo_sqlite \
-        php81-phar \
-        php81-session \
-        php81-simplexml \
-        php81-tokenizer \
-        php81-xml \
-        php81-xmlwriter \
-        php81-zip \
+        php83 \
+        php83-ctype \
+        php83-dom \
+        php83-fileinfo \
+        php83-fpm \
+        php83-iconv \
+        php83-imap \
+        php83-mbstring \
+        php83-pdo \
+        php83-pdo_mysql \
+        php83-pdo_pgsql \
+        php83-pdo_sqlite \
+        php83-phar \
+        php83-session \
+        php83-simplexml \
+        php83-tokenizer \
+        php83-xml \
+        php83-xmlwriter \
+        php83-zip \
         supervisor
 
-COPY dockerfiles/nginx.conf /etc/nginx/nginx.conf
-COPY dockerfiles/fpm-pool.conf /etc/php81/php-fpm.d/www.conf
-COPY dockerfiles/php.ini /etc/php81/conf.d/custom.ini
-COPY dockerfiles/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY dockerfiles/containerstartup.sh /usr/local/bin/containerstartup.sh
-RUN chmod +x /usr/local/bin/containerstartup.sh
-COPY dockerfiles/checkmail.sh /etc/periodic/daily/checkmail.sh
-RUN chmod +x /etc/periodic/daily/checkmail.sh
+COPY dockerfiles/ /
 
-RUN mkdir -p /var/www/html
+RUN chmod +x /usr/local/bin/containerstartup.sh && \
+    dos2unix /usr/local/bin/containerstartup.sh && \
+    chmod +x /etc/periodic/daily/checkmail.sh && \
+    dos2unix /etc/nginx/nginx.conf && \
+    dos2unix /etc/php83/php-fpm.d/www.conf && \
+    dos2unix /etc/php83/conf.d/custom.ini && \
+    dos2unix /etc/supervisor/conf.d/supervisord.conf && \
+    mkdir -p /var/www/html && \
+    ln -s /usr/bin/php83 /usr/bin/php && \
+    ln -s /usr/sbin/php-fpm83 /usr/sbin/php-fpm
+
 WORKDIR /var/www/html
 COPY --chown=nobody . /var/www/html/
-
-RUN ln -s /usr/bin/php81 /usr/bin/php
-RUN wget https://getcomposer.org/composer-stable.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer
-RUN /usr/local/bin/composer install
+RUN wget https://getcomposer.org/composer-stable.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer && \
+    /usr/local/bin/composer install
 
 RUN chown -R nobody.nobody /var/www/html && \
   chown -R nobody.nobody /run && \

@@ -1,19 +1,38 @@
+name: dmarc-smtptls-reports
 version: "2"
 services:
-  dmarc-reports:
-    image: antedebaas/dmarc-reports:latest
+  db:
+    image: mariadb:latest
+    environment:
+      MYSQL_DATABASE: 
+      MYSQL_USER: 
+      MYSQL_PASSWORD: 
+      MYSQL_ROOT_PASSWORD: 
+    ports:
+      - 3306
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized" ]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+  web:
+    image: antedebaas/dmarc-reports-local:latest
     ports:
         - 0.0.0.0:8080:8080
     environment:
       DATABASE_TYPE: mysql
-      DATABASE_HOST: 
-      DATABASE_PORT: 3306
-      DATABASE_NAME: dmarcreports
+      DATABASE_HOST: db
+      DATABASE_PORT: 3306 
+      DATABASE_NAME: 
       DATABASE_USER: 
       DATABASE_PASSWORD: 
       MAILER_HOST: 
-      MAILER_SMTPPORT: 25
+      MAILER_SMTPPORT: 587
       MAILER_IMAPPORT: 993
       MAILER_USER: 
       MAILER_PASSWORD: 
     restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
