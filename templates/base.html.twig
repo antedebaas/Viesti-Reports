@@ -92,17 +92,24 @@
             </nav>
             {% endif %}
             <main class="col-md-9 ms-sm-auto col-lg-11 px-md-4 py-4">
-              {% if app.user.email is defined %}
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                      {% if breadcrumbs is defined %}
-                        {% for breadcrumb in breadcrumbs %}
-                          <li class="breadcrumb-item{% if loop.last %} active{% endif %}">{% if loop.index != breadcrumbs|length %}<a href="{{ breadcrumb.url }}">{% endif %}{{ breadcrumb.name }} {% if loop.index != breadcrumbs|length %}</a>{% endif %}</li>  
-                        {% endfor %}
-                      {% endif %}
-                    </ol>
-                </nav>
-              {% endif %}
+              <div class="clearfix">
+                <span class="float-start">
+                  {% if app.user.email is defined %}
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                          {% if breadcrumbs is defined %}
+                            {% for breadcrumb in breadcrumbs %}
+                              <li class="breadcrumb-item{% if loop.last %} active{% endif %}">{% if loop.index != breadcrumbs|length %}<a href="{{ breadcrumb.url }}">{% endif %}{{ breadcrumb.name }} {% if loop.index != breadcrumbs|length %}</a>{% endif %}</li>  
+                            {% endfor %}
+                          {% endif %}
+                        </ol>
+                    </nav>
+                  {% endif %}
+                </span>
+                <span class="float-end">
+                  {% block addButton %}{% endblock %}
+                </span>
+              </div>
 {% block body %}{% endblock %}
             </main>
         </div>

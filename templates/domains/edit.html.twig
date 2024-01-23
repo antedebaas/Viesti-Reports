@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit domain {{ domain.fqdn }}{% endblock %}
+{% block title %}
+{% if domain != null %}Edit domain {{ domain.fqdn }}{% else %}Add domain{% endif %}
+{% endblock %}
 
 {% block stylesheets %}{% endblock %}
 {% block javascripts_header %}
@@ -135,42 +137,42 @@
                                     <tbody>
                                       <tr>
                                         <td>A</td>
-                                        <td>autoconfig.{{ domain.fqdn }}</td>
+                                        <td>autoconfig.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
                                         <td>{{ dns_info.ip }}</td>
                                       </tr>
                                       <tr>
                                         <td>A</td>
-                                        <td>autodiscover.{{ domain.fqdn }}</td>
+                                        <td>autodiscover.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
                                         <td>{{ dns_info.ip }}</td>
                                       </tr>
                                       <tr>
                                         <td>A</td>
-                                        <td>mta-sts.{{ domain.fqdn }}</td>
+                                        <td>mta-sts.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
                                         <td>{{ dns_info.ip }}</td>
                                       </tr>
                                       <tr>
                                         <td>A</td>
-                                        <td>_autodiscover._tcp.{{ domain.fqdn }}</td>
+                                        <td>_autodiscover._tcp.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
                                         <td>{{ dns_info.ip }}</td>
                                       </tr>
                                       <tr>
                                         <td>TXT</td>
-                                        <td>_mta-sts.{{ domain.fqdn }}</td>
+                                        <td>_mta-sts.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
                                         <td>"v=STSv1; id={{ dns_info.now|date("YmdHis") }};"</td>
                                       </tr>
                                       <tr>
                                         <td>TXT</td>
-                                        <td>_smtp._tls.{{ domain.fqdn }}</td>
+                                        <td>_smtp._tls.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
                                         <td>"v=TLSRPTv1; rua=mailto:{{ dns_info.email }}"</td>
                                       </tr>
                                       <tr>
                                         <td>TXT</td>
-                                        <td>_dmarc.{{ domain.fqdn }}</td>
+                                        <td>_dmarc.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
                                         <td>"v=DMARC1; p=reject; rua=mailto:{{ dns_info.email }}; ruf=mailto:{{ dns_info.email }}; fo=1"</td>
                                       </tr>
                                       <tr>
                                         <td>TXT</td>
-                                        <td>default._domainkey.{{ domain.fqdn }}</td>
+                                        <td>default._domainkey.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
                                         <td>[Key from your DKIM installation]</td>
                                       </tr>
                                     </tbody>
@@ -182,6 +184,6 @@
                     </div>
                 </div>
                 <p></p>
-                <button class="btn btn-success" type="submit">{{ 'Edit domain'|trans }}</button>
+                <button class="btn btn-success" type="submit">{% if domain != null %}{{ 'Edit domain'|trans }}{% else %}{{ 'Add domain'|trans }}{% endif %}</button>
                 {{ form_end(form) }}
 {% endblock %}

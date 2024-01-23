@@ -1,7 +1,7 @@
 imap:
     connections:
         default:
-            mailbox: "{%env(string:MAILBOX_CONNECTION)%}INBOX"
+            imap_path: "{%env(string:MAILBOX_CONNECTION)%}INBOX"
             username: "%env(string:MAILBOX_USERNAME)%"
             password: "%env(string:MAILBOX_PASSWORD)%"
             attachments_dir: "%kernel.project_dir%/var/imap/attachments"
