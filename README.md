@@ -28,7 +28,7 @@ Setup is pretty easy
 
 * composer
 * mariadb/mysql database server
-* php 8.1 (or higher)
+* php 8.2 (or higher)
 * php-ctype
 * php-dom
 * php-fileinfo
