@@ -1,4 +1,7 @@
 {
+    "antedebaas/imap-bundle": {
+        "version": "2.0.1"
+    },
     "doctrine/doctrine-bundle": {
         "version": "2.10",
         "recipe": {
@@ -41,7 +44,7 @@
         ]
     },
     "secit-pl/imap-bundle": {
-        "version": "2.0",
+        "version": "3.0",
         "recipe": {
             "repo": "github.com/symfony/recipes-contrib",
             "branch": "main",

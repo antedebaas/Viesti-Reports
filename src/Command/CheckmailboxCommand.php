@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 use Doctrine\ORM\EntityManagerInterface;
-use SecIT\ImapBundle\Service\Imap;
+use SecIT\ImapBundle\Connection\ConnectionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 use App\Entity\Domains;
@@ -35,10 +35,10 @@ class CheckmailboxCommand extends Command
     private $imap;
     private $params;
 
-    public function __construct(EntityManagerInterface $em, Imap $imap, ParameterBagInterface $params)
+    public function __construct(EntityManagerInterface $em, ConnectionInterface $defaultConnection, ParameterBagInterface $params)
     {
         $this->em = $em;
-        $this->imap = $imap;
+        $this->imap = $defaultConnection;
         $this->params = $params;
         parent::__construct();
     }
@@ -262,10 +262,10 @@ class CheckmailboxCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function open_mailbox(Imap $imap):array
+    private function open_mailbox(ConnectionInterface $imap):array
     {
         $num_emails=0;
-        $mailbox = $imap->get('default');
+        $mailbox = $imap->getMailbox('default');
         $mailsIds = $mailbox->searchMailbox('UNSEEN');
         $dmarc_reports = array();
         $smtptls_reports = array();
