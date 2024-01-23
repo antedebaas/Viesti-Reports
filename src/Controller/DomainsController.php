@@ -69,6 +69,40 @@ class DomainsController extends AbstractController
         ]);
     }
 
+    #[Route('/domains/add', name: 'app_domains_add')]
+    public function add(Request $request): Response
+    {
+        $form = $this->createForm(DomainFormType::class);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $formdata = $form->getData();
+
+            $this->em->persist($formdata);
+            $this->em->flush();
+
+            return $this->redirectToRoute('app_domains');
+        }
+        $setup['users_form'] = $form->createView();
+
+        $dns_info = array(
+            'now' => new \DateTime('now'),
+            'ip' => $request->server->get('SERVER_ADDR'),
+            'email' => $this->getParameter('app.mailbox_username'),
+        );
+
+        return $this->render('domains/edit.html.twig', [
+            'menuactive' => 'domains',
+            'domain' => null,
+            'dns_info' => $dns_info,
+            'form' => $form,
+            'breadcrumbs' => array(
+                array('name' => $this->translator->trans("Domains"), 'url' => $this->router->generate('app_domains')),
+                array('name' => "Add new domain manually", 'url' => $this->router->generate('app_domains_add'))
+            ),
+        ]);
+    }
+
     #[Route('/domains/edit/{id}', name: 'app_domains_edit')]
     public function edit(Domains $domain, Request $request): Response
     {

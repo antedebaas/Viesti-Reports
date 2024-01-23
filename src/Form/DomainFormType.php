@@ -49,6 +49,7 @@ class DomainFormType extends AbstractType
                 'label' => 'Max age (seconds)',
                 'html5' => true,
                 'scale' => 0,
+                'data' => '86400',
                 'attr' => array(
                     'min' => '86400',
                     'max' => '31557600',
