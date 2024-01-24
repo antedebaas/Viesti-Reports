@@ -110,6 +110,7 @@
                         </div>
                     </div>
                   </div>
+                  {% if is_granted('ROLE_ADMIN') %}
                   <div class="row">
                     <div class="col-12 col-xl-12 mb-12 mb-lg-12">
                         <div class="card">
@@ -139,5 +140,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                  </div>
+                {% endif %}
 {% endblock %}
