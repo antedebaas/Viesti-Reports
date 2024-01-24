@@ -68,7 +68,7 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
         if(in_array("ROLE_ADMIN",$user->getRoles())){
             return true;
         }
-        elseif($this->array_keys_in_array($domains,$user->getRoles())){
+        elseif($this->array_keys_in_array($domains,$this->findDomains($user))){
             return true;
         } else {
             return false;
@@ -105,13 +105,13 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
         }
     }
 
-    public function addRole(Users $user,int $role,$em){
-        $roles = $user->getRoles();
-        $roles[] = $role;
-        $user->setRoles($roles);
-        
-        $em->persist($user);
-        $em->flush();
+    public function findDomains(Users $user){
+        $ids = [];
+        $domains = $user->getDomains();
+        foreach($domains as $domain){
+            $ids[] = $domain->getId();
+        }
+        return $ids;
     }
 
     public function findIsAdmin($user_id)

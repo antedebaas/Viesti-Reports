@@ -16,12 +16,12 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class DomainsRepository extends ServiceEntityRepository
 {
-    private UsersRepository $UsersRepository;
+    private UsersRepository $usersRepository;
 
     public function __construct(ManagerRegistry $registry, UsersRepository $usersRepository)
     {
         parent::__construct($registry, Domains::class);
-        $this->UsersRepository = $usersRepository;
+        $this->usersRepository = $usersRepository;
     }
 
 //    /**
@@ -74,30 +74,28 @@ class DomainsRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findFormSelectedRoles($options): array
+    public function findFormSelectedDomains($options): array
     {
         if(array_key_exists('data', $options) && $options["data"]->getId() != null)
         {
-            return $this->findSelectedRoles($options["data"]->getId());
+            return $this->findSelectedDomains($options["data"]->getId());
         } else {
             return array();
         }
     }
 
-    public function findSelectedRoles($user_id): array
+    public function findSelectedDomains($user_id): array
     {
-        $domain_ids=array();
-        $user=$this->UsersRepository->find($user_id);
-        foreach($user->getRoles() as $domain_id)
+        $ids=array();
+        $user=$this->usersRepository->find($user_id);
+        foreach($user->getDomains() as $domain)
         {
-            if(is_int($domain_id)){
-                $domain_ids[]=$domain_id;
-            }
+            $ids[]=$domain->getId();
         }
 
         return $this->createQueryBuilder('d')
-            ->andWhere("d.id IN (:domain_ids)")
-            ->setParameter('domain_ids', $domain_ids)
+            ->andWhere("d.id IN (:ids)")
+            ->setParameter('ids', $ids)
             ->getQuery()
             ->getResult()
         ;

@@ -39,11 +39,15 @@ class Domains
     #[ORM\Column(length: 255)]
     private ?string $mailhost = null;
 
+    #[ORM\ManyToMany(targetEntity: Users::class, mappedBy: 'domains')]
+    private Collection $users;
+
     public function __construct()
     {
         $this->reports = new ArrayCollection();
         $this->SMTPTLS_Policies = new ArrayCollection();
         $this->MXRecords = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -197,6 +201,33 @@ class Domains
     public function setMailhost(string $mailhost): static
     {
         $this->mailhost = $mailhost;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Users>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(Users $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addDomain($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(Users $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeDomain($this);
+        }
 
         return $this;
     }

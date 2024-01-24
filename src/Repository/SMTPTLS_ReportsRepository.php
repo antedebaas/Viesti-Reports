@@ -6,6 +6,7 @@ use App\Entity\SMTPTLS_Reports;
 use App\Entity\SMTPTLS_Policies;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bundle\SecurityBundle\Security;
 
 /**
  * @extends ServiceEntityRepository<SMTPTLS_Reports>
@@ -17,9 +18,11 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SMTPTLS_ReportsRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $security;
+    public function __construct(ManagerRegistry $registry, Security $security)
     {
         parent::__construct($registry, SMTPTLS_Reports::class);
+        $this->security = $security;
     }
 
 //    /**
@@ -82,13 +85,16 @@ class SMTPTLS_ReportsRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function getTotalRows(array $domains, array $roles): int
+    public function getTotalRows(array $domains): int
     {
-        #dd($domains);
         $qb = $this->createQueryBuilder('r')
            ->select('count(r.id)');
         
-        if(!empty($domains) && !in_array("ROLE_ADMIN", $roles)) {
+        if(in_array("ROLE_ADMIN", $this->security->getUser()->getRoles())) {
+            $domains=array();
+        }
+        
+        if(!empty($domains)) {
             $qb->addSelect('')->from(SMTPTLS_Policies::class, 'pol')
                ->andWhere('r.id = pol.report')
                ->andWhere('pol.policy_domain IN (:domains)')

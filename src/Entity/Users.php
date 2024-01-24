@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UsersRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -31,6 +33,14 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
+
+    #[ORM\ManyToMany(targetEntity: Domains::class, inversedBy: 'users')]
+    private Collection $domains;
+
+    public function __construct()
+    {
+        $this->domains = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -110,6 +120,30 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Domains>
+     */
+    public function getDomains(): Collection
+    {
+        return $this->domains;
+    }
+
+    public function addDomain(Domains $domain): static
+    {
+        if (!$this->domains->contains($domain)) {
+            $this->domains->add($domain);
+        }
+
+        return $this;
+    }
+
+    public function removeDomain(Domains $domain): static
+    {
+        $this->domains->removeElement($domain);
 
         return $this;
     }

@@ -49,7 +49,7 @@ class UserFormType extends AbstractType
             'multiple' => true,
             'required' => false,
             'mapped' => false,
-            'data' => $this->DomainsRepository->findFormSelectedRoles($options),
+            'data' => $this->DomainsRepository->findFormSelectedDomains($options),
             'choice_label' => function ($domain) {
                 return $domain->getFqdn();
             },

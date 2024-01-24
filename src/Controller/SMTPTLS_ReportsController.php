@@ -51,7 +51,8 @@ class SMTPTLS_ReportsController extends AbstractController
         }
         
         $repository = $this->em->getRepository(Domains::class);
-        $domains = $repository->findBy(array('id' => $this->getUser()->getRoles()));
+        $userRepository = $this->em->getRepository(Users::class);
+        $domains = $repository->findBy(array('id' => $userRepository->findDomains($this->getUser())));
 
         $repository = $this->em->getRepository(SMTPTLS_Reports::class);
         if(in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
@@ -59,7 +60,7 @@ class SMTPTLS_ReportsController extends AbstractController
         } else {
             $reports = $repository->findOwnedBy($domains,array('id' => 'DESC'),$pages["perpage"], ($pages["page"]-1)*$pages["perpage"]);
         }
-        $totalreports = $repository->getTotalRows($domains, $this->getUser()->getRoles());
+        $totalreports = $repository->getTotalRows($domains);
         
         $repository = $this->em->getRepository(SMTPTLS_Seen::class);
         $reportsseen = $repository->getSeen($reports, $this->getUser()->getId());

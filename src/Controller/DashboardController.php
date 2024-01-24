@@ -38,8 +38,8 @@ class DashboardController extends AbstractController
             return $this->redirectToRoute('app_setup');
         }
 
-        $repository = $this->em->getRepository(Users::class);
-        if($repository->count([]) == 0) {
+        $userRepository = $this->em->getRepository(Users::class);
+        if($userRepository->count([]) == 0) {
             return $this->redirectToRoute('app_setup');
         }
 
@@ -48,7 +48,7 @@ class DashboardController extends AbstractController
         }
 
         $repository = $this->em->getRepository(Domains::class);
-        $domains = $repository->findBy(array('id' => $this->getUser()->getRoles()));
+        $domains = $repository->findBy(array('id' => $userRepository->findDomains($this->getUser())));
 
         $repository = $this->em->getRepository(DMARC_Reports::class);
         if(in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
@@ -61,15 +61,13 @@ class DashboardController extends AbstractController
         $repository = $this->em->getRepository(DMARC_Seen::class);
         $dmarcreportsseen = $repository->getSeen($dmarcreports, $this->getUser()->getId());
 
-
-
         $repository = $this->em->getRepository(SMTPTLS_Reports::class);
         if(in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
             $smtptlsreports = $repository->findBy(array(),array('id' => 'DESC'),5,0);
         } else {
             $smtptlsreports = $repository->findOwnedBy($domains,array('id' => 'DESC'),5,0);
         }
-        $totalreports = $repository->getTotalRows($domains, $this->getUser()->getRoles());
+        $totalreports = $repository->getTotalRows($domains);
 
         $repository = $this->em->getRepository(SMTPTLS_Seen::class);
         $smtptlsreportsseen = $repository->getSeen($smtptlsreports, $this->getUser()->getId());

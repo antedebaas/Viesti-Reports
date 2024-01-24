@@ -18,6 +18,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Entity\DMARC_Reports;
 use App\Entity\SMTPTLS_Reports;
 use App\Entity\Domains;
+use App\Entity\Users;
 
 class ReportsController extends AbstractController
 {
@@ -36,13 +37,15 @@ class ReportsController extends AbstractController
     public function index(): Response
     {
         $repository = $this->em->getRepository(Domains::class);
-        $domains = $repository->findBy(array('id' => $this->getUser()->getRoles()));
+        $userRepository = $this->em->getRepository(Users::class);
+        $domains = $repository->findBy(array('id' => $userRepository->findDomains($this->getUser())));
+        
 
         $repository = $this->em->getRepository(DMARC_Reports::class);
         $dmarc_count = $repository->getTotalRows($domains);
 
         $repository = $this->em->getRepository(SMTPTLS_Reports::class);
-        $smtptls_count = $repository->getTotalRows($domains, $this->getUser()->getRoles());
+        $smtptls_count = $repository->getTotalRows($domains);
 
         return $this->render('reports/index.html.twig', [
             'menuactive' => 'reports',

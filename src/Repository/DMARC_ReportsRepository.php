@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\DMARC_Reports;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bundle\SecurityBundle\Security;
 
 /**
  * @extends ServiceEntityRepository<DMARC_Reports>
@@ -16,9 +17,11 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class DMARC_ReportsRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $security;
+    public function __construct(ManagerRegistry $registry, Security $security)
     {
         parent::__construct($registry, DMARC_Reports::class);
+        $this->security = $security;
     }
 
 //    /**
@@ -55,6 +58,11 @@ class DMARC_ReportsRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('r')
         ->select('count(r.id)');
+
+        if(in_array("ROLE_ADMIN", $this->security->getUser()->getRoles())) {
+            $domains=array();
+        }
+
         if(!empty($domains)) {
             $qb->andWhere('r.domain IN (:domains)')
             ->setParameter('domains', $domains);

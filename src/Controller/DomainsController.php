@@ -18,7 +18,6 @@ use App\Entity\Domains;
 use App\Entity\MXRecords;
 
 use App\Repository\DomainsRepository;
-#use App\Repository\UsersRepository;
 
 class DomainsController extends AbstractController
 {
@@ -53,14 +52,14 @@ class DomainsController extends AbstractController
         }
 
         $repository = $this->em->getRepository(Domains::class);
+        $usersRepository = $this->em->getRepository(Users::class);
 
         if(in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
             $domains = $repository->findAll(array(),array('fqdn' => 'DESC'),$pages["perpage"], ($pages["page"]-1)*$pages["perpage"]);
         } else {
-            $domains = $repository->findOwnedBy($this->getUser()->getRoles(),array('fqdn' => 'DESC'),$pages["perpage"], ($pages["page"]-1)*$pages["perpage"]);
+            $domains = $repository->findOwnedBy($usersRepository->findDomains($this->getUser()),array('fqdn' => 'DESC'),$pages["perpage"], ($pages["page"]-1)*$pages["perpage"]);
         }
 
-        
         $totaldomains = $repository->getTotalRows();
 
         if(count($domains) == 0 && $totaldomains != 0 ) { return $this->redirectToRoute('app_domains'); }
@@ -87,8 +86,14 @@ class DomainsController extends AbstractController
 
             $this->em->persist($formdata);
             $this->em->flush();
+
             $usersRepository = $this->em->getRepository(Users::class);
-            $usersRepository->addRole($this->getUser(), $formdata->getId(), $this->em);
+            $user=$this->getUser();
+            if(!$usersRepository->findIsAdmin($user->getId())){
+                $user->addDomain($formdata);
+                $this->em->persist($user);
+                $this->em->flush();
+            }
 
             return $this->redirectToRoute('app_domains');
         }

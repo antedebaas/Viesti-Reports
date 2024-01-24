@@ -51,7 +51,8 @@ class DMARC_ReportsController extends AbstractController
         }
         
         $repository = $this->em->getRepository(Domains::class);
-        $domains = $repository->findBy(array('id' => $this->getUser()->getRoles()));
+        $userRepository = $this->em->getRepository(Users::class);
+        $domains = $repository->findBy(array('id' => $userRepository->findDomains($this->getUser())));
 
         $repository = $this->em->getRepository(DMARC_Reports::class);
         if(in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
