@@ -66,12 +66,12 @@
                                   <span class="float-start">&nbsp;</span>
                                   <span class="float-end">
                                   {% if pages.prev %}
-                                    <a href="{{ path('app_dmarc_reports', {page: pages.page - 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&lt;</a>
+                                    <a href="{{ path('app_smtptls_reports', {page: pages.page - 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&lt;</a>
                                   {% else %}
                                     <a href="#" class="btn btn-sm btn-light" disabled>&lt;</a>
                                   {% endif %}
                                   {% if pages.next %}
-                                    <a href="{{ path('app_dmarc_reports', {page: pages.page + 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&gt;</a>
+                                    <a href="{{ path('app_smtptls_reports', {page: pages.page + 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&gt;</a>
                                   {% else %}
                                     <a href="#" class="btn btn-sm btn-light" disabled>&gt;</a>
                                   {% endif %}

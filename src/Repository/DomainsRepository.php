@@ -16,9 +16,12 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class DomainsRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private UsersRepository $UsersRepository;
+
+    public function __construct(ManagerRegistry $registry, UsersRepository $usersRepository)
     {
         parent::__construct($registry, Domains::class);
+        $this->UsersRepository = $usersRepository;
     }
 
 //    /**
@@ -46,22 +49,66 @@ class DomainsRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-   public function findSelectedRoles($user_id): array
-   {
-        return $this->createQueryBuilder('d')
-           ->andWhere("d.id IN (:user_id)")
-           ->setParameter('user_id', $user_id)
-           ->getQuery()
-           ->getResult()
-       ;
-   }
+    public function findOwnedBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null)
+    {
+        $domains = array();
+        foreach ($criteria as $criterion) {
+            if(is_int($criterion)){
+                $domains[] = $criterion;
+            }
+        }
+        $qb = $this->createQueryBuilder('d');
+        if(!empty($domains)) {
+            $qb->andWhere('d.id IN (:domains)')
+            ->setParameter('domains', $domains);
+        }
+        foreach($orderBy as $key => $value) {
+            $qb->addOrderBy('d.'.$key, $value);
+        }
+        if(!empty($limit)) {
+            $qb->setMaxResults($limit);
+        }
+        if(!empty($offset)) {
+            $qb->setFirstResult($offset);
+        }
+        return $qb->getQuery()->getResult();
+    }
 
-   public function getTotalRows(): int
-   {
-       return $this->createQueryBuilder('d')
-           ->select('count(d.id)')
-           ->getQuery()
-           ->getOneOrNullResult()[1]
-       ;
-   }
+    public function findFormSelectedRoles($options): array
+    {
+        if(array_key_exists('data', $options) && $options["data"]->getId() != null)
+        {
+            return $this->findSelectedRoles($options["data"]->getId());
+        } else {
+            return array();
+        }
+    }
+
+    public function findSelectedRoles($user_id): array
+    {
+        $domain_ids=array();
+        $user=$this->UsersRepository->find($user_id);
+        foreach($user->getRoles() as $domain_id)
+        {
+            if(is_int($domain_id)){
+                $domain_ids[]=$domain_id;
+            }
+        }
+
+        return $this->createQueryBuilder('d')
+            ->andWhere("d.id IN (:domain_ids)")
+            ->setParameter('domain_ids', $domain_ids)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function getTotalRows(): int
+    {
+        return $this->createQueryBuilder('d')
+            ->select('count(d.id)')
+            ->getQuery()
+            ->getOneOrNullResult()[1]
+        ;
+    }
 }

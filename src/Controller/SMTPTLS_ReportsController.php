@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use App\Entity\Users;
 use App\Entity\SMTPTLS_Reports;
 use App\Entity\SMTPTLS_Seen;
 use App\Entity\Domains;
@@ -56,7 +57,7 @@ class SMTPTLS_ReportsController extends AbstractController
         if(in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
             $reports = $repository->findBy(array(),array('id' => 'DESC'),$pages["perpage"], ($pages["page"]-1)*$pages["perpage"]);
         } else {
-            $reports = $repository->findOwnedBy(array('domain' => $domains),array('id' => 'DESC'),$pages["perpage"], ($pages["page"]-1)*$pages["perpage"]);
+            $reports = $repository->findOwnedBy($domains,array('id' => 'DESC'),$pages["perpage"], ($pages["page"]-1)*$pages["perpage"]);
         }
         $totalreports = $repository->getTotalRows($domains, $this->getUser()->getRoles());
         
@@ -85,6 +86,13 @@ class SMTPTLS_ReportsController extends AbstractController
         #[MapQueryParameter(filter: FILTER_VALIDATE_INT)] SMTPTLS_Reports $report
     ): Response
     {
+        $repository = $this->em->getRepository(SMTPTLS_Reports::class);
+        $userRepository = $this->em->getRepository(Users::class);
+
+        if(!$userRepository->denyAccessUnlessOwned($repository->getDomain($report),$this->getUser())){
+            return new Response("Access Denied", 403);
+        }
+
         $repository = $this->em->getRepository(SMTPTLS_Seen::class);
         $is_seen = $repository->findOneBy(array('report' => $report->getId(), 'user' => $this->getUser()->getId()));
         if(!$is_seen){

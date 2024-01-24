@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit user {{ user.email }}{% endblock %}
+{% block title %}
+{% if user != null %}Edit user {{ user.email }}{% else %}Add user{% endif %}
+{% endblock %}
+
 
 {% block stylesheets %}{% endblock %}
 {% block javascripts_header %}{% endblock %}
@@ -12,7 +15,7 @@
                 <div class="row my-4">
                     <div class="col-6 col-md-6 col-lg-6 mb-4 mb-lg-0">
                         <div class="card">
-                            <h5 class="card-header">Edit user</h5>
+                            <h5 class="card-header">{% if user != null %}Edit user{% else %}Add user{% endif %}</h5>
                             <div class="card-body">
                               <p class="card-text">
                                 {{ form_row(form.email) }}

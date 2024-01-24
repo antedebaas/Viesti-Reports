@@ -46,6 +46,11 @@ class DMARC_ReportsRepository extends ServiceEntityRepository
 //        ;
 //    }
 
+    public function getDomain($report) {
+        $domains = array($report->getDomain()->getId());
+        return $domains;
+    }
+
     public function getTotalRows(array $domains): int
     {
         $qb = $this->createQueryBuilder('r')

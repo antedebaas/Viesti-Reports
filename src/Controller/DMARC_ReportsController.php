@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use App\Entity\Users;
 use App\Entity\DMARC_Reports;
 use App\Entity\DMARC_Seen;
 use App\Entity\Domains;
@@ -85,6 +86,13 @@ class DMARC_ReportsController extends AbstractController
         #[MapQueryParameter(filter: FILTER_VALIDATE_INT)] DMARC_Reports $report
     ): Response
     {
+        $repository = $this->em->getRepository(DMARC_Reports::class);
+        $userRepository = $this->em->getRepository(Users::class);
+
+        if(!$userRepository->denyAccessUnlessOwned($repository->getDomain($report),$this->getUser())){
+            return new Response("Access Denied", 403);
+        }
+
         $repository = $this->em->getRepository(DMARC_Seen::class);
         $is_seen = $repository->findOneBy(array('report' => $report->getId(), 'user' => $this->getUser()->getId()));
         if(!$is_seen){

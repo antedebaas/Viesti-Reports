@@ -63,6 +63,29 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function denyAccessUnlessOwned($domains,$user){
+        if(in_array("ROLE_ADMIN",$user->getRoles())){
+            return true;
+        }
+        elseif($this->array_keys_in_array($domains,$user->getRoles())){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function array_keys_in_array(array $needles, array $haystack) {
+        foreach($needles as $needle){
+            if(in_array($needle, $haystack)){
+                return true;
+            } else {
+                continue;
+            }
+        }
+        return false;
+    }
+
     public function getTotalRows()
     {
         return $this->createQueryBuilder('u')
@@ -70,6 +93,25 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
             ->getQuery()
             ->getOneOrNullResult()[1]
         ;
+    }
+
+    public function findFormIsAdmin($options): bool
+    {
+        if(array_key_exists('data', $options) && $options["data"]->getId() != null)
+        {
+            return $this->findIsAdmin($options["data"]->getId());
+        } else {
+            return false;
+        }
+    }
+
+    public function addRole(Users $user,int $role,$em){
+        $roles = $user->getRoles();
+        $roles[] = $role;
+        $user->setRoles($roles);
+        
+        $em->persist($user);
+        $em->flush();
     }
 
     public function findIsAdmin($user_id)

@@ -70,6 +70,57 @@ class UsersController extends AbstractController
         ]);
     }
 
+    #[Route('/user/add', name: 'app_user_add')]
+    public function add(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
+    {
+        $form = $this->createForm(UserFormType::class);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $formdata = $form->getData();
+
+            $password1 = $form->get("password1")->getData();
+            $password2 = $form->get("password2")->getData();
+
+            if($password1 == $password2 && $password1 != ""){
+                $formdata->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $formdata,
+                        $form->get('password1')->getData()
+                    )
+                );
+            }
+
+            $is_admin = $form->get("isAdmin")->getData();
+
+            $domain_roles = $form->get("roles")->getData();
+            $roles = array();
+            foreach($domain_roles as $domain_role) {
+                array_push($roles,$domain_role->getId());
+            }
+            if($is_admin == true) {
+                array_push($roles,"ROLE_ADMIN");
+            }
+            $formdata->setRoles($roles);
+
+            $this->em->persist($formdata);
+            $this->em->flush();
+
+            return $this->redirectToRoute('app_users');
+        }
+        $setup['users_form'] = $form->createView();
+
+        return $this->render('users/edit.html.twig', [
+            'menuactive' => 'users',
+            'user' => null,
+            'form' => $form,
+            'breadcrumbs' => array(
+                array('name' => $this->translator->trans("Users"), 'url' => $this->router->generate('app_users')),
+                array('name' => "Add new user", 'url' => $this->router->generate('app_users'))
+            ),
+        ]);
+    }
+
     #[Route('/user/edit/{id}', name: 'app_user_edit')]
     public function edit(Users $user, Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
     {

@@ -47,27 +47,21 @@ class SMTPTLS_ReportsRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-    // public function findOwnedBy(array $domains, $order ,$pages["perpage"], ($pages["page"]-1)*$pages["perpage"]): array
-    // {
-    //     //$domains = array("1","2");
-    //     $qb = $this->createQueryBuilder('r')
-    //     ->select('')
-    //     ->addSelect('')->from(SMTPTLS_Policies::class, 'pol');
-    //     if(!empty($domains)) {
-    //         $qb->andWhere('r.id = pol.report');
-    //         $qb->andWhere('pol.policy_domain IN (:domains)')
-    //         ->setParameter('domains', $domains);
-    //     }
-    //     dump($qb->getQuery()->getSQL());
-    //     dd($qb->getQuery());
-    //     return $qb->getQuery()
-    //         ->getResult()
-    //     ;
-    // }
+    public function getDomain($report) {
+        $domains = array();
+        $policies = $report->getSMTPTLS_Policies();
+        foreach($policies as $policy){
+            $domains[] = $policy->getPolicyDomain()->getId();
+        }
+        return $domains;
+    }
 
     public function findOwnedBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null)
     {
-        $domains = array("1","2");
+        $domains = array();
+        foreach ($criteria as $criterion) {
+            $domains[] = $criterion->getId();
+        }
         $qb = $this->createQueryBuilder('r')
         ->select('r')
         ->addSelect('')->from(SMTPTLS_Policies::class, 'p');
@@ -90,6 +84,7 @@ class SMTPTLS_ReportsRepository extends ServiceEntityRepository
 
     public function getTotalRows(array $domains, array $roles): int
     {
+        #dd($domains);
         $qb = $this->createQueryBuilder('r')
            ->select('count(r.id)');
         

@@ -13,10 +13,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Form\DomainFormType;
 
+use App\Entity\Users;
 use App\Entity\Domains;
 use App\Entity\MXRecords;
 
 use App\Repository\DomainsRepository;
+#use App\Repository\UsersRepository;
 
 class DomainsController extends AbstractController
 {
@@ -34,8 +36,6 @@ class DomainsController extends AbstractController
     #[Route('/domains', name: 'app_domains')]
     public function index(): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-
         $pages=array("page"=>1,"next" => false,"prev" => false);
 
         if(isset($_GET["page"]) && $_GET["page"] > 0)
@@ -53,7 +53,14 @@ class DomainsController extends AbstractController
         }
 
         $repository = $this->em->getRepository(Domains::class);
-        $domains = $repository->findAll(array(),array('fqdn' => 'DESC'),$pages["perpage"], ($pages["page"]-1)*$pages["perpage"]);
+
+        if(in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
+            $domains = $repository->findAll(array(),array('fqdn' => 'DESC'),$pages["perpage"], ($pages["page"]-1)*$pages["perpage"]);
+        } else {
+            $domains = $repository->findOwnedBy($this->getUser()->getRoles(),array('fqdn' => 'DESC'),$pages["perpage"], ($pages["page"]-1)*$pages["perpage"]);
+        }
+
+        
         $totaldomains = $repository->getTotalRows();
 
         if(count($domains) == 0 && $totaldomains != 0 ) { return $this->redirectToRoute('app_domains'); }
@@ -80,6 +87,8 @@ class DomainsController extends AbstractController
 
             $this->em->persist($formdata);
             $this->em->flush();
+            $usersRepository = $this->em->getRepository(Users::class);
+            $usersRepository->addRole($this->getUser(), $formdata->getId(), $this->em);
 
             return $this->redirectToRoute('app_domains');
         }
@@ -106,6 +115,11 @@ class DomainsController extends AbstractController
     #[Route('/domains/edit/{id}', name: 'app_domains_edit')]
     public function edit(Domains $domain, Request $request): Response
     {
+        $usersRepository = $this->em->getRepository(Users::class);
+        if(!$usersRepository->denyAccessUnlessOwned(array($domain->getId()),$this->getUser())){
+            return new Response("Access Denied", 403);
+        }
+
         $form = $this->createForm(DomainFormType::class, $domain);
 
         $form->handleRequest($request);

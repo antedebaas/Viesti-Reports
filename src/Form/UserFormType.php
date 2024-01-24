@@ -49,7 +49,7 @@ class UserFormType extends AbstractType
             'multiple' => true,
             'required' => false,
             'mapped' => false,
-            'data' => $this->DomainsRepository->findSelectedRoles($options['data']->getId()),
+            'data' => $this->DomainsRepository->findFormSelectedRoles($options),
             'choice_label' => function ($domain) {
                 return $domain->getFqdn();
             },
@@ -60,7 +60,7 @@ class UserFormType extends AbstractType
         ->add('isAdmin', CheckboxType::class, [
             'label' => 'Is admin',
             'mapped' => false,
-            'data' => $this->UsersRepository->findIsAdmin($options['data']->getId()),
+            'data' => $this->UsersRepository->findFormIsAdmin($options),
             'required' => false,
         ])
         ;
