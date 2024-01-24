@@ -10,6 +10,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
+![Dashboard][screenshot-dashboard]
 ![DMARC-Reports][screenshot-dmarc]
 ![SMTP-TLS-Reports][screenshot-smtptls]
 
@@ -104,5 +105,6 @@ Distributed under the GPL v2 License. See `LICENSE.txt` for more information.
 [license-url]: https://github.com/antedebaas/DMARC-SMTPTLS-Reports/blob/master/LICENSE.txt
 [docker-shield]: https://img.shields.io/docker/pulls/antedebaas/dmarc-reports.svg?style=for-the-badge
 [docker-url]: https://hub.docker.com/repository/docker/antedebaas/dmarc-reports/general
+[screenshot-dashboard]: screenshot-dashboard.png
 [screenshot-dmarc]: screenshot-dmarc.png
 [screenshot-smtptls]: screenshot-smtptls.png
