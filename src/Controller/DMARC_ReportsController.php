@@ -91,7 +91,7 @@ class DMARC_ReportsController extends AbstractController
         $userRepository = $this->em->getRepository(Users::class);
 
         if(!$userRepository->denyAccessUnlessOwned($repository->getDomain($report),$this->getUser())){
-            return $this->render('access_denied.html.twig', []);
+            return $this->render('not_found.html.twig', []);
         }
 
         $repository = $this->em->getRepository(DMARC_Seen::class);

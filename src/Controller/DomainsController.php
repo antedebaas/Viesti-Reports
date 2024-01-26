@@ -122,7 +122,7 @@ class DomainsController extends AbstractController
     {
         $usersRepository = $this->em->getRepository(Users::class);
         if(!$usersRepository->denyAccessUnlessOwned(array($domain->getId()),$this->getUser())){
-            return $this->render('access_denied.html.twig', []);
+            return $this->render('not_found.html.twig', []);
         }
 
         $form = $this->createForm(DomainFormType::class, $domain);
