@@ -1,6 +1,10 @@
 #!/bin/bash
-echo "Get latest version from git"
-git pull
+echo "Get latest information from git"
+git fetch --all
+TAG=$(git describe --abbrev=0 --tags)
+
+echo "Checkout to latest tag"
+git checkout $TAG
 
 echo "Install composer dependencies"
 composer install
