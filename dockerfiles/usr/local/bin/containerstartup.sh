@@ -13,5 +13,9 @@ if [ ! -f "/var/www/html/.env.local" ]; then
     echo "DELETE_PROCESSED_MAILS=\"$DELETE_PROCESSED_MAILS\"" >> /var/www/html/.env.local
 fi
 
+echo "Set up checkmail schedule"
+[ -z "$CRON_CHECK_MAILS" ] && CRON_CHECK_MAILS="@daily"
+echo "$CRON_CHECK_MAILS /bin/sh /usr/local/bin/checkmail.sh" >> /etc/crontabs/root
+
 echo "Run migrations"
 php /var/www/html/bin/console doctrine:migrations:migrate --no-interaction
