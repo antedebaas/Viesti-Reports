@@ -17,6 +17,7 @@ ENV MAILER_IMAPPORT=993
 ENV MAILER_USER=
 ENV MAILER_PASSWORD=
 ENV DELETE_PROCESSED_MAILS=false
+ENV CRON_CHECK_MAILS=@daily
 
 RUN apk --update add ca-certificates && \
     apk --no-cache add \
