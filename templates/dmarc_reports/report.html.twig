@@ -128,7 +128,7 @@
                   {% for record in report.dmarc_records|reverse %}
                     <div class="col-12 col-md-12 col-lg-12 mb-4 mb-lg-0">
                       <div class="card">
-                          <h5 class="card-header">Record #{{ record.count }}</h5>
+                          <h5 class="card-header">Record #{{ loop.index }}</h5>
                           <div class="card-body">
                             <div class="row my-0">
                               <div class="col-12 col-md-6 col-lg-6 mb-4 mb-lg-0">
