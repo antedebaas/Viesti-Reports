@@ -15,6 +15,9 @@ php bin/console cache:clear
 echo "run migrations"
 php bin/console doctrine:migrations:migrate --no-interaction --query-time
 
+echo "run upgrade script"
+bash upgradefiles/upgrade.sh
+
 echo "install assets"
 php bin/console assets:install public
 
