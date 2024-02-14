@@ -24,7 +24,7 @@
                                         </thead>
                                         <tbody>
                                         {% for report in dmarcreports %}
-                                          <tr {% if report.id not in dmarcreportsseen %}class="table-warning"{% endif%}>
+                                          <tr {% for user in report.seen %}{% else %}class="table-warning"{% endfor %}>
                                             <th scope="row">{{ report.id }}</th>
                                             <td>{{ report.domain.fqdn }}</td>
                                             <td>{{ report.organisation }}</td>
@@ -70,7 +70,7 @@
                                         </thead>
                                         <tbody>
                                         {% for report in smtptlsreports %}
-                                          <tr {% if report.id not in smtptlsreportsseen %}class="table-warning"{% endif%}>
+                                          <tr {% for user in report.seen %}{% else %}class="table-warning"{% endfor %}>
                                             <th scope="row">{{ report.id }}</th>
                                             <td>
                                               {% for policy in report.smtptls_policies %}

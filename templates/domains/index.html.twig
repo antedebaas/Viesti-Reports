@@ -38,7 +38,7 @@
                                             <td>{{ domain.smtptls_policies|length }}</td>
                                             <td>
                                                 <a href="{{ path('app_domains_edit', {id: domain.id}) }}" class="btn btn-sm btn-secondary">Edit</a>
-                                                {# <a href="{{ path('a4pp_domains_delete', {id: domain.id}) }}" class="btn btn-sm btn-danger"  onclick="return confirm('{{'Are you sure? this will also delete all its reports and can not be undone'|trans}}');">Delete</a> #}
+                                                <a href="{{ path('app_domains_delete', {id: domain.id}) }}" class="btn btn-sm btn-danger"  onclick="return confirm('{{'Are you sure? this will also delete all its reports and can not be undone'|trans}}');">Delete</a>
                                             </td>
                                           </tr>
                                         {% endfor %}

@@ -18,11 +18,14 @@ class Domains
     #[ORM\Column(length: 255, unique: true)]
     private ?string $fqdn = null;
 
-    #[ORM\OneToMany(mappedBy: 'domain', targetEntity: DMARC_Reports::class, orphanRemoval: true)]
-    private Collection $reports;
+    #[ORM\OneToMany(mappedBy: 'domain', targetEntity: DMARC_Reports::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $DMARC_Reports;
 
-    #[ORM\OneToMany(mappedBy: 'policy_domain', targetEntity: SMTPTLS_Policies::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'policy_domain', targetEntity: SMTPTLS_Policies::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $SMTPTLS_Policies;
+
+    #[ORM\OneToMany(mappedBy: 'domain', targetEntity: SMTPTLS_Reports::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $SMTPTLS_Reports;
 
     #[ORM\OneToMany(mappedBy: 'domain', targetEntity: MXRecords::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $MXRecords;
@@ -44,8 +47,9 @@ class Domains
 
     public function __construct()
     {
-        $this->reports = new ArrayCollection();
+        $this->DMARC_Reports = new ArrayCollection();
         $this->SMTPTLS_Policies = new ArrayCollection();
+        $this->SMTPTLS_Reports = new ArrayCollection();
         $this->MXRecords = new ArrayCollection();
         $this->users = new ArrayCollection();
     }
@@ -72,25 +76,25 @@ class Domains
      */
     public function getDMARC_Reports(): Collection
     {
-        return $this->reports;
+        return $this->DMARC_Reports;
     }
 
-    public function addReport(DMARC_Reports $report): static
+    public function addDMARC_Report(DMARC_Reports $DMARC_Report): static
     {
-        if (!$this->reports->contains($report)) {
-            $this->reports->add($report);
-            $report->setDomain($this);
+        if (!$this->DMARC_Reports->contains($DMARC_Report)) {
+            $this->DMARC_Reports->add($DMARC_Report);
+            $DMARC_Report->setDomain($this);
         }
 
         return $this;
     }
 
-    public function removeReport(DMARC_Reports $report): static
+    public function removeDMARC_Report(DMARC_Reports $DMARC_Report): static
     {
-        if ($this->reports->removeElement($report)) {
+        if ($this->DMARC_Reports->removeElement($DMARC_Report)) {
             // set the owning side to null (unless already changed)
-            if ($report->getDomain() === $this) {
-                $report->setDomain(null);
+            if ($DMARC_Report->getDomain() === $this) {
+                $DMARC_Report->setDomain(null);
             }
         }
 
@@ -121,6 +125,36 @@ class Domains
             // set the owning side to null (unless already changed)
             if ($SMTPTLS_Policy->getPolicyDomain() === $this) {
                 $SMTPTLS_Policy->setPolicyDomain(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SMTPTLS_Reports>
+     */
+    public function getSMTPTLS_Reports(): Collection
+    {
+        return $this->SMTPTLS_Reports;
+    }
+
+    public function addSMTPTLS_Report(SMTPTLS_Reports $SMTPTLS_Report): static
+    {
+        if (!$this->SMTPTLS_Reports->contains($SMTPTLS_Report)) {
+            $this->SMTPTLS_Reports->add($SMTPTLS_Report);
+            $SMTPTLS_Report->setDomain($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSMTPTLS_Report(SMTPTLS_Reports $SMTPTLS_Report): static
+    {
+        if ($this->SMTPTLS_Reports->removeElement($SMTPTLS_Report)) {
+            // set the owning side to null (unless already changed)
+            if ($SMTPTLS_Report->getDomain() === $this) {
+                $SMTPTLS_Report->setDomain(null);
             }
         }
 

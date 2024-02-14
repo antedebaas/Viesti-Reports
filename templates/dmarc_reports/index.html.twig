@@ -24,7 +24,7 @@
                                         </thead>
                                         <tbody>
                                         {% for report in reports %}
-                                          <tr {% if report.id not in reportsseen %}class="table-warning"{% endif%}>
+                                          <tr {% for user in report.seen %}{% else %}class="table-warning"{% endfor %}>
                                             <th scope="row">{{ report.id }}</th>
                                             <td>{{ report.domain.fqdn }}</td>
                                             <td>
@@ -50,7 +50,10 @@
                                               <span class="btn btn-sm btn-{% if spf_pass %}success{% else %}danger{% endif %}">spf</span>
                                               <span class="btn btn-sm btn-{% if dkim_pass %}success{% else %}danger{% endif %}">dkim</span>
                                             </td>
-                                            <td><a href="{{ path('app_dmarc_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a></td>
+                                            <td>
+                                              <a href="{{ path('app_dmarc_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a>
+                                              <a href="{{ path('app_dmarc_reports_delete', {report: report.id}) }}" class="btn btn-sm btn-danger"  onclick="return confirm('{{'Are you sure? this can not be undone'|trans}}');">Delete</a>
+                                            </td>
                                           </tr>
                                         {% endfor %}
                                         </tbody>

@@ -12,11 +12,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Users;
 use App\Entity\SMTPTLS_Reports;
-use App\Entity\SMTPTLS_Seen;
 use App\Entity\Domains;
 
 use App\Repository\SMTPTLS_ReportsRepository;
-use App\Repository\SMTPTLS_SeenRepository;
 
 class SMTPTLS_ReportsController extends AbstractController
 {
@@ -62,9 +60,6 @@ class SMTPTLS_ReportsController extends AbstractController
         }
         $totalreports = $repository->getTotalRows($domains);
         
-        $repository = $this->em->getRepository(SMTPTLS_Seen::class);
-        $reportsseen = $repository->getSeen($reports, $this->getUser()->getId());
-
         if(count($reports) == 0 && $totalreports != 0 && $pages["page"] != 1) { return $this->redirectToRoute('app_smtptls_reports'); }
         
         if($totalreports/$pages['perpage'] > $pages["page"]) { $pages["next"] = true; }
@@ -73,7 +68,6 @@ class SMTPTLS_ReportsController extends AbstractController
         return $this->render('smtptls_reports/index.html.twig', [
             'reports' => $reports,
             'pages' => $pages,
-            'reportsseen' => $reportsseen,
             'menuactive' => 'reports',
             'breadcrumbs' => array(
                 array('name' => $this->translator->trans("Reports"), 'url' => $this->router->generate('app_reports')),
@@ -94,17 +88,11 @@ class SMTPTLS_ReportsController extends AbstractController
             return $this->render('not_found.html.twig', []);
         }
 
-        $repository = $this->em->getRepository(SMTPTLS_Seen::class);
-        $is_seen = $repository->findOneBy(array('report' => $report->getId(), 'user' => $this->getUser()->getId()));
-        if(!$is_seen){
-            $is_seen = new SMTPTLS_Seen;
-            $is_seen->setReport($report);
-            $is_seen->setUser($this->getUser());
-            $this->em->persist($is_seen);
+        if(!in_array($this->getUser(),$report->getSeen()->getValues())){
+            $report->addSeen($this->getUser());
+            $this->em->persist($report);
             $this->em->flush();
         }
-
-        #dd($report->getSMTPTLS_Policies()->getSMTPTLS_MXRecords());
 
         return $this->render('smtptls_reports/report.html.twig', [
             'menuactive' => 'reports',
@@ -115,5 +103,16 @@ class SMTPTLS_ReportsController extends AbstractController
             ),
             'report' => $report
         ]);
+    }
+
+    #[Route('/reports/smtptls/delete/{report}', name: 'app_smtptls_reports_delete')]
+    public function delete(SMTPTLS_Reports $report ): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $this->em->remove($report);
+        $this->em->flush();
+
+        return $this->redirectToRoute('app_smtptls_reports');
     }
 }

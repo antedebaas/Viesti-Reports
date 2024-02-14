@@ -12,11 +12,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Users;
 use App\Entity\DMARC_Reports;
-use App\Entity\DMARC_Seen;
 use App\Entity\Domains;
 
 use App\Repository\DMARC_ReportsRepository;
-use App\Repository\DMARC_SeenRepository;
 
 class DMARC_ReportsController extends AbstractController
 {
@@ -62,9 +60,6 @@ class DMARC_ReportsController extends AbstractController
         }
         $totalreports = $repository->getTotalRows($domains);
         
-        $repository = $this->em->getRepository(DMARC_Seen::class);
-        $reportsseen = $repository->getSeen($reports, $this->getUser()->getId());
-
         if(count($reports) == 0 && $totalreports != 0 && $pages["page"] != 1) { return $this->redirectToRoute('app_dmarc_reports'); }
         
         if($totalreports/$pages['perpage'] > $pages["page"]) { $pages["next"] = true; }
@@ -73,7 +68,6 @@ class DMARC_ReportsController extends AbstractController
         return $this->render('dmarc_reports/index.html.twig', [
             'reports' => $reports,
             'pages' => $pages,
-            'reportsseen' => $reportsseen,
             'menuactive' => 'reports',
             'breadcrumbs' => array(
                 array('name' => $this->translator->trans("Reports"), 'url' => $this->router->generate('app_reports')),
@@ -94,13 +88,9 @@ class DMARC_ReportsController extends AbstractController
             return $this->render('not_found.html.twig', []);
         }
 
-        $repository = $this->em->getRepository(DMARC_Seen::class);
-        $is_seen = $repository->findOneBy(array('report' => $report->getId(), 'user' => $this->getUser()->getId()));
-        if(!$is_seen){
-            $is_seen = new DMARC_Seen;
-            $is_seen->setReport($report);
-            $is_seen->setUser($this->getUser());
-            $this->em->persist($is_seen);
+        if(!in_array($this->getUser(),$report->getSeen()->getValues())){
+            $report->addSeen($this->getUser());
+            $this->em->persist($report);
             $this->em->flush();
         }
 
@@ -114,5 +104,16 @@ class DMARC_ReportsController extends AbstractController
 
             'report' => $report
         ]);
+    }
+
+    #[Route('/reports/dmarc/delete/{report}', name: 'app_dmarc_reports_delete')]
+    public function delete(DMARC_Reports $report ): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $this->em->remove($report);
+        $this->em->flush();
+
+        return $this->redirectToRoute('app_dmarc_reports');
     }
 }

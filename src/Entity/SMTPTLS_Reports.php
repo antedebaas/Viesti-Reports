@@ -16,6 +16,10 @@ class SMTPTLS_Reports
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Domains $domain = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $begin_time = null;
 
@@ -34,14 +38,31 @@ class SMTPTLS_Reports
     #[ORM\OneToMany(mappedBy: 'report', targetEntity: SMTPTLS_Policies::class, orphanRemoval: true)]
     private Collection $SMTPTLS_Policies;
 
+    #[ORM\ManyToMany(targetEntity: Users::class)]
+    private Collection $seen;
+    
+
     public function __construct()
     {
         $this->SMTPTLS_Policies = new ArrayCollection();
+        $this->seen = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getDomain(): ?Domains
+    {
+        return $this->domain;
+    }
+
+    public function setDomain(?Domains $domain): static
+    {
+        $this->domain = $domain;
+
+        return $this;
     }
 
     public function getBeginTime(): ?\DateTimeInterface
@@ -130,6 +151,30 @@ class SMTPTLS_Reports
                 $SMTPTLS_Policy->setReport(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Users>
+     */
+    public function getSeen(): Collection
+    {
+        return $this->seen;
+    }
+
+    public function addSeen(Users $seen): static
+    {
+        if (!$this->seen->contains($seen)) {
+            $this->seen->add($seen);
+        }
+
+        return $this;
+    }
+
+    public function removeSeen(Users $seen): static
+    {
+        $this->seen->removeElement($seen);
 
         return $this;
     }

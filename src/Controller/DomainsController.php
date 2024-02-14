@@ -156,14 +156,14 @@ class DomainsController extends AbstractController
         ]);
     }
 
-    // #[Route('/domains/delete/{id}', name: 'app_domains_delete')]
-    // public function delete(Domains $domain ): Response
-    // {
-    //     $this->denyAccessUnlessGranted('ROLE_ADMIN');
+    #[Route('/domains/delete/{id}', name: 'app_domains_delete')]
+    public function delete(Domains $domain ): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-    //     $this->em->remove($domain);
-    //     $this->em->flush();
+        $this->em->remove($domain);
+        $this->em->flush();
 
-    //     return $this->redirectToRoute('app_domains');
-    // }
+        return $this->redirectToRoute('app_domains');
+    }
 }

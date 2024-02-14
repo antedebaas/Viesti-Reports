@@ -56,9 +56,13 @@ class DMARC_Reports
     #[ORM\JoinColumn(nullable: false)]
     private ?Domains $domain = null;
 
+    #[ORM\ManyToMany(targetEntity: Users::class)]
+    private Collection $seen;
+
     public function __construct()
     {
         $this->records = new ArrayCollection();
+        $this->seen = new ArrayCollection();
 
     }
 
@@ -237,6 +241,30 @@ class DMARC_Reports
     public function setDomain(?Domains $domain): static
     {
         $this->domain = $domain;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Users>
+     */
+    public function getSeen(): Collection
+    {
+        return $this->seen;
+    }
+
+    public function addSeen(Users $seen): static
+    {
+        if (!$this->seen->contains($seen)) {
+            $this->seen->add($seen);
+        }
+
+        return $this;
+    }
+
+    public function removeSeen(Users $seen): static
+    {
+        $this->seen->removeElement($seen);
 
         return $this;
     }

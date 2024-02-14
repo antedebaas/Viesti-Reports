@@ -150,11 +150,33 @@ class CheckmailboxCommand extends Command
             $stats['new_smtptls_reports']++;
 
             $dbreport = new SMTPTLS_Reports;
+            
             $dbreport->setOrganisation($smtptlsreport->{'organization-name'});
             $dbreport->setContactInfo($smtptlsreport->{'contact-info'});
             $dbreport->setExternalId($smtptlsreport->{'report-id'});
             $dbreport->setBeginTime(new \DateTime($smtptlsreport->{'date-range'}->{'start-datetime'}));
             $dbreport->setEndTime(new \DateTime($smtptlsreport->{'date-range'}->{'end-datetime'}));
+            
+            foreach($smtptlsreport->policies as $policy){
+                $domain_repository = $this->em->getRepository(Domains::class);
+                $dbdomain = $domain_repository->findOneBy(array('fqdn' => $policy->policy->{'policy-domain'}));
+                if(!$dbdomain){
+                    $stats['new_domains']++;
+
+                    $dbdomain = new Domains;
+                    $dbdomain->setFqdn($policy->policy->{'policy-domain'});
+                    $dbdomain->setStsVersion("STSv1");
+                    $dbdomain->setStsMode("enforce");
+                    $dbdomain->setStsMaxAge(86400);
+                    $dbdomain->setMailhost($policy->policy->{'policy-domain'});
+                    $this->em->persist($dbdomain);
+                    $this->em->flush();
+                }
+
+                $dbreport->setDomain($dbdomain);
+                $this->em->persist($dbreport);
+            }
+
             $this->em->persist($dbreport);
             $this->em->flush();
 
@@ -175,7 +197,6 @@ class CheckmailboxCommand extends Command
                     $this->em->persist($dbdomain);
                     $this->em->flush();
                 }
-
                 $dbpolicy = new SMTPTLS_Policies;
                 $dbpolicy->setReport($dbreport);
                 $dbpolicy->setPolicyType($policy->policy->{'policy-type'});
