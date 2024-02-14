@@ -156,6 +156,26 @@
                                         <td>{{ dns_info.ip }}</td>
                                       </tr>
                                       <tr>
+                                        <td>SRV</td>
+                                        <td>_imaps._tcp.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
+                                        <td>0 1 993</td>
+                                      </tr>
+                                      <tr>
+                                        <td>SRV</td>
+                                        <td>_submission._tcp.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
+                                        <td>0 1 587</td>
+                                      </tr>
+                                      <tr>
+                                        <td>SRV</td>
+                                        <td>_autodiscover._tcp.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
+                                        <td>0 1 443</td>
+                                      </tr>
+                                      <tr>
+                                        <td>TXT</td>
+                                        <td>@</td>
+                                        <td>"mailconf=https://autoconfig.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}/autodiscover/autodiscover.xml"</td>
+                                      </tr>
+                                      <tr>
                                         <td>TXT</td>
                                         <td>_mta-sts.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
                                         <td>"v=STSv1; id={{ dns_info.now|date("YmdHis") }};"</td>
