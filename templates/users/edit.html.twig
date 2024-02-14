@@ -4,11 +4,7 @@
 {% if user != null %}Edit user {{ user.email }}{% else %}Add user{% endif %}
 {% endblock %}
 
-
 {% block stylesheets %}{% endblock %}
-{% block javascripts_header %}{% endblock %}
-{% block javascripts_footer %}
-{% endblock %}
 
 {% block body %}
                 {{ form_start(form) }}

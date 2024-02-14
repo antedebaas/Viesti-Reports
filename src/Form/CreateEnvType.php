@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class CreateEnvType extends AbstractType
 {
@@ -23,7 +24,14 @@ class CreateEnvType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-
+        ->add('database_type', ChoiceType::class, [
+            'label' =>  $this->translator->trans('Database type'),
+            'choices'  => [
+                'MySQL/MariaDB' => 'mysql',
+                'PostgreSQL' => 'postgresql',
+                'SQLite' => 'sqlite',
+            ],
+        ])
         ->add('database_host', TextType::Class, [
             'label' =>  $this->translator->trans('Database hostname'),
             'constraints' => [
@@ -94,6 +102,13 @@ class CreateEnvType extends AbstractType
                 new Assert\NotBlank(),
             ],
             'empty_data' => ''
+        ])
+        ->add('delete_processed_mails', ChoiceType::class, [
+            'label' =>  $this->translator->trans('For each mail that has been processed'),
+            'choices'  => [
+                $this->translator->trans('Mark as read, and ignore') => "false",
+                $this->translator->trans('Delete') => "true",
+            ],
         ])
         ;
     }

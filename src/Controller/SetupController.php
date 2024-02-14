@@ -11,6 +11,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -29,10 +30,12 @@ use Symfony\Component\Finder\Finder;
 class SetupController extends AbstractController
 {
     private $em;
+    private $params;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, ParameterBagInterface $params)
     {
         $this->em = $em;
+        $this->params = $params;
     }
 
     #[Route('/setup', name: 'app_setup')]
@@ -57,7 +60,6 @@ class SetupController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()){
                 $formdata = $form->getData();
                 $formdata['randomstring'] = $this->generateRandomString();
-                #dd($formdata);
 
                 $envtemplate= $this->render('setup/env.txt.twig', [
                     'f' => $formdata,
@@ -91,7 +93,7 @@ class SetupController extends AbstractController
 
             $migrationfiles=array();
             $finder = new Finder();
-            $finder->files()->in(__DIR__.'/../../migrations');
+            $finder->files()->in(__DIR__.'/../../migrations/'.$this->params->get('app.database_type'));
             foreach ($finder as $file) {
                 $migrationfiles[] = "DoctrineMigrations\\".str_replace(".php", "", $file->getBasename());
             }
