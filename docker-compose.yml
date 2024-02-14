@@ -23,7 +23,7 @@ services:
     environment:
       DATABASE_TYPE: mysql
       DATABASE_HOST: db
-      DATABASE_PORT: 3306 
+      DATABASE_PORT: 3306
       DATABASE_NAME: 
       DATABASE_USER: 
       DATABASE_PASSWORD: 
