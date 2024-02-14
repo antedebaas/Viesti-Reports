@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240204190327 extends AbstractMigration
+final class Version20240214134308 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -24,11 +24,11 @@ final class Version20240204190327 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_FC3C5CC24BD2A4C0 ON dmarc_records (report_id)');
         $this->addSql('CREATE TABLE dmarc_reports (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, domain_id INTEGER NOT NULL, begin_time DATETIME NOT NULL, end_time DATETIME NOT NULL, organisation VARCHAR(255) NOT NULL, external_id VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, contact_info VARCHAR(255) NOT NULL, policy_adkim VARCHAR(255) DEFAULT NULL, policy_aspf VARCHAR(255) DEFAULT NULL, policy_p VARCHAR(255) DEFAULT NULL, policy_sp VARCHAR(255) DEFAULT NULL, policy_pct VARCHAR(255) DEFAULT NULL, CONSTRAINT FK_91BEA3C1115F0EE5 FOREIGN KEY (domain_id) REFERENCES domains (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_91BEA3C1115F0EE5 ON dmarc_reports (domain_id)');
+        $this->addSql('CREATE TABLE dmarc_reports_users (dmarc_reports_id INTEGER NOT NULL, users_id INTEGER NOT NULL, PRIMARY KEY(dmarc_reports_id, users_id), CONSTRAINT FK_72F48A4C5FDF4877 FOREIGN KEY (dmarc_reports_id) REFERENCES dmarc_reports (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_72F48A4C67B3B43D FOREIGN KEY (users_id) REFERENCES users (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_72F48A4C5FDF4877 ON dmarc_reports_users (dmarc_reports_id)');
+        $this->addSql('CREATE INDEX IDX_72F48A4C67B3B43D ON dmarc_reports_users (users_id)');
         $this->addSql('CREATE TABLE dmarc_results (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, record_id INTEGER NOT NULL, domain VARCHAR(255) NOT NULL, type VARCHAR(255) NOT NULL, result VARCHAR(255) NOT NULL, dkim_selector VARCHAR(255) DEFAULT NULL, CONSTRAINT FK_FF02E0904DFD750C FOREIGN KEY (record_id) REFERENCES dmarc_records (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_FF02E0904DFD750C ON dmarc_results (record_id)');
-        $this->addSql('CREATE TABLE dmarc_seen (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, report_id INTEGER NOT NULL, user_id INTEGER NOT NULL, CONSTRAINT FK_40293B424BD2A4C0 FOREIGN KEY (report_id) REFERENCES dmarc_reports (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_40293B42A76ED395 FOREIGN KEY (user_id) REFERENCES users (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('CREATE INDEX IDX_40293B424BD2A4C0 ON dmarc_seen (report_id)');
-        $this->addSql('CREATE INDEX IDX_40293B42A76ED395 ON dmarc_seen (user_id)');
         $this->addSql('CREATE TABLE domains (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, fqdn VARCHAR(255) NOT NULL, sts_version VARCHAR(255) DEFAULT \'STSv1\' NOT NULL, sts_mode VARCHAR(255) DEFAULT \'enforce\' NOT NULL, sts_maxage INTEGER DEFAULT 86400 NOT NULL, mailhost VARCHAR(255) NOT NULL)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8C7BBF9DC1A19758 ON domains (fqdn)');
         $this->addSql('CREATE TABLE logs (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, time DATETIME NOT NULL, message CLOB DEFAULT NULL)');
@@ -43,10 +43,11 @@ final class Version20240204190327 extends AbstractMigration
         $this->addSql('CREATE TABLE smtptls_policies (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, policy_domain_id INTEGER NOT NULL, report_id INTEGER NOT NULL, policy_type VARCHAR(255) NOT NULL, policy_string_version VARCHAR(255) DEFAULT NULL, policy_string_mode VARCHAR(255) DEFAULT NULL, policy_string_maxage INTEGER DEFAULT NULL, summary_successful_count INTEGER NOT NULL, summary_failed_count INTEGER NOT NULL, CONSTRAINT FK_A5AC55646FCFA580 FOREIGN KEY (policy_domain_id) REFERENCES domains (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_A5AC55644BD2A4C0 FOREIGN KEY (report_id) REFERENCES smtptls_reports (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_A5AC55646FCFA580 ON smtptls_policies (policy_domain_id)');
         $this->addSql('CREATE INDEX IDX_A5AC55644BD2A4C0 ON smtptls_policies (report_id)');
-        $this->addSql('CREATE TABLE smtptls_reports (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, begin_time DATETIME NOT NULL, end_time DATETIME NOT NULL, organisation VARCHAR(255) NOT NULL, contact_info VARCHAR(255) NOT NULL, external_id VARCHAR(255) NOT NULL)');
-        $this->addSql('CREATE TABLE smtptls_seen (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, report_id INTEGER NOT NULL, user_id INTEGER NOT NULL, CONSTRAINT FK_6AAFE3E94BD2A4C0 FOREIGN KEY (report_id) REFERENCES smtptls_reports (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_6AAFE3E9A76ED395 FOREIGN KEY (user_id) REFERENCES users (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('CREATE INDEX IDX_6AAFE3E94BD2A4C0 ON smtptls_seen (report_id)');
-        $this->addSql('CREATE INDEX IDX_6AAFE3E9A76ED395 ON smtptls_seen (user_id)');
+        $this->addSql('CREATE TABLE smtptls_reports (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, domain_id INTEGER NOT NULL, begin_time DATETIME NOT NULL, end_time DATETIME NOT NULL, organisation VARCHAR(255) NOT NULL, contact_info VARCHAR(255) NOT NULL, external_id VARCHAR(255) NOT NULL, CONSTRAINT FK_9A97868115F0EE5 FOREIGN KEY (domain_id) REFERENCES domains (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_9A97868115F0EE5 ON smtptls_reports (domain_id)');
+        $this->addSql('CREATE TABLE smtptls_reports_users (smtptls_reports_id INTEGER NOT NULL, users_id INTEGER NOT NULL, PRIMARY KEY(smtptls_reports_id, users_id), CONSTRAINT FK_8C0C024C6869B713 FOREIGN KEY (smtptls_reports_id) REFERENCES smtptls_reports (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_8C0C024C67B3B43D FOREIGN KEY (users_id) REFERENCES users (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_8C0C024C6869B713 ON smtptls_reports_users (smtptls_reports_id)');
+        $this->addSql('CREATE INDEX IDX_8C0C024C67B3B43D ON smtptls_reports_users (users_id)');
         $this->addSql('CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, email VARCHAR(180) NOT NULL, roles CLOB NOT NULL --(DC2Type:json)
         , password VARCHAR(255) NOT NULL, is_verified BOOLEAN NOT NULL)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_1483A5E9E7927C74 ON users (email)');
@@ -60,8 +61,8 @@ final class Version20240204190327 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP TABLE dmarc_records');
         $this->addSql('DROP TABLE dmarc_reports');
+        $this->addSql('DROP TABLE dmarc_reports_users');
         $this->addSql('DROP TABLE dmarc_results');
-        $this->addSql('DROP TABLE dmarc_seen');
         $this->addSql('DROP TABLE domains');
         $this->addSql('DROP TABLE logs');
         $this->addSql('DROP TABLE mxrecords');
@@ -69,7 +70,7 @@ final class Version20240204190327 extends AbstractMigration
         $this->addSql('DROP TABLE smtptls_mxrecords');
         $this->addSql('DROP TABLE smtptls_policies');
         $this->addSql('DROP TABLE smtptls_reports');
-        $this->addSql('DROP TABLE smtptls_seen');
+        $this->addSql('DROP TABLE smtptls_reports_users');
         $this->addSql('DROP TABLE users');
         $this->addSql('DROP TABLE users_domains');
     }
