@@ -41,9 +41,11 @@
                                 </button>
                             </span>
                             <span class="float-end">
-                                <a href="{{ path('app_register') }}"><button class="btn btn-secondary" type="button">
-                                    {{ 'Register'|trans }}
-                                </button></a>
+                                {% if enable_registration %}
+                                    <a href="{{ path('app_register') }}"><button class="btn btn-secondary" type="button">
+                                        {{ 'Register'|trans }}
+                                    </button></a>
+                                {% endif %}
                             </span>
                         </div>
                         {% endif %}

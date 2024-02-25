@@ -12,6 +12,7 @@ if [ ! -f "/var/www/html/.env.local" ]; then
     echo "MAILBOX_USERNAME=\"$MAILER_USER\"" >> /var/www/html/.env.local
     echo "MAILBOX_PASSWORD=\"$MAILER_PASSWORD\"" >> /var/www/html/.env.local
     echo "DELETE_PROCESSED_MAILS=\"$DELETE_PROCESSED_MAILS\"" >> /var/www/html/.env.local
+    echo "ENABLE_REGISTRATION=\"$ENABLE_REGISTRATION\"" >> /var/www/html/.env.local
 fi
 
 echo "Run migrations"

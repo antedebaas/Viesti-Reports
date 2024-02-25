@@ -32,6 +32,8 @@ services:
       MAILER_IMAPPORT: 993
       MAILER_USER: 
       MAILER_PASSWORD: 
+      DELETE_PROCESSED_MAILS: false
+      ENABLE_REGISTRATION: false
     restart: unless-stopped
     depends_on:
       db:

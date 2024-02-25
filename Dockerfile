@@ -17,6 +17,7 @@ ENV MAILER_IMAPPORT=993
 ENV MAILER_USER=
 ENV MAILER_PASSWORD=
 ENV DELETE_PROCESSED_MAILS=false
+ENV ENABLE_REGISTRATION=true
 
 RUN apk --update add ca-certificates && \
     apk --no-cache add \
