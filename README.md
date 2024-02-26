@@ -39,6 +39,8 @@ Setup is pretty easy
 * php-mbstring
 * php-pdo
 * php-pdo_mysql
+* php-pdo-pgsql
+* php-pdo-sqlite
 * php-phar
 * php-session
 * php-simplexml
