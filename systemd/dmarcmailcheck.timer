@@ -2,7 +2,7 @@
 Description=Check mail for new dmarc reports on schedule
 
 [Timer]
-OnCalendar=daily
+OnCalendar=hourly
 Persistent=true
 
 [Install]

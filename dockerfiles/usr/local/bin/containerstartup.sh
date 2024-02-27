@@ -15,5 +15,27 @@ if [ ! -f "/var/www/html/.env.local" ]; then
     echo "ENABLE_REGISTRATION=\"$ENABLE_REGISTRATION\"" >> /var/www/html/.env.local
 fi
 
+echo "Set cron schedule"
+if echo "$MAILCHECK_SCHEDULE" | egrep -s -q "^(@(monthly|weekly|daily|hourly|15min))|((((\d+,)+\d+|(\d+(\/|-)\d+)|\d+|\*) ?){5})$"; then
+    echo 'Match found';
+else
+    echo 'Match not found, setting to run once every hour';
+    MAILCHECK_SCHEDULE='0 * * * *';
+fi
+
+if [ "$MAILCHECK_SCHEDULE" == "@15min" ]; then
+    ln -s /usr/local/bin/checkmail.sh /etc/periodic/15min/checkmail.sh
+else if [ "$MAILCHECK_SCHEDULE" == "@hourly" ]; then
+    ln -s /usr/local/bin/checkmail.sh /etc/periodic/hourly/checkmail.sh
+else if [ "$MAILCHECK_SCHEDULE" == "@daily" ]; then
+    ln -s /usr/local/bin/checkmail.sh /etc/periodic/daily/checkmail.sh
+else if [ "$MAILCHECK_SCHEDULE" == "@weekly" ]; then
+    ln -s /usr/local/bin/checkmail.sh /etc/periodic/weekly/checkmail.sh
+else if [ "$MAILCHECK_SCHEDULE" == "@monthly" ]; then
+    ln -s /usr/local/bin/checkmail.sh /etc/periodic/monthly/checkmail.sh
+else
+    echo "$MAILCHECK_SCHEDULE /usr/local/bin/checkmail.sh" >> /etc/crontabs/root
+fi  fi  fi  fi  fi
+
 echo "Run migrations"
 php /var/www/html/bin/console doctrine:migrations:migrate --no-interaction

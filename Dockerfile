@@ -18,6 +18,7 @@ ENV MAILER_USER=
 ENV MAILER_PASSWORD=
 ENV DELETE_PROCESSED_MAILS=false
 ENV ENABLE_REGISTRATION=true
+ENV MAILCHECK_SCHEDULE="0 * * * *"
 
 RUN apk --update add ca-certificates && \
     apk --no-cache add \
@@ -48,7 +49,7 @@ COPY dockerfiles/ /
 
 RUN chmod +x /usr/local/bin/containerstartup.sh && \
     dos2unix /usr/local/bin/containerstartup.sh && \
-    chmod +x /etc/periodic/daily/checkmail.sh && \
+    chmod +x /usr/local/bin/checkmail.sh && \
     dos2unix /etc/nginx/nginx.conf && \
     dos2unix /etc/php83/php-fpm.d/www.conf && \
     dos2unix /etc/php83/conf.d/custom.ini && \

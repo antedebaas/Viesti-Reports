@@ -17,7 +17,7 @@ services:
       timeout: 5s
       retries: 6
   web:
-    image: antedebaas/dmarc-reports:latest
+    image: antedebaas/dmarc-reports-local:latest
     ports:
         - 0.0.0.0:8080:8080
     environment:
@@ -34,6 +34,7 @@ services:
       MAILER_PASSWORD: 
       DELETE_PROCESSED_MAILS: false
       ENABLE_REGISTRATION: false
+      MAILCHECK_SCHEDULE: "0 * * * *"
     restart: unless-stopped
     depends_on:
       db:
