@@ -44,6 +44,7 @@ class SMTPTLS_Policies
     {
         $this->SMTPTLS_MXRecords = new ArrayCollection();
         $this->SMTPTLS_FailureDetails = new ArrayCollection();
+        $this->SMTPTLS_RdataRecords = new ArrayCollection();
     }
 
     #[ORM\ManyToOne(inversedBy: 'SMTPTLS_Policies')]
@@ -52,6 +53,9 @@ class SMTPTLS_Policies
 
     #[ORM\OneToMany(mappedBy: 'policy', targetEntity: SMTPTLS_FailureDetails::class, orphanRemoval: true)]
     private Collection $SMTPTLS_FailureDetails;
+
+    #[ORM\OneToMany(mappedBy: 'policy', targetEntity: SMTPTLS_RdataRecords::class)]
+    private Collection $SMTPTLS_RdataRecords;
 
     public function getId(): ?int
     {
@@ -208,6 +212,36 @@ class SMTPTLS_Policies
             // set the owning side to null (unless already changed)
             if ($SMTPTLS_FailureDetail->getPolicy() === $this) {
                 $SMTPTLS_FailureDetail->setPolicy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SMTPTLS_RdataRecords>
+     */
+    public function getSMTPTLS_RdataRecords(): Collection
+    {
+        return $this->SMTPTLS_RdataRecords;
+    }
+
+    public function addSMTPTLSRdataRecord(SMTPTLS_RdataRecords $sMTPTLSRdataRecord): static
+    {
+        if (!$this->SMTPTLS_RdataRecords->contains($sMTPTLSRdataRecord)) {
+            $this->SMTPTLS_RdataRecords->add($sMTPTLSRdataRecord);
+            $sMTPTLSRdataRecord->setPolicy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSMTPTLSRdataRecord(SMTPTLS_RdataRecords $sMTPTLSRdataRecord): static
+    {
+        if ($this->SMTPTLS_RdataRecords->removeElement($sMTPTLSRdataRecord)) {
+            // set the owning side to null (unless already changed)
+            if ($sMTPTLSRdataRecord->getPolicy() === $this) {
+                $sMTPTLSRdataRecord->setPolicy(null);
             }
         }
 

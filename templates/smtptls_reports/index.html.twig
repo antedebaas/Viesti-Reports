@@ -48,10 +48,14 @@
                                                   {% if policy.policytype == 'no-policy-found' %}
                                                     <span class="btn btn-sm btn-danger">no-policy-found</span>
                                                   {% else %}
-                                                    {% if policy.policystringversion == 'STSv1' %}
-                                                      <span class="btn btn-sm btn-success">STSv1</span>
+                                                    {% if policy.policytype == 'sts' %}
+                                                      {% if policy.policystringversion == 'STSv1' %}
+                                                        <span class="btn btn-sm btn-success">STSv1</span>
+                                                      {% endif %}
+                                                      <span class="btn btn-sm btn-{% if policy.policystringmode == 'enforce' %}success{% elseif policy.policystringmode == 'testing' %}warning{% else %}danger{% endif %}">{{ policy.policystringmode }}</span>
+                                                    {% elseif policy.policytype == 'tlsa' %}
+                                                      <span class="btn btn-sm btn-success">TLSA</span>
                                                     {% endif %}
-                                                    <span class="btn btn-sm btn-{% if policy.policystringmode == 'enforce' %}success{% elseif policy.policystringmode == 'testing' %}warning{% else %}danger{% endif %}">{{ policy.policystringmode }}</span>
                                                   {% endif %}
                                               <br>
                                               {% endfor %}

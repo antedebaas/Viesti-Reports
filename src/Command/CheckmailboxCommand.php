@@ -23,6 +23,7 @@ use App\Entity\SMTPTLS_Reports;
 use App\Entity\SMTPTLS_Policies;
 use App\Entity\SMTPTLS_MXRecords;
 use App\Entity\SMTPTLS_FailureDetails;
+use App\Entity\SMTPTLS_RdataRecords;
 use App\Entity\Logs;
 
 #[AsCommand(
@@ -65,7 +66,8 @@ class CheckmailboxCommand extends Command
             'new_smtptls_reports' => 0,
             'new_smtptls_policies' => 0,
             'new_smtptls_mxmapping' => 0,
-            'new_smtptls_failuredetails' => 0
+            'new_smtptls_failuredetails' => 0,
+            'new_smtptls_rdata' => 0
         );
 
         $mailresult = $this->open_mailbox($this->imap);
@@ -206,7 +208,7 @@ class CheckmailboxCommand extends Command
                 $this->em->persist($dbpolicy);
                 $this->em->flush();
 
-                if(property_exists($policy->policy, 'policy-string')){
+                if($policy->policy->{'policy-type'} == 'sts' && property_exists($policy->policy, 'policy-string')){
                     $dbpolicy->setPolicyStringVersion(str_replace("version: ","",array_slice(preg_grep('/^version:.*/', $policy->policy->{'policy-string'}), 0, 1)[0]));
                     $dbpolicy->setPolicyStringMode(str_replace("mode: ","",array_slice(preg_grep('/^mode:.*/', $policy->policy->{'policy-string'}), 0, 1)[0]));
                     $dbpolicy->setPolicyStringMaxage(str_replace("max_age: ","",array_slice(preg_grep('/^max_age:.*/', $policy->policy->{'policy-string'}), 0, 1)[0]));
@@ -240,6 +242,22 @@ class CheckmailboxCommand extends Command
                         $this->em->flush();
                     }
                 }
+                elseif($policy->policy->{'policy-type'} == 'tlsa' && property_exists($policy->policy, 'policy-string')){
+                    foreach($policy->policy->{'policy-string'} as $rdatarecord){
+                        $stats['new_smtptls_rdata']++;
+                        preg_match('/([0-9])\s([0-9])\s([0-9])\s([0-9A-Za-z]+)/', $rdatarecord, $rdatarow);
+
+                        $rdata = new SMTPTLS_RdataRecords;
+                        $rdata->setPolicy($dbpolicy);
+                        $rdata->setUsagetype($rdatarow[1]);
+                        $rdata->setSelectortype($rdatarow[2]);
+                        $rdata->setMatchingtype($rdatarow[3]);
+                        $rdata->setData($rdatarow[4]);
+                        $this->em->persist($rdata);
+                        $this->em->flush();
+                    }
+                }
+
                 if(property_exists($policy, 'failure-details')){
                     foreach($policy->{'failure-details'} as $failure){
                         $stats['new_smtptls_failuredetails']++;
@@ -270,7 +288,7 @@ class CheckmailboxCommand extends Command
             }
         }
 
-        $message = 'Mailbox checked: '.$stats['new_emails'].' new emails ('.$stats['new_domains'].' domains, '.$stats['new_mxrecords'].' mx), '.$stats['new_dmarc_reports'].' new dmarc reports ('.$stats['new_dmarc_records'].' records, '.$stats['new_dmarc_results'].' results), '.$stats['new_smtptls_reports'].' new smtptls reports ('.$stats['new_smtptls_policies'].' policies, '.$stats['new_smtptls_mxmapping'].' mxmapping, '.$stats['new_smtptls_failuredetails'].' failure details)';
+        $message = 'Mailbox checked: '.$stats['new_emails'].' new emails ('.$stats['new_domains'].' domains, '.$stats['new_mxrecords'].' mx), '.$stats['new_dmarc_reports'].' new dmarc reports ('.$stats['new_dmarc_records'].' records, '.$stats['new_dmarc_results'].' results), '.$stats['new_smtptls_reports'].' new smtptls reports ('.$stats['new_smtptls_policies'].' policies, '.$stats['new_smtptls_rdata'].' rdata rows, '.$stats['new_smtptls_mxmapping'].' mxmapping, '.$stats['new_smtptls_failuredetails'].' failure details)';
 
         $log = new Logs;
         $log->setTime(new \DateTime);
