@@ -20,6 +20,9 @@ class Logs
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $message = null;
 
+    #[ORM\Column]
+    private ?bool $success = true;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,6 +48,18 @@ class Logs
     public function setMessage(?string $message): static
     {
         $this->message = $message;
+
+        return $this;
+    }
+
+    public function isSuccess(): ?bool
+    {
+        return $this->success;
+    }
+
+    public function setSuccess(bool $success): static
+    {
+        $this->success = $success;
 
         return $this;
     }

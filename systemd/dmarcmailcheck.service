@@ -4,4 +4,4 @@ Description=Check mail for new dmarc reports
 [Service]
 Type=simple
 Nice=10
-ExecStart=php {PATH}/bin/console app:checkmailbox
+ExecStart=php {PATH}/bin/console app:getreportsfrommailbox

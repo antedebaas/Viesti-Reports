@@ -83,7 +83,7 @@
                                               {% set sts_version = true %}
                                               {% set sts_mode = true %}
                                               {% for policy in report.smtptls_policies %}
-                                                  <span class="btn btn-sm btn-{% if policy.summarysuccessfulcount == 0 %}secondary{% else %}success{% endif %}">{{ policy.summarysuccessfulcount }} Sucessful</span>
+                                                  <span class="btn btn-sm btn-{% if policy.summarysuccessfulcount == 0 %}secondary{% else %}success{% endif %}">{{ policy.summarysuccessfulcount }} Successful</span>
                                                   <span class="btn btn-sm btn-{% if policy.summarysuccessfulcount == 0 %}danger{% else %}success{% endif %}">{{ policy.summaryfailedcount }} Failed</span>
                                                   {% if policy.policytype == 'no-policy-found' %}
                                                     <span class="btn btn-sm btn-danger">no-policy-found</span>
@@ -128,7 +128,7 @@
                                         </thead>
                                         <tbody>
                                         {% for log in logs %}
-                                          <tr>
+                                          <tr {% if log.success == false %}class="table-danger"{% endif %}>
                                             <th scope="row">{{ log.id }}</th>
                                             <td>{{ log.time|date("d-M-Y H:i:s") }}</td>
                                             <td>{{ log.message }}</td>

@@ -66,7 +66,7 @@ class ReportsController extends AbstractController
         $application->setAutoExit(false);
     
         $input = new ArrayInput(array(
-            'command' => 'app:checkmailbox'
+            'command' => 'app:getreportsfrommailbox'
         ));
     
         $output = new BufferedOutput();

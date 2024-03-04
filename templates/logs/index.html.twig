@@ -19,7 +19,7 @@
                                         </thead>
                                         <tbody>
                                         {% for log in logs %}
-                                          <tr>
+                                          <tr {% if log.success == false %}class="table-danger"{% endif %}>
                                             <th scope="row">{{ log.id }}</th>
                                             <td>{{ log.time|date("d-M-Y H:i:s") }}</td>
                                             <td>{{ log.message }}</td>

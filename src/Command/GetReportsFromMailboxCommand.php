@@ -26,61 +26,234 @@ use App\Entity\SMTPTLS_FailureDetails;
 use App\Entity\SMTPTLS_RdataRecords;
 use App\Entity\Logs;
 
+use App\Response\GetReportsResponse;
+use App\EntityUnmanaged\MailReport;
+
+use App\Enums\ReportType;
+
 #[AsCommand(
-    name: 'app:checkmailbox',
-    description: 'Checks the mailbox for new reports',
+    name: 'app:getreportsfrommailbox',
+    description: 'Gets the new reports from the mailbox',
 )]
-class CheckmailboxCommand extends Command
+class GetReportsFromMailboxCommand extends Command
 {
     private $em;
-    private $imap;
+    private $mailbox;
     private $params;
 
     public function __construct(EntityManagerInterface $em, ConnectionInterface $defaultConnection, ParameterBagInterface $params)
     {
         $this->em = $em;
-        $this->imap = $defaultConnection;
+        $this->mailbox = $defaultConnection;
         $this->params = $params;
         parent::__construct();
     }
 
     protected function configure(): void
     {
-        $this
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
-        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
-        $stats=array(
-            'new_emails' => 0,
-            'new_domains' => 0,
-            'new_mxrecords' => 0,
-            'new_dmarc_reports' => 0,
-            'new_dmarc_records' => 0,
-            'new_dmarc_results' => 0,
-            'new_smtptls_reports' => 0,
-            'new_smtptls_policies' => 0,
-            'new_smtptls_mxmapping' => 0,
-            'new_smtptls_failuredetails' => 0,
-            'new_smtptls_rdata' => 0
-        );
+        $result = $this->open_mailbox();
+        //Open mailbox
+        //foreach email (try catch)
+            // 1. Open archive
+            // 2. Process report
+            // 3. Insert into database
+            // 4. mark mail as:
+                // read if ok
+                // delete if configured
+                // mark if failed
+            // 5. Log status
+        // return status
 
-        $mailresult = $this->open_mailbox($this->imap);
-        $stats['new_emails'] = $mailresult['num_emails'];
+        $log = new Logs;
+        $log->setTime(new \DateTime);
+        $log->setSuccess($result->getSuccess());
+        $log->setMessage($result->getMessage());
+        $this->em->persist($log);
+        $this->em->flush();
 
-        foreach($mailresult['reports']['dmarc_reports'] as $dmarcreport){
-            $stats['new_dmarc_reports']++;
 
+        if($result->getSuccess() == true){
+            $io->success($result->getMessage());
+            return Command::SUCCESS;
+        } else {
+            $io->error($result->getMessage());
+            return Command::FAILURE;
+        }
+    }
+
+    private function open_mailbox():GetReportsResponse
+    {
+        $response = new GetReportsResponse;
+
+        $mailbox = $this->mailbox->getMailbox('default');
+        $mail_ids = $mailbox->searchMailbox('UNSEEN');
+
+        $failed = false;
+        foreach($mail_ids as $mailid) {
+            $process_email_success = $this->process_email($mailbox,$mailid);
+
+            if($process_email_success == true){
+                if ($this->params->get('app.delete_processed_mails') == "true") {
+                    $mailbox->deleteMail($mailId);
+                }
+            } else {
+                //$mailbox->moveMail // https://github.com/barbushin/php-imap/blob/94107fdd1383285459a7f6c2dd2f39e25a1b8373/src/PhpImap/Mailbox.php#L757C21-L757C29
+                $mailbox->setFlag(array($mailid), '\\Flagged');
+                $failed = true;
+            }
+        }
+
+        if($failed == true){
+            $response->setSuccess(false, 'One or more reports failed to process, check flagged emails.');
+        } else {
+            $response->setSuccess(true, 'Mailbox processed successfully.');
+        }
+
+        return $response;
+    }
+
+    private function process_email(\PhpImap\Mailbox $mailbox, int $mailid):bool
+    {
+        $mail = $mailbox->getMail($mailid);
+        $reports = array();
+        $success = false;
+
+        //Open archive
+        try {
+            $attachments = $mail->getAttachments();
+            foreach ($attachments as $attachment) {
+                $report = new MailReport;
+                $report->setMailId($mail->headers->message_id);
+
+                $result = $this->open_archive($attachment->filePath);
+                if($result['success'] == true){
+                    $report->setSuccess(true, 'Report loaded successfully.');
+                    $report->setReport($result['report']);
+                    $report->setReportType($result['reporttype']);
+                    $success = true;
+                } else {
+                    $report->setSuccess(false, 'Failed to open report.');
+                }
+                unlink($attachment->filePath);
+            }
+        } catch (\Exception $e) {
+            $report = new MailReport;
+            $report->setReportType(ReportType::UNKNOWN);
+            $report->setMailId($mail->headers->message_id);
+            $report->setSuccess(false, 'Failed to open email attachment.');
+        } finally {
+            $reports[] = $report;
+        }
+        
+        //Process report
+        $results = array();
+        foreach($reports as $report){
+            try {
+                if($report->getReportType() == ReportType::DMARC) {
+                    $result = $this->process_dmarc_report($report);
+                } elseif($report->getReportType() == ReportType::STS) {
+                    $result = $this->process_sts_report($report);
+                } else {
+                    $result = false;
+                }
+
+                if($result == false){
+                    $log = new Logs;
+                    $log->setTime(new \DateTime);
+                    $log->setSuccess($result);
+                    $log->setMessage($report->getMailId().": ".$report->getMessage());
+                    $this->em->persist($log);
+                    $this->em->flush();
+                }
+            } catch (\Exception $e) {
+                $result = false;
+
+                $log = new Logs;
+                $log->setTime(new \DateTime);
+                $log->setSuccess($result);
+                $log->setMessage($report->getMailId().": ".$e->getMessage());
+                $this->em->persist($log);
+                $this->em->flush();
+            } finally {
+                $results[] = $result;
+            }
+        }
+
+        if (in_array(false, $results)) {
+            $success = false;
+        } else {
+            $success = true;
+        }
+
+        return $success;
+    }
+
+    private function open_archive($file): array
+    {
+        $report = null;
+        $reporttype = ReportType::Unknown;
+        $success = false;
+
+        $ziparchive = new \ZipArchive;
+        $filecontents = null;
+        
+        if ($ziparchive->open($file) === TRUE) {
+            for($i=0; $i<$ziparchive->numFiles; $i++){
+                $stat = $ziparchive->statIndex($i);
+                $filecontents = file_get_contents("zip://$file#".$stat["name"]);
+            }
+        } elseif($gzarchive = gzopen($file, 'r')) {
+            $gzcontents=null;
+            while (!feof($gzarchive)) {
+                $gzcontents .= gzread($gzarchive, filesize($file));
+            }
+            $filecontents = $gzcontents;
+        }
+
+        if(substr($filecontents, 0, 5) == "<?xml") {
+            //Expecting an DMARC XML Report
+            try {
+                $report = new \SimpleXMLElement($filecontents);
+                $reporttype = ReportType::DMARC;
+                $success = true;
+            }
+            catch (\Exception $e) {
+                $success = false;
+            }
+        }
+        elseif($this->isJson($filecontents)) {
+            //Expecting an SMTP-TLS JSON Report
+            try {
+                $report = json_decode($filecontents);
+                $reporttype = ReportType::STS;
+                $success = true;
+            }
+            catch (\Exception $e) {
+                $success = false;
+            }
+        }
+
+        return array('reporttype' => $reporttype, 'report' => $report, 'success' => $success);
+    }
+
+    private function isJson($string) {
+        json_decode($string);
+        return json_last_error() === JSON_ERROR_NONE;
+    }
+
+    private function process_dmarc_report(MailReport $report):bool
+    {
+        $dmarcreport = $report->getReport();
+        try {
             $domain_repository = $this->em->getRepository(Domains::class);
             $dbdomain = $domain_repository->findOneBy(array('fqdn' => $dmarcreport->policy_published->domain->__toString()));
             if(!$dbdomain){
-                $stats['new_domains']++;
-
                 $dbdomain = new Domains;
                 $dbdomain->setFqdn($dmarcreport->policy_published->domain->__toString());
                 $dbdomain->setStsVersion("STSv1");
@@ -107,8 +280,6 @@ class CheckmailboxCommand extends Command
             $this->em->flush();
             
             foreach($dmarcreport->record as $record){
-                $stats['new_dmarc_records']++;
-
                 $dbrecord = new DMARC_Records;
                 $dbrecord->setReport($dbreport);
                 $dbrecord->setSourceIp($record->row->source_ip->__toString());
@@ -123,8 +294,6 @@ class CheckmailboxCommand extends Command
                 $this->em->flush();
                 
                 foreach($record->auth_results->dkim as $dkim_result){
-                    $stats['new_dmarc_results']++;
-
                     $dbresult = new DMARC_Results;
                     $dbresult->setRecord($dbrecord);
                     $dbresult->setDomain($dkim_result->domain->__toString());
@@ -135,8 +304,6 @@ class CheckmailboxCommand extends Command
                 }
 
                 foreach($record->auth_results->spf as $spf_result){
-                    $stats['new_dmarc_results']++;
-
                     $dbresult = new DMARC_Results;
                     $dbresult->setRecord($dbrecord);
                     $dbresult->setDomain($spf_result->domain->__toString());
@@ -146,11 +313,16 @@ class CheckmailboxCommand extends Command
                 }
                 $this->em->flush();
             }
+            return true;
+        } catch (\Exception $e) {
+            return false;
         }
+    }
 
-        foreach($mailresult['reports']['smtptls_reports'] as $smtptlsreport){
-            $stats['new_smtptls_reports']++;
-
+    private function process_sts_report(MailReport $report):bool
+    {
+        $smtptlsreport = $report->getReport();
+        try {
             $dbreport = new SMTPTLS_Reports;
             
             $dbreport->setOrganisation($smtptlsreport->{'organization-name'});
@@ -163,8 +335,6 @@ class CheckmailboxCommand extends Command
                 $domain_repository = $this->em->getRepository(Domains::class);
                 $dbdomain = $domain_repository->findOneBy(array('fqdn' => $policy->policy->{'policy-domain'}));
                 if(!$dbdomain){
-                    $stats['new_domains']++;
-
                     $dbdomain = new Domains;
                     $dbdomain->setFqdn($policy->policy->{'policy-domain'});
                     $dbdomain->setStsVersion("STSv1");
@@ -183,13 +353,9 @@ class CheckmailboxCommand extends Command
             $this->em->flush();
 
             foreach($smtptlsreport->policies as $policy){
-                $stats['new_smtptls_policies']++;
-                
                 $domain_repository = $this->em->getRepository(Domains::class);
                 $dbdomain = $domain_repository->findOneBy(array('fqdn' => $policy->policy->{'policy-domain'}));
                 if(!$dbdomain){
-                    $stats['new_domains']++;
-
                     $dbdomain = new Domains;
                     $dbdomain->setFqdn($policy->policy->{'policy-domain'});
                     $dbdomain->setStsVersion("STSv1");
@@ -218,14 +384,11 @@ class CheckmailboxCommand extends Command
                     
                     $i=0;
                     foreach($mxrecords as $mxrecord){
-                        $stats['new_smtptls_mxmapping']++;
                         $i++;
 
                         $mx_repository = $this->em->getRepository(MXRecords::class);
                         $dbmxrecord = $mx_repository->findOneBy(array('domain' => $dbdomain, 'name' => $mxrecord));
                         if(!$dbmxrecord){
-                            $stats['new_mxrecords']++;
-        
                             $dbmxrecord = new MXRecords;
                             $dbmxrecord->setDomain($dbdomain);
                             $dbmxrecord->setName($mxrecord);
@@ -244,7 +407,6 @@ class CheckmailboxCommand extends Command
                 }
                 elseif($policy->policy->{'policy-type'} == 'tlsa' && property_exists($policy->policy, 'policy-string')){
                     foreach($policy->policy->{'policy-string'} as $rdatarecord){
-                        $stats['new_smtptls_rdata']++;
                         preg_match('/([0-9])\s([0-9])\s([0-9])\s([0-9A-Za-z]+)/', $rdatarecord, $rdatarow);
 
                         $rdata = new SMTPTLS_RdataRecords;
@@ -260,13 +422,9 @@ class CheckmailboxCommand extends Command
 
                 if(property_exists($policy, 'failure-details')){
                     foreach($policy->{'failure-details'} as $failure){
-                        $stats['new_smtptls_failuredetails']++;
-
                         $mx_repository = $this->em->getRepository(MXRecords::class);
                         $dbmxrecord = $mx_repository->findOneBy(array('domain' => $dbdomain, 'name' => $mxrecord));
                         if(!$dbmxrecord){
-                            $stats['new_mxrecords']++;
-        
                             $dbmxrecord = new MXRecords;
                             $dbmxrecord->setDomain($dbdomain);
                             $dbmxrecord->setName($mxrecord);
@@ -286,80 +444,10 @@ class CheckmailboxCommand extends Command
                     }
                 }
             }
+            return true;
+        } catch (\Exception $e) {
+            return false;
         }
-
-        $message = 'Mailbox checked: '.$stats['new_emails'].' new emails ('.$stats['new_domains'].' domains, '.$stats['new_mxrecords'].' mx), '.$stats['new_dmarc_reports'].' new dmarc reports ('.$stats['new_dmarc_records'].' records, '.$stats['new_dmarc_results'].' results), '.$stats['new_smtptls_reports'].' new smtptls reports ('.$stats['new_smtptls_policies'].' policies, '.$stats['new_smtptls_rdata'].' rdata rows, '.$stats['new_smtptls_mxmapping'].' mxmapping, '.$stats['new_smtptls_failuredetails'].' failure details)';
-
-        $log = new Logs;
-        $log->setTime(new \DateTime);
-        $log->setMessage($message);
-        $this->em->persist($log);
-        $this->em->flush();
-
-        $io->success($message);
-
-        return Command::SUCCESS;
     }
-
-    private function open_mailbox(ConnectionInterface $imap):array
-    {
-        $num_emails=0;
-        $mailbox = $imap->getMailbox('default');
-        $mailsIds = $mailbox->searchMailbox('UNSEEN');
-        $dmarc_reports = array();
-        $smtptls_reports = array();
-        foreach($mailsIds as $mailId) {
-            $num_emails++;
-            $mail = $mailbox->getMail($mailId);
-            $attachments = $mail->getAttachments();
-            foreach ($attachments as $attachment) {
-                $new_reports = $this->open_archive($attachment->filePath);
-                $dmarc_reports = array_merge($dmarc_reports,$new_reports['dmarc_reports']);
-                $smtptls_reports = array_merge($smtptls_reports,$new_reports['smtptls_reports']);
-                unlink($attachment->filePath);
-            }
-            
-            if ($this->params->get('app.delete_processed_mails') == "true") {
-                $mailbox->deleteMail($mailId);
-            }
-        }
-        return array('num_emails' => $num_emails, 'reports' => array('dmarc_reports' => $dmarc_reports, 'smtptls_reports' => $smtptls_reports));
-    }
-
-    private function open_archive($file): array
-    {
-        $dmarc_reports = array();
-        $smtptls_reports = array();
-        $ziparchive = new \ZipArchive;
-        $filecontents = null;
-        
-        if ($ziparchive->open($file) === TRUE) {
-            for($i=0; $i<$ziparchive->numFiles; $i++){
-                $stat = $ziparchive->statIndex($i);
-                $filecontents = file_get_contents("zip://$file#".$stat["name"]);
-            }
-        } elseif($gzarchive = gzopen($file, 'r')) {
-            $gzcontents=null;
-            while (!feof($gzarchive)) {
-                $gzcontents .= gzread($gzarchive, filesize($file));
-            }
-            $filecontents = $gzcontents;
-        }
-
-        if(substr($filecontents, 0, 5) == "<?xml") {
-            //Expecting an DMARC XML Report
-            $dmarc_reports[] = new \SimpleXMLElement($filecontents);
-        }
-        elseif($this->isJson($filecontents)) {
-            //Expecting an SMTP-TLS JSON Report
-            $smtptls_reports[] = json_decode($filecontents);
-        }
-
-        return array('dmarc_reports' => $dmarc_reports, 'smtptls_reports' => $smtptls_reports);
-    }
-
-    private function isJson($string) {
-        json_decode($string);
-        return json_last_error() === JSON_ERROR_NONE;
-     }
 }
+
