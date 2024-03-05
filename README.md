@@ -74,7 +74,7 @@ Setup is pretty easy
 ### Docker
 
 1. see the docker-compose.yml file for all variables and an example stack.
-2. `MAILCHECK_SCHEDULE` can be adjusted to check the mailbox more or less frequent.
+2. `MAILCHECK_SCHEDULE` can be adjusted to check the mailbox more or less frequent using a cron syntax.
    you can also use one of the following keywords: monthly, weekly, daily, hourly, 15min
 3. run `docker compose up`
 
