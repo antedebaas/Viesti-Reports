@@ -58,17 +58,6 @@ class GetReportsFromMailboxCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $result = $this->open_mailbox();
-        //Open mailbox
-        //foreach email (try catch)
-            // 1. Open archive
-            // 2. Process report
-            // 3. Insert into database
-            // 4. mark mail as:
-                // read if ok
-                // delete if configured
-                // mark if failed
-            // 5. Log status
-        // return status
 
         $log = new Logs;
         $log->setTime(new \DateTime);
