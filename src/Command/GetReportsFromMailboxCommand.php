@@ -89,7 +89,7 @@ class GetReportsFromMailboxCommand extends Command
 
             if($process_email_success == true){
                 if ($this->params->get('app.delete_processed_mails') == "true") {
-                    $mailbox->deleteMail($mailId);
+                    $mailbox->deleteMail($mailid);
                 }
             } else {
                 //$mailbox->moveMail // https://github.com/barbushin/php-imap/blob/94107fdd1383285459a7f6c2dd2f39e25a1b8373/src/PhpImap/Mailbox.php#L757C21-L757C29
