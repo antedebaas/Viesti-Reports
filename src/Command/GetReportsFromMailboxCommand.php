@@ -137,7 +137,7 @@ class GetReportsFromMailboxCommand extends Command
             $report->setMailId($mail->headers->message_id);
             $report->setSuccess(false, 'Failed to open email attachment.');
         } finally {
-            if ($report != null) {
+            if (isset($report) && $report != null) {
                 $reports[] = $report;
             }
         }
