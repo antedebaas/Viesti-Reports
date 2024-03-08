@@ -17,7 +17,7 @@ services:
       timeout: 5s
       retries: 6
   web:
-    image: antedebaas/dmarc-reports-local:latest
+    image: antedebaas/dmarc-reports:latest
     ports:
         - 0.0.0.0:8080:8080
     environment:
