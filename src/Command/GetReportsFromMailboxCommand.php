@@ -81,7 +81,7 @@ class GetReportsFromMailboxCommand extends Command
         $response = new GetReportsResponse;
 
         $mailbox = $this->mailbox->getMailbox('default');
-        $mail_ids = $mailbox->searchMailbox('UNSEEN');
+        $mail_ids = $mailbox->searchMailbox('UNSEEN','US-ASCII');
 
         $failed = false;
         foreach($mail_ids as $mailid) {
