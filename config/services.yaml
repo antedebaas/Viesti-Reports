@@ -8,6 +8,7 @@ parameters:
     app.delete_processed_mails: '%env(bool:DELETE_PROCESSED_MAILS)%'
     app.database_type: '%env(string:DATABASE_TYPE)%'
     app.enable_registration: '%env(bool:ENABLE_REGISTRATION)%'
+    timezone: '%env(APP_TIMEZONE)%'
 
 services:
     # default configuration for services in *this* file
