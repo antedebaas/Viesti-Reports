@@ -271,6 +271,7 @@ class GetReportsFromMailboxCommand extends Command
             $this->em->flush();
             
             foreach($dmarcreport->record as $record){
+                
                 $dbrecord = new DMARC_Records;
                 $dbrecord->setReport($dbreport);
                 $dbrecord->setSourceIp($record->row->source_ip->__toString());
@@ -278,9 +279,16 @@ class GetReportsFromMailboxCommand extends Command
                 $dbrecord->setPolicyDisposition(intval($record->row->policy_evaluated->disposition->__toString()));
                 $dbrecord->setPolicyDkim($record->row->policy_evaluated->dkim->__toString());
                 $dbrecord->setPolicySpf($record->row->policy_evaluated->spf->__toString());
-                $dbrecord->setEnvelopeTo($record->identifiers->envelope_to->__toString());
-                $dbrecord->setEnvelopeFrom($record->identifiers->envelope_from->__toString());
-                $dbrecord->setHeaderFrom($record->identifiers->header_from->__toString());
+                if(defined($record->identifiers->envelope_to)){
+                    $dbrecord->setEnvelopeTo($record->identifiers->envelope_to->__toString());
+                };
+                if(defined($record->identifiers->envelope_from)){
+                    $dbrecord->setEnvelopeFrom($record->identifiers->envelope_from->__toString());
+                }
+                if(defined($record->identifiers->header_from)){
+                    $dbrecord->setHeaderFrom($record->identifiers->header_from->__toString());
+                }
+                
                 $this->em->persist($dbrecord);
                 $this->em->flush();
                 
@@ -339,7 +347,6 @@ class GetReportsFromMailboxCommand extends Command
                 $dbreport->setDomain($dbdomain);
                 $this->em->persist($dbreport);
             }
-
             $this->em->persist($dbreport);
             $this->em->flush();
 
@@ -366,34 +373,50 @@ class GetReportsFromMailboxCommand extends Command
                 $this->em->flush();
 
                 if($policy->policy->{'policy-type'} == 'sts' && property_exists($policy->policy, 'policy-string')){
-                    $dbpolicy->setPolicyStringVersion(str_replace("version: ","",array_slice(preg_grep('/^version:.*/', $policy->policy->{'policy-string'}), 0, 1)[0]));
-                    $dbpolicy->setPolicyStringMode(str_replace("mode: ","",array_slice(preg_grep('/^mode:.*/', $policy->policy->{'policy-string'}), 0, 1)[0]));
-                    $dbpolicy->setPolicyStringMaxage(str_replace("max_age: ","",array_slice(preg_grep('/^max_age:.*/', $policy->policy->{'policy-string'}), 0, 1)[0]));
-                    $mxrecords=str_replace("mx: ","",array_values(preg_grep('/^mx:.*/', $policy->policy->{'policy-string'})));
+                    if($policy_version = preg_grep('/^version:.*/', $policy->policy->{'policy-string'}) != null)
+                    {
+                        $dbpolicy->setPolicyStringVersion(str_replace("version: ","",array_slice($policy_version, 0, 1)[0]));
+                    }
+                    if($policy_mode = preg_grep('/^mode:.*/', $policy->policy->{'policy-string'}) != null)
+                    {
+                        $dbpolicy->setPolicyStringMode(str_replace("mode: ","",array_slice($policy_mode, 0, 1)[0]));
+                    }
+                    if($policy_max_age = preg_grep('/^max_age:.*/', $policy->policy->{'policy-string'}) != null)
+                    {
+                        $dbpolicy->setPolicyStringMaxage(str_replace("max_age: ","",array_slice($policy_max_age, 0, 1)[0]));
+                    }
+                    if($policy_mx = preg_grep('/^mx:.*/', $policy->policy->{'policy-string'}) != null)
+                    {
+                        $mxrecords=str_replace("mx: ","",array_values($policy_mx));
+                    } else {
+                        $mxrecords = null;
+                    }
                     $this->em->persist($dbpolicy);
                     $this->em->flush();
                     
                     $i=0;
-                    foreach($mxrecords as $mxrecord){
-                        $i++;
-
-                        $mx_repository = $this->em->getRepository(MXRecords::class);
-                        $dbmxrecord = $mx_repository->findOneBy(array('domain' => $dbdomain, 'name' => $mxrecord));
-                        if(!$dbmxrecord){
-                            $dbmxrecord = new MXRecords;
-                            $dbmxrecord->setDomain($dbdomain);
-                            $dbmxrecord->setName($mxrecord);
-                            $dbmxrecord->setInSts(true);
-                            $this->em->persist($dbmxrecord);
+                    if($mxrecords){
+                        foreach($mxrecords as $mxrecord){
+                            $i++;
+    
+                            $mx_repository = $this->em->getRepository(MXRecords::class);
+                            $dbmxrecord = $mx_repository->findOneBy(array('domain' => $dbdomain, 'name' => $mxrecord));
+                            if(!$dbmxrecord){
+                                $dbmxrecord = new MXRecords;
+                                $dbmxrecord->setDomain($dbdomain);
+                                $dbmxrecord->setName($mxrecord);
+                                $dbmxrecord->setInSts(true);
+                                $this->em->persist($dbmxrecord);
+                                $this->em->flush();
+                            }
+    
+                            $dbmx = new SMTPTLS_MXRecords;
+                            $dbmx->setMXRecord($dbmxrecord);
+                            $dbmx->setPolicy($dbpolicy);
+                            $dbmx->setPriority($i);
+                            $this->em->persist($dbmx);
                             $this->em->flush();
                         }
-
-                        $dbmx = new SMTPTLS_MXRecords;
-                        $dbmx->setMXRecord($dbmxrecord);
-                        $dbmx->setPolicy($dbpolicy);
-                        $dbmx->setPriority($i);
-                        $this->em->persist($dbmx);
-                        $this->em->flush();
                     }
                 }
                 elseif($policy->policy->{'policy-type'} == 'tlsa' && property_exists($policy->policy, 'policy-string')){
@@ -414,11 +437,12 @@ class GetReportsFromMailboxCommand extends Command
                 if(property_exists($policy, 'failure-details')){
                     foreach($policy->{'failure-details'} as $failure){
                         $mx_repository = $this->em->getRepository(MXRecords::class);
-                        $dbmxrecord = $mx_repository->findOneBy(array('domain' => $dbdomain, 'name' => $mxrecord));
+                        $dbmxrecord = $mx_repository->findOneBy(array('domain' => $dbdomain, 'name' => $failure->{'receiving-mx-hostname'}));
                         if(!$dbmxrecord){
                             $dbmxrecord = new MXRecords;
                             $dbmxrecord->setDomain($dbdomain);
-                            $dbmxrecord->setName($mxrecord);
+                            $dbmxrecord->setName($failure->{'receiving-mx-hostname'});
+                            $dbmxrecord->setInSts(true);
                             $this->em->persist($dbmxrecord);
                             $this->em->flush();
                         }
@@ -427,8 +451,12 @@ class GetReportsFromMailboxCommand extends Command
                         $dbfailure->setPolicy($dbpolicy);
                         $dbfailure->setResultType($failure->{'result-type'});
                         $dbfailure->setSendingMtaIp($failure->{'sending-mta-ip'});
-                        $dbfailure->setReceivingIp($failure->{'receiving-ip'});
-                        $dbfailure->setReceivingMxHostname($dbmxrecord);
+                        if(property_exists($failure, 'receiving-ip')){
+                            $dbfailure->setReceivingIp($failure->{'receiving-ip'});
+                        }
+                        if($dbmxrecord){
+                            $dbfailure->setReceivingMxHostname($dbmxrecord);
+                        }
                         $dbfailure->setFailedSessionCount($failure->{'failed-session-count'});
                         $this->em->persist($dbfailure);
                         $this->em->flush();
@@ -436,7 +464,8 @@ class GetReportsFromMailboxCommand extends Command
                 }
             }
             return true;
-        } catch (\Exception $e) {
+            }
+        catch (\Exception $e) {
             return false;
         }
     }

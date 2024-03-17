@@ -153,28 +153,26 @@
                                       </span>
                                     </div>
                                   </li>
-                                  {% if policy.policystringversion %}
                                   <li class="list-group-item">
                                     <div class="clearfix">
                                       <span class="float-start"><b>String version: </b> </span>
                                       <span class="float-end">
                                         {% if policy.policystringversion == 'STSv1' %}
                                           <span class="btn btn-sm btn-success">STSv1</span>
+                                        {% else %}
+                                          <span class="btn btn-sm btn-danger">Policy version empty</span>
                                         {% endif %}
                                       </span>
                                     </div>
                                   </li>
-                                  {% endif %}
-                                  {% if policy.policystringmode %}
                                   <li class="list-group-item">
                                     <div class="clearfix">
                                       <span class="float-start"><b>String mode: </b> </span>
                                       <span class="float-end">
-                                        <span class="btn btn-sm btn-{% if policy.policystringmode == 'enforce' %}success{% elseif policy.policystringmode == 'testing' %}warning{% else %}danger{% endif %}">{{ policy.policystringmode }}</span>
+                                        <span class="btn btn-sm btn-{% if policy.policystringmode == 'enforce' %}success{% elseif policy.policystringmode == 'testing' %}warning{% else %}danger{% endif %}">{% if policy.policystringmode %}{{ policy.policystringmode }}{% else %}Policy mode empty{% endif %}</span>
                                       </span>
                                     </div>
                                   </li>
-                                  {% endif %}
                                   <li class="list-group-item">
                                     <div class="clearfix">
                                       <span class="float-start"><b>Summary successful count: </b> </span>

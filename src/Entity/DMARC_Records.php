@@ -44,12 +44,6 @@ class DMARC_Records
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $header_from = null;
 
-
-
-
-
-
-
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $auth_dkim = null;
 

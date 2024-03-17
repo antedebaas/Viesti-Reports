@@ -29,7 +29,6 @@ final class Version20240302155214 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('DROP SEQUENCE smtptls_rdata_records_id_seq CASCADE');
         $this->addSql('ALTER TABLE smtptls_rdata_records DROP CONSTRAINT FK_65C68ADB2D29E3C6');
         $this->addSql('DROP TABLE smtptls_rdata_records');

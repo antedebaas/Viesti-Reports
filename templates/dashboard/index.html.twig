@@ -91,8 +91,10 @@
                                                     {% if policy.policytype == 'sts' %}
                                                       {% if policy.policystringversion == 'STSv1' %}
                                                         <span class="btn btn-sm btn-success">STSv1</span>
+                                                      {% else %}
+                                                        <span class="btn btn-sm btn-danger">Policy version empty</span>
                                                       {% endif %}
-                                                      <span class="btn btn-sm btn-{% if policy.policystringmode == 'enforce' %}success{% elseif policy.policystringmode == 'testing' %}warning{% else %}danger{% endif %}">{{ policy.policystringmode }}</span>
+                                                      <span class="btn btn-sm btn-{% if policy.policystringmode == 'enforce' %}success{% elseif policy.policystringmode == 'testing' %}warning{% else %}danger{% endif %}">{% if policy.policystringmode %}{{ policy.policystringmode }}{% else %}Policy mode empty{% endif %}</span>
                                                     {% elseif policy.policytype == 'tlsa' %}
                                                       <span class="btn btn-sm btn-success">TLSA</span>
                                                     {% endif %}

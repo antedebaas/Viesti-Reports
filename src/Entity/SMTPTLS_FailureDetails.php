@@ -23,7 +23,7 @@ class SMTPTLS_FailureDetails
     #[ORM\Column(length: 255)]
     private ?string $sending_mta_ip = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $receiving_ip = null;
 
     #[ORM\ManyToOne]
