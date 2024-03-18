@@ -146,10 +146,14 @@ class GetReportsFromMailboxCommand extends Command
         $results = array();
         foreach($reports as $report){
             try {
-                if($report->getReportType() == ReportType::DMARC) {
-                    $result = $this->process_dmarc_report($report);
-                } elseif($report->getReportType() == ReportType::STS) {
-                    $result = $this->process_sts_report($report);
+                if(!is_null($report)){
+                    if($report->getReportType() == ReportType::DMARC) {
+                        $result = $this->process_dmarc_report($report);
+                    } elseif($report->getReportType() == ReportType::STS) {
+                        $result = $this->process_sts_report($report);
+                    } else {
+                        $result = false;
+                    }
                 } else {
                     $result = false;
                 }
