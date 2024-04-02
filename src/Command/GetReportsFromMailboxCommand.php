@@ -378,21 +378,21 @@ class GetReportsFromMailboxCommand extends Command
                 $this->em->flush();
 
                 if($policy->policy->{'policy-type'} == 'sts' && property_exists($policy->policy, 'policy-string')){
-                    if($policy_version = preg_grep('/^version:.*/', $policy->policy->{'policy-string'}) != null)
+                    if(preg_grep('/^version:.*/', $policy->policy->{'policy-string'}) != null)
                     {
-                        $dbpolicy->setPolicyStringVersion(str_replace("version: ","",array_slice($policy_version, 0, 1)[0]));
+                        $dbpolicy->setPolicyStringVersion(str_replace("version: ","",array_slice(preg_grep('/^version:.*/', $policy->policy->{'policy-string'}), 0, 1)[0]));
                     }
-                    if($policy_mode = preg_grep('/^mode:.*/', $policy->policy->{'policy-string'}) != null)
+                    if(preg_grep('/^mode:.*/', $policy->policy->{'policy-string'}) != null)
                     {
-                        $dbpolicy->setPolicyStringMode(str_replace("mode: ","",array_slice($policy_mode, 0, 1)[0]));
+                        $dbpolicy->setPolicyStringMode(str_replace("mode: ","",array_slice(preg_grep('/^mode:.*/', $policy->policy->{'policy-string'}), 0, 1)[0]));
                     }
-                    if($policy_max_age = preg_grep('/^max_age:.*/', $policy->policy->{'policy-string'}) != null)
+                    if(preg_grep('/^max_age:.*/', $policy->policy->{'policy-string'}) != null)
                     {
-                        $dbpolicy->setPolicyStringMaxage(str_replace("max_age: ","",array_slice($policy_max_age, 0, 1)[0]));
+                        $dbpolicy->setPolicyStringMaxage(str_replace("max_age: ","",array_slice(preg_grep('/^max_age:.*/', $policy->policy->{'policy-string'}), 0, 1)[0]));
                     }
-                    if($policy_mx = preg_grep('/^mx:.*/', $policy->policy->{'policy-string'}) != null)
+                    if(preg_grep('/^mx:.*/', $policy->policy->{'policy-string'}) != null)
                     {
-                        $mxrecords=str_replace("mx: ","",array_values($policy_mx));
+                        $mxrecords=str_replace("mx: ","",array_values(preg_grep('/^mx:.*/', $policy->policy->{'policy-string'})));
                     } else {
                         $mxrecords = null;
                     }
