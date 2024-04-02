@@ -283,13 +283,14 @@ class GetReportsFromMailboxCommand extends Command
                 $dbrecord->setPolicyDisposition(intval($record->row->policy_evaluated->disposition->__toString()));
                 $dbrecord->setPolicyDkim($record->row->policy_evaluated->dkim->__toString());
                 $dbrecord->setPolicySpf($record->row->policy_evaluated->spf->__toString());
-                if(defined($record->identifiers->envelope_to)){
+                
+                if(!empty($record->identifiers->envelope_to)){
                     $dbrecord->setEnvelopeTo($record->identifiers->envelope_to->__toString());
-                };
-                if(defined($record->identifiers->envelope_from)){
+                }
+                if(!empty($record->identifiers->envelope_from)){
                     $dbrecord->setEnvelopeFrom($record->identifiers->envelope_from->__toString());
                 }
-                if(defined($record->identifiers->header_from)){
+                if(!empty($record->identifiers->header_from)){
                     $dbrecord->setHeaderFrom($record->identifiers->header_from->__toString());
                 }
                 
