@@ -12,6 +12,10 @@ class ClearLogsCommandTest extends KernelTestCase
         self::bootKernel();
         $application = new Application(self::$kernel);
 
+        $command = $application->find('doctrine:migrations:migrate');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(['n']);
+
         $command = $application->find('app:clearlogs');
         $commandTester = new CommandTester($command);
         $commandTester->execute([]);
