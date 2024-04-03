@@ -2,7 +2,7 @@ name: Docker build and push
 
 on:
   workflow_run:
-    workflows: ["Symfony Tests"]
+    workflows: ["Run Actions"]
     types:
       - completed
   push:
