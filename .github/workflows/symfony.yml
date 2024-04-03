@@ -3,9 +3,13 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Symfony
+name: Symfony Tests
 
 on:
+  workflow_run:
+    workflows: ["GitGuardian scan"]
+    types:
+      - completed
   push:
     branches: [ "main" ]
   pull_request:

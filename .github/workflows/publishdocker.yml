@@ -1,6 +1,10 @@
 name: Docker build and push
 
 on:
+  workflow_run:
+    workflows: ["Symfony Tests"]
+    types:
+      - completed
   push:
     tags:
       - "v*.*.*"
