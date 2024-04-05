@@ -2699,16 +2699,16 @@
         },
         {
             "name": "symfony/event-dispatcher-contracts",
-            "version": "v3.4.0",
+            "version": "v3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher-contracts.git",
-                "reference": "a76aed96a42d2b521153fb382d418e30d18b59df"
+                "reference": "4e64b49bf370ade88e567de29465762e316e4224"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher-contracts/zipball/a76aed96a42d2b521153fb382d418e30d18b59df",
-                "reference": "a76aed96a42d2b521153fb382d418e30d18b59df",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher-contracts/zipball/4e64b49bf370ade88e567de29465762e316e4224",
+                "reference": "4e64b49bf370ade88e567de29465762e316e4224",
                 "shasum": ""
             },
             "require": {
@@ -2755,7 +2755,7 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/symfony/event-dispatcher-contracts/tree/v3.4.0"
+                "source": "https://github.com/symfony/event-dispatcher-contracts/tree/v3.4.2"
             },
             "funding": [
                 {
@@ -2771,7 +2771,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-23T14:45:45+00:00"
+            "time": "2024-01-23T14:51:35+00:00"
         },
         {
             "name": "symfony/filesystem",
@@ -2967,16 +2967,16 @@
         },
         {
             "name": "symfony/form",
-            "version": "v7.0.4",
+            "version": "v7.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/form.git",
-                "reference": "5cfe85c74caf924c7cec2134e169320b464ede84"
+                "reference": "d5db6599775a563792391d0045decc240e7ebd1e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/form/zipball/5cfe85c74caf924c7cec2134e169320b464ede84",
-                "reference": "5cfe85c74caf924c7cec2134e169320b464ede84",
+                "url": "https://api.github.com/repos/symfony/form/zipball/d5db6599775a563792391d0045decc240e7ebd1e",
+                "reference": "d5db6599775a563792391d0045decc240e7ebd1e",
                 "shasum": ""
             },
             "require": {
@@ -3043,7 +3043,7 @@
             "description": "Allows to easily create, process and reuse HTML forms",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/form/tree/v7.0.4"
+                "source": "https://github.com/symfony/form/tree/v7.0.6"
             },
             "funding": [
                 {
@@ -3059,7 +3059,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-12T11:15:03+00:00"
+            "time": "2024-03-28T09:20:36+00:00"
         },
         {
             "name": "symfony/framework-bundle",
@@ -4184,16 +4184,16 @@
         },
         {
             "name": "symfony/property-access",
-            "version": "v7.0.4",
+            "version": "v7.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/property-access.git",
-                "reference": "44e3746d4de8d0961a44ee332c74dd0918266127"
+                "reference": "1c268ba954ccc5e78cf035b391abb67759e24423"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/property-access/zipball/44e3746d4de8d0961a44ee332c74dd0918266127",
-                "reference": "44e3746d4de8d0961a44ee332c74dd0918266127",
+                "url": "https://api.github.com/repos/symfony/property-access/zipball/1c268ba954ccc5e78cf035b391abb67759e24423",
+                "reference": "1c268ba954ccc5e78cf035b391abb67759e24423",
                 "shasum": ""
             },
             "require": {
@@ -4240,7 +4240,7 @@
                 "reflection"
             ],
             "support": {
-                "source": "https://github.com/symfony/property-access/tree/v7.0.4"
+                "source": "https://github.com/symfony/property-access/tree/v7.0.6"
             },
             "funding": [
                 {
@@ -4256,20 +4256,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-16T13:44:10+00:00"
+            "time": "2024-03-19T11:57:22+00:00"
         },
         {
             "name": "symfony/property-info",
-            "version": "v7.0.3",
+            "version": "v7.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/property-info.git",
-                "reference": "e160f92ea827243abf2dbf36b8460b1377194406"
+                "reference": "b8844ddce7d53f78b57ec9be59da80fceddf3167"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/property-info/zipball/e160f92ea827243abf2dbf36b8460b1377194406",
-                "reference": "e160f92ea827243abf2dbf36b8460b1377194406",
+                "url": "https://api.github.com/repos/symfony/property-info/zipball/b8844ddce7d53f78b57ec9be59da80fceddf3167",
+                "reference": "b8844ddce7d53f78b57ec9be59da80fceddf3167",
                 "shasum": ""
             },
             "require": {
@@ -4323,7 +4323,7 @@
                 "validator"
             ],
             "support": {
-                "source": "https://github.com/symfony/property-info/tree/v7.0.3"
+                "source": "https://github.com/symfony/property-info/tree/v7.0.6"
             },
             "funding": [
                 {
@@ -4339,7 +4339,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-23T15:02:46+00:00"
+            "time": "2024-03-28T09:20:36+00:00"
         },
         {
             "name": "symfony/routing",
@@ -4853,16 +4853,16 @@
         },
         {
             "name": "symfony/service-contracts",
-            "version": "v3.4.1",
+            "version": "v3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/service-contracts.git",
-                "reference": "fe07cbc8d837f60caf7018068e350cc5163681a0"
+                "reference": "11bbf19a0fb7b36345861e85c5768844c552906e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/fe07cbc8d837f60caf7018068e350cc5163681a0",
-                "reference": "fe07cbc8d837f60caf7018068e350cc5163681a0",
+                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/11bbf19a0fb7b36345861e85c5768844c552906e",
+                "reference": "11bbf19a0fb7b36345861e85c5768844c552906e",
                 "shasum": ""
             },
             "require": {
@@ -4915,7 +4915,7 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/symfony/service-contracts/tree/v3.4.1"
+                "source": "https://github.com/symfony/service-contracts/tree/v3.4.2"
             },
             "funding": [
                 {
@@ -4931,7 +4931,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-12-26T14:02:43+00:00"
+            "time": "2023-12-19T21:51:00+00:00"
         },
         {
             "name": "symfony/stopwatch",
