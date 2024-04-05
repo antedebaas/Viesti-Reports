@@ -17,14 +17,19 @@ class GetReportsFromMailboxCommandTest extends KernelTestCase
 
     public function testExecute(): void
     {
-        $mockEm = $this->getMockBuilder(EntityManagerInterface::class)->disableOriginalConstructor()->getMock();
+        //$mockEm = $this->getMockBuilder(EntityManagerInterface::class)->disableOriginalConstructor()->getMock();
+        $em = $this->getContainer()->get("doctrine")->getManager();
         $mockConnection = $this->getMockBuilder(Connection::class)->disableOriginalConstructor()->getMock();
         $mockParameterBag = $this->getMockBuilder(ParameterBagInterface::class)->disableOriginalConstructor()->getMock();
 
         self::bootKernel();
         $application = new Application(self::$kernel);
 
-        $application->add(new GetReportsFromMailboxCommand($mockEm, $mockConnection, $mockParameterBag));
+        $command = $application->find('doctrine:migrations:migrate');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(['n']);
+
+        $application->add(new GetReportsFromMailboxCommand($em, $mockConnection, $mockParameterBag));
 
         $command = $application->find('app:getreportsfrommailbox');
         $commandTester = new CommandTester($command);
