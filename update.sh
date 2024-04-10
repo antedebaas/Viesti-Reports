@@ -12,8 +12,13 @@ composer install
 echo "clear cache"
 php bin/console cache:clear
 
-echo "run migrations"
-php bin/console doctrine:migrations:migrate --no-interaction --query-time
+if [ -f .env.local ]; then
+    echo "run migrations"
+    php bin/console doctrine:migrations:migrate --no-interaction --query-time
+else
+    echo "skipping migrations as there is no .env.local file yet."
+    echo "Create one this by running setup"
+fi
 
 echo "run upgrade script"
 bash upgradefiles/upgrade.sh
