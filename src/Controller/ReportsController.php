@@ -36,10 +36,13 @@ class ReportsController extends AbstractController
     #[Route('/reports', name: 'app_reports')]
     public function index(): Response
     {
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $repository = $this->em->getRepository(Domains::class);
         $userRepository = $this->em->getRepository(Users::class);
         $domains = $repository->findBy(array('id' => $userRepository->findDomains($this->getUser())));
-        
 
         $repository = $this->em->getRepository(DMARC_Reports::class);
         $dmarc_count = $repository->getTotalRows($domains);
@@ -58,6 +61,10 @@ class ReportsController extends AbstractController
     #[Route('/reports/checkmailnow', name: 'app_checkmailnow')]
     public function checkmailboxnow(): Response
     {
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         
         $kernel = new Kernel($_ENV['APP_ENV'], (bool) $_ENV['APP_DEBUG']);

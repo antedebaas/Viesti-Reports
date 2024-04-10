@@ -32,6 +32,10 @@ class DMARC_ReportsController extends AbstractController
     #[Route(path: '/reports/dmarc', name: 'app_dmarc_reports', methods: ['GET'])]
     public function index(): Response
     {
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $pages=array("page"=>1,"next" => false,"prev" => false);
 
         if(isset($_GET["page"]) && $_GET["page"] > 0)
@@ -81,6 +85,10 @@ class DMARC_ReportsController extends AbstractController
         #[MapQueryParameter(filter: FILTER_VALIDATE_INT)] DMARC_Reports $report
     ): Response
     {
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $repository = $this->em->getRepository(DMARC_Reports::class);
         $userRepository = $this->em->getRepository(Users::class);
 
@@ -109,6 +117,10 @@ class DMARC_ReportsController extends AbstractController
     #[Route('/reports/dmarc/delete/{report}', name: 'app_dmarc_reports_delete')]
     public function delete(DMARC_Reports $report ): Response
     {
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $this->em->remove($report);

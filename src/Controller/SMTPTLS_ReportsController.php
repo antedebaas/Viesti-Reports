@@ -32,6 +32,10 @@ class SMTPTLS_ReportsController extends AbstractController
     #[Route(path: '/reports/smtptls', name: 'app_smtptls_reports', methods: ['GET'])]
     public function index(): Response
     {
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $pages=array("page"=>1,"next" => false,"prev" => false);
 
         if(isset($_GET["page"]) && $_GET["page"] > 0)
@@ -81,6 +85,10 @@ class SMTPTLS_ReportsController extends AbstractController
         #[MapQueryParameter(filter: FILTER_VALIDATE_INT)] SMTPTLS_Reports $report
     ): Response
     {
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $repository = $this->em->getRepository(SMTPTLS_Reports::class);
         $userRepository = $this->em->getRepository(Users::class);
 
@@ -108,6 +116,10 @@ class SMTPTLS_ReportsController extends AbstractController
     #[Route('/reports/smtptls/delete/{report}', name: 'app_smtptls_reports_delete')]
     public function delete(SMTPTLS_Reports $report ): Response
     {
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $this->em->remove($report);

@@ -37,6 +37,10 @@ class UsersController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $pages=array("page"=>1,"next" => false,"prev" => false);
 
         if(isset($_GET["page"]) && $_GET["page"] > 0)
@@ -73,6 +77,12 @@ class UsersController extends AbstractController
     #[Route('/user/add', name: 'app_user_add')]
     public function add(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $form = $this->createForm(UserFormType::class);
 
         $form->handleRequest($request);
@@ -124,6 +134,12 @@ class UsersController extends AbstractController
     #[Route('/user/edit/{id}', name: 'app_user_edit')]
     public function edit(Users $user, Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
     {
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         $form = $this->createForm(UserFormType::class, $user);
 
         $form->handleRequest($request);
@@ -175,6 +191,10 @@ class UsersController extends AbstractController
     #[Route('/user/delete/{id}', name: 'app_user_delete')]
     public function delete(Users $user ): Response
     {
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $this->em->remove($user);

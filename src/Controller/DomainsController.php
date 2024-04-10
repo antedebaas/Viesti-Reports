@@ -35,6 +35,10 @@ class DomainsController extends AbstractController
     #[Route('/domains', name: 'app_domains')]
     public function index(): Response
     {
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $pages=array("page"=>1,"next" => false,"prev" => false);
 
         if(isset($_GET["page"]) && $_GET["page"] > 0)
@@ -78,6 +82,10 @@ class DomainsController extends AbstractController
     #[Route('/domains/add', name: 'app_domains_add')]
     public function add(Request $request): Response
     {
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $form = $this->createForm(DomainFormType::class);
 
         $form->handleRequest($request);
@@ -120,6 +128,10 @@ class DomainsController extends AbstractController
     #[Route('/domains/edit/{id}', name: 'app_domains_edit')]
     public function edit(Domains $domain, Request $request): Response
     {
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $usersRepository = $this->em->getRepository(Users::class);
         if(!$usersRepository->denyAccessUnlessOwned(array($domain->getId()),$this->getUser())){
             return $this->render('not_found.html.twig', []);
@@ -159,6 +171,10 @@ class DomainsController extends AbstractController
     #[Route('/domains/delete/{id}', name: 'app_domains_delete')]
     public function delete(Domains $domain ): Response
     {
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $this->em->remove($domain);

@@ -30,6 +30,10 @@ class LogsController extends AbstractController
     #[Route('/logs', name: 'app_logs')]
     public function index(): Response
     {
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $pages=array("page"=>1,"next" => false,"prev" => false);
