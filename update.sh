@@ -18,6 +18,7 @@ if [ -f .env.local ]; then
 else
     echo "skipping migrations as there is no .env.local file yet."
     echo "Create one this by running setup"
+    echo ""
 fi
 
 echo "run upgrade script"
