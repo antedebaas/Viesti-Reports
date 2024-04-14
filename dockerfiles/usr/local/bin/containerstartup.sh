@@ -34,7 +34,7 @@ else if [ "$MAILCHECK_SCHEDULE" == "@weekly" ]; then
 else if [ "$MAILCHECK_SCHEDULE" == "@monthly" ]; then
     ln -s /usr/local/bin/checkmail.sh /etc/periodic/monthly/checkmail.sh
 else
-    echo "$MAILCHECK_SCHEDULE /usr/local/bin/checkmail.sh" >> /etc/crontabs/root
+    grep "/usr/local/bin/checkmail.sh" /etc/crontabs/root || echo "$MAILCHECK_SCHEDULE /usr/local/bin/checkmail.sh" >> /etc/crontabs/root
 fi  fi  fi  fi  fi
 
 echo "Run migrations"
