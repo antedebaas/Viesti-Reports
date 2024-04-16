@@ -5,6 +5,7 @@ TAG=$(git describe --abbrev=0 --tags $(git rev-list --tags --max-count=1))
 
 echo "Checkout to latest tag"
 git checkout $TAG
+git pull
 
 echo "Install composer dependencies"
 composer install
