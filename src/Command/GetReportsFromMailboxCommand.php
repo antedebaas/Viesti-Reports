@@ -39,12 +39,14 @@ class GetReportsFromMailboxCommand extends Command
 {
     private $em;
     private $mailbox;
+    private $mailbox_secondary;
     private $params;
 
-    public function __construct(EntityManagerInterface $em, ConnectionInterface $defaultConnection, ParameterBagInterface $params)
+    public function __construct(EntityManagerInterface $em, ConnectionInterface $defaultConnection, ConnectionInterface $secondaryConnection, ParameterBagInterface $params)
     {
         $this->em = $em;
         $this->mailbox = $defaultConnection;
+        $this->mailbox_secondary = $secondaryConnection;
         $this->params = $params;
         parent::__construct();
     }
@@ -57,7 +59,11 @@ class GetReportsFromMailboxCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $result = $this->open_mailbox();
+
+        $result = $this->open_mailbox($this->mailbox);
+        if($this->mailbox_secondary->isEnabled()){
+            $result = $this->open_mailbox($this->mailbox_secondary);
+        }
 
         $log = new Logs;
         $log->setTime(new \DateTime);
@@ -76,12 +82,12 @@ class GetReportsFromMailboxCommand extends Command
         }
     }
 
-    private function open_mailbox():GetReportsResponse
+    private function open_mailbox(ConnectionInterface $ci_mailbox):GetReportsResponse
     {
         $response = new GetReportsResponse;
 
-        $mailbox = $this->mailbox->getMailbox('default');
-        $mail_ids = $mailbox->searchMailbox('UNSEEN','US-ASCII');
+        $mailbox = $ci_mailbox->getMailbox();
+        $mail_ids = $mailbox->searchMailbox('UNSEEN');
 
         $failed = false;
         foreach($mail_ids as $mailid) {
