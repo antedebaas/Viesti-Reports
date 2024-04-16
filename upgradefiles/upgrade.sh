@@ -15,17 +15,17 @@ if [ -f .env.local ]; then
     if ! grep -qe "^MAILBOX_PATH=" .env.local; then
         echo "entry MAILBOX_PATH" does not exist in .env.local
         echo "adding MAILBOX_PATH=INBOX"
-        printf "\MAILBOX_PATH=\"INBOX\"" >> .env.local
+        printf "\nMAILBOX_PATH=\"INBOX\"" >> .env.local
     fi
 
     if ! grep -qe "^MAILBOX2_ENABLED=" .env.local; then
         echo "entry MAILBOX2_ENABLED" does not exist in .env.local
         echo "adding MAILBOX2 variables"
-        printf "\MAILBOX2_ENABLED=\"false\"" >> .env.local
-        printf "\MAILBOX2_CONNECTION=" >> .env.local
-        printf "\MAILBOX2_USERNAME=" >> .env.local
-        printf "\MAILBOX2_PASSWORD=" >> .env.local
-        printf "\MAILBOX2_PATH=\"INBOX\"" >> .env.local
+        printf "\nMAILBOX2_ENABLED=\"false\"" >> .env.local
+        printf "\nMAILBOX2_CONNECTION=" >> .env.local
+        printf "\nMAILBOX2_USERNAME=" >> .env.local
+        printf "\nMAILBOX2_PASSWORD=" >> .env.local
+        printf "\nMAILBOX2_PATH=\"INBOX\"" >> .env.local
     fi
 fi
 
