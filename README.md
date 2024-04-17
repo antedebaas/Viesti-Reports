@@ -29,7 +29,7 @@ Setup is pretty easy
 
 * composer
 * mariadb (10.5+)/postgresql (16.1+)/sqlite
-* php 8.2 (or higher)
+* php (8.2+)
 * php-ctype
 * php-dom
 * php-fileinfo
