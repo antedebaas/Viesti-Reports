@@ -16,10 +16,10 @@ if [ ! -f "/var/www/html/.env.local" ]; then
 fi
 
 echo "Set cron schedule"
-if echo "$MAILCHECK_SCHEDULE" | egrep -s -q "^(@(monthly|weekly|daily|hourly|15min))|((((\d+,)+\d+|(\d+(\/|-)\d+)|\d+|\*) ?){5})$"; then
-    echo 'Match found';
+if echo "$MAILCHECK_SCHEDULE" | egrep -s -q "^(@(monthly|weekly|daily|hourly|15min))|((((\d+,)+\d+|((\d+|\*)(\/|-)\d+)|\d+|\*) ?){5})$"; then
+    echo 'Cron schedule match found, following input';
 else
-    echo 'Match not found, setting to run once every hour';
+    echo 'Cron schedule match not found, setting to run once every hour';
     MAILCHECK_SCHEDULE='0 * * * *';
 fi
 
