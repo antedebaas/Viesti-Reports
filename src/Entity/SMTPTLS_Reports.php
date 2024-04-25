@@ -40,7 +40,7 @@ class SMTPTLS_Reports
 
     #[ORM\ManyToMany(targetEntity: Users::class)]
     private Collection $seen;
-    
+
 
     public function __construct()
     {

@@ -61,7 +61,7 @@ class SMTPTLS_Policies
     {
         return $this->id;
     }
-    
+
     public function getReport(): ?SMTPTLS_Reports
     {
         return $this->report;

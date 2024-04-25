@@ -25,5 +25,29 @@ class ClearLogsCommandTest extends KernelTestCase
         // the output of the command in the console
         $output = $commandTester->getDisplay();
         $this->assertStringContainsString('[OK] Logs have been cleared', $output);
+
+        $this->tearDown();
+    }
+
+    protected function restoreExceptionHandler(): void
+    {
+        while (true) {
+            $previousHandler = set_exception_handler(static fn() => null);
+    
+            restore_exception_handler();
+    
+            if ($previousHandler === null) {
+                break;
+            }
+    
+            restore_exception_handler();
+        }
+    }
+    
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+    
+        $this->restoreExceptionHandler();
     }
 }

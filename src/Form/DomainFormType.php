@@ -19,7 +19,7 @@ class DomainFormType extends AbstractType
 {
     private MXRecordsRepository $MXRecordsRepository;
 
-    public function __construct(MXRecordsRepository $MXRecordsRepository,)
+    public function __construct(MXRecordsRepository $MXRecordsRepository)
     {
         $this->MXRecordsRepository = $MXRecordsRepository;
     }

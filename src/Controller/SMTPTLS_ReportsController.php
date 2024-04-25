@@ -36,38 +36,42 @@ class SMTPTLS_ReportsController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $pages=array("page"=>1,"next" => false,"prev" => false);
+        $pages = array("page" => 1,"next" => false,"prev" => false);
 
-        if(isset($_GET["page"]) && $_GET["page"] > 0)
-        {
+        if(isset($_GET["page"]) && $_GET["page"] > 0) {
             $pages["page"] = intval($_GET["page"]);
         } else {
             $pages["page"] = 1;
         }
 
-        if(isset($_GET["perpage"]) && $_GET["perpage"] > 0)
-        {
+        if(isset($_GET["perpage"]) && $_GET["perpage"] > 0) {
             $pages['perpage'] = intval($_GET["perpage"]);
         } else {
             $pages['perpage'] = 17;
         }
-        
+
         $repository = $this->em->getRepository(Domains::class);
         $userRepository = $this->em->getRepository(Users::class);
         $domains = $repository->findBy(array('id' => $userRepository->findDomains($this->getUser())));
 
         $repository = $this->em->getRepository(SMTPTLS_Reports::class);
         if(in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
-            $reports = $repository->findBy(array(),array('id' => 'DESC'),$pages["perpage"], ($pages["page"]-1)*$pages["perpage"]);
+            $reports = $repository->findBy(array(), array('id' => 'DESC'), $pages["perpage"], ($pages["page"] - 1) * $pages["perpage"]);
         } else {
-            $reports = $repository->findOwnedBy($domains,array('id' => 'DESC'),$pages["perpage"], ($pages["page"]-1)*$pages["perpage"]);
+            $reports = $repository->findOwnedBy($domains, array('id' => 'DESC'), $pages["perpage"], ($pages["page"] - 1) * $pages["perpage"]);
         }
         $totalreports = $repository->getTotalRows($domains);
-        
-        if(count($reports) == 0 && $totalreports != 0 && $pages["page"] != 1) { return $this->redirectToRoute('app_smtptls_reports'); }
-        
-        if($totalreports/$pages['perpage'] > $pages["page"]) { $pages["next"] = true; }
-        if($pages["page"]-1 > 0) { $pages["prev"] = true; }
+
+        if(count($reports) == 0 && $totalreports != 0 && $pages["page"] != 1) {
+            return $this->redirectToRoute('app_smtptls_reports');
+        }
+
+        if($totalreports / $pages['perpage'] > $pages["page"]) {
+            $pages["next"] = true;
+        }
+        if($pages["page"] - 1 > 0) {
+            $pages["prev"] = true;
+        }
 
         return $this->render('smtptls_reports/index.html.twig', [
             'reports' => $reports,
@@ -83,20 +87,19 @@ class SMTPTLS_ReportsController extends AbstractController
     #[Route(path: '/reports/smtptls/report/{report}', name: 'app_smtptls_reports_report', methods: ['GET'])]
     public function report(
         #[MapQueryParameter(filter: FILTER_VALIDATE_INT)] SMTPTLS_Reports $report
-    ): Response
-    {
+    ): Response {
         if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
             return $this->redirectToRoute('app_login');
         }
-        
+
         $repository = $this->em->getRepository(SMTPTLS_Reports::class);
         $userRepository = $this->em->getRepository(Users::class);
 
-        if(!$userRepository->denyAccessUnlessOwned($repository->getDomain($report),$this->getUser())){
+        if(!$userRepository->denyAccessUnlessOwned($repository->getDomain($report), $this->getUser())) {
             return $this->render('not_found.html.twig', []);
         }
 
-        if(!in_array($this->getUser(),$report->getSeen()->getValues())){
+        if(!in_array($this->getUser(), $report->getSeen()->getValues())) {
             $report->addSeen($this->getUser());
             $this->em->persist($report);
             $this->em->flush();
@@ -114,12 +117,12 @@ class SMTPTLS_ReportsController extends AbstractController
     }
 
     #[Route('/reports/smtptls/delete/{report}', name: 'app_smtptls_reports_delete')]
-    public function delete(SMTPTLS_Reports $report ): Response
+    public function delete(SMTPTLS_Reports $report): Response
     {
         if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
             return $this->redirectToRoute('app_login');
         }
-        
+
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $this->em->remove($report);

@@ -50,22 +50,22 @@ class DashboardController extends AbstractController
 
         $repository = $this->em->getRepository(DMARC_Reports::class);
         if(in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
-            $dmarcreports = $repository->findBy(array(),array('id' => 'DESC'),5,0);
+            $dmarcreports = $repository->findBy(array(), array('id' => 'DESC'), 5, 0);
         } else {
-            $dmarcreports = $repository->findBy(array('domain' => $domains),array('id' => 'DESC'),5,0);
+            $dmarcreports = $repository->findBy(array('domain' => $domains), array('id' => 'DESC'), 5, 0);
         }
         $totalreports = $repository->getTotalRows($domains);
 
         $repository = $this->em->getRepository(SMTPTLS_Reports::class);
         if(in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
-            $smtptlsreports = $repository->findBy(array(),array('id' => 'DESC'),5,0);
+            $smtptlsreports = $repository->findBy(array(), array('id' => 'DESC'), 5, 0);
         } else {
-            $smtptlsreports = $repository->findOwnedBy($domains,array('id' => 'DESC'),5,0);
+            $smtptlsreports = $repository->findOwnedBy($domains, array('id' => 'DESC'), 5, 0);
         }
         $totalreports = $repository->getTotalRows($domains);
 
         $repository = $this->em->getRepository(Logs::class);
-        $logs = $repository->findBy(array(),array('id' => 'DESC'),3, 0);
+        $logs = $repository->findBy(array(), array('id' => 'DESC'), 3, 0);
 
         return $this->render('dashboard/index.html.twig', [
             'menuactive' => 'dashboard',

@@ -39,45 +39,46 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
         $this->getEntityManager()->flush();
     }
 
-//    /**
-//     * @return Users[] Returns an array of Users objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('u.id', 'ASC')
-//            ->setMaxDMARC_Results(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Users[] Returns an array of Users objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('u')
+    //            ->andWhere('u.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('u.id', 'ASC')
+    //            ->setMaxDMARC_Results(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?Users
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?Users
+    //    {
+    //        return $this->createQueryBuilder('u')
+    //            ->andWhere('u.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 
-    public function denyAccessUnlessOwned($domains,$user){
-        if(in_array("ROLE_ADMIN",$user->getRoles())){
+    public function denyAccessUnlessOwned($domains, $user)
+    {
+        if(in_array("ROLE_ADMIN", $user->getRoles())) {
             return true;
-        }
-        elseif($this->array_keys_in_array($domains,$this->findDomains($user))){
+        } elseif($this->array_keys_in_array($domains, $this->findDomains($user))) {
             return true;
         } else {
             return false;
         }
     }
 
-    private function array_keys_in_array(array $needles, array $haystack) {
-        foreach($needles as $needle){
-            if(in_array($needle, $haystack)){
+    private function array_keys_in_array(array $needles, array $haystack)
+    {
+        foreach($needles as $needle) {
+            if(in_array($needle, $haystack)) {
                 return true;
             } else {
                 continue;
@@ -97,18 +98,18 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
 
     public function findFormIsAdmin($options): bool
     {
-        if(array_key_exists('data', $options) && $options["data"]->getId() != null)
-        {
+        if(array_key_exists('data', $options) && $options["data"]->getId() != null) {
             return $this->findIsAdmin($options["data"]->getId());
         } else {
             return false;
         }
     }
 
-    public function findDomains(Users $user){
+    public function findDomains(Users $user)
+    {
         $ids = [];
         $domains = $user->getDomains();
-        foreach($domains as $domain){
+        foreach($domains as $domain) {
             $ids[] = $domain->getId();
         }
         return $ids;

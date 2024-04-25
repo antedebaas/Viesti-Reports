@@ -20,3 +20,4 @@
 ###< phpunit/phpunit ###
 
 /public/phpinfo.php
+/tools/

@@ -24,36 +24,36 @@ class DomainsRepository extends ServiceEntityRepository
         $this->usersRepository = $usersRepository;
     }
 
-//    /**
-//     * @return Domains[] Returns an array of Domains objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('d')
-//            ->andWhere('d.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('d.id', 'ASC')
-//            ->setMaxDMARC_Results(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Domains[] Returns an array of Domains objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('d')
+    //            ->andWhere('d.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('d.id', 'ASC')
+    //            ->setMaxDMARC_Results(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?Domains
-//    {
-//        return $this->createQueryBuilder('d')
-//            ->andWhere('d.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?Domains
+    //    {
+    //        return $this->createQueryBuilder('d')
+    //            ->andWhere('d.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 
     public function findOwnedBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null)
     {
         $domains = array();
         foreach ($criteria as $criterion) {
-            if(is_int($criterion)){
+            if(is_int($criterion)) {
                 $domains[] = $criterion;
             }
         }
@@ -76,8 +76,7 @@ class DomainsRepository extends ServiceEntityRepository
 
     public function findFormSelectedDomains($options): array
     {
-        if(array_key_exists('data', $options) && $options["data"]->getId() != null)
-        {
+        if(array_key_exists('data', $options) && $options["data"]->getId() != null) {
             return $this->findSelectedDomains($options["data"]->getId());
         } else {
             return array();
@@ -86,11 +85,10 @@ class DomainsRepository extends ServiceEntityRepository
 
     public function findSelectedDomains($user_id): array
     {
-        $ids=array();
-        $user=$this->usersRepository->find($user_id);
-        foreach($user->getDomains() as $domain)
-        {
-            $ids[]=$domain->getId();
+        $ids = array();
+        $user = $this->usersRepository->find($user_id);
+        foreach($user->getDomains() as $domain) {
+            $ids[] = $domain->getId();
         }
 
         return $this->createQueryBuilder('d')

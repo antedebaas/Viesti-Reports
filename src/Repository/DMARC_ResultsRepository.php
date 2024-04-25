@@ -21,28 +21,28 @@ class DMARC_ResultsRepository extends ServiceEntityRepository
         parent::__construct($registry, DMARC_Results::class);
     }
 
-//    /**
-//     * @return DMARC_Results[] Returns an array of DMARC_Results objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxDMARC_Results(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return DMARC_Results[] Returns an array of DMARC_Results objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('r')
+    //            ->andWhere('r.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('r.id', 'ASC')
+    //            ->setMaxDMARC_Results(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?DMARC_Results
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?DMARC_Results
+    //    {
+    //        return $this->createQueryBuilder('r')
+    //            ->andWhere('r.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

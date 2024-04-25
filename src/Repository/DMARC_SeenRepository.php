@@ -21,30 +21,30 @@ class DMARC_SeenRepository extends ServiceEntityRepository
         parent::__construct($registry, DMARC_Seen::class);
     }
 
-//    /**
-//     * @return DMARC_Seen[] Returns an array of DMARC_Seen objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxDMARC_Results(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return DMARC_Seen[] Returns an array of DMARC_Seen objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('s')
+    //            ->andWhere('s.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('s.id', 'ASC')
+    //            ->setMaxDMARC_Results(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?DMARC_Seen
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?DMARC_Seen
+    //    {
+    //        return $this->createQueryBuilder('s')
+    //            ->andWhere('s.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 
     public function getSeen(array $reports, int $user)
     {
@@ -58,8 +58,7 @@ class DMARC_SeenRepository extends ServiceEntityRepository
             ->getResult();
 
         $seen_report_ids = array();
-        foreach($seen as $s)
-        {
+        foreach($seen as $s) {
             $seen_report_ids[] = $s->getReport()->getId();
         }
         return $seen_report_ids;

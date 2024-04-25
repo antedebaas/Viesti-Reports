@@ -20,6 +20,7 @@ class GetReportsFromMailboxCommandTest extends KernelTestCase
         //$mockEm = $this->getMockBuilder(EntityManagerInterface::class)->disableOriginalConstructor()->getMock();
         $em = $this->getContainer()->get("doctrine")->getManager();
         $mockConnection = $this->getMockBuilder(Connection::class)->disableOriginalConstructor()->getMock();
+        $mockConnection2 = $this->getMockBuilder(Connection::class)->disableOriginalConstructor()->getMock();
         $mockParameterBag = $this->getMockBuilder(ParameterBagInterface::class)->disableOriginalConstructor()->getMock();
 
         self::bootKernel();
@@ -29,7 +30,7 @@ class GetReportsFromMailboxCommandTest extends KernelTestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['n']);
 
-        $application->add(new GetReportsFromMailboxCommand($em, $mockConnection, $mockParameterBag));
+        $application->add(new GetReportsFromMailboxCommand($em, $mockConnection, $mockConnection2, $mockParameterBag));
 
         $command = $application->find('app:getreportsfrommailbox');
         $commandTester = new CommandTester($command);
@@ -40,6 +41,28 @@ class GetReportsFromMailboxCommandTest extends KernelTestCase
         $output = $commandTester->getDisplay();
         $this->assertStringContainsString('[OK] Mailbox processed successfully', $output);
 
-        // ...
+        $this->tearDown();
+    }
+
+    protected function restoreExceptionHandler(): void
+    {
+        while (true) {
+            $previousHandler = set_exception_handler(static fn() => null);
+    
+            restore_exception_handler();
+    
+            if ($previousHandler === null) {
+                break;
+            }
+    
+            restore_exception_handler();
+        }
+    }
+    
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+    
+        $this->restoreExceptionHandler();
     }
 }
