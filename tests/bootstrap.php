@@ -10,8 +10,6 @@ if (file_exists(dirname(__DIR__).'/config/bootstrap.php')) {
     (new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
 }
 
-PHPUnit_Framework_Error_Deprecated::$enabled = false;
-
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
 }
