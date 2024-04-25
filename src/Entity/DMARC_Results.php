@@ -45,7 +45,7 @@ class DMARC_Results
 
         return $this;
     }
-    
+
 
     public function getDomain(): ?string
     {

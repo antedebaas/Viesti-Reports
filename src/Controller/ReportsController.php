@@ -66,19 +66,19 @@ class ReportsController extends AbstractController
         }
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        
+
         $kernel = new Kernel($_ENV['APP_ENV'], (bool) $_ENV['APP_DEBUG']);
 
         $application = new Application($kernel);
         $application->setAutoExit(false);
-    
+
         $input = new ArrayInput(array(
             'command' => 'app:getreportsfrommailbox'
         ));
-    
+
         $output = new BufferedOutput();
         $application->run($input, $output);
-        
+
         return $this->redirectToRoute('app_dashboard');
     }
 }

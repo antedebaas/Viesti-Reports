@@ -1,4 +1,5 @@
 <?php
+
 namespace App\EventListener;
 
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -8,7 +9,7 @@ use Twig\Environment;
 class KernelExceptionListener
 {
     private $templating;
- 
+
     public function __construct(Environment $templating)
     {
         $this->templating = $templating;
@@ -17,7 +18,7 @@ class KernelExceptionListener
     public function onKernelException(ExceptionEvent $event)
     {
         $exception = $event->getThrowable();
-        if(get_class($exception) == "Symfony\Component\HttpKernel\Exception\NotFoundHttpException"){
+        if(get_class($exception) == "Symfony\Component\HttpKernel\Exception\NotFoundHttpException") {
             $event->setResponse(
                 new Response(
                     $this->templating->render('not_found.html.twig'),

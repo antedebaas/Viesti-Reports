@@ -38,18 +38,16 @@ class DomainsController extends AbstractController
         if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
             return $this->redirectToRoute('app_login');
         }
-        
-        $pages=array("page"=>1,"next" => false,"prev" => false);
 
-        if(isset($_GET["page"]) && $_GET["page"] > 0)
-        {
+        $pages = array("page" => 1,"next" => false,"prev" => false);
+
+        if(isset($_GET["page"]) && $_GET["page"] > 0) {
             $pages["page"] = intval($_GET["page"]);
         } else {
             $pages["page"] = 1;
         }
 
-        if(isset($_GET["perpage"]) && $_GET["perpage"] > 0)
-        {
+        if(isset($_GET["perpage"]) && $_GET["perpage"] > 0) {
             $pages["perpage"] = intval($_GET["perpage"]);
         } else {
             $pages["perpage"] = 17;
@@ -59,17 +57,23 @@ class DomainsController extends AbstractController
         $usersRepository = $this->em->getRepository(Users::class);
 
         if(in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
-            $domains = $repository->findAll(array(),array('fqdn' => 'DESC'),$pages["perpage"], ($pages["page"]-1)*$pages["perpage"]);
+            $domains = $repository->findAll(array(), array('fqdn' => 'DESC'), $pages["perpage"], ($pages["page"] - 1) * $pages["perpage"]);
         } else {
-            $domains = $repository->findOwnedBy($usersRepository->findDomains($this->getUser()),array('fqdn' => 'DESC'),$pages["perpage"], ($pages["page"]-1)*$pages["perpage"]);
+            $domains = $repository->findOwnedBy($usersRepository->findDomains($this->getUser()), array('fqdn' => 'DESC'), $pages["perpage"], ($pages["page"] - 1) * $pages["perpage"]);
         }
 
         $totaldomains = $repository->getTotalRows();
 
-        if(count($domains) == 0 && $totaldomains != 0 ) { return $this->redirectToRoute('app_domains'); }
-        
-        if($totaldomains/$pages["perpage"] > $pages["page"]) { $pages["next"] = true; }
-        if($pages["page"]-1 > 0) { $pages["prev"] = true; }
+        if(count($domains) == 0 && $totaldomains != 0) {
+            return $this->redirectToRoute('app_domains');
+        }
+
+        if($totaldomains / $pages["perpage"] > $pages["page"]) {
+            $pages["next"] = true;
+        }
+        if($pages["page"] - 1 > 0) {
+            $pages["prev"] = true;
+        }
 
         return $this->render('domains/index.html.twig', [
             'domains' => $domains,
@@ -85,19 +89,19 @@ class DomainsController extends AbstractController
         if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
             return $this->redirectToRoute('app_login');
         }
-        
+
         $form = $this->createForm(DomainFormType::class);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $formdata = $form->getData();
 
             $this->em->persist($formdata);
             $this->em->flush();
 
             $usersRepository = $this->em->getRepository(Users::class);
-            $user=$this->getUser();
-            if(!$usersRepository->findIsAdmin($user->getId())){
+            $user = $this->getUser();
+            if(!$usersRepository->findIsAdmin($user->getId())) {
                 $user->addDomain($formdata);
                 $this->em->persist($user);
                 $this->em->flush();
@@ -133,14 +137,14 @@ class DomainsController extends AbstractController
         }
 
         $usersRepository = $this->em->getRepository(Users::class);
-        if(!$usersRepository->denyAccessUnlessOwned(array($domain->getId()),$this->getUser())){
+        if(!$usersRepository->denyAccessUnlessOwned(array($domain->getId()), $this->getUser())) {
             return $this->render('not_found.html.twig', []);
         }
 
         $form = $this->createForm(DomainFormType::class, $domain);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $formdata = $form->getData();
 
             $this->em->persist($formdata);
@@ -169,7 +173,7 @@ class DomainsController extends AbstractController
     }
 
     #[Route('/domains/delete/{id}', name: 'app_domains_delete')]
-    public function delete(Domains $domain ): Response
+    public function delete(Domains $domain): Response
     {
         if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
             return $this->redirectToRoute('app_login');

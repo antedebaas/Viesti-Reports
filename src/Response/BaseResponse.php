@@ -7,17 +7,20 @@ class BaseResponse
     private bool $success = false;
     private string $message = 'Unknown error.';
 
-    public function setSuccess($success, $message = '') {
+    public function setSuccess($success, $message = '')
+    {
         $this->success = $success;
         $this->message = $message;
         return $this;
     }
 
-    public function getSuccess() {
+    public function getSuccess()
+    {
         return $this->success;
     }
 
-    public function getMessage() {
+    public function getMessage()
+    {
         return $this->message;
     }
 }

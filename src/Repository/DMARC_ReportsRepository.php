@@ -24,32 +24,33 @@ class DMARC_ReportsRepository extends ServiceEntityRepository
         $this->security = $security;
     }
 
-//    /**
-//     * @return DMARC_Reports[] Returns an array of DMARC_Reports objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxDMARC_Results(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return DMARC_Reports[] Returns an array of DMARC_Reports objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('r')
+    //            ->andWhere('r.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('r.id', 'ASC')
+    //            ->setMaxDMARC_Results(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?DMARC_Reports
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?DMARC_Reports
+    //    {
+    //        return $this->createQueryBuilder('r')
+    //            ->andWhere('r.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 
-    public function getDomain($report) {
+    public function getDomain($report)
+    {
         $domains = array($report->getDomain()->getId());
         return $domains;
     }
@@ -60,7 +61,7 @@ class DMARC_ReportsRepository extends ServiceEntityRepository
         ->select('count(r.id)');
 
         if(in_array("ROLE_ADMIN", $this->security->getUser()->getRoles())) {
-            $domains=array();
+            $domains = array();
         }
 
         if(!empty($domains)) {

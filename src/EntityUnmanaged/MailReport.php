@@ -10,46 +10,55 @@ class MailReport
     private string $message = 'Unknown error.';
     private string $mailid = '';
     private ReportType $reporttype = ReportType::Unknown;
-    private object $report; 
+    private object $report;
 
-    public function setSuccess($success, $message = '') {
+    public function setSuccess($success, $message = '')
+    {
         $this->success = $success;
         $this->message = $message;
         return $this;
     }
 
-    public function getSuccess() {
+    public function getSuccess()
+    {
         return $this->success;
     }
 
-    public function getMessage() {
+    public function getMessage()
+    {
         return $this->message;
     }
 
-    public function setMailId($mailid) {
+    public function setMailId($mailid)
+    {
         $this->mailid = $mailid;
         return $this;
     }
 
-    public function getMailId() {
+    public function getMailId()
+    {
         return $this->mailid;
     }
 
-    public function setReportType($reporttype) {
+    public function setReportType($reporttype)
+    {
         $this->reporttype = $reporttype;
         return $this;
     }
 
-    public function getReportType() {
+    public function getReportType()
+    {
         return $this->reporttype;
     }
 
-    public function setReport($report) {
+    public function setReport($report)
+    {
         $this->report = $report;
         return $this;
     }
 
-    public function getReport() {
+    public function getReport()
+    {
         return $this->report;
     }
 }

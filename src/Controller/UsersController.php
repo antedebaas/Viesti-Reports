@@ -41,30 +41,34 @@ class UsersController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $pages=array("page"=>1,"next" => false,"prev" => false);
+        $pages = array("page" => 1,"next" => false,"prev" => false);
 
-        if(isset($_GET["page"]) && $_GET["page"] > 0)
-        {
+        if(isset($_GET["page"]) && $_GET["page"] > 0) {
             $pages["page"] = intval($_GET["page"]);
         } else {
             $pages["page"] = 1;
         }
 
-        if(isset($_GET["perpage"]) && $_GET["perpage"] > 0)
-        {
+        if(isset($_GET["perpage"]) && $_GET["perpage"] > 0) {
             $pages["perpage"] = intval($_GET["perpage"]);
         } else {
             $pages["perpage"] = 17;
         }
 
         $repository = $this->em->getRepository(Users::class);
-        $users = $repository->findBy(array(),array('id' => 'DESC'),$pages["perpage"], ($pages["page"]-1)*$pages["perpage"]);
+        $users = $repository->findBy(array(), array('id' => 'DESC'), $pages["perpage"], ($pages["page"] - 1) * $pages["perpage"]);
         $totalusers = $repository->getTotalRows();
 
-        if(count($users) == 0 && $totalusers != 0 ) { return $this->redirectToRoute('app_logs'); }
-        
-        if($totalusers/$pages["perpage"] > $pages["page"]) { $pages["next"] = true; }
-        if($pages["page"]-1 > 0) { $pages["prev"] = true; }
+        if(count($users) == 0 && $totalusers != 0) {
+            return $this->redirectToRoute('app_logs');
+        }
+
+        if($totalusers / $pages["perpage"] > $pages["page"]) {
+            $pages["next"] = true;
+        }
+        if($pages["page"] - 1 > 0) {
+            $pages["prev"] = true;
+        }
 
         return $this->render('users/index.html.twig', [
             'users' => $users,
@@ -86,13 +90,13 @@ class UsersController extends AbstractController
         $form = $this->createForm(UserFormType::class);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $formdata = $form->getData();
 
             $password1 = $form->get("password1")->getData();
             $password2 = $form->get("password2")->getData();
 
-            if($password1 == $password2 && $password1 != ""){
+            if($password1 == $password2 && $password1 != "") {
                 $formdata->setPassword(
                     $userPasswordHasher->hashPassword(
                         $formdata,
@@ -106,10 +110,10 @@ class UsersController extends AbstractController
             $domain_roles = $form->get("roles")->getData();
             $roles = array();
             foreach($domain_roles as $domain_role) {
-                array_push($roles,$domain_role->getId());
+                array_push($roles, $domain_role->getId());
             }
             if($is_admin == true) {
-                array_push($roles,"ROLE_ADMIN");
+                array_push($roles, "ROLE_ADMIN");
             }
             $formdata->setRoles($roles);
 
@@ -139,17 +143,17 @@ class UsersController extends AbstractController
         }
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        
+
         $form = $this->createForm(UserFormType::class, $user);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $formdata = $form->getData();
 
             $password1 = $form->get("password1")->getData();
             $password2 = $form->get("password2")->getData();
 
-            if($password1 == $password2 && $password1 != ""){
+            if($password1 == $password2 && $password1 != "") {
                 $formdata->setPassword(
                     $userPasswordHasher->hashPassword(
                         $formdata,
@@ -163,10 +167,10 @@ class UsersController extends AbstractController
             $domain_roles = $form->get("roles")->getData();
             $roles = array();
             foreach($domain_roles as $domain_role) {
-                array_push($roles,$domain_role->getId());
+                array_push($roles, $domain_role->getId());
             }
             if($is_admin == true) {
-                array_push($roles,"ROLE_ADMIN");
+                array_push($roles, "ROLE_ADMIN");
             }
             $formdata->setRoles($roles);
 
@@ -189,7 +193,7 @@ class UsersController extends AbstractController
     }
 
     #[Route('/user/delete/{id}', name: 'app_user_delete')]
-    public function delete(Users $user ): Response
+    public function delete(Users $user): Response
     {
         if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
             return $this->redirectToRoute('app_login');

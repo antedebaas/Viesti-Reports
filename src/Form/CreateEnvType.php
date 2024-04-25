@@ -32,35 +32,35 @@ class CreateEnvType extends AbstractType
                 'SQLite' => 'sqlite',
             ],
         ])
-        ->add('database_host', TextType::Class, [
+        ->add('database_host', TextType::class, [
             'label' =>  $this->translator->trans('Database hostname'),
             'constraints' => [
                 new Assert\NotBlank(),
             ],
             'empty_data' => 'localhost'
         ])
-        ->add('database_port', NumberType::Class, [
+        ->add('database_port', NumberType::class, [
             'label' =>  $this->translator->trans('Database port'),
             'constraints' => [
                 new Assert\NotBlank(),
             ],
             'empty_data' => '3306'
         ])
-        ->add('database_user', TextType::Class, [
+        ->add('database_user', TextType::class, [
             'label' =>  $this->translator->trans('Database username'),
             'constraints' => [
                 new Assert\NotBlank(),
             ],
             'empty_data' => ''
         ])
-        ->add('database_password', PasswordType::Class, [
+        ->add('database_password', PasswordType::class, [
             'label' =>  $this->translator->trans('Database password'),
             'constraints' => [
                 new Assert\NotBlank(),
             ],
             'empty_data' => ''
         ])
-        ->add('database_db', TextType::Class, [
+        ->add('database_db', TextType::class, [
             'label' =>  $this->translator->trans('Database name'),
             'constraints' => [
                 new Assert\NotBlank(),
@@ -68,35 +68,35 @@ class CreateEnvType extends AbstractType
             'empty_data' => ''
         ])
 
-        ->add('email_host', TextType::Class, [
+        ->add('email_host', TextType::class, [
             'label' =>  $this->translator->trans('E-mail hostname'),
             'constraints' => [
                 new Assert\NotBlank(),
             ],
             'empty_data' => 'localhost'
         ])
-        ->add('email_smtp_port', NumberType::Class, [
+        ->add('email_smtp_port', NumberType::class, [
             'label' =>  $this->translator->trans('E-mail smtp port'),
             'constraints' => [
                 new Assert\NotBlank(),
             ],
             'empty_data' => '25'
         ])
-        ->add('email_imap_ssl_port', NumberType::Class, [
+        ->add('email_imap_ssl_port', NumberType::class, [
             'label' =>  $this->translator->trans('E-mail imap ssl port'),
             'constraints' => [
                 new Assert\NotBlank(),
             ],
             'empty_data' => '993'
         ])
-        ->add('email_user', TextType::Class, [
+        ->add('email_user', TextType::class, [
             'label' =>  $this->translator->trans('E-mail username'),
             'constraints' => [
                 new Assert\NotBlank(),
             ],
             'empty_data' => ''
         ])
-        ->add('email_password', PasswordType::Class, [
+        ->add('email_password', PasswordType::class, [
             'label' =>  $this->translator->trans('E-mail password'),
             'constraints' => [
                 new Assert\NotBlank(),

@@ -36,30 +36,34 @@ class LogsController extends AbstractController
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        $pages=array("page"=>1,"next" => false,"prev" => false);
+        $pages = array("page" => 1,"next" => false,"prev" => false);
 
-        if(isset($_GET["page"]) && $_GET["page"] > 0)
-        {
+        if(isset($_GET["page"]) && $_GET["page"] > 0) {
             $pages["page"] = intval($_GET["page"]);
         } else {
             $pages["page"] = 1;
         }
 
-        if(isset($_GET["perpage"]) && $_GET["perpage"] > 0)
-        {
+        if(isset($_GET["perpage"]) && $_GET["perpage"] > 0) {
             $pages["perpage"] = intval($_GET["perpage"]);
         } else {
             $pages["perpage"] = 17;
         }
 
         $repository = $this->em->getRepository(Logs::class);
-        $logs = $repository->findBy(array(),array('id' => 'DESC'),$pages["perpage"], ($pages["page"]-1)*$pages["perpage"]);
+        $logs = $repository->findBy(array(), array('id' => 'DESC'), $pages["perpage"], ($pages["page"] - 1) * $pages["perpage"]);
         $totallogs = $repository->getTotalRows();
 
-        if(count($logs) == 0 && $totallogs != 0 ) { return $this->redirectToRoute('app_logs'); }
-        
-        if($totallogs/$pages["perpage"] > $pages["page"]) { $pages["next"] = true; }
-        if($pages["page"]-1 > 0) { $pages["prev"] = true; }
+        if(count($logs) == 0 && $totallogs != 0) {
+            return $this->redirectToRoute('app_logs');
+        }
+
+        if($totallogs / $pages["perpage"] > $pages["page"]) {
+            $pages["next"] = true;
+        }
+        if($pages["page"] - 1 > 0) {
+            $pages["prev"] = true;
+        }
 
         return $this->render('logs/index.html.twig', [
             'logs' => $logs,

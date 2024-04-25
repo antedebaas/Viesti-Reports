@@ -22,10 +22,9 @@ use Twig\Environment;
 
 class Authenticator extends AbstractLoginFormAuthenticator
 {
+    use TargetPathTrait;
     private $tokenStorage;
     private $templating;
-    
-    use TargetPathTrait;
 
     public const LOGIN_ROUTE = 'app_login';
 
@@ -61,17 +60,17 @@ class Authenticator extends AbstractLoginFormAuthenticator
         //     return ;
         // }
         $user = $token->getUser();
-        if($user->isVerified() == false){
+        if($user->isVerified() == false) {
 
             return new Response(
                 $this->templating->render('registration/verifyFirst.html.twig'),
                 Response::HTTP_SERVICE_UNAVAILABLE
             );
-            
+
         } else {
             return new RedirectResponse($this->urlGenerator->generate('app_dashboard'));
         }
-        
+
         //throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 

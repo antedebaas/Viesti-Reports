@@ -21,30 +21,30 @@ class SMTPTLS_SeenRepository extends ServiceEntityRepository
         parent::__construct($registry, SMTPTLS_Seen::class);
     }
 
-//    /**
-//     * @return Seen[] Returns an array of Seen objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxSMTPTLS_Results(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Seen[] Returns an array of Seen objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('s')
+    //            ->andWhere('s.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('s.id', 'ASC')
+    //            ->setMaxSMTPTLS_Results(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?Seen
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?Seen
+    //    {
+    //        return $this->createQueryBuilder('s')
+    //            ->andWhere('s.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 
     public function getSeen(array $reports, int $user)
     {
@@ -58,8 +58,7 @@ class SMTPTLS_SeenRepository extends ServiceEntityRepository
             ->getResult();
 
         $seen_report_ids = array();
-        foreach($seen as $s)
-        {
+        foreach($seen as $s) {
             $seen_report_ids[] = $s->getReport()->getId();
         }
         return $seen_report_ids;

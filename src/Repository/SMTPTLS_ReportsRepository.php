@@ -25,35 +25,36 @@ class SMTPTLS_ReportsRepository extends ServiceEntityRepository
         $this->security = $security;
     }
 
-//    /**
-//     * @return SMTPTLS_Reports[] Returns an array of SMTPTLS_Reports objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return SMTPTLS_Reports[] Returns an array of SMTPTLS_Reports objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('m')
+    //            ->andWhere('m.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('m.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?SMTPTLS_Reports
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?SMTPTLS_Reports
+    //    {
+    //        return $this->createQueryBuilder('m')
+    //            ->andWhere('m.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 
-    public function getDomain($report) {
+    public function getDomain($report)
+    {
         $domains = array();
         $policies = $report->getSMTPTLS_Policies();
-        foreach($policies as $policy){
+        foreach($policies as $policy) {
             $domains[] = $policy->getPolicyDomain()->getId();
         }
         return $domains;
@@ -89,11 +90,11 @@ class SMTPTLS_ReportsRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('r')
            ->select('count(r.id)');
-        
+
         if(in_array("ROLE_ADMIN", $this->security->getUser()->getRoles())) {
-            $domains=array();
+            $domains = array();
         }
-        
+
         if(!empty($domains)) {
             $qb->addSelect('')->from(SMTPTLS_Policies::class, 'pol')
                ->andWhere('r.id = pol.report')

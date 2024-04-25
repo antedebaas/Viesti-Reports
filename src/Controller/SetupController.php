@@ -52,29 +52,26 @@ class SetupController extends AbstractController
 
         // check if .env.local file exists indicating that the setup has been run
         $setup['envfile'] = file_exists(dirname(__FILE__).'/../../.env.local');
-        if($setup['envfile'] == false)
-        {
+        if($setup['envfile'] == false) {
             $form = $this->createForm(CreateEnvType::class);
 
             $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()){
+            if ($form->isSubmitted() && $form->isValid()) {
                 $formdata = $form->getData();
                 $formdata['randomstring'] = $this->generateRandomString();
 
-                $envtemplate= $this->render('setup/env.txt.twig', [
+                $envtemplate = $this->render('setup/env.txt.twig', [
                     'f' => $formdata,
                 ]);
                 $envfile = __DIR__."/../../.env.local";
                 file_put_contents($envfile, $envtemplate->getContent());
-                
+
                 $this->clearCacheAction();
 
                 return $this->redirectToRoute('app_setup');
             }
             $setup['users_form'] = $form->createView();
-        }
-        else
-        {
+        } else {
             try {
                 $doctrinemigrations = $this->em->createQueryBuilder()
                 ->select('m.version')
@@ -82,16 +79,16 @@ class SetupController extends AbstractController
                 ->orderBy('m.version', 'ASC')
                 ->getQuery()
                 ->getResult();
-                $migrations=array();
+                $migrations = array();
                 foreach ($doctrinemigrations as $migration) {
                     $migrations[] = $migration['version'];
                 }
             } catch (\Exception $e) {
-                $migrations=array();
+                $migrations = array();
             }
 
 
-            $migrationfiles=array();
+            $migrationfiles = array();
             $finder = new Finder();
             $finder->files()->in(__DIR__.'/../../migrations/'.$this->params->get('app.database_type'));
             foreach ($finder as $file) {
@@ -100,7 +97,7 @@ class SetupController extends AbstractController
 
             //if there are migrations in the filesystem that are not in the database this will show them
             $migrationdifferences_todo = array_diff($migrationfiles, $migrations);
-            if(count($migrationdifferences_todo) == 0){
+            if(count($migrationdifferences_todo) == 0) {
                 $setup['database'] = true;
             } else {
                 $setup['database'] = false;
@@ -109,8 +106,8 @@ class SetupController extends AbstractController
             }
 
             //if there are migrations in the database that are not in the filesystem this will show them
-            $migrationdifferences_missingfiles = array_diff($migrations,$migrationfiles);
-            if(count($migrationdifferences_missingfiles) == 0){
+            $migrationdifferences_missingfiles = array_diff($migrations, $migrationfiles);
+            if(count($migrationdifferences_missingfiles) == 0) {
                 $setup['missingmigrations'] = true;
             } else {
                 $setup['missingmigrations'] = false;
@@ -120,14 +117,14 @@ class SetupController extends AbstractController
             try {
                 // check if there are users in the database
                 $number_of_users = $this->em->getRepository(Users::class)->getTotalRows();
-                if($number_of_users > 0){
+                if($number_of_users > 0) {
                     $setup['users'] = true;
                 } else {
                     $setup['users'] = false;
                     $form = $this->createForm(RegistrationFormType::class);
 
                     $form->handleRequest($request);
-                    if ($form->isSubmitted() && $form->isValid()){
+                    if ($form->isSubmitted() && $form->isValid()) {
                         $formdata = $form->getData();
                         $formdata->setPassword(
                             $userPasswordHasher->hashPassword(
@@ -149,7 +146,7 @@ class SetupController extends AbstractController
             }
         }
 
-        if($setup['envfile'] && $setup['database'] && $setup['missingmigrations'] && $setup['users']){
+        if($setup['envfile'] && $setup['database'] && $setup['missingmigrations'] && $setup['users']) {
             $setup['all'] = true;
         }
 
@@ -177,15 +174,15 @@ class SetupController extends AbstractController
 
         $application = new Application($kernel);
         $application->setAutoExit(false);
-    
+
         $input = new ArrayInput(array(
            'command' => 'doctrine:migrations:migrate',
            '--no-interaction',
         ));
-    
+
         $output = new BufferedOutput();
         $application->run($input, $output);
-        
+
         $output->fetch();
     }
 
@@ -195,19 +192,20 @@ class SetupController extends AbstractController
 
         $application = new Application($kernel);
         $application->setAutoExit(false);
-    
+
         $input = new ArrayInput(array(
            'command' => 'cache:clear',
            '--no-interaction',
         ));
-    
+
         $output = new BufferedOutput();
         $application->run($input, $output);
-        
+
         $output->fetch();
     }
 
-    private function generateRandomString($length = 32) {
+    private function generateRandomString($length = 32)
+    {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
         $charactersLength = strlen($characters);
         $randomString = '';
