@@ -11,9 +11,9 @@
 </head>
 <body>
     <nav class="navbar navbar-light bg-light fixed-top px-2 py-1">
-        <div class="col-12 col-md-8 d-flex align-items-center flex-nowrap justify-content-between">
+        <div class="col-12 d-flex align-items-center flex-nowrap justify-content-between">
             <a class="navbar-brand" href="#">
-                DMARC Reports
+                Reports
             </a>
             {% if app.user.email is defined and menuactive is defined %}
               <nav id="sidebar" class="menubar flex">
@@ -50,16 +50,14 @@
                           </a>
 
                           <a title="Check" class="text-nowrap nav-link nav-link-extra link-secondary" href="{{ path('app_checkmailnow') }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
-                              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                              <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
-                            <span class="ms-1">Check</span>
+                            <span class="ms-1">Check Mail</span>
                           </a>
                           <a title="Logs" class="text-nowrap nav-link nav-link-extra link-danger" href="{{ path('app_logout') }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open" viewBox="0 0 16 16">
-                              <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1"/>
-                              <path d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117M11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5M4 1.934V15h6V1.077z"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25" />
                             </svg>
                             <span class="ms-1">Logout</span>
                           </a>
@@ -71,21 +69,6 @@
             <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-        </div>
-        <div class="col-12 col-md-3 d-flex align-items-center justify-content-end">
-          {% if app.user.getroles is defined and 'ROLE_ADMIN' in app.user.getroles() %}
-          <a href="{{ path('app_checkmailnow') }}" class="btn btn-sm d-none d-md-inline btn-secondary mx-4">Check</a>
-          {% endif %}
-          {% if app.user.email is defined %}
-            <div class="dropdown d-none d-md-block">
-                <button class="btn btn-sm dropdown-toggle btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                  {{ app.user.email }}
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <li><a class="dropdown-item" href="{{ path('app_logout') }}">{{ 'Sign out'|trans }}</a></li>
-                </ul>
-              </div>
-          {% endif %}
         </div>
     </nav>
 

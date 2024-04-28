@@ -14,19 +14,19 @@
                                     <table class="table table-sm table-compact">
                                         <thead>
                                           <tr>
-                                            <th scope="col" class="d-none d-lg-table-cell">Id</th>
+                                            <th class="d-none d-md-table-cell" scope="col">Id</th>
                                             <th scope="col">Domain FQDN</th>
-                                            <th scope="col">Mailhost</th>
+                                            <th class="d-none d-md-table-cell" scope="col">Mailhost</th>
                                             <th scope="col">
                                               MX <span class="d-none d-md-inline">Records</span>
                                             </th>
-                                            <th scope="col">
+                                            <th class="text-end" scope="col">
                                               <span class="d-none d-md-inline">Total DMARC reports</span>
-                                              <span class="d-md-none">#DMARC</span>
+                                              <span class="d-md-none text-nowrap"># DMARC</span>
                                             </th>
-                                            <th scope="col">
+                                            <th class="text-end" scope="col">
                                               <span class="d-none d-md-inline">Total SMTP-TLS policies</span>
-                                              <span class="d-md-none">#SMTPTLS</span>
+                                              <span class="d-md-none text-nowrap"># TLS</span>
                                             
                                             </th>
                                             <th scope="col">Action</th>
@@ -35,16 +35,16 @@
                                         <tbody>
                                         {% for domain in domains %}
                                           <tr>
-                                            <th scope="row" class="d-none d-lg-table-cell">{{ domain.id }}</th>
+                                            <th class="d-none d-md-table-cell" scope="row">{{ domain.id }}</th>
                                             <td>{{ domain.fqdn }}</td>
-                                            <td class="d-none d-lg-table-cell">{{ domain.mailhost }}</td>
-                                            <td class="d-none d-lg-table-cell">
+                                            <td class="d-none d-md-table-cell">{{ domain.mailhost }}</td>
+                                            <td>
                                               {% for mx in domain.mxrecords %}
                                                 {{ mx.name }}<br>
                                               {% endfor %}
                                             </td>
-                                            <td>{{ domain.dmarc_reports|length }}</td>
-                                            <td>{{ domain.smtptls_policies|length }}</td>
+                                            <td class="text-end">{{ domain.dmarc_reports|length }}</td>
+                                            <td class="text-end">{{ domain.smtptls_policies|length }}</td>
                                             <td class="text-nowrap">
                                                 <a href="{{ path('app_domains_edit', {id: domain.id}) }}" class="link-primary px-2">
                                                   <!-- Bootstrap icon 'eye-fill' -->

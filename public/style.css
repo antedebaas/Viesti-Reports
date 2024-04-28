@@ -1,10 +1,12 @@
+
+
 :root, [data-bs-theme=light] {
   --bs-breadcrumb-margin-bottom: 0.2rem;
 }
 
 /* Defaults. */
 /* for extra small screens, show a similar sidebar but full width and only if the menu button is pressed. */
-@media(max-width: 768px) {
+@media(max-width: 1199px) {
     button.navbar-toggler {
         display: inline;
         border-radius: 0;
@@ -31,7 +33,7 @@
         flex-wrap: wrap;
         align-content: start;
         height: 100vH;
-        width: 220px;
+        width: 100vW;
         top: 3rem;
         right: 0;
         padding: 1em;
@@ -45,12 +47,14 @@
     }
 
     .card-body {
-        padding: calc(var(--bs-card-spacer-y) * 0.3);
+        --bs-card-spacer-y: 0.3rem;
+        --bs-card-spacer-x: 0.3rem;
+        padding: var(--bs-card-spacer-x) var(--bs-card-spacer-y);
     }
 
 }
 
-/* [>=sm] For screens between, show a top icon bar with or without labels. */
+/* [>=sm] For screens between, show a top icon bar with or without labels.
 @media(min-width:768px) {
     button.navbar-toggler { display: none; }
     nav#sidebar { display: flex; }
@@ -64,16 +68,19 @@
     div.mainarea { margin-top: 3rem; }
 }
 
-/* [lg] */
+/* [lg] * /
 @media(min-width:992px) {
     nav#sidebar a.nav-link span { display: inline; }
 
 }
+*/
 
 /* For extra wide screens, show a static sidebar at the left, with text, vertically aligned. */
 @media (min-width: 1200px) {
+    button.navbar-toggler { display: none; }
     nav#sidebar {
         position: fixed;
+        display: flex;
         flex-wrap: wrap;
         align-content: start;
         height: 100vH;
@@ -89,15 +96,14 @@
         padding-right: 0;
         padding-top: 0;
     }
+    nav#sidebar a.nav-link-extra { margin-top: 1em };
     div.mainarea {
+        margin-top: 3rem;
         margin-left: 180px;
         width: calc(100vW - 180px);
     }
 }
 
-.breadcrumb-row {
-    background-color: var(--bs-secondary-bg);
-}
 div.breadcrumb-row nav {
     padding-top: 0.3rem;
 }
