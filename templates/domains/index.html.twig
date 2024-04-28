@@ -14,7 +14,7 @@
                                     <table class="table table-sm table-compact">
                                         <thead>
                                           <tr>
-                                            <th scope="col">Id</th>
+                                            <th scope="col" class="d-none d-lg-table-cell">Id</th>
                                             <th scope="col">Domain FQDN</th>
                                             <th scope="col">Mailhost</th>
                                             <th scope="col">
@@ -35,10 +35,10 @@
                                         <tbody>
                                         {% for domain in domains %}
                                           <tr>
-                                            <th scope="row">{{ domain.id }}</th>
+                                            <th scope="row" class="d-none d-lg-table-cell">{{ domain.id }}</th>
                                             <td>{{ domain.fqdn }}</td>
-                                            <td>{{ domain.mailhost }}</td>
-                                            <td>
+                                            <td class="d-none d-lg-table-cell">{{ domain.mailhost }}</td>
+                                            <td class="d-none d-lg-table-cell">
                                               {% for mx in domain.mxrecords %}
                                                 {{ mx.name }}<br>
                                               {% endfor %}
