@@ -8,74 +8,87 @@
                         <div class="card">
                             <h5 class="card-header">DMARC Reports</h5>
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                          <tr>
-                                            <th scope="col">Id</th>
-                                            <th scope="col">Domain</th>
-                                            <th scope="col">Date/Time Range</th>
-                                            <th scope="col">Reporter</th>
-                                            <th scope="col">External Report Id</th>
-                                            <th scope="col">Messages</th>
-                                            <th scope="col">Results</th>
-                                            <th scope="col"></th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for report in reports %}
-                                          <tr {% for user in report.seen %}{% else %}class="table-warning"{% endfor %}>
-                                            <th scope="row">{{ report.id }}</th>
-                                            <td>{{ report.domain.fqdn }}</td>
-                                            <td>
-                                              <div class="clearfix">
-                                                <span class="float-start">{{ report.begintime|date("d-M-Y H:i:s") }}</span>
-                                                <span class="float-end">{{ report.endtime|date("d-M-Y H:i:s") }}</span>
-                                              </div>
-                                            </td>
-                                            <td>{{ report.organisation }}</td>
-                                            <td>{{ report.externalid }}</td>
-                                            <td>{{ report.dmarc_records.count }}</td>
-                                            <td>
-                                              {% set dkim_pass = true %}
-                                              {% set spf_pass = true %}
-                                              {% for record in report.dmarc_records %}
-                                                  {% if record.policydkim != "pass" %}
-                                                    {% set dkim_pass = false %}
-                                                  {% endif %}
-                                                  {% if record.policyspf != "pass" %}
-                                                    {% set spf_pass = false %}
-                                                  {% endif %}
-                                              {% endfor %}
-                                              <span class="btn btn-sm btn-{% if spf_pass %}success{% else %}danger{% endif %}">spf</span>
-                                              <span class="btn btn-sm btn-{% if dkim_pass %}success{% else %}danger{% endif %}">dkim</span>
-                                            </td>
-                                            <td>
-                                              <a href="{{ path('app_dmarc_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a>
-                                              <a href="{{ path('app_dmarc_reports_delete', {report: report.id}) }}" class="btn btn-sm btn-danger"  onclick="return confirm('{{'Are you sure? this can not be undone'|trans}}');">Delete</a>
-                                            </td>
-                                          </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                      </table>
-                                </div>
-                                <div class="clearfix">
-                                  <span class="float-start">&nbsp;</span>
-                                  <span class="float-end">
-                                  {% if pages.prev %}
-                                    <a href="{{ path('app_dmarc_reports', {page: pages.page - 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&lt;</a>
-                                  {% else %}
-                                    <a href="#" class="btn btn-sm btn-light" disabled>&lt;</a>
-                                  {% endif %}
-                                  {% if pages.next %}
-                                    <a href="{{ path('app_dmarc_reports', {page: pages.page + 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&gt;</a>
-                                  {% else %}
-                                    <a href="#" class="btn btn-sm btn-light" disabled>&gt;</a>
-                                  {% endif %}
-                                  </span>
-                                </div>
-                                
-                            </div>
-                        </div>
+                      <div class="table-responsive">
+                          <table class="table table-sm table-compact">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Id</th>
+                                  <th scope="col">Date</th>
+                                  <th class="d-none d-lg-table-cell" scope="col">Msg</th>
+                                  <th scope="col">Domain</th>
+                                  <th class="d-none d-md-table-cell"  scope="col">Reporter</th>
+                                  <th class="d-none d-lg-table-cell" scope="col">External Id</th>
+                                  <th scope="col">Results</th>
+                                  <th scope="col"></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                              {% for report in reports %}
+                                <tr {% for user in report.seen %}{% else %}class="table-warning"{% endfor %}>
+                                  <th scope="row">{{ report.id }}</th>
+                                  <td>
+                                    <div class="clearfix">
+                                      {{ report.begintime|date("Y-m-d H:i:s")|replace({ '00:00:00': '', '23:59:59': '' }) }}
+                                      {% if report.begintime|date("Y-m-d") != report.endtime|date("Y-m-d") %}
+                                        <span class="d-none d-lg-inline">
+                                          .. 
+                                          {{ report.endtime|date("Y-m-d H:i:s")|replace({ '00:00:00': '', '23:59:59': '' }) }}
+                                        </span>
+                                      {% endif %}
+                                    </div>
+                                  </td>
+                                  <td class="d-none d-lg-table-cell">{{ report.dmarc_records.count }}</td>
+                                  <td>{{ report.domain.fqdn }}</td>
+                                  <td class="d-none d-md-table-cell">{{ report.organisation }}</td>
+                                  <td class="d-none d-lg-table-cell" title="{{ report.externalid }}">{{ report.externalid|slice(0,8) }}...</td>
+                                  <td class="text-nowrap">
+                                    {% set dkim_pass = true %}
+                                    {% set spf_pass = true %}
+                                    {% for record in report.dmarc_records %}
+                                        {% if record.policydkim != "pass" %}
+                                          {% set dkim_pass = false %}
+                                        {% endif %}
+                                        {% if record.policyspf != "pass" %}
+                                          {% set spf_pass = false %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <span class="badge badge-pill text-bg-{% if spf_pass %}success{% else %}danger{% endif %}">SPF</span>
+                                    <span class="badge badge-pill text-bg-{% if dkim_pass %}success{% else %}danger{% endif %}">DKIM</span>
+                                  </td>
+                                  <td class="text-nowrap">
+                                    <a href="{{ path('app_dmarc_reports_report', {report: report.id}) }}" class="link-primary px-2" title="View details">
+                                      <!-- Bootstrap icon 'eye-fill' -->
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                      </svg></a>
+                                    <a href="{{ path('app_dmarc_reports_delete', {report: report.id}) }}" class="link-danger" title="Delete entry ..." onclick="return confirm('{{'Are you sure? this can not be undone'|trans}}');">
+                                      <!-- Bootstrap icon 'trash-fill' -->
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                                      </svg></a>
+                                  </td>
+                                </tr>
+                              {% endfor %}
+                              </tbody>
+                            </table>
+                      </div>
+                      <div>
+                        <span class="d-flex justify-content-center">
+                        {% if pages.prev %}
+                          <a href="{{ path('app_dmarc_reports', {page: pages.page - 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&lt;</a>
+                        {% else %}
+                          <a href="#" class="btn btn-sm btn-light" disabled>&lt;</a>
+                        {% endif %}
+                        &nbsp;
+                        {% if pages.next %}
+                          <a href="{{ path('app_dmarc_reports', {page: pages.page + 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&gt;</a>
+                        {% else %}
+                          <a href="#" class="btn btn-sm btn-light" disabled>&gt;</a>
+                        {% endif %}
+                        </span>
                     </div>
+                  </div>
+                </div>
+              </div>
 {% endblock %}

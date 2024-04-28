@@ -6,18 +6,18 @@
 
 {% block body %}
                 <div class="row">
-                    <div class="col-12 col-xl-6 mb-4 mb-lg-4">
+                    <div class="col-12 col-xxl-6 mb-4 mb-lg-4">
                         <div class="card">
                             <h5 class="card-header">Latest DMARC reports</h5>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table class="table table-sm table-compact">
                                         <thead>
                                           <tr>
                                             <th scope="col">Id</th>
                                             <th scope="col">Domain</th>
-                                            <th scope="col">Reporter</th>
-                                            <th scope="col">Messages</th>
+                                            <th class="d-none d-md-table-cell" scope="col">Reporter</th>
+                                            <th scope="col">Msg</th>
                                             <th scope="col">Results</th>
                                             <th scope="col"></th>
                                           </tr>
@@ -27,7 +27,7 @@
                                           <tr {% for user in report.seen %}{% else %}class="table-warning"{% endfor %}>
                                             <th scope="row">{{ report.id }}</th>
                                             <td>{{ report.domain.fqdn }}</td>
-                                            <td>{{ report.organisation }}</td>
+                                            <td class="d-none d-md-table-cell">{{ report.organisation }}</td>
                                             <td>{{ report.dmarc_records.count }}</td>
                                             <td>
                                               {% set dkim_pass = true %}
@@ -40,10 +40,17 @@
                                                     {% set spf_pass = false %}
                                                   {% endif %}
                                               {% endfor %}
-                                              <span class="btn btn-sm btn-{% if spf_pass %}success{% else %}danger{% endif %}">spf</span>
-                                              <span class="btn btn-sm btn-{% if dkim_pass %}success{% else %}danger{% endif %}">dkim</span>
+                                              <span class="badge badge-pill text-bg-{% if spf_pass %}success{% else %}danger{% endif %}">SPF</span>
+                                              <span class="badge badge-pill text-bg-{% if dkim_pass %}success{% else %}danger{% endif %}">DKIM</span>
                                             </td>
-                                            <td><a href="{{ path('app_dmarc_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a></td>
+                                            <td>
+                                              <a href="{{ path('app_dmarc_reports_report', {report: report.id}) }}" class="link-primary">
+                                                <!-- Bootstrap icon 'eye-fill' -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                                  <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                                  <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                                </svg></a>
+                                            </td>
                                           </tr>
                                         {% endfor %}
                                         </tbody>
@@ -53,12 +60,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-xl-6 mb-4 mb-lg-4">
+                    <div class="col-12 col-xxl-6 mb-4 mb-lg-4">
                         <div class="card">
                             <h5 class="card-header">Latest SMTP-TLS reports</h5>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table class="table table-sm table-compact">
                                         <thead>
                                           <tr>
                                             <th scope="col">Id</th>
@@ -120,7 +127,7 @@
                             <h5 class="card-header">Latest logs</h5>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table class="table table-sm table-compact">
                                         <thead>
                                           <tr>
                                             <th scope="col">Id</th>

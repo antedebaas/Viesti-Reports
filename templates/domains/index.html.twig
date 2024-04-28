@@ -11,15 +11,24 @@
                             <h5 class="card-header">Domains</h5>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table class="table table-sm table-compact">
                                         <thead>
                                           <tr>
                                             <th scope="col">Id</th>
                                             <th scope="col">Domain FQDN</th>
                                             <th scope="col">Mailhost</th>
-                                            <th scope="col">MX Records</th>
-                                            <th scope="col">Total DMARC reports</th>
-                                            <th scope="col">Total SMTP-TLS policies</th>
+                                            <th scope="col">
+                                              MX <span class="d-none d-md-inline">Records</span>
+                                            </th>
+                                            <th scope="col">
+                                              <span class="d-none d-md-inline">Total DMARC reports</span>
+                                              <span class="d-md-none">#DMARC</span>
+                                            </th>
+                                            <th scope="col">
+                                              <span class="d-none d-md-inline">Total SMTP-TLS policies</span>
+                                              <span class="d-md-none">#SMTPTLS</span>
+                                            
+                                            </th>
                                             <th scope="col">Action</th>
                                           </tr>
                                         </thead>
@@ -36,23 +45,32 @@
                                             </td>
                                             <td>{{ domain.dmarc_reports|length }}</td>
                                             <td>{{ domain.smtptls_policies|length }}</td>
-                                            <td>
-                                                <a href="{{ path('app_domains_edit', {id: domain.id}) }}" class="btn btn-sm btn-secondary">Edit</a>
-                                                <a href="{{ path('app_domains_delete', {id: domain.id}) }}" class="btn btn-sm btn-danger"  onclick="return confirm('{{'Are you sure? this will also delete all its reports and can not be undone'|trans}}');">Delete</a>
+                                            <td class="text-nowrap">
+                                                <a href="{{ path('app_domains_edit', {id: domain.id}) }}" class="link-primary px-2">
+                                                  <!-- Bootstrap icon 'eye-fill' -->
+                                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                                  </svg></a>
+                                                <a href="{{ path('app_domains_delete', {id: domain.id}) }}" class="link-danger"  onclick="return confirm('{{'Are you sure? this will also delete all its reports and can not be undone'|trans}}');">
+                                                  <!-- Bootstrap icon 'trash-fill' -->
+                                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                                                  </svg></a>
                                             </td>
                                           </tr>
                                         {% endfor %}
                                         </tbody>
                                       </table>
                                 </div>
-                                <div class="clearfix">
-                                  <span class="float-start">&nbsp;</span>
-                                  <span class="float-end">
+                                <div>
+                                  <span class="d-flex justify-content-center">
                                   {% if pages.prev %}
                                     <a href="{{ path('app_domains', {page: pages.page - 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&lt;</a>
                                   {% else %}
                                     <a href="#" class="btn btn-sm btn-light" disabled>&lt;</a>
                                   {% endif %}
+                                  &nbsp;
                                   {% if pages.next %}
                                     <a href="{{ path('app_domains', {page: pages.page + 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&gt;</a>
                                   {% else %}
