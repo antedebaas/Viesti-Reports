@@ -12,12 +12,12 @@
                                     <table class="table">
                                         <thead>
                                           <tr>
-                                            <th scope="col">Id</th>
+                                            <th scope="col" class="d-none d-lg-table-cell">Id</th>
                                             <th scope="col">Domain</th>
                                             <th scope="col">Date/Time Range</th>
-                                            <th scope="col">Reporter</th>
-                                            <th scope="col">External Report Id</th>
-                                            <th scope="col">Messages</th>
+                                            <th scope="col" class="d-none d-lg-table-cell">Reporter</th>
+                                            <th scope="col" class="d-none d-lg-table-cell">External Report Id</th>
+                                            <th scope="col" class="d-none d-lg-table-cell">Messages</th>
                                             <th scope="col">Results</th>
                                             <th scope="col"></th>
                                           </tr>
@@ -25,18 +25,22 @@
                                         <tbody>
                                         {% for report in reports %}
                                           <tr {% for user in report.seen %}{% else %}class="table-warning"{% endfor %}>
-                                            <th scope="row">{{ report.id }}</th>
-                                            <td>{{ report.domain.fqdn }}</td>
-                                            <td>
-                                              <div class="clearfix">
+                                            <th scope="row" class="d-none d-lg-table-cell">{{ report.id }}</th>
+                                            <td scope="col">{{ report.domain.fqdn }}</td>
+                                            <td scope="col">
+                                              <div class="clearfix d-none d-lg-table-cell">
                                                 <span class="float-start">{{ report.begintime|date("d-M-Y H:i:s") }}</span>
                                                 <span class="float-end">{{ report.endtime|date("d-M-Y H:i:s") }}</span>
                                               </div>
+                                              <div class="d-all d-lg-none">
+                                                <span>{{ report.begintime|date("d-m-Y") }}</span>
+                                                <span>{{ report.endtime|date("d-m-Y") }}</span>
+                                              </div>
                                             </td>
-                                            <td>{{ report.organisation }}</td>
-                                            <td>{{ report.externalid }}</td>
-                                            <td>{{ report.dmarc_records.count }}</td>
-                                            <td>
+                                            <td scope="col" class="d-none d-lg-table-cell">{{ report.organisation }}</td>
+                                            <td scope="col" class="d-none d-lg-table-cell">{{ report.externalid }}</td>
+                                            <td scope="col" class="d-none d-lg-table-cell">{{ report.dmarc_records.count }}</td>
+                                            <td scope="col">
                                               {% set dkim_pass = true %}
                                               {% set spf_pass = true %}
                                               {% for record in report.dmarc_records %}
@@ -51,8 +55,15 @@
                                               <span class="btn btn-sm btn-{% if dkim_pass %}success{% else %}danger{% endif %}">dkim</span>
                                             </td>
                                             <td>
-                                              <a href="{{ path('app_dmarc_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a>
-                                              <a href="{{ path('app_dmarc_reports_delete', {report: report.id}) }}" class="btn btn-sm btn-danger"  onclick="return confirm('{{'Are you sure? this can not be undone'|trans}}');">Delete</a>
+                                              <a href="{{ path('app_dmarc_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Open Report">
+                                                <svg height='20px' width='20px' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 9v.906a2.25 2.25 0 0 1-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 0 0 1.183 1.981l6.478 3.488m8.839 2.51-4.66-2.51m0 0-1.023-.55a2.25 2.25 0 0 0-2.134 0l-1.022.55m0 0-4.661 2.51m16.5 1.615a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V8.844a2.25 2.25 0 0 1 1.183-1.981l7.5-4.039a2.25 2.25 0 0 1 2.134 0l7.5 4.039a2.25 2.25 0 0 1 1.183 1.98V19.5Z" />
+                                                </svg>
+                                              </a>
+                                              <a href="{{ path('app_dmarc_reports_delete', {report: report.id}) }}" class="btn btn-sm btn-danger" onclick="return confirm('{{'Are you sure? this can not be undone'|trans}}');" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                  <svg height='20px' width='20px' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' class='w-6 h-6'>
+                                                    <path stroke-linecap='round' stroke-linejoin='round' d='M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0' />
+                                                  </svg></a>
                                             </td>
                                           </tr>
                                         {% endfor %}

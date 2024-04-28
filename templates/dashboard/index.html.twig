@@ -14,10 +14,10 @@
                                     <table class="table">
                                         <thead>
                                           <tr>
-                                            <th scope="col">Id</th>
+                                            <th scope="col" class="d-none d-lg-table-cell">Id</th>
                                             <th scope="col">Domain</th>
                                             <th scope="col">Reporter</th>
-                                            <th scope="col">Messages</th>
+                                            <th scope="col" class="d-none d-lg-table-cell">Messages</th>
                                             <th scope="col">Results</th>
                                             <th scope="col"></th>
                                           </tr>
@@ -25,10 +25,10 @@
                                         <tbody>
                                         {% for report in dmarcreports %}
                                           <tr {% for user in report.seen %}{% else %}class="table-warning"{% endfor %}>
-                                            <th scope="row">{{ report.id }}</th>
+                                            <th scope="row" class="d-none d-lg-table-cell">{{ report.id }}</th>
                                             <td>{{ report.domain.fqdn }}</td>
                                             <td>{{ report.organisation }}</td>
-                                            <td>{{ report.dmarc_records.count }}</td>
+                                            <td class="d-none d-lg-table-cell">{{ report.dmarc_records.count }}</td>
                                             <td>
                                               {% set dkim_pass = true %}
                                               {% set spf_pass = true %}
@@ -43,7 +43,13 @@
                                               <span class="btn btn-sm btn-{% if spf_pass %}success{% else %}danger{% endif %}">spf</span>
                                               <span class="btn btn-sm btn-{% if dkim_pass %}success{% else %}danger{% endif %}">dkim</span>
                                             </td>
-                                            <td><a href="{{ path('app_dmarc_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a></td>
+                                            <td>
+                                              <a href="{{ path('app_dmarc_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Open Report">
+                                                <svg height='20px' width='20px' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 9v.906a2.25 2.25 0 0 1-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 0 0 1.183 1.981l6.478 3.488m8.839 2.51-4.66-2.51m0 0-1.023-.55a2.25 2.25 0 0 0-2.134 0l-1.022.55m0 0-4.661 2.51m16.5 1.615a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V8.844a2.25 2.25 0 0 1 1.183-1.981l7.5-4.039a2.25 2.25 0 0 1 2.134 0l7.5 4.039a2.25 2.25 0 0 1 1.183 1.98V19.5Z" />
+                                                </svg>
+                                              </a>
+                                            </td>
                                           </tr>
                                         {% endfor %}
                                         </tbody>
@@ -61,7 +67,7 @@
                                     <table class="table">
                                         <thead>
                                           <tr>
-                                            <th scope="col">Id</th>
+                                            <th scope="col" class="d-none d-lg-table-cell">Id</th>
                                             <th scope="col">Domain</th>
                                             <th scope="col">Reporter</th>
                                             <th scope="col">Results</th>
@@ -71,7 +77,7 @@
                                         <tbody>
                                         {% for report in smtptlsreports %}
                                           <tr {% for user in report.seen %}{% else %}class="table-warning"{% endfor %}>
-                                            <th scope="row">{{ report.id }}</th>
+                                            <th scope="row" class="d-none d-lg-table-cell">{{ report.id }}</th>
                                             <td>
                                               {% for policy in report.smtptls_policies %}
                                                 {{policy.policydomain.fqdn}}<br>
@@ -102,7 +108,13 @@
                                               <br>
                                               {% endfor %}
                                             </td>
-                                            <td><a href="{{ path('app_smtptls_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary">Open Report</a></td>
+                                            <td>
+                                              <a href="{{ path('app_smtptls_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Open Report">
+                                                <svg height='20px' width='20px' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 9v.906a2.25 2.25 0 0 1-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 0 0 1.183 1.981l6.478 3.488m8.839 2.51-4.66-2.51m0 0-1.023-.55a2.25 2.25 0 0 0-2.134 0l-1.022.55m0 0-4.661 2.51m16.5 1.615a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V8.844a2.25 2.25 0 0 1 1.183-1.981l7.5-4.039a2.25 2.25 0 0 1 2.134 0l7.5 4.039a2.25 2.25 0 0 1 1.183 1.98V19.5Z" />
+                                                </svg>
+                                              </a>
+                                            </td>
                                           </tr>
                                         {% endfor %}
                                         </tbody>
