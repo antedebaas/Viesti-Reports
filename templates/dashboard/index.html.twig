@@ -18,7 +18,7 @@
                                             <th scope="col">Domain</th>
                                             <th scope="col">Reporter</th>
                                             <th scope="col" class="d-none d-lg-table-cell">Messages</th>
-                                            <th scope="col">Results</th>
+                                            <th scope="col" class="d-none d-lg-table-cell">Results</th>
                                             <th scope="col"></th>
                                           </tr>
                                         </thead>
@@ -29,7 +29,7 @@
                                             <td>{{ report.domain.fqdn }}</td>
                                             <td>{{ report.organisation }}</td>
                                             <td class="d-none d-lg-table-cell">{{ report.dmarc_records.count }}</td>
-                                            <td>
+                                            <td class="d-none d-lg-table-cell">
                                               {% set dkim_pass = true %}
                                               {% set spf_pass = true %}
                                               {% for record in report.dmarc_records %}
@@ -43,12 +43,28 @@
                                               <span class="btn btn-sm btn-{% if spf_pass %}success{% else %}danger{% endif %}">spf</span>
                                               <span class="btn btn-sm btn-{% if dkim_pass %}success{% else %}danger{% endif %}">dkim</span>
                                             </td>
-                                            <td>
+                                            <td class="text-end">
                                               <a href="{{ path('app_dmarc_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Open Report">
                                                 <svg height='20px' width='20px' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                   <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 9v.906a2.25 2.25 0 0 1-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 0 0 1.183 1.981l6.478 3.488m8.839 2.51-4.66-2.51m0 0-1.023-.55a2.25 2.25 0 0 0-2.134 0l-1.022.55m0 0-4.661 2.51m16.5 1.615a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V8.844a2.25 2.25 0 0 1 1.183-1.981l7.5-4.039a2.25 2.25 0 0 1 2.134 0l7.5 4.039a2.25 2.25 0 0 1 1.183 1.98V19.5Z" />
                                                 </svg>
                                               </a>
+                                            </td>
+                                          </tr>
+                                          <tr class="d-table-row d-lg-none {% for user in report.seen %}{% else %} table-warning{% endfor %}">
+                                            <td colspan="3">
+                                              {% set dkim_pass = true %}
+                                              {% set spf_pass = true %}
+                                              {% for record in report.dmarc_records %}
+                                                  {% if record.policydkim != "pass" %}
+                                                    {% set dkim_pass = false %}
+                                                  {% endif %}
+                                                  {% if record.policyspf != "pass" %}
+                                                    {% set spf_pass = false %}
+                                                  {% endif %}
+                                              {% endfor %}
+                                              <span class="btn btn-sm btn-{% if spf_pass %}success{% else %}danger{% endif %}">spf</span>
+                                              <span class="btn btn-sm btn-{% if dkim_pass %}success{% else %}danger{% endif %}">dkim</span>
                                             </td>
                                           </tr>
                                         {% endfor %}
@@ -84,7 +100,7 @@
                                               {% endfor %}
                                             </td>
                                             <td>{{ report.organisation }}</td>
-                                            <td>
+                                            <td class="d-none d-lg-table-cell">
                                               {% set sts_type = false %}
                                               {% set sts_version = true %}
                                               {% set sts_mode = true %}
@@ -108,12 +124,38 @@
                                               <br>
                                               {% endfor %}
                                             </td>
-                                            <td>
+                                            <td class="text-end">
                                               <a href="{{ path('app_smtptls_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Open Report">
                                                 <svg height='20px' width='20px' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                   <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 9v.906a2.25 2.25 0 0 1-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 0 0 1.183 1.981l6.478 3.488m8.839 2.51-4.66-2.51m0 0-1.023-.55a2.25 2.25 0 0 0-2.134 0l-1.022.55m0 0-4.661 2.51m16.5 1.615a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V8.844a2.25 2.25 0 0 1 1.183-1.981l7.5-4.039a2.25 2.25 0 0 1 2.134 0l7.5 4.039a2.25 2.25 0 0 1 1.183 1.98V19.5Z" />
                                                 </svg>
                                               </a>
+                                            </td>
+                                          </tr>
+                                          <tr class="d-table-row d-lg-none {% for user in report.seen %}{% else %} table-warning{% endfor %}">
+                                            <td colspan="3">
+                                              {% set sts_type = false %}
+                                              {% set sts_version = true %}
+                                              {% set sts_mode = true %}
+                                              {% for policy in report.smtptls_policies %}
+                                                  <span class="btn btn-sm btn-{% if policy.summarysuccessfulcount == 0 %}secondary{% else %}success{% endif %}">{{ policy.summarysuccessfulcount }} Successful</span>
+                                                  <span class="btn btn-sm btn-{% if policy.summarysuccessfulcount == 0 %}danger{% else %}success{% endif %}">{{ policy.summaryfailedcount }} Failed</span>
+                                                  {% if policy.policytype == 'no-policy-found' %}
+                                                    <span class="btn btn-sm btn-danger">no-policy-found</span>
+                                                  {% else %}
+                                                    {% if policy.policytype == 'sts' %}
+                                                      {% if policy.policystringversion == 'STSv1' %}
+                                                        <span class="btn btn-sm btn-success">STSv1</span>
+                                                      {% else %}
+                                                        <span class="btn btn-sm btn-danger">Policy version empty</span>
+                                                      {% endif %}
+                                                      <span class="btn btn-sm btn-{% if policy.policystringmode == 'enforce' %}success{% elseif policy.policystringmode == 'testing' %}warning{% else %}danger{% endif %}">{% if policy.policystringmode %}{{ policy.policystringmode }}{% else %}Policy mode empty{% endif %}</span>
+                                                    {% elseif policy.policytype == 'tlsa' %}
+                                                      <span class="btn btn-sm btn-success">TLSA</span>
+                                                    {% endif %}
+                                                  {% endif %}
+                                              <br>
+                                              {% endfor %}
                                             </td>
                                           </tr>
                                         {% endfor %}
@@ -135,7 +177,7 @@
                                     <table class="table">
                                         <thead>
                                           <tr>
-                                            <th scope="col">Id</th>
+                                            <th scope="col" class="d-none d-lg-table-cell">Id</th>
                                             <th scope="col">Date &amp; Time</th>
                                             <th scope="col">Message</th>
                                           </tr>
@@ -143,7 +185,7 @@
                                         <tbody>
                                         {% for log in logs %}
                                           <tr {% if log.success == false %}class="table-danger"{% endif %}>
-                                            <th scope="row">{{ log.id }}</th>
+                                            <th scope="row" class="d-none d-lg-table-cell">{{ log.id }}</th>
                                             <td>{{ log.time|date("d-M-Y H:i:s") }}</td>
                                             <td>{{ log.message }}</td>
                                           </tr>

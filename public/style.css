@@ -11,7 +11,7 @@
 
 @media (max-width: 767.98px) {
     .sidebar {
-        top: 11.5rem;
+        top: 10rem;
         padding: 0;
     }
 }
@@ -26,10 +26,6 @@
         position: sticky;
         z-index: 999;
     }
-/*
-    .sidebar {
-        width: 160px;
-    }*/
 }
 
 .sidebar .nav-link {
@@ -48,4 +44,7 @@
 .help_info {
     width: 18px;
     height: 1x;
+}
+.card {
+    --bs-card-spacer-x: 1rem;
 }
