@@ -8,7 +8,22 @@
                 <div class="row">
                     <div class="col-12 col-xl-12 mb-4 mb-lg-0">
                         <div class="card">
-                            <h5 class="card-header">Domains</h5>
+                            <h5 class="card-header d-flex justify-content-between">
+                              <span class="d-flex">Domains</span>
+                              <span class="d-flex">
+                              {% if pages.prev %}
+                                <a href="{{ path('app_domains', {page: pages.page - 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&lt;</a>
+                              {% else %}
+                                <a href="#" class="btn btn-sm btn-light" disabled>&lt;</a>
+                              {% endif %}
+                              &nbsp;
+                              {% if pages.next %}
+                                <a href="{{ path('app_domains', {page: pages.page + 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&gt;</a>
+                              {% else %}
+                                <a href="#" class="btn btn-sm btn-light" disabled>&gt;</a>
+                              {% endif %}
+                              </span>
+                            </h5>
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-sm table-compact">
@@ -64,19 +79,6 @@
                                       </table>
                                 </div>
                                 <div>
-                                  <span class="d-flex justify-content-center">
-                                  {% if pages.prev %}
-                                    <a href="{{ path('app_domains', {page: pages.page - 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&lt;</a>
-                                  {% else %}
-                                    <a href="#" class="btn btn-sm btn-light" disabled>&lt;</a>
-                                  {% endif %}
-                                  &nbsp;
-                                  {% if pages.next %}
-                                    <a href="{{ path('app_domains', {page: pages.page + 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&gt;</a>
-                                  {% else %}
-                                    <a href="#" class="btn btn-sm btn-light" disabled>&gt;</a>
-                                  {% endif %}
-                                  </span>
                                 </div>
                                 
                             </div>

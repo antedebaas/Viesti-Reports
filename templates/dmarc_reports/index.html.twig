@@ -6,7 +6,22 @@
                 <div class="row">
                     <div class="col-12 col-xl-12 mb-4 mb-lg-0">
                         <div class="card">
-                            <h5 class="card-header">DMARC Reports</h5>
+                            <h5 class="card-header d-flex justify-content-between">
+                              <span class="d-flex">DMARC Reports</span>
+                              <span class="d-flex">
+                        {% if pages.prev %}
+                          <a href="{{ path('app_dmarc_reports', {page: pages.page - 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&lt;</a>
+                        {% else %}
+                          <a href="#" class="btn btn-sm btn-light" disabled>&lt;</a>
+                        {% endif %}
+                        &nbsp;
+                        {% if pages.next %}
+                          <a href="{{ path('app_dmarc_reports', {page: pages.page + 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&gt;</a>
+                        {% else %}
+                          <a href="#" class="btn btn-sm btn-light" disabled>&gt;</a>
+                        {% endif %}
+                              </span>
+                            </h5>
                             <div class="card-body">
                       <div class="table-responsive">
                           <table class="table table-sm table-compact">
@@ -14,9 +29,8 @@
                                 <tr>
                                   <th class="d-none d-md-table-cell" scope="col">Id</th>
                                   <th scope="col">Date</th>
-                                  <th class="d-none d-md-table-cell"  scope="col">Messages</th>
                                   <th scope="col">Domain</th>
-                                  <th class="d-none d-md-table-cell"  scope="col">Reporter</th>
+                                  <th scope="col">Reporter</th>
                                   <th class="d-none d-lg-table-cell" scope="col">External Id</th>
                                   <th scope="col">Results</th>
                                   <th scope="col"></th>
@@ -37,7 +51,6 @@
                                       {% endif %}
                                     </div>
                                   </td>
-                                  <td class="d-none d-md-table-cell" >{{ report.dmarc_records.count }}</td>
                                   <td>{{ report.domain.fqdn }}</td>
                                   <td class="d-none d-md-table-cell">{{ report.organisation }}</td>
                                   <td class="d-none d-lg-table-cell" title="{{ report.externalid }}">{{ report.externalid|slice(0,8) }}...</td>
@@ -71,22 +84,7 @@
                               </tbody>
                             </table>
                       </div>
-                      <div>
-                        <span class="d-flex justify-content-center">
-                        {% if pages.prev %}
-                          <a href="{{ path('app_dmarc_reports', {page: pages.page - 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&lt;</a>
-                        {% else %}
-                          <a href="#" class="btn btn-sm btn-light" disabled>&lt;</a>
-                        {% endif %}
-                        &nbsp;
-                        {% if pages.next %}
-                          <a href="{{ path('app_dmarc_reports', {page: pages.page + 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&gt;</a>
-                        {% else %}
-                          <a href="#" class="btn btn-sm btn-light" disabled>&gt;</a>
-                        {% endif %}
-                        </span>
                     </div>
                   </div>
                 </div>
-              </div>
 {% endblock %}

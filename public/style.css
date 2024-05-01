@@ -84,7 +84,7 @@
         flex-wrap: wrap;
         align-content: start;
         height: 100vH;
-        width: 180px;
+        width: 160px;
         left: 0;
         top: 3rem;
         padding: 1em;
@@ -99,8 +99,8 @@
     nav#sidebar a.nav-link-extra { margin-top: 1em };
     div.mainarea {
         margin-top: 3rem;
-        margin-left: 180px;
-        width: calc(100vW - 180px);
+        margin-left: 160px;
+        width: calc(100vW - 160px);
     }
 }
 
@@ -114,6 +114,7 @@ ol.breadcrumb {
     
 a.navbar-brand {
     font-weight: bold;
+    padding-left:1em;
 }
 
 nav#sidebar .nav-link {
@@ -128,6 +129,10 @@ nav#sidebar a.nav-link.active {
 a.nav-link svg {
     width: 20px;
     height: 20px;
+}
+
+.card-header a.btn-sm {
+    --bs-btn-padding-y: 0;
 }
 
 .help_info {

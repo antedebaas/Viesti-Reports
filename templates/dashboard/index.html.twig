@@ -16,8 +16,7 @@
                                           <tr>
                                             <th class="d-none d-md-table-cell" scope="col">Id</th>
                                             <th scope="col">Domain</th>
-                                            <th class="d-none d-md-table-cell" scope="col">Reporter</th>
-                                            <th scope="col">Messages</th>
+                                            <th scope="col">Reporter</th>
                                             <th scope="col">Results</th>
                                             <th scope="col"></th>
                                           </tr>
@@ -28,7 +27,6 @@
                                             <th class="d-none d-md-table-cell" scope="row">{{ report.id }}</th>
                                             <td>{{ report.domain.fqdn }}</td>
                                             <td class="d-none d-md-table-cell">{{ report.organisation }}</td>
-                                            <td>{{ report.dmarc_records.count }}</td>
                                             <td>
                                               {% set dkim_pass = true %}
                                               {% set spf_pass = true %}

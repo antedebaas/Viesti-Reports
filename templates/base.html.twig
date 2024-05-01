@@ -11,8 +11,11 @@
 </head>
 <body>
     <nav class="navbar navbar-light bg-light fixed-top px-2 py-1">
-        <div class="col-12 d-flex align-items-center flex-nowrap justify-content-between">
-            <a class="navbar-brand" href="#">
+        <div class="col-12 d-flex align-items-center flex-nowrap justify-content-left">
+            <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="{{ path('app_dashboard') }}">
                 Reports
             </a>
             {% if app.user.email is defined and menuactive is defined %}
@@ -66,9 +69,6 @@
                         {% endif %}
               </nav>
             {% endif %}
-            <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
         </div>
     </nav>
 
