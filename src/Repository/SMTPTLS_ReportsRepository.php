@@ -66,9 +66,10 @@ class SMTPTLS_ReportsRepository extends ServiceEntityRepository
         foreach ($criteria as $criterion) {
             $domains[] = $criterion->getId();
         }
+
         $qb = $this->createQueryBuilder('r')
         ->select('r')
-        ->addSelect('')->from(SMTPTLS_Policies::class, 'p');
+        ->from(SMTPTLS_Policies::class, 'p');
         if(!empty($domains)) {
             $qb->andWhere('r.id = p.report');
             $qb->andWhere('p.policy_domain IN (:domains)')
@@ -94,13 +95,16 @@ class SMTPTLS_ReportsRepository extends ServiceEntityRepository
         if(in_array("ROLE_ADMIN", $this->security->getUser()->getRoles())) {
             $domains = array();
         }
-
+        $qb = $this->createQueryBuilder('r')
+        ->select('r')
+        ->from(SMTPTLS_Policies::class, 'p');
         if(!empty($domains)) {
-            $qb->addSelect('')->from(SMTPTLS_Policies::class, 'pol')
-               ->andWhere('r.id = pol.report')
-               ->andWhere('pol.policy_domain IN (:domains)')
-               ->setParameter('domains', $domains);
+            $qb->andWhere('r.id = p.report');
+            $qb->andWhere('p.policy_domain IN (:domains)')
+            ->setParameter('domains', $domains);
         }
+        $qb->select('count(r.id)');
+        
         return $qb->getQuery()
             ->getOneOrNullResult()[1]
         ;

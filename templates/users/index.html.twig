@@ -36,10 +36,14 @@
                                                     {% if role == "ROLE_ADMIN" %}
                                                         <span class="text-danger">Admin</span>
                                                     {% elseif role == "ROLE_USER" %}
-                                                    {% elseif role matches '/[0-9]+/'%}
-                                                        {{ role|idroletodomain }}
+                                                        <span class="text-secondary">User</span>
                                                     {% endif %}
-                                                    {% if loop.index < loop.length -1 %},{% endif %}
+                                                    {% if loop.index != loop.length %},{% endif %}
+                                                {% endfor %}
+                                                {% for role in user.domains %}
+                                                    {% if loop.index == 1 and user.roles|length > 0 %},{% endif %}
+                                                      <span class="text-secondary">{{ role.fqdn }}</span>
+                                                    {% if loop.index != loop.length %},{% endif %}
                                                 {% endfor %}
                                             </td>
                                             <td class="text-end">
