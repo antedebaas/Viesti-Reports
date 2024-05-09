@@ -20,8 +20,6 @@ services:
     image: antedebaas/dmarc-reports:latest
     ports:
         - 0.0.0.0:8080:8080
-    # volumes:
-    #   - ./:/var/www/html
     environment:
       TZ: Europe/Amsterdam
       DATABASE_TYPE: mysql

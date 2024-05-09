@@ -21,3 +21,4 @@
 
 /public/phpinfo.php
 /tools/
+docker-compose-local.yml
