@@ -44,6 +44,7 @@ class PolicyFileController extends AbstractController
         } else {
             $response = $this->render('policy_file/empty.txt.twig');
         }
+        $response->setContent(str_replace("\n", "\r\n", $response->getContent()));
         $response->headers->set('Content-Type', 'text/plain');
         return $response;
     }
