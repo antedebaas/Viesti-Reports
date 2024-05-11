@@ -44,6 +44,7 @@ RUN apk --update add ca-certificates && \
         php83-xml \
         php83-xmlwriter \
         php83-zip \
+        py-pip \
         supervisor \
         tzdata
 
@@ -61,15 +62,19 @@ RUN chmod +x /usr/local/bin/containerstartup.sh && \
     mkdir -p /var/www/html && \
     ln -s /usr/sbin/php-fpm83 /usr/sbin/php-fpm
 
+RUN python -m venv /opt/venv && \
+    /opt/venv/bin/pip3 install checkdmarc
+
 WORKDIR /var/www/html
 COPY --chown=nobody . /var/www/html/
-RUN wget https://getcomposer.org/composer-stable.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer && \
+RUN wget https://getcomposer.org/composer-stable.phar -O /usr/local/bin/composer && \
+    chmod +x /usr/local/bin/composer && \
     /usr/local/bin/composer install
 
 RUN chown -R nobody.nobody /var/www/html && \
-  chown -R nobody.nobody /run && \
-  chown -R nobody.nobody /var/lib/nginx && \
-  chown -R nobody.nobody /var/log/nginx
+    chown -R nobody.nobody /run && \
+    chown -R nobody.nobody /var/lib/nginx && \
+    chown -R nobody.nobody /var/log/nginx
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
