@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+<link rel="stylesheet" href="/default.css">
+{% endblock %}
+
+{% block title %}Check domain {{ domain.fqdn }}{% endblock %}
+
+{% block body %}
+              <div class="row my-4">
+                <div class="col-12 mb-lg-0">
+                  <div class="card">
+                    <h5 class="card-header">Domain Check</h5>
+                    <div class="card-body">
+                      <p class="card-text">
+                        {{ highlighted|raw }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+{% endblock %}
