@@ -83,6 +83,96 @@ class DomainsController extends AbstractController
         ]);
     }
 
+    #[Route('/domains/check/{id}', name: 'app_domains_check')]
+    public function check(Domains $domain, Request $request): Response
+    {
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $usersRepository = $this->em->getRepository(Users::class);
+        if(!$usersRepository->denyAccessUnlessOwned(array($domain->getId()), $this->getUser())) {
+            return $this->render('not_found.html.twig', []);
+        }
+
+        $data = shell_exec("/opt/venv/bin/checkdmarc ".$domain->getFqdn());
+        $hl = new \Highlight\Highlighter();
+        $highlighted = $hl->highlight('json', $this->prettyPrint($data));
+
+        
+        $patterns = array('/{NEWLINE}/','/{TAB}/');
+        $replacements = array('<br>','&nbsp;&nbsp;&nbsp;&nbsp;');
+
+        $highlighted = preg_replace($patterns, $replacements, $highlighted->value);
+
+        return $this->render('domains/check.html.twig', [
+            'domain' => $domain,
+            'highlighted' => $highlighted,
+            'menuactive' => 'domains',
+            'breadcrumbs' => array(
+                array('name' => $this->translator->trans("Domains"), 'url' => $this->router->generate('app_domains')),
+                array('name' => $this->translator->trans("Check domain settings for ").$domain->getFqdn(), 'url' => $this->router->generate('app_domains'))
+            ),
+        ]);
+    }
+
+    function prettyPrint( $json )
+    {
+        $result = '';
+        $level = 0;
+        $in_quotes = false;
+        $in_escape = false;
+        $ends_line_level = NULL;
+        $json_length = strlen( $json );
+    
+        for( $i = 0; $i < $json_length; $i++ ) {
+            $char = $json[$i];
+            $new_line_level = NULL;
+            $post = "";
+            if( $ends_line_level !== NULL ) {
+                $new_line_level = $ends_line_level;
+                $ends_line_level = NULL;
+            }
+            if ( $in_escape ) {
+                $in_escape = false;
+            } else if( $char === '"' ) {
+                $in_quotes = !$in_quotes;
+            } else if( ! $in_quotes ) {
+                switch( $char ) {
+                    case '}': case ']':
+                        $level--;
+                        $ends_line_level = NULL;
+                        $new_line_level = $level;
+                        break;
+    
+                    case '{': case '[':
+                        $level++;
+                    case ',':
+                        $ends_line_level = $level;
+                        break;
+    
+                    case ':':
+                        $post = " ";
+                        break;
+    
+                    case " ": case "\t": case "\n": case "\r":
+                        $char = "";
+                        $ends_line_level = $new_line_level;
+                        $new_line_level = NULL;
+                        break;
+                }
+            } else if ( $char === '\\' ) {
+                $in_escape = true;
+            }
+            if( $new_line_level !== NULL ) {
+                $result .= "{NEWLINE}\n".str_repeat( "{TAB}", $new_line_level );
+            }
+            $result .= $char.$post;
+        }
+    
+        return $result;
+    }
+
     #[Route('/domains/add', name: 'app_domains_add')]
     public function add(Request $request): Response
     {
