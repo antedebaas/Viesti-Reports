@@ -16,7 +16,7 @@
 
 I needed a quick and easy way to view my dmarc and smtp tls reports.
 This is a simple symfony project that can read the inbox for new reports and process them.
-I you use it you should use it with a special sole-purpose email adress.
+I you use it you should use it with a special sole-purpose email address.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
