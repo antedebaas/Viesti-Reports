@@ -54,7 +54,7 @@ class SMTPTLS_Policies
     #[ORM\OneToMany(mappedBy: 'policy', targetEntity: SMTPTLS_FailureDetails::class, orphanRemoval: true)]
     private Collection $SMTPTLS_FailureDetails;
 
-    #[ORM\OneToMany(mappedBy: 'policy', targetEntity: SMTPTLS_RdataRecords::class)]
+    #[ORM\OneToMany(mappedBy: 'policy', targetEntity: SMTPTLS_RdataRecords::class, orphanRemoval: true)]
     private Collection $SMTPTLS_RdataRecords;
 
     public function getId(): ?int
