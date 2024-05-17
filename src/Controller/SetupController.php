@@ -142,7 +142,9 @@ class SetupController extends AbstractController
                     $setup['users_form'] = $form->createView();
                 }
             } catch (\Exception $e) {
-                $setup['users'] = false;
+                return $this->render('error.html.twig', [
+                    'message' => $e->getMessage(),
+                ]);
             }
         }
 
