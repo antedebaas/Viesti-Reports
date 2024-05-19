@@ -60,51 +60,19 @@ class SMTPTLS_ReportsRepository extends ServiceEntityRepository
         return $domains;
     }
 
-    public function findOwnedBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null)
-    {
-        $domains = array();
-        foreach ($criteria as $criterion) {
-            $domains[] = $criterion->getId();
-        }
-
-        $qb = $this->createQueryBuilder('r')
-        ->select('r')
-        ->from(SMTPTLS_Policies::class, 'p');
-        if(!empty($domains)) {
-            $qb->andWhere('r.id = p.report');
-            $qb->andWhere('p.policy_domain IN (:domains)')
-            ->setParameter('domains', $domains);
-        }
-        foreach($orderBy as $key => $value) {
-            $qb->addOrderBy('r.'.$key, $value);
-        }
-        if(!empty($limit)) {
-            $qb->setMaxResults($limit);
-        }
-        if(!empty($offset)) {
-            $qb->setFirstResult($offset);
-        }
-        return $qb->getQuery()->getResult();
-    }
-
     public function getTotalRows(array $domains): int
     {
         $qb = $this->createQueryBuilder('r')
-           ->select('count(r.id)');
+        ->select('count(r.id)');
 
         if(in_array("ROLE_ADMIN", $this->security->getUser()->getRoles())) {
             $domains = array();
         }
-        $qb = $this->createQueryBuilder('r')
-        ->select('r')
-        ->from(SMTPTLS_Policies::class, 'p');
+
         if(!empty($domains)) {
-            $qb->andWhere('r.id = p.report');
-            $qb->andWhere('p.policy_domain IN (:domains)')
+            $qb->andWhere('r.domain IN (:domains)')
             ->setParameter('domains', $domains);
         }
-        $qb->select('count(r.id)');
-        
         return $qb->getQuery()
             ->getOneOrNullResult()[1]
         ;

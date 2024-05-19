@@ -116,6 +116,15 @@
                                   {% else %}
                                     <a href="#" class="btn btn-sm btn-light" disabled>&lt;</a>
                                   {% endif %}
+                                  {% if pages.total > 1 %}
+                                    {% for page in 1..pages.total %}
+                                      {% if page == pages.page %}
+                                        <a href="{{ path('app_smtptls_reports', {page: page, perpage: pages.perpage }) }}" class="btn btn-sm btn-primary">{{ page }}</a>
+                                      {% else %}
+                                        <a href="{{ path('app_smtptls_reports', {page: page, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">{{ page }}</a>
+                                      {% endif %}
+                                    {% endfor %}
+                                  {% endif %}
                                   {% if pages.next %}
                                     <a href="{{ path('app_smtptls_reports', {page: pages.page + 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&gt;</a>
                                   {% else %}

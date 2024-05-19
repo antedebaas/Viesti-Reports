@@ -153,9 +153,10 @@
                                       </span>
                                     </div>
                                   </li>
+                                  {% if policy.policytype == 'sts' %}
                                   <li class="list-group-item">
                                     <div class="clearfix">
-                                      <span class="float-start"><b>String version: </b> </span>
+                                      <span class="float-start"><b>Version: </b> </span>
                                       <span class="float-end">
                                         {% if policy.policystringversion == 'STSv1' %}
                                           <span class="btn btn-sm btn-success">STSv1</span>
@@ -167,12 +168,13 @@
                                   </li>
                                   <li class="list-group-item">
                                     <div class="clearfix">
-                                      <span class="float-start"><b>String mode: </b> </span>
+                                      <span class="float-start"><b>Mode: </b> </span>
                                       <span class="float-end">
                                         <span class="btn btn-sm btn-{% if policy.policystringmode == 'enforce' %}success{% elseif policy.policystringmode == 'testing' %}warning{% else %}danger{% endif %}">{% if policy.policystringmode %}{{ policy.policystringmode }}{% else %}Policy mode empty{% endif %}</span>
                                       </span>
                                     </div>
                                   </li>
+                                  {% endif %}
                                   <li class="list-group-item">
                                     <div class="clearfix">
                                       <span class="float-start"><b>Summary successful count: </b> </span>

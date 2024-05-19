@@ -60,7 +60,7 @@ class DashboardController extends AbstractController
         if(in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
             $smtptlsreports = $repository->findBy(array(), array('id' => 'DESC'), 5, 0);
         } else {
-            $smtptlsreports = $repository->findOwnedBy($domains, array('id' => 'DESC'), 5, 0);
+            $smtptlsreports = $repository->findBy(array('domain' => $domains), array('id' => 'DESC'), 5, 0);
         }
         $totalreports = $repository->getTotalRows($domains);
 

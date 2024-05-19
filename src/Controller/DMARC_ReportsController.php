@@ -66,6 +66,7 @@ class DMARC_ReportsController extends AbstractController
             return $this->redirectToRoute('app_dmarc_reports');
         }
 
+        $pages["total"] = ceil($totalreports / $pages['perpage']);
         if($totalreports / $pages['perpage'] > $pages["page"]) {
             $pages["next"] = true;
         }

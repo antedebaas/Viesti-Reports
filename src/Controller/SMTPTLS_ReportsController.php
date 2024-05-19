@@ -58,14 +58,15 @@ class SMTPTLS_ReportsController extends AbstractController
         if(in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
             $reports = $repository->findBy(array(), array('id' => 'DESC'), $pages["perpage"], ($pages["page"] - 1) * $pages["perpage"]);
         } else {
-            $reports = $repository->findOwnedBy($domains, array('id' => 'DESC'), $pages["perpage"], ($pages["page"] - 1) * $pages["perpage"]);
+            $reports = $repository->findBy(array('domain' => $domains), array('id' => 'DESC'), $pages["perpage"], ($pages["page"] - 1) * $pages["perpage"]);
         }
-        $totalreports = $repository->getTotalRows($domains);
+        $totalreports = $repository->getTotalRows($reports);
 
         if(count($reports) == 0 && $totalreports != 0 && $pages["page"] != 1) {
             return $this->redirectToRoute('app_smtptls_reports');
         }
 
+        $pages["total"] = ceil($totalreports / $pages['perpage']);
         if($totalreports / $pages['perpage'] > $pages["page"]) {
             $pages["next"] = true;
         }
