@@ -59,7 +59,6 @@ RUN chmod +x /usr/local/bin/containerstartup.sh && \
     dos2unix /etc/php83/conf.d/custom.ini && \
     dos2unix /etc/supervisor/conf.d/supervisord.conf && \
     mkdir -p /var/www/html && \
-    ln -s /usr/bin/php83 /usr/bin/php && \
     ln -s /usr/sbin/php-fpm83 /usr/sbin/php-fpm
 
 WORKDIR /var/www/html
