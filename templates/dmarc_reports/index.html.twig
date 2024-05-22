@@ -95,38 +95,32 @@
                                     {% else %}
                                       <a href="#" class="btn btn-sm btn-light" disabled>&lt;</a>
                                     {% endif %}
-                                    {% if pages.total < 5 %}
+                                    {% if pages.total <= 5 %}
                                       {% for page in 1..pages.total %}
                                         <a href="{{ path('app_dmarc_reports', {page: page, perpage: pages.perpage }) }}" class="btn btn-sm btn-{% if page == pages.page %}primary{% else %}secondary{% endif %}">{{ page }}</a>
                                       {% endfor %}
                                     {% else %}
-                                      {% if pages.page > 4 %}
-                                        <a href="{{ path('app_dmarc_reports', {page: 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-{% if pages.page == 1 %}primary{% else %}secondary{% endif %}">1</a>
-                                      {% endif %}
+                                      <a href="{{ path('app_dmarc_reports', {page: 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-{% if pages.page == 1 %}primary{% else %}secondary{% endif %}">1</a>
 
-                                      {% if pages.total > 7 %}
-                                        {% if pages.page > 5 %}
+                                      {% if pages.total >= 9 %}
+                                        {% set start_page = max(2, pages.page - 3) %}
+                                        {% set end_page = min((pages.total -1 ), pages.page + 3) %}
+                                        {% if start_page > 2 %}
                                           ...
                                         {% endif %}
-
-                                        {% set start_page = max(1, pages.page - 3) %}
-                                        {% set end_page = min(pages.total, pages.page + 3) %}
                                         {% for page in start_page..end_page %}
-                                            <a href="{{ path('app_dmarc_reports', {page: page, perpage: pages.perpage }) }}" class="btn btn-sm btn-{% if page != pages.page %}secondary{% else %}primary{% endif %}">{{ page }}</a>
+                                          <a href="{{ path('app_dmarc_reports', {page: page, perpage: pages.perpage }) }}" class="btn btn-sm btn-{% if page == pages.page %}primary{% else %}secondary{% endif %}">{{ page }}</a>
                                         {% endfor %}
-
-                                        {% if pages.page < pages.total - 4 %}
+                                        {% if end_page < (pages.total -1) %}
                                           ...
                                         {% endif %}
                                       {% else %}
-                                        {% for page in 2..pages.total %}
-                                          <a href="{{ path('app_dmarc_reports', {page: page, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">{{ page }}</a>
+                                        {% for page in 2 .. (pages.total -1) %}
+                                          <a href="{{ path('app_dmarc_reports', {page: page, perpage: pages.perpage }) }}" class="btn btn-sm btn-{% if page == pages.page %}primary{% else %}secondary{% endif %}">{{ page }}</a>
                                         {% endfor %}
                                       {% endif %}
 
-                                      {% if pages.page < (pages.total - 3) %}
-                                        <a href="{{ path('app_dmarc_reports', {page: pages.total, perpage: pages.perpage }) }}" class="btn btn-sm btn-{% if pages.page == pages.total %}primary{% else %}secondary{% endif %}">{{ pages.total }}</a>
-                                      {% endif %}
+                                      <a href="{{ path('app_dmarc_reports', {page: pages.total, perpage: pages.perpage }) }}" class="btn btn-sm btn-{% if pages.page == pages.total %}primary{% else %}secondary{% endif %}">{{ pages.total }}</a>
                                     {% endif %}
 
                                     {% if pages.next %}
