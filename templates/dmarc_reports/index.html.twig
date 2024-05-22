@@ -90,25 +90,50 @@
                                 <div class="clearfix">
                                   <span class="float-start">&nbsp;</span>
                                   <span class="float-end">
-                                  {% if pages.prev %}
-                                    <a href="{{ path('app_dmarc_reports', {page: pages.page - 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&lt;</a>
-                                  {% else %}
-                                    <a href="#" class="btn btn-sm btn-light" disabled>&lt;</a>
-                                  {% endif %}
-                                  {% if pages.total > 1 %}
-                                    {% for page in 1..pages.total %}
-                                      {% if page == pages.page %}
-                                        <a href="{{ path('app_dmarc_reports', {page: page, perpage: pages.perpage }) }}" class="btn btn-sm btn-primary">{{ page }}</a>
-                                      {% else %}
-                                        <a href="{{ path('app_dmarc_reports', {page: page, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">{{ page }}</a>
+                                    {% if pages.prev %}
+                                      <a href="{{ path('app_dmarc_reports', {page: pages.page - 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&lt;</a>
+                                    {% else %}
+                                      <a href="#" class="btn btn-sm btn-light" disabled>&lt;</a>
+                                    {% endif %}
+                                    {% if pages.total < 5 %}
+                                      {% for page in 1..pages.total %}
+                                        <a href="{{ path('app_dmarc_reports', {page: page, perpage: pages.perpage }) }}" class="btn btn-sm btn-{% if page == pages.page %}primary{% else %}secondary{% endif %}">{{ page }}</a>
+                                      {% endfor %}
+                                    {% else %}
+                                      {% if pages.page > 4 %}
+                                        <a href="{{ path('app_dmarc_reports', {page: 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-{% if pages.page == 1 %}primary{% else %}secondary{% endif %}">1</a>
                                       {% endif %}
-                                    {% endfor %}
-                                  {% endif %}
-                                  {% if pages.next %}
-                                    <a href="{{ path('app_dmarc_reports', {page: pages.page + 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&gt;</a>
-                                  {% else %}
-                                    <a href="#" class="btn btn-sm btn-light" disabled>&gt;</a>
-                                  {% endif %}
+
+                                      {% if pages.total > 7 %}
+                                        {% if pages.page > 5 %}
+                                          ...
+                                        {% endif %}
+
+                                        {% set start_page = max(1, pages.page - 3) %}
+                                        {% set end_page = min(pages.total, pages.page + 3) %}
+                                        {% for page in start_page..end_page %}
+                                            <a href="{{ path('app_dmarc_reports', {page: page, perpage: pages.perpage }) }}" class="btn btn-sm btn-{% if page != pages.page %}secondary{% else %}primary{% endif %}">{{ page }}</a>
+                                        {% endfor %}
+
+                                        {% if pages.page < pages.total - 4 %}
+                                          ...
+                                        {% endif %}
+                                      {% else %}
+                                        {% for page in 2..pages.total %}
+                                          <a href="{{ path('app_dmarc_reports', {page: page, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">{{ page }}</a>
+                                        {% endfor %}
+                                      {% endif %}
+
+                                      {% if pages.page < (pages.total - 3) %}
+                                        <a href="{{ path('app_dmarc_reports', {page: pages.total, perpage: pages.perpage }) }}" class="btn btn-sm btn-{% if pages.page == pages.total %}primary{% else %}secondary{% endif %}">{{ pages.total }}</a>
+                                      {% endif %}
+                                    {% endif %}
+
+                                    {% if pages.next %}
+                                      <a href="{{ path('app_dmarc_reports', {page: pages.page + 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&gt;</a>
+                                    {% else %}
+                                      <a href="#" class="btn btn-sm btn-light" disabled>&gt;</a>
+                                    {% endif %}
                                   </span>
                                 </div>
                                 
