@@ -6,7 +6,7 @@
 parameters:
     app.mailbox_username: '%env(string:MAILBOX_USERNAME)%'
     app.delete_processed_mails: '%env(bool:DELETE_PROCESSED_MAILS)%'
-    app.database_type: '%env(string:DATABASE_TYPE)%'
+    app.database_url: '%env(string:DATABASE_URL)%'
     app.enable_registration: '%env(bool:ENABLE_REGISTRATION)%'
 
 services:

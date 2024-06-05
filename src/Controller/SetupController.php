@@ -87,10 +87,11 @@ class SetupController extends AbstractController
                 $migrations = array();
             }
 
+            $parsedDsn = parse_url($this->params->get('app.database_url'));
 
             $migrationfiles = array();
             $finder = new Finder();
-            $finder->files()->in(__DIR__.'/../../migrations/'.$this->params->get('app.database_type'));
+            $finder->files()->in(__DIR__.'/../../migrations/'.$parsedDsn['scheme']);
             foreach ($finder as $file) {
                 $migrationfiles[] = "DoctrineMigrations\\".str_replace(".php", "", $file->getBasename());
             }
