@@ -22,13 +22,10 @@ class MigrationPathCompilerPass implements CompilerPassInterface
         }
         // Determine the appropriate migrations path
         if ($dsn['scheme'] == 'mysql') {
-            $databaseType = 'MySQL';
             $migrationPath = '%kernel.project_dir%/migrations/mysql';
         } elseif ($dsn['scheme'] == 'postgresql') {
-            $databaseType = 'PostgreSQL';
             $migrationPath = '%kernel.project_dir%/migrations/postgresql';
         } elseif ($dsn['scheme'] == 'sqlite') {
-            $databaseType = 'SQLite';
             $migrationPath = '%kernel.project_dir%/migrations/sqlite';
         } else {
             throw new \InvalidArgumentException('Unsupported database type.');
@@ -39,7 +36,7 @@ class MigrationPathCompilerPass implements CompilerPassInterface
 
         // Set the migration paths dynamically
         $configurationDefinition->addMethodCall('addMigrationsDirectory', [
-            'DoctrineMigrations\\'.$databaseType,
+            'DoctrineMigrations',
             $migrationPath
         ]);
     }
