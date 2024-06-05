@@ -8,7 +8,7 @@ git checkout $TAG
 git pull origin $TAG
 
 echo "Install composer dependencies"
-composer install
+export COMPOSER_ALLOW_SUPERUSER=1; composer install
 
 echo "clear cache"
 php bin/console cache:clear
