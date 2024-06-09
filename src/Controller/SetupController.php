@@ -114,9 +114,14 @@ class SetupController extends AbstractController
                 $setup['missingmigrations_list'] = $migrationdifferences_missingfiles;
             }
 
+            // check if there are users in the database
             try {
-                // check if there are users in the database
                 $number_of_users = $this->em->getRepository(Users::class)->getTotalRows();
+            } catch (\Exception $e) {
+                $number_of_users = 0;
+            }
+
+            try {
                 if($number_of_users > 0) {
                     $setup['users'] = true;
                 } else {
