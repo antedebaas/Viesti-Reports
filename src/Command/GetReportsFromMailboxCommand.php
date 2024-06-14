@@ -137,10 +137,10 @@ class GetReportsFromMailboxCommand extends Command
                 }
                 unlink($attachment->filePath);
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $report = new MailReport();
             $report->setReportType(ReportType::UNKNOWN);
-            $report->setMailId($mail->headers->message_id);
+            $report->setMailId($mail->headers->message_id ?? "missing-message-id-$mailid");
             $report->setSuccess(false, 'Failed to open email attachment.');
         } finally {
             if (isset($report) && $report != null) {
@@ -172,7 +172,7 @@ class GetReportsFromMailboxCommand extends Command
                     $this->em->persist($log);
                     $this->em->flush();
                 }
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $result = false;
 
                 $log = new Logs();
@@ -223,7 +223,7 @@ class GetReportsFromMailboxCommand extends Command
                 $report = new \SimpleXMLElement($filecontents);
                 $reporttype = ReportType::DMARC;
                 $success = true;
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $success = false;
             }
         } elseif($this->isJson($filecontents)) {
@@ -232,7 +232,7 @@ class GetReportsFromMailboxCommand extends Command
                 $report = json_decode($filecontents);
                 $reporttype = ReportType::STS;
                 $success = true;
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $success = false;
             }
         }
@@ -322,7 +322,7 @@ class GetReportsFromMailboxCommand extends Command
                 $this->em->flush();
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return false;
         }
     }
@@ -468,7 +468,7 @@ class GetReportsFromMailboxCommand extends Command
                 }
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return false;
         }
     }
