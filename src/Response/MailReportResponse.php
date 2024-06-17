@@ -1,16 +1,15 @@
 <?php
 
-namespace App\EntityUnmanaged;
+namespace App\Response;
 
 use App\Enums\ReportType;
 
-class MailReport
+class MailReportResponse
 {
-    private bool $success = false;
-    private string $message = 'Unknown error.';
-    private string $mailid = '';
-    private ReportType $reporttype = ReportType::Unknown;
-    private object $report;
+    public bool $success = false;
+    public string $message = 'Unknown error.';
+    public string $mailid = '';
+    public ReportType $reporttype = ReportType::Unknown;
 
     public function setSuccess($success, $message = '')
     {
@@ -49,16 +48,5 @@ class MailReport
     public function getReportType()
     {
         return $this->reporttype;
-    }
-
-    public function setReport($report)
-    {
-        $this->report = $report;
-        return $this;
-    }
-
-    public function getReport()
-    {
-        return $this->report;
     }
 }
