@@ -1,15 +1,18 @@
 name: dmarc-smtptls-reports
-version: "2"
+volumes:
+  reports-data:
 services:
   db:
     image: mariadb:latest
     environment:
-      MYSQL_DATABASE: 
-      MYSQL_USER: 
-      MYSQL_PASSWORD: 
-      MYSQL_ROOT_PASSWORD: 
+      MARIADB_DATABASE: 
+      MARIADB_USER: 
+      MARIADB_PASSWORD: 
+      MARIADB_ROOT_PASSWORD: 
     ports:
       - 3306
+    volumes:
+      - reports-data:/var/lib/mysql
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized" ]
