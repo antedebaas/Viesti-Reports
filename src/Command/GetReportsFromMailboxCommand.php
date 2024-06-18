@@ -189,8 +189,13 @@ class GetReportsFromMailboxCommand extends Command
         } catch (\Exception $e) {
             $report = new MailReportResponse();
             $report->setReportType(ReportType::Unknown);
-            $report->setMailId($mail->headers->message_id);
+            $report->setMailId($mail->headers->message_id ?? "mail-id-".$mailid);
             $report->setSuccess(false, 'Failed to open email attachment.');
+        } catch (\Error $e) {
+            $report = new MailReportResponse();
+            $report->setReportType(ReportType::Unknown);
+            $report->setMailId($mail->headers->message_id ?? "mail-id-".$mailid);
+            $report->setSuccess(false, $e->getMessage());
         } finally {
             if (isset($report) && $report != null) {
                 $reports[] = $report;
