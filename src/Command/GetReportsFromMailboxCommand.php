@@ -81,9 +81,9 @@ class GetReportsFromMailboxCommand extends Command
             $io->error('GetReportsFromMailbox command is already running.');
             return Command::FAILURE;
         } else {
-            //$lock->setValue('true');
-            //$this->em->persist($lock);
-            //$this->em->flush();
+            $lock->setValue('true');
+            $this->em->persist($lock);
+            $this->em->flush();
     
             $result = $this->open_mailbox($this->mailbox);
             if($this->mailbox_secondary->isEnabled()) {
