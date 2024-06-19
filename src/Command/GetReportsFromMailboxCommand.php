@@ -169,12 +169,12 @@ class GetReportsFromMailboxCommand extends Command
             if (empty($attachments)) {
                 $report = new MailReportResponse();
                 $report->setReportType(ReportType::Unknown);
-                $report->setMailId($mail->headers->message_id);
+                $report->setMailId($mail->headers->message_id ?? "mail-id-".$mailid);
                 $report->setSuccess(false, 'Email does not have any attachment.');
             } else {
                 foreach ($attachments as $attachment) {
                     $report = new MailReportResponse();
-                    $report->setMailId($mail->headers->message_id);
+                    $report->setMailId($mail->headers->message_id ?? "mail-id-".$mailid);
     
                     $result = $this->open_archive($attachment->filePath);
                     if($result['success'] == true) {
@@ -213,6 +213,10 @@ class GetReportsFromMailboxCommand extends Command
                         $result = $this->process_sts_report($report);
                     } else {
                         $result = false;
+                    }
+
+                    if($result == false) {
+                        $report->setSuccess(false);
                     }
                 } else {
                     $result = false;
