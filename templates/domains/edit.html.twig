@@ -177,6 +177,11 @@
                                       </tr>
                                       <tr>
                                         <td>TXT</td>
+                                        <td>@</td>
+                                        <td>"v=spf1 ip4:{{ dns_info.ip }} ~all"</td>
+                                      </tr>
+                                      <tr>
+                                        <td>TXT</td>
                                         <td>_mta-sts.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
                                         <td>"v=STSv1; id={{ dns_info.now|date("YmdHis") }};"</td>
                                       </tr>
