@@ -94,6 +94,10 @@ class GetReportsFromMailboxCommand extends Command
             $log->setTime(new \DateTime());
             $log->setSuccess($result->getSuccess());
             $log->setMessage($result->getMessage());
+
+            foreach ($result->getDetails()["reports"] as $report) {
+                $report->setReport(null);
+            }
             $log->setDetails(serialize($result->getDetails()));
             $this->em->persist($log);
             $this->em->flush();
@@ -118,7 +122,7 @@ class GetReportsFromMailboxCommand extends Command
 
         $mailbox = $ci_mailbox->getMailbox();
         $mail_ids = $mailbox->searchMailbox('UNSEEN');
-        $details = array('count' => 0);
+        $details = array('count' => 0, 'reports' => array());
 
         $failed = false;
         foreach($mail_ids as $mailid) {
@@ -133,7 +137,7 @@ class GetReportsFromMailboxCommand extends Command
                 $mailbox->setFlag(array($mailid), '\\Flagged');
                 $failed = true;
             }
-            $details['reports'][] = $result['reports'];
+            $details['reports'] = array_merge($details['reports'], $result['reports']);
             $details['count']++;
         }
 
@@ -147,7 +151,7 @@ class GetReportsFromMailboxCommand extends Command
                 }
               }
 
-            $response->setSuccess(false, $failedReports.' email failed to process, check flagged emails.', $details);
+            $response->setSuccess(false, $failedReports.' out of '.$details['count'].' emails failed to process, check flagged emails.', $details);
         } else {
             $response->setSuccess(true, 'Processed '.$details['count'].' emails successfully.', $details);
         }
@@ -177,9 +181,9 @@ class GetReportsFromMailboxCommand extends Command
                     $result = $this->open_archive($attachment->filePath);
                     if($result['success'] == true) {
                         $report->setSuccess(true, 'Report loaded successfully.');
-                        $report->setReport($result['report']);
                         $report->setReportType($result['reporttype']);
-                        $success = true;
+                        $report->setReport($result['report']);
+                        $response['reports'][] = $report;
                     } else {
                         $report->setSuccess(false, 'Failed to open report.');
                     }
@@ -191,21 +195,18 @@ class GetReportsFromMailboxCommand extends Command
             $report->setReportType(ReportType::Unknown);
             $report->setMailId($mail->headers->message_id ?? "mail-id-".$mailid);
             $report->setSuccess(false, 'Failed to open email attachment.');
+            $response['reports'][] = $report;
         } catch (\Error $e) {
             $report = new MailReportResponse();
             $report->setReportType(ReportType::Unknown);
             $report->setMailId($mail->headers->message_id ?? "mail-id-".$mailid);
             $report->setSuccess(false, $e->getMessage());
-        } finally {
-            if (isset($report) && $report != null) {
-                $reports[] = $report;
-                $response['reports'][] = $report;
-            }
+            $response['reports'][] = $report;
         }
 
         //Process report
         $results = array();
-        foreach($reports as $report) {
+        foreach($response['reports'] as $report) {
             try {
                 if(!is_null($report)) {
                     if($report->getReportType() == ReportType::DMARC) {

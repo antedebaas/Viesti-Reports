@@ -10,6 +10,7 @@ class MailReportResponse
     public string $message = 'Unknown error.';
     public string $mailid = '';
     public ReportType $reporttype = ReportType::Unknown;
+    public ?object $report;
 
     public function setSuccess($success, $message = '')
     {
@@ -48,5 +49,16 @@ class MailReportResponse
     public function getReportType()
     {
         return $this->reporttype;
+    }
+
+    public function getReport()
+    {
+        return $this->report;
+    }
+
+    public function setReport($report)
+    {
+        $this->report = $report;
+        return $this;
     }
 }
