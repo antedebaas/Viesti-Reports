@@ -49,6 +49,52 @@ class PolicyFileController extends AbstractController
         return $response;
     }
 
+    #[Route('/.well-known/bimi/logo.svg', name: 'app_bimi_svg_file')]
+    public function bimisvgfile(Request $request, EntityManagerInterface $em): Response
+    {
+        preg_match('/(?:bimi\.)+(.*)/', $request->getHost(), $matches);
+        $domainname = $matches[1];
+
+        $repository = $this->em->getRepository(Domains::class);
+        $domain = $repository->findOneBy(array('fqdn' => $domainname));
+
+        if($domain) {
+            $logo = $domain->getBimiSVGFile();
+            if(!is_null($logo)) {
+                $response = new Response($domain->getBimiSVGFile(), 200, ['Content-Type' => 'image/svg+xml']);
+            } else {
+                $response = $this->render('not_found.html.twig', []);
+            }
+        } else {
+            $response = $this->render('not_found.html.twig', []);
+        }
+        
+        return $response;
+    }
+
+    #[Route('/.well-known/bimi/vmc.pem', name: 'app_bimi_vmc_file')]
+    public function bimivmcfile(Request $request, EntityManagerInterface $em): Response
+    {
+        preg_match('/(?:bimi\.)+(.*)/', $request->getHost(), $matches);
+        $domainname = $matches[1];
+
+        $repository = $this->em->getRepository(Domains::class);
+        $domain = $repository->findOneBy(array('fqdn' => $domainname));
+
+        if($domain) {
+            $logo = $domain->getBimiVMCFile();
+            if(!is_null($logo)) {
+                $response = new Response($domain->getBimiVMCFile(), 200, ['Content-Type' => 'application/x-pem-file']);
+            } else {
+                $response = $this->render('not_found.html.twig', []);
+            }
+        } else {
+            $response = $this->render('not_found.html.twig', []);
+        }
+        
+        return $response;
+    }
+
     #[Route('/autodiscover/autodiscover.xml', name: 'app_autodiscover_file')]
     public function autodiscoverfile(Request $request, EntityManagerInterface $em): Response
     {
@@ -73,9 +119,7 @@ class PolicyFileController extends AbstractController
             ]);
         }
 
-
         $response->headers->set('Content-Type', 'application/xml');
-
         return $response;
     }
 }

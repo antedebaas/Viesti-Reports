@@ -48,7 +48,7 @@
                       </div>
                       <p></p>
                       <div class="card">
-                        <h5 class="card-header">Edit MX-Records</h5>
+                        <h5 class="card-header">MX-Records</h5>
                         <div class="card-body">
                           <p class="card-text">
                             <span class="text-muted">Use full domain name (fqdn) without ending . (e.g.: "mail.domain.ext")</span>
@@ -98,6 +98,16 @@
                                 </button>
                               </a>
                             </div>
+                          </p>
+                        </div>
+                      </div>
+                      <p></p>
+                      <div class="card">
+                        <h5 class="card-header">BIMI Files</h5>
+                        <div class="card-body">
+                          <p class="card-text">
+                            {{ form_row(form.bimisvgfile) }}
+                            {{ form_row(form.bimivmcfile) }}
                           </p>
                         </div>
                       </div>
@@ -199,6 +209,11 @@
                                         <td>TXT</td>
                                         <td>default._domainkey.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
                                         <td>[Key from your DKIM installation]</td>
+                                      </tr>
+                                      <tr>
+                                        <td>TXT</td>
+                                        <td>default._bimi.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
+                                        <td>v=BIMI1; l=https://bimi.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}/.well-known/bimi/logo.svg; a=https://bimi.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}/.well-known/bimi/vmc.pem</td>
                                       </tr>
                                     </tbody>
                                   </table>
