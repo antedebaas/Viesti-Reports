@@ -143,11 +143,9 @@ class GetReportsFromMailboxCommand extends Command
 
         if($failed == true) {
             $failedReports = 0;
-            foreach ($details['reports'] as $reports) {
-                foreach($reports as $report) {
-                    if($report->getSuccess() == false) {
-                        $failedReports++;
-                    }
+            foreach ($details['reports'] as $report) {
+                if($report->getSuccess() == false) {
+                    $failedReports++;
                 }
               }
 
@@ -525,6 +523,8 @@ class GetReportsFromMailboxCommand extends Command
             }
             return true;
         } catch (\Exception $e) {
+            return false;
+        } catch (\Error $e) {
             return false;
         }
     }
