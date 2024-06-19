@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\DomainsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DomainsRepository::class)]
@@ -44,6 +45,12 @@ class Domains
 
     #[ORM\ManyToMany(targetEntity: Users::class, mappedBy: 'domains')]
     private Collection $users;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $bimisvgfile = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $bimivmcfile = null;
 
     public function __construct()
     {
@@ -262,6 +269,30 @@ class Domains
         if ($this->users->removeElement($user)) {
             $user->removeDomain($this);
         }
+
+        return $this;
+    }
+
+    public function getBimiSVGFile(): ?string
+    {
+        return $this->bimisvgfile;
+    }
+
+    public function setBimiSVGFile(?string $bimisvgfile): static
+    {
+        $this->bimisvgfile = $bimisvgfile;
+
+        return $this;
+    }
+
+    public function getBimiVMCFile(): ?string
+    {
+        return $this->bimivmcfile;
+    }
+
+    public function setBimiVMCFile(?string $bimivmcfile): static
+    {
+        $this->bimivmcfile = $bimivmcfile;
 
         return $this;
     }

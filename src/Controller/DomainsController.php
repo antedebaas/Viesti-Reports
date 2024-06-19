@@ -62,6 +62,14 @@ class DomainsController extends AbstractController
             $domains = $repository->findOwnedBy($usersRepository->findDomains($this->getUser()), array('fqdn' => 'DESC'), $pages["perpage"], ($pages["page"] - 1) * $pages["perpage"]);
         }
 
+        $bimivmcinfo = array();
+        foreach($domains as $key => $domain) {
+            if(!is_null($domain->getBimivmcfile())){
+                $bimivmcinfo[$domain->getId()] = openssl_x509_parse($domain->getBimivmcfile());
+            }
+        }
+        #dd($bimivmcinfo[9]);
+
         $totaldomains = $repository->getTotalRows();
 
         if(count($domains) == 0 && $totaldomains != 0) {
@@ -77,6 +85,7 @@ class DomainsController extends AbstractController
 
         return $this->render('domains/index.html.twig', [
             'domains' => $domains,
+            'bimivmcinfo' => $bimivmcinfo,
             'pages' => $pages,
             'menuactive' => 'domains',
             'breadcrumbs' => array(array('name' => $this->translator->trans("Domains"), 'url' => $this->router->generate('app_domains'))),
@@ -95,6 +104,15 @@ class DomainsController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $formdata = $form->getData();
+
+            $bimisvgfile = $form->get('bimisvgfile')->getData();
+            if ($bimisvgfile) {
+                $formdata->setBimisvgfile(file_get_contents($bimisvgfile));
+            }
+            $bimivmcfile = $form->get('bimivmcfile')->getData();
+            if ($bimivmcfile) {
+                $formdata->setBimivmcfile(file_get_contents($bimivmcfile));
+            }
 
             $this->em->persist($formdata);
             $this->em->flush();
@@ -146,6 +164,15 @@ class DomainsController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $formdata = $form->getData();
+            
+            $bimisvgfile = $form->get('bimisvgfile')->getData();
+            if ($bimisvgfile) {
+                $formdata->setBimisvgfile(file_get_contents($bimisvgfile));
+            }
+            $bimivmcfile = $form->get('bimivmcfile')->getData();
+            if ($bimivmcfile) {
+                $formdata->setBimivmcfile(file_get_contents($bimivmcfile));
+            }
 
             $this->em->persist($formdata);
             $this->em->flush();
