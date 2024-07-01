@@ -27,7 +27,7 @@ use App\Entity\SMTPTLS_RdataRecords;
 use App\Entity\Logs;
 use App\Entity\Config;
 
-use App\Response\GetReportsResponse;
+use App\Response\MailboxResponse;
 use App\Response\MailReportResponse;
 
 use App\Enums\ReportType;
@@ -116,9 +116,9 @@ class GetReportsFromMailboxCommand extends Command
         }
     }
 
-    private function open_mailbox(ConnectionInterface $ci_mailbox): GetReportsResponse
+    private function open_mailbox(ConnectionInterface $ci_mailbox): MailboxResponse
     {
-        $response = new GetReportsResponse();
+        $response = new MailboxResponse();
 
         $mailbox = $ci_mailbox->getMailbox();
         $mail_ids = $mailbox->searchMailbox('UNSEEN');

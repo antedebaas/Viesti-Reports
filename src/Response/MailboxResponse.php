@@ -2,7 +2,7 @@
 
 namespace App\Response;
 
-class BaseResponse
+class MailboxResponse
 {
     private bool $success = false;
     private string $message = 'Unknown error.';

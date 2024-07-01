@@ -57,28 +57,4 @@ class ReportsController extends AbstractController
             'breadcrumbs' => array(array('name' => $this->translator->trans("Reports"), 'url' => $this->router->generate('app_reports'))),
         ]);
     }
-
-    #[Route('/reports/checkmailnow', name: 'app_checkmailnow')]
-    public function checkmailboxnow(): Response
-    {
-        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
-            return $this->redirectToRoute('app_login');
-        }
-
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-
-        $kernel = new Kernel($_ENV['APP_ENV'], (bool) $_ENV['APP_DEBUG']);
-
-        $application = new Application($kernel);
-        $application->setAutoExit(false);
-
-        $input = new ArrayInput(array(
-            'command' => 'app:getreportsfrommailbox'
-        ));
-
-        $output = new BufferedOutput();
-        $application->run($input, $output);
-
-        return $this->redirectToRoute('app_dashboard');
-    }
 }
