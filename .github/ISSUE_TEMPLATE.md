@@ -13,13 +13,13 @@ By providing the information below, you help us understand your problem and find
 A clear and concise description of what the bug is.
 
 **Are you using the Docker image?**
-- [ ] Yes
-- [ ] No
+- Yes
+- No
 
 **Database used**
-- [ ] MySQL/MariaDB
-- [ ] PostgreSQL
-- [ ] SQLite
+- MySQL/MariaDB
+- PostgreSQL
+- SQLite
 
 **Error Messages**
 Please paste any error messages here.
