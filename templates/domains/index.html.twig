@@ -18,6 +18,8 @@
                                             <th scope="col">Domain FQDN</th>
                                             <th scope="col" class="d-none d-lg-table-cell">Mailhost</th>
                                             <th scope="col" class="d-none d-lg-table-cell">MX Records</th>
+                                            <th scope="col">BIMI Logo</th>
+                                            <th scope="col">BIMI Certificate</th>
                                             <th scope="col">Total DMARC reports</th>
                                             <th scope="col">Total SMTP-TLS policies</th>
                                             <th scope="col"></th>
@@ -34,6 +36,8 @@
                                                 {{ mx.name }}<br>
                                               {% endfor %}
                                             </td>
+                                            <td height='8px' width='8px'>{{ domain.bimisvgfile|raw }}</td>
+                                            <td>{% if bimivmcinfo[domain.id] is defined %}Valid until: {{ bimivmcinfo[domain.id]['validTo_time_t']|date("d-M-Y") }}{% endif %}</td>
                                             <td>{{ domain.dmarc_reports|length }}</td>
                                             <td>{{ domain.smtptls_policies|length }}</td>
                                             <td class="text-end">

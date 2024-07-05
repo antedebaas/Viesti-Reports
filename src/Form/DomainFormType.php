@@ -11,6 +11,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+
+use Symfony\Component\Validator\Constraints\File;
 
 use App\Repository\MXRecordsRepository;
 use App\Entity\MXRecords;
@@ -65,6 +68,53 @@ class DomainFormType extends AbstractType
                 'prototype_data' => new MXRecords(),
                 'entry_options' => ['label' => false],
                 'by_reference' => false,
+            ])
+
+            ->add('bimisvgfile', FileType::class, [
+                'label' => 'BIMI Logo SVG file',
+
+                // unmapped means that this field is not associated to any entity property
+                'mapped' => false,
+
+                // make it optional so you don't have to re-upload the PDF file
+                // every time you edit the Product details
+                'required' => false,
+
+                // unmapped fields can't define their validation using attributes
+                // in the associated entity, so you can use the PHP constraint classes
+                'constraints' => [
+                    new File([
+                        'maxSize' => '10m',
+                        'mimeTypes' => [
+                            'image/svg+xml',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid SVG image',
+                    ])
+                ],
+            ])
+
+            ->add('bimivmcfile', FileType::class, [
+                'label' => 'BIMI Logo Certificate file',
+
+                // unmapped means that this field is not associated to any entity property
+                'mapped' => false,
+
+                // make it optional so you don't have to re-upload the PDF file
+                // every time you edit the Product details
+                'required' => false,
+
+                // unmapped fields can't define their validation using attributes
+                // in the associated entity, so you can use the PHP constraint classes
+                'constraints' => [
+                    new File([
+                        'maxSize' => '10m',
+                        'mimeTypes' => [
+                            'application/x-pem-file',
+                            'text/plain',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid Certificate file',
+                    ])
+                ],
             ])
         ;
     }
