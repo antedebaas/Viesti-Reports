@@ -39,7 +39,7 @@ class GetReportsFromMailboxCommandTest extends KernelTestCase
         $commandTester->assertCommandIsSuccessful();
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('[OK] Mailbox processed successfully', $output);
+        $this->assertStringContainsString('[OK] Processed', $output);
 
         $this->tearDown();
     }
