@@ -87,7 +87,13 @@ class SetupController extends AbstractController
                 $migrations = array();
             }
 
-            $parsedDsn = parse_url($this->params->get('app.database_url'));
+            $is_sqlite = preg_match("/^(sqlite):\/\/.*\w/", $this->params->get('app.database_url'), $matches);
+            if($is_sqlite) {
+                $parsedDsn = parse_url($this->params->get('app.database_url'));
+                $parsedDsn['scheme'] = 'sqlite';
+            } else {
+                $parsedDsn = parse_url($this->params->get('app.database_url'));
+            }
 
             $migrationfiles = array();
             $finder = new Finder();
