@@ -9,6 +9,9 @@ By providing the information below, you help us understand your problem and find
 
 ### Issue Template
 
+**No relevant issue exists**
+Please check the open and closed issues if any relevant issues exist
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 
@@ -20,6 +23,9 @@ A clear and concise description of what the bug is.
 - MySQL/MariaDB
 - PostgreSQL
 - SQLite
+
+**Database version used**
+10.5 / 16 / 3
 
 **Error Messages**
 Please paste any error messages here.
@@ -36,11 +42,6 @@ A clear and concise description of what you expected to happen.
 
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
-
-**Environment (please complete the following information):**
- - OS: [e.g. Windows, macOS, Linux]
- - Browser [e.g. Chrome, Firefox]
- - Version [e.g. 22]
 
 **Additional context**
 Add any other context about the problem here.
