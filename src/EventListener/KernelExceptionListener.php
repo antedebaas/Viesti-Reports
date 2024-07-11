@@ -18,14 +18,27 @@ class KernelExceptionListener
     public function onKernelException(ExceptionEvent $event)
     {
         $exception = $event->getThrowable();
-        if(get_class($exception) == "Symfony\Component\HttpKernel\Exception\NotFoundHttpException") {
-            $event->setResponse(
-                new Response(
-                    $this->templating->render('not_found.html.twig'),
+        switch($exception) {
+            case $exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
+                $response = new Response(
+                    $this->templating->render('not_found.html.twig', ['message' => $exception->getMessage()]),
                     Response::HTTP_NOT_FOUND
-                )
-            );
+                );
+                break;
+            case $exception instanceof \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException:
+                $response = new Response(
+                    $this->templating->render('error.html.twig',['message' => "Nope! Access denied!"]),
+                    Response::HTTP_INTERNAL_SERVER_ERROR
+                );
+                break;
+            default:
+                $response = new Response(
+                    $this->templating->render('error.html.twig',['message' => $exception->getMessage()]),
+                    Response::HTTP_INTERNAL_SERVER_ERROR
+                );
+                break;
         }
+        $event->setResponse($response);
         $event->stopPropagation();
     }
 }
