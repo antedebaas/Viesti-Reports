@@ -135,7 +135,7 @@
                                   <br>
                                   You can create the following DNS Records for this domain:<br>
                                   Please note that you need to update the STSv1 with a higher number each time you update the policy.<br>
-                                  This will enable MTA-STS, TLS-RPT, DMARC and Outlook Autoconfig.
+                                  This will enable MTA-STS, TLS-RPT, DMARC, BIMI and Outlook Autoconfig.
                                   <table class="table">
                                     <thead>
                                       <tr>
@@ -163,6 +163,11 @@
                                       <tr>
                                         <td>A</td>
                                         <td>_autodiscover._tcp.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
+                                        <td>{{ dns_info.ip }}</td>
+                                      </tr>
+                                      <tr>
+                                        <td>A</td>
+                                        <td>bimi.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
                                         <td>{{ dns_info.ip }}</td>
                                       </tr>
                                       <tr>
