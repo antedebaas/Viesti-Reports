@@ -46,5 +46,9 @@ else
     grep "/usr/local/bin/checkmail.sh" /etc/crontabs/root || echo "$MAILCHECK_SCHEDULE /usr/local/bin/checkmail.sh" >> /etc/crontabs/root
 fi  fi  fi  fi  fi
 
+echo "Mainenance"
+php /var/www/html/bin/console app:removemaillock --quiet
+php /var/www/html/bin/console cache:clear --quiet
+
 echo "Run migrations"
 php /var/www/html/bin/console doctrine:migrations:migrate --no-interaction

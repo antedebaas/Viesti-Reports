@@ -70,49 +70,57 @@ class GetReportsFromMailboxCommand extends Command
             $this->em->flush();
         }
         
-        if($lock->getValue() == 'true') {
-            $log = new Logs();
-            $log->setTime(new \DateTime());
-            $log->setSuccess(false);
-            $log->setMessage("GetReportsFromMailbox command was already running.");
-            $this->em->persist($log);
-            $this->em->flush();
+        try {
+            if($lock->getValue() == 'true') {
+                $log = new Logs();
+                $log->setTime(new \DateTime());
+                $log->setSuccess(false);
+                $log->setMessage("GetReportsFromMailbox command was already running.");
+                $this->em->persist($log);
+                $this->em->flush();
 
-            $io->error('GetReportsFromMailbox command is already running.');
-            return Command::FAILURE;
-        } else {
-            $lock->setValue('true');
-            $this->em->persist($lock);
-            $this->em->flush();
-    
-            $result = $this->open_mailbox($this->mailbox);
-            if($this->mailbox_secondary->isEnabled()) {
-                $result = $this->open_mailbox($this->mailbox_secondary);
-            }
-    
-            $log = new Logs();
-            $log->setTime(new \DateTime());
-            $log->setSuccess($result->getSuccess());
-            $log->setMessage($result->getMessage());
-
-            foreach ($result->getDetails()["reports"] as $report) {
-                $report->setReport(null);
-            }
-            $log->setDetails(serialize($result->getDetails()));
-            $this->em->persist($log);
-            $this->em->flush();
-    
-            $lock->setValue('false');
-            $this->em->persist($lock);
-            $this->em->flush();
-    
-            if($result->getSuccess() == true) {
-                $io->success($result->getMessage());
-                return Command::SUCCESS;
-            } else {
-                $io->error($result->getMessage());
+                $io->error('GetReportsFromMailbox command is already running.');
                 return Command::FAILURE;
+            } else {
+                $lock->setValue('true');
+                $this->em->persist($lock);
+                $this->em->flush();
+
+                $result = $this->open_mailbox($this->mailbox);
+                if($this->mailbox_secondary->isEnabled()) {
+                    $result = $this->open_mailbox($this->mailbox_secondary);
+                }
+        
+                $log = new Logs();
+                $log->setTime(new \DateTime());
+                $log->setSuccess($result->getSuccess());
+                $log->setMessage($result->getMessage());
+
+                foreach ($result->getDetails()["reports"] as $report) {
+                    $report->setReport(null);
+                }
+                $log->setDetails(serialize($result->getDetails()));
+                $this->em->persist($log);
+                $this->em->flush();
+        
+                $lock->setValue('false');
+                $this->em->persist($lock);
+                $this->em->flush();
+        
+                if($result->getSuccess() == true) {
+                    $io->success($result->getMessage());
+                    return Command::SUCCESS;
+                } else {
+                    $io->error($result->getMessage());
+                    return Command::FAILURE;
+                }
             }
+        } catch (\Exception $e) {
+            $io->error($e->getMessage());
+            return Command::FAILURE;
+        } catch (\Error $e) {
+            $io->error($e->getMessage());
+            return Command::FAILURE;
         }
     }
 
