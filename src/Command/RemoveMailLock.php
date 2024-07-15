@@ -42,15 +42,17 @@ class RemoveMailLock extends Command
         $lock->setValue('false');
         $this->em->persist($lock);
 
-        $log = new Logs();
-        $log->setTime(new \DateTime());
-        $log->setSuccess(true);
-        $log->setMessage("Lock manually removed");
-        $this->em->persist($log);
-
+        if (!$input->getOption('quiet')) {
+            $log = new Logs();
+            $log->setTime(new \DateTime());
+            $log->setSuccess(true);
+            $log->setMessage("Lock manually removed");
+            $this->em->persist($log);
+            
+            $io->success('Lock manually removed');
+        }
         $this->em->flush();
-
-        $io->success('Lock manually removed');
+        
 
         return Command::SUCCESS;
     }

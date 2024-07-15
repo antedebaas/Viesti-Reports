@@ -108,7 +108,17 @@
                 </span>
               </div>
               <div class="d-all d-lg-none mt-5 mb-5">&nbsp;</div>
-{% block body %}{% endblock %}
+              {% for message in app.flashes('success') %}
+                <div class="alert alert-success" role="alert">
+                  {{ message }}
+                </div>
+              {% endfor %}
+              {% for message in app.flashes('danger') %}
+                <div class="alert alert-danger" role="alert">
+                  {{ message }}
+                </div>
+              {% endfor %}
+              {% block body %}{% endblock %}
             </main>
         </div>
     </div>

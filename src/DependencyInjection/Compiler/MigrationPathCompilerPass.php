@@ -20,6 +20,7 @@ class MigrationPathCompilerPass implements CompilerPassInterface
         } else {
             $dsn = parse_url($container->resolveEnvPlaceholders($connectionConfig['url'], true));
         }
+        
         // Determine the appropriate migrations path
         if ($dsn['scheme'] == 'mysql') {
             $migrationPath = '%kernel.project_dir%/migrations/mysql';

@@ -41,12 +41,12 @@ class ClearLogsCommand extends Command
         foreach ($logs as $log) {
             $this->em->remove($log);
         }
+
         $log = new Logs();
         $log->setTime(new \DateTime());
         $log->setSuccess(true);
         $log->setMessage("Logs cleared");
         $this->em->persist($log);
-
         $this->em->flush();
 
         $io->success('Logs have been cleared');

@@ -50,14 +50,8 @@ RUN apk --update add ca-certificates && \
 COPY dockerfiles/ /
 
 RUN chmod +x /usr/local/bin/containerstartup.sh && \
-    dos2unix /usr/local/bin/containerstartup.sh && \
     chmod +x /usr/local/bin/phpstartup.sh && \
-    dos2unix /usr/local/bin/phpstartup.sh && \
     chmod +x /usr/local/bin/checkmail.sh && \
-    dos2unix /etc/nginx/nginx.conf && \
-    dos2unix /etc/php83/php-fpm.d/www.conf && \
-    dos2unix /etc/php83/conf.d/custom.ini && \
-    dos2unix /etc/supervisor/conf.d/supervisord.conf && \
     mkdir -p /var/www/html && \
     ln -s /usr/sbin/php-fpm83 /usr/sbin/php-fpm
 
