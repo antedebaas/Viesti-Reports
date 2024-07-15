@@ -24,12 +24,14 @@ class DomainsController extends AbstractController
     private $em;
     private $router;
     private $translator;
+    private DomainsRepository $DomainsRepository;
 
-    public function __construct(EntityManagerInterface $em, UrlGeneratorInterface $router, TranslatorInterface $translator)
+    public function __construct(EntityManagerInterface $em, UrlGeneratorInterface $router, TranslatorInterface $translator, DomainsRepository $domainsRepository)
     {
         $this->em = $em;
         $this->router = $router;
         $this->translator = $translator;
+        $this->DomainsRepository = $domainsRepository;
     }
 
     #[Route('/domains', name: 'app_domains')]
@@ -68,7 +70,6 @@ class DomainsController extends AbstractController
                 $bimivmcinfo[$domain->getId()] = openssl_x509_parse($domain->getBimivmcfile());
             }
         }
-        #dd($bimivmcinfo[9]);
 
         $totaldomains = $repository->getTotalRows();
 
@@ -107,7 +108,14 @@ class DomainsController extends AbstractController
 
             $bimisvgfile = $form->get('bimisvgfile')->getData();
             if ($bimisvgfile) {
-                $formdata->setBimisvgfile(file_get_contents($bimisvgfile));
+                $validate = $this->DomainsRepository->validate_bimiv1_svg_file(file_get_contents($bimisvgfile));
+                if (!$validate['result']) {
+                    foreach($validate['errors'] as $error) {
+                        $this->addFlash('danger', $error);
+                    }
+                } else {
+                    $formdata->setBimisvgfile(file_get_contents($bimisvgfile));
+                }
             }
             $bimivmcfile = $form->get('bimivmcfile')->getData();
             if ($bimivmcfile) {
@@ -167,7 +175,14 @@ class DomainsController extends AbstractController
             
             $bimisvgfile = $form->get('bimisvgfile')->getData();
             if ($bimisvgfile) {
-                $formdata->setBimisvgfile(file_get_contents($bimisvgfile));
+                $validate = $this->DomainsRepository->validate_bimiv1_svg_file(file_get_contents($bimisvgfile));
+                if (!$validate['result']) {
+                    foreach($validate['errors'] as $error) {
+                        $this->addFlash('danger', $error);
+                    }
+                } else {
+                    $formdata->setBimisvgfile(file_get_contents($bimisvgfile));
+                }
             }
             $bimivmcfile = $form->get('bimivmcfile')->getData();
             if ($bimivmcfile) {
