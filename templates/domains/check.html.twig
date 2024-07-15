@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+<link rel="stylesheet" href="/default.css">
+{% endblock %}
+
+{% block title %}Check domain {{ domain.fqdn }}{% endblock %}
+
+{% block body %}
+              <div class="row my-4">
+                <div class="col-12 mb-lg-0">
+                  <div class="card">
+                    <h5 class="card-header">Domain Check</h5>
+                    <div class="card-body">
+                      <p class="card-text">
+                        {% for key,value in validation %}
+                          {% if value.name == 'GOOD' %}
+                            <div class="alert alert-success" role="alert">
+                              <strong>{{ key }}</strong> Valid
+                            </div>
+                          {% elseif value.name == 'WARNING' %}
+                            <div class="alert alert-warning" role="alert">
+                              <strong>{{ key }}</strong> Warning
+                            </div>
+                          {% elseif value.name == 'FAIL' %}
+                            <div class="alert alert-danger" role="alert">
+                              <strong>{{ key }}</strong> Failure
+                            </div>
+                          {% endif %}
+
+                        {% endfor %}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+{% endblock %}

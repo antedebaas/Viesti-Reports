@@ -19,6 +19,9 @@ use App\Entity\MXRecords;
 
 use App\Repository\DomainsRepository;
 
+use Spatie\Dns\Dns;
+use App\Enums\TXTRecordStates;
+
 class DomainsController extends AbstractController
 {
     private $em;
@@ -68,7 +71,6 @@ class DomainsController extends AbstractController
                 $bimivmcinfo[$domain->getId()] = openssl_x509_parse($domain->getBimivmcfile());
             }
         }
-        #dd($bimivmcinfo[9]);
 
         $totaldomains = $repository->getTotalRows();
 
@@ -90,6 +92,66 @@ class DomainsController extends AbstractController
             'menuactive' => 'domains',
             'breadcrumbs' => array(array('name' => $this->translator->trans("Domains"), 'url' => $this->router->generate('app_domains'))),
         ]);
+    }
+
+    #[Route('/domains/check/{id}', name: 'app_domains_check')]
+    public function check(Domains $domain, Request $request): Response
+    {
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $usersRepository = $this->em->getRepository(Users::class);
+        if(!$usersRepository->denyAccessUnlessOwned(array($domain->getId()), $this->getUser())) {
+            return $this->render('not_found.html.twig', []);
+        }
+
+            $dnsrecords = array();
+
+        $dns = new Dns();
+        $dnsrecords = array_merge($dnsrecords,$dns->getRecords($domain->getFqdn(), 'TXT'));
+        $dnsrecords = array_merge($dnsrecords,$dns->getRecords('default._domainkey.'.$domain->getFqdn(), 'TXT'));
+        $dnsrecords = array_merge($dnsrecords,$dns->getRecords('default._bimi.'.$domain->getFqdn(), 'TXT'));
+        $dnsrecords = array_merge($dnsrecords,$dns->getRecords('_mta-sts.'.$domain->getFqdn(), 'TXT'));
+        $dnsrecords = array_merge($dnsrecords,$dns->getRecords('_dmarc.'.$domain->getFqdn(), 'TXT'));
+        $dnsrecords = array_merge($dnsrecords,$dns->getRecords('_smtp._tls.'.$domain->getFqdn(), 'TXT'));
+        
+        //dnssec
+        //mx ptr records
+
+        $validation = $this->findvalidtxtrecords($dnsrecords);
+
+        return $this->render('domains/check.html.twig', [
+            'domain' => $domain,
+            'validation' => $validation,
+            'menuactive' => 'domains',
+            'breadcrumbs' => array(
+                array('name' => $this->translator->trans("Domains"), 'url' => $this->router->generate('app_domains')),
+                array('name' => $this->translator->trans("Check domain settings for ").$domain->getFqdn(), 'url' => $this->router->generate('app_domains'))
+            ),
+        ]);
+    }
+
+    private function findvalidtxtrecords(array $records): array {
+        $result = array(
+            'SPF'=> TXTRecordStates::FAIL,
+            'DKIM'=> TXTRecordStates::FAIL,
+            'BIMI'=> TXTRecordStates::FAIL,
+            'STS'=> TXTRecordStates::FAIL,
+            'DMARC'=> TXTRecordStates::FAIL,
+            'TLSRPT'=> TXTRecordStates::FAIL,
+        );
+
+        foreach($records as $record) {
+            if($record->v()->version() == 1) {
+                $result[$record->v()->type()] = TXTRecordStates::GOOD;
+            }
+        }
+        if($result['BIMI'] == TXTRecordStates::FAIL) {
+            $result['BIMI'] = TXTRecordStates::WARNING;
+        }
+
+        return $result;
     }
 
     #[Route('/domains/add', name: 'app_domains_add')]
