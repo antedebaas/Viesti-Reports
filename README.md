@@ -15,6 +15,7 @@
 ![SMTP-TLS-Reports][screenshot-smtptls]
 
 I needed a quick and easy way to view my DMARC and SMTP-TLS reports.
+It also provides hosting for BIMI files and Outlook autodiscover.
 This is a simple symfony project that can read the inbox for new reports and process them.
 I you use it you should use it with a special sole-purpose email address.
 
