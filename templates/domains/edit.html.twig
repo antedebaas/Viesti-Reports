@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-{% if domain != null %}Edit domain {{ domain.fqdn }}{% else %}Add domain{% endif %}
-{% endblock %}
+{% if domain != null %}
+  {% set title = "Edit domain" ~ domain.fqdn %}
+{% else %}
+  {% set title = "Add domain"%}
+{% endif %}
 
 {% block stylesheets %}{% endblock %}
 {% block javascripts_header %}

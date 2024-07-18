@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="/default.css">
 {% endblock %}
 
-{% block title %}Check domain {{ domain.fqdn }}{% endblock %}
+{% set title = "Check domain" ~ domain.fqdn %}
 
 {% block body %}
               <div class="row my-4">

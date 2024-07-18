@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Report #{{ report.id }}{% endblock %}
+{% set title = "DMARC Report #" ~ report.id %}
 
 {% block body %}
                 <div class="row my-4">
