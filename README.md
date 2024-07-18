@@ -14,7 +14,8 @@
 ![DMARC-Reports][screenshot-dmarc]
 ![SMTP-TLS-Reports][screenshot-smtptls]
 
-I needed a quick and easy way to view my dmarc and smtp tls reports.
+I needed a quick and easy way to view my DMARC and SMTP-TLS reports.
+It also provides hosting for BIMI files and Outlook autodiscover.
 This is a simple symfony project that can read the inbox for new reports and process them.
 I you use it you should use it with a special sole-purpose email address.
 
@@ -53,7 +54,7 @@ Setup is pretty easy
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/antedebaas/DMARC-SMTPTLS-Reports.git
+   git clone https://github.com/antedebaas/Viesti-Reports.git
    ```
 2. run update.sh to update project, clear its cache, this prevents symfony caching issues
    ```sh
@@ -67,7 +68,16 @@ Setup is pretty easy
    ```
 6. if you put it on https://mta-sts.yourmdomain.ext it will provide an mta-sts policy file (https://mta-sts.yourmdomain.ext/.well-known/mta-sts.txt)
    you can edit the policy on the domain edit page.
+   It will also host autoconfig.yourmdomain.ext and autodiscover.yourmdomain.ext autlook autoconfiguration files
+   And it supports BIMI file hosting on bimi.yourmdomain.ext
 
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Usage notes
+
+Sometimes the check mail process gets locked and it will say so in the logs.
+to unlock it run `php bin/console app:removemaillock`
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -104,16 +114,16 @@ Distributed under the GPL v2 License. See `LICENSE.txt` for more information.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[contributors-shield]: https://img.shields.io/github/contributors/antedebaas/DMARC-SMTPTLS-Reports.svg?style=for-the-badge
-[contributors-url]: https://github.com/antedebaas/DMARC-SMTPTLS-Reports/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/antedebaas/DMARC-SMTPTLS-Reports.svg?style=for-the-badge
-[forks-url]: https://github.com/antedebaas/DMARC-SMTPTLS-Reports/network/members
-[stars-shield]: https://img.shields.io/github/stars/antedebaas/DMARC-SMTPTLS-Reports.svg?style=for-the-badge
-[stars-url]: https://github.com/antedebaas/DMARC-SMTPTLS-Reports/stargazers
-[issues-shield]: https://img.shields.io/github/issues/antedebaas/DMARC-SMTPTLS-Reports.svg?style=for-the-badge
-[issues-url]: https://github.com/antedebaas/DMARC-SMTPTLS-Reports/issues
-[license-shield]: https://img.shields.io/github/license/antedebaas/DMARC-SMTPTLS-Reports.svg?style=for-the-badge
-[license-url]: https://github.com/antedebaas/DMARC-SMTPTLS-Reports/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/antedebaas/Viesti-Reports.svg?style=for-the-badge
+[contributors-url]: https://github.com/antedebaas/Viesti-Reports/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/antedebaas/Viesti-Reports.svg?style=for-the-badge
+[forks-url]: https://github.com/antedebaas/Viesti-Reports/network/members
+[stars-shield]: https://img.shields.io/github/stars/antedebaas/Viesti-Reports.svg?style=for-the-badge
+[stars-url]: https://github.com/antedebaas/Viesti-Reports/stargazers
+[issues-shield]: https://img.shields.io/github/issues/antedebaas/Viesti-Reports.svg?style=for-the-badge
+[issues-url]: https://github.com/antedebaas/Viesti-Reports/issues
+[license-shield]: https://img.shields.io/github/license/antedebaas/Viesti-Reports.svg?style=for-the-badge
+[license-url]: https://github.com/antedebaas/Viesti-Reports/blob/master/LICENSE.txt
 [docker-shield]: https://img.shields.io/docker/pulls/antedebaas/dmarc-reports.svg?style=for-the-badge
 [docker-url]: https://hub.docker.com/repository/docker/antedebaas/dmarc-reports/general
 [screenshot-dashboard]: screenshot-dashboard.png

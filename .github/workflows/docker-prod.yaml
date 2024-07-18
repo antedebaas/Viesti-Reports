@@ -18,6 +18,7 @@ jobs:
           # list of Docker images to use as base name for tags
           images: |
             ${{ secrets.DOCKERHUB_USERNAME }}/dmarc-reports
+            ${{ secrets.DOCKERHUB_USERNAME }}/viesti-reports
           # generate Docker tags based on the following events/attributes
           tags: |
             type=semver,pattern={{major}}.{{minor}}.{{patch}}
