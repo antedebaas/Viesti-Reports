@@ -17,7 +17,7 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/dmarc-reports-testing
+            ${{ secrets.DOCKERHUB_USERNAME }}/viesti-reports-testing
           # generate Docker tags based on the following events/attributes
           tags: |
             type=sha,pattern=${{ github.sha }}
