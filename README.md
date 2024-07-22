@@ -3,6 +3,7 @@
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Docker][docker-shield]][docker-url]
+[![Docker][docker-shield-old]][docker-url-old]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
@@ -23,8 +24,6 @@ I you use it you should use it with a special sole-purpose email address.
 
 <!-- GETTING STARTED -->
 ## Getting Started
-
-Setup is pretty easy 
 
 ### Prerequisites
 
@@ -68,8 +67,8 @@ Setup is pretty easy
    ```
 6. if you put it on https://mta-sts.yourmdomain.ext it will provide an mta-sts policy file (https://mta-sts.yourmdomain.ext/.well-known/mta-sts.txt)
    you can edit the policy on the domain edit page.
-   It will also host autoconfig.yourmdomain.ext and autodiscover.yourmdomain.ext autlook autoconfiguration files
-   And it supports BIMI file hosting on bimi.yourmdomain.ext
+   It will also host https://autoconfig.yourmdomain.ext and https://autodiscover.yourmdomain.ext outlook autoconfiguration files
+   And it supports BIMI file hosting on https://bimi.yourmdomain.ext
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -90,7 +89,6 @@ to unlock it run `php bin/console app:removemaillock`
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- CONTRIBUTING -->
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -109,7 +107,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the GPL v2 License. See `LICENSE.txt` for more information.
+Distributed under the GPL v2 License ONLY. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -124,8 +122,11 @@ Distributed under the GPL v2 License. See `LICENSE.txt` for more information.
 [issues-url]: https://github.com/antedebaas/Viesti-Reports/issues
 [license-shield]: https://img.shields.io/github/license/antedebaas/Viesti-Reports.svg?style=for-the-badge
 [license-url]: https://github.com/antedebaas/Viesti-Reports/blob/master/LICENSE.txt
-[docker-shield]: https://img.shields.io/docker/pulls/antedebaas/dmarc-reports.svg?style=for-the-badge
-[docker-url]: https://hub.docker.com/repository/docker/antedebaas/dmarc-reports/general
+[docker-shield]: https://img.shields.io/docker/pulls/antedebaas/viesti-reports.svg?style=for-the-badge
+[docker-url]: https://hub.docker.com/repository/docker/antedebaas/viesti-reports/general
+[docker-shield-old]: https://img.shields.io/docker/pulls/antedebaas/dmarc-reports.svg?style=for-the-badge
+[docker-url-old]: https://hub.docker.com/repository/docker/antedebaas/dmarc-reports/general
+
 [screenshot-dashboard]: screenshot-dashboard.png
 [screenshot-dmarc]: screenshot-dmarc.png
 [screenshot-smtptls]: screenshot-smtptls.png
