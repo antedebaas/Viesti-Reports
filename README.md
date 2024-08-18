@@ -48,6 +48,10 @@ I you use it you should use it with a special sole-purpose email address.
 * php-xml
 * php-xmlwriter
 * php-zip
+* php-zlib (*)
+
+\* php-zlib is enabled on redhat based systems by default and not availible as a package
+
 
 ### Installation
 
