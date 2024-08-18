@@ -13,7 +13,8 @@
                       <p class="card-text">
                         <p>
                           <b>Details:</b><br>
-                          {{ log.details }}
+                          <pre>{{ "message"|try_unserialize|printr }}</pre>
+                          <pre>{{ log.details|try_unserialize|printr }}</pre>
                         </p>
                       </p>
                     </div>
