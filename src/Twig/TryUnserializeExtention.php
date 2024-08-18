@@ -15,12 +15,19 @@ class TryUnserializeExtention extends AbstractExtension
         ];
     }
 
-    public function try_unserialize(string $data): array
+    public function try_unserialize($data): array
     {
-        try {
-            return unserialize($data);
-        } catch (\Exception $e) {
+        if(is_string($data)) {
+            try {
+                $data = unserialize($data);
+            } catch (\Exception $e) {
+                $data = array($data);
+            }
+        } elseif (is_null($data)) {
+            $data = array();
+        } else {
+            $data = array($data);
         }
-        return array($data);
+        return $data;
     }
 }

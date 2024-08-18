@@ -5,17 +5,17 @@ namespace App\Twig;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
-class PrintRExtention extends AbstractExtension
+class PrintAExtention extends AbstractExtension
 {
 
     public function getFilters(): array
     {
         return [
-            new TwigFilter('printr', [$this, 'printr']),
+            new TwigFilter('printa', [$this, 'printa']),
         ];
     }
 
-    public function printr(array $data): string
+    public function printa(array $data): string
     {
         return print_r($data);
     }
