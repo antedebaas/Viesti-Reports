@@ -24,6 +24,10 @@ A clear and concise description of what the bug is.
 - PostgreSQL
 - SQLite
 
+**Webserver used (when not using docker) **
+- Apache HTTPD
+- Nginx
+
 **Database version used**
 10.5 / 16 / 3
 
@@ -31,7 +35,7 @@ A clear and concise description of what the bug is.
 Please paste any error messages here.
 
 **Steps to Reproduce**
-Please provide detailed steps to reproduce the problem:
+Please provide -detailed- steps to reproduce the problem:
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
