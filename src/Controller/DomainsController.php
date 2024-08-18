@@ -19,7 +19,7 @@ use App\Entity\MXRecords;
 
 use App\Repository\DomainsRepository;
 
-use Spatie\Dns\Dns;
+use Ante\DnsParser\Dns;
 use App\Enums\TXTRecordStates;
 
 class DomainsController extends AbstractController
