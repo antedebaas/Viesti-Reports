@@ -46,6 +46,7 @@ class ClearLogsCommand extends Command
         $log->setTime(new \DateTime());
         $log->setSuccess(true);
         $log->setMessage("Logs cleared");
+        $log->setDetails("Logs have been cleared manually");
         $this->em->persist($log);
         $this->em->flush();
 

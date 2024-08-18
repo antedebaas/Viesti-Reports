@@ -72,4 +72,20 @@ class LogsController extends AbstractController
             'breadcrumbs' => array(array('name' => $this->translator->trans("Logs"), 'url' => $this->router->generate('app_logs'))),
         ]);
     }
+
+    #[Route('/logs/details/{id}', name: 'app_logs_details')]
+    public function details(Logs $log): Response
+    {
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        return $this->render('logs/details.html.twig', [
+            'log' => $log,
+            'menuactive' => 'logs',
+            'breadcrumbs' => array(array('name' => $this->translator->trans("Logs"), 'url' => $this->router->generate('app_logs'))),
+        ]);
+    }
 }
