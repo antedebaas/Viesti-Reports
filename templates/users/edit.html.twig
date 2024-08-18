@@ -1,8 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-{% if user != null %}Edit user {{ user.email }}{% else %}Add user{% endif %}
-{% endblock %}
+
+{% if user != null %}
+  {% set title = "Edit user " ~ user.email %}
+{% else %}
+  {% set title = "Add user" %}
+{% endif %}
 
 {% block stylesheets %}{% endblock %}
 

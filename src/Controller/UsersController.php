@@ -109,8 +109,8 @@ class UsersController extends AbstractController
 
             $domain_roles = $form->get("roles")->getData();
             $roles = array();
-            foreach($domain_roles as $domain_role) {
-                array_push($roles, $domain_role->getId());
+            foreach($domain_roles as $domain) {
+                $formdata->addDomain($domain);
             }
             if($is_admin == true) {
                 array_push($roles, "ROLE_ADMIN");
@@ -166,8 +166,8 @@ class UsersController extends AbstractController
 
             $domain_roles = $form->get("roles")->getData();
             $roles = array();
-            foreach($domain_roles as $domain_role) {
-                array_push($roles, $domain_role->getId());
+            foreach($domain_roles as $domain) {
+                $formdata->addDomain($domain);
             }
             if($is_admin == true) {
                 array_push($roles, "ROLE_ADMIN");
