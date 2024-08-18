@@ -116,9 +116,25 @@ class GetReportsFromMailboxCommand extends Command
                 }
             }
         } catch (\Exception $e) {
+            $log = new Logs();
+            $log->setTime(new \DateTime());
+            $log->setSuccess(false);
+            $log->setMessage("Exception in GetReportsFromMailbox command");
+            $log->setDetails($e->getMessage());
+            $this->em->persist($log);
+            $this->em->flush();
+
             $io->error($e->getMessage());
             return Command::FAILURE;
         } catch (\Error $e) {
+            $log = new Logs();
+            $log->setTime(new \DateTime());
+            $log->setSuccess(false);
+            $log->setMessage("Error in GetReportsFromMailbox command");
+            $log->setDetails($e->getMessage());
+            $this->em->persist($log);
+            $this->em->flush();
+
             $io->error($e->getMessage());
             return Command::FAILURE;
         }
@@ -234,7 +250,8 @@ class GetReportsFromMailboxCommand extends Command
                     $log = new Logs();
                     $log->setTime(new \DateTime());
                     $log->setSuccess($result);
-                    $log->setMessage($report->getMailId().": ".$report->getMessage());
+                    $log->setMessage($report->getMailId());
+                    $log->setDetails($report->getMessage());
                     $this->em->persist($log);
                     $this->em->flush();
                 }
@@ -243,8 +260,19 @@ class GetReportsFromMailboxCommand extends Command
 
                 $log = new Logs();
                 $log->setTime(new \DateTime());
-                $log->setSuccess($result);
-                $log->setMessage($report->getMailId().": ".$e->getMessage());
+                $log->setSuccess(false);
+                $log->setMessage("Exception while processing mailid: ".$report->getMailId());
+                $log->setDetails($e->getMessage());
+                $this->em->persist($log);
+                $this->em->flush();
+            }  catch (\Error $e) {
+                $result = false;
+
+                $log = new Logs();
+                $log->setTime(new \DateTime());
+                $log->setSuccess(false);
+                $log->setMessage("Error while processing mailid: ".$report->getMailId());
+                $log->setDetails($e->getMessage());
                 $this->em->persist($log);
                 $this->em->flush();
             } finally {
@@ -267,20 +295,40 @@ class GetReportsFromMailboxCommand extends Command
         $reporttype = ReportType::Unknown;
         $success = false;
 
-        $ziparchive = new \ZipArchive();
-        $filecontents = null;
+        try {
+            $ziparchive = new \ZipArchive();
+            $filecontents = null;
 
-        if ($ziparchive->open($file) === true) {
-            for($i = 0; $i < $ziparchive->numFiles; $i++) {
-                $stat = $ziparchive->statIndex($i);
-                $filecontents = file_get_contents("zip://$file#".$stat["name"]);
+            if ($ziparchive->open($file) === true) {
+                for($i = 0; $i < $ziparchive->numFiles; $i++) {
+                    $stat = $ziparchive->statIndex($i);
+                    $filecontents = file_get_contents("zip://$file#".$stat["name"]);
+                }
+                $ziparchive->close();
+            } elseif($gzarchive = gzopen($file, 'r')) {
+                $gzcontents = null;
+                while (!feof($gzarchive)) {
+                    $gzcontents .= gzread($gzarchive, filesize($file));
+                }
+                $filecontents = $gzcontents;
+                gzclose($gzarchive);
             }
-        } elseif($gzarchive = gzopen($file, 'r')) {
-            $gzcontents = null;
-            while (!feof($gzarchive)) {
-                $gzcontents .= gzread($gzarchive, filesize($file));
-            }
-            $filecontents = $gzcontents;
+        } catch(\Exception $e) {
+            $log = new Logs();
+            $log->setTime(new \DateTime());
+            $log->setSuccess(false);
+            $log->setMessage("Exception while operning archive");
+            $log->setDetails($e->getMessage());
+            $this->em->persist($log);
+            $this->em->flush();
+        } catch(\Error $e) {
+            $log = new Logs();
+            $log->setTime(new \DateTime());
+            $log->setSuccess(false);
+            $log->setMessage("Error while operning archive");
+            $log->setDetails($e->getMessage());
+            $this->em->persist($log);
+            $this->em->flush();
         }
 
         if(substr($filecontents, 0, 5) == "<?xml") {
@@ -290,6 +338,13 @@ class GetReportsFromMailboxCommand extends Command
                 $reporttype = ReportType::DMARC;
                 $success = true;
             } catch (\Exception $e) {
+                $log = new Logs();
+                $log->setTime(new \DateTime());
+                $log->setSuccess(false);
+                $log->setMessage("Failed to open DMARC report");
+                $log->setDetails($e->getMessage());
+                $this->em->persist($log);
+                $this->em->flush();
                 $success = false;
             }
         } elseif($this->isJson($filecontents)) {
@@ -299,6 +354,13 @@ class GetReportsFromMailboxCommand extends Command
                 $reporttype = ReportType::STS;
                 $success = true;
             } catch (\Exception $e) {
+                $log = new Logs();
+                $log->setTime(new \DateTime());
+                $log->setSuccess(false);
+                $log->setMessage("Failed to open MTA-STS report");
+                $log->setDetails($e->getMessage());
+                $this->em->persist($log);
+                $this->em->flush();
                 $success = false;
             }
         }
@@ -389,6 +451,22 @@ class GetReportsFromMailboxCommand extends Command
             }
             return true;
         } catch (\Exception $e) {
+            $log = new Logs();
+            $log->setTime(new \DateTime());
+            $log->setSuccess(false);
+            $log->setMessage("Exception while procesing DMARC report");
+            $log->setDetails($e->getMessage());
+            $this->em->persist($log);
+            $this->em->flush();
+            return false;
+        } catch (\Error $e) {
+            $log = new Logs();
+            $log->setTime(new \DateTime());
+            $log->setSuccess(false);
+            $log->setMessage("Error while procesing DMARC report");
+            $log->setDetails($e->getMessage());
+            $this->em->persist($log);
+            $this->em->flush();
             return false;
         }
     }
@@ -535,8 +613,22 @@ class GetReportsFromMailboxCommand extends Command
             }
             return true;
         } catch (\Exception $e) {
+            $log = new Logs();
+            $log->setTime(new \DateTime());
+            $log->setSuccess(false);
+            $log->setMessage("Exception while procesing MTA-STS report");
+            $log->setDetails($e->getMessage());
+            $this->em->persist($log);
+            $this->em->flush();
             return false;
         } catch (\Error $e) {
+            $log = new Logs();
+            $log->setTime(new \DateTime());
+            $log->setSuccess(false);
+            $log->setMessage("Error while procesing MTA-STS report");
+            $log->setDetails($e->getMessage());
+            $this->em->persist($log);
+            $this->em->flush();
             return false;
         }
     }

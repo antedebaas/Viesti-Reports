@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% set title = "Details of log entry  " ~ log.id %}
+
+{% block body %}
+              <div class="row my-4">
+                <div class="col-12 mb-lg-0">
+                  <div class="card">
+                    <h5 class="card-header">{{ log.message }}</h5>
+                    <div class="card-body">
+                      <p><small class="muted">Time: {{ log.time|date("d-M-Y H:i:s") }}</small></p>
+                      <p>State: {{ log.success ? '<span class="text-success">success</span>' : '<span class="text-danger">Failure</span>' }}</p>
+                      <p class="card-text">
+                        <p>
+                          <b>Details:</b><br>
+                          {{ log.details }}
+                        </p>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+{% endblock %}
