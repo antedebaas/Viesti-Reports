@@ -1,0 +1,45 @@
+name: dmarc-smtptls-reports
+volumes:
+  reports-data:
+services:
+  db:
+    image: mariadb:latest
+    environment:
+      MARIADB_DATABASE: 
+      MARIADB_USER: 
+      MARIADB_PASSWORD: 
+      MARIADB_ROOT_PASSWORD: 
+    ports:
+      - 3306
+    volumes:
+      - reports-data:/var/lib/mysql
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized" ]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+  web:
+    image: antedebaas/dmarc-reports:latest
+    ports:
+        - 0.0.0.0:8080:8080
+    environment:
+      TZ: Europe/Amsterdam
+      DATABASE_TYPE: mysql
+      DATABASE_HOST: db
+      DATABASE_PORT: 3306
+      DATABASE_NAME: 
+      DATABASE_USER: 
+      DATABASE_PASSWORD: 
+      MAILER_HOST: 
+      MAILER_SMTPPORT: 587
+      MAILER_IMAPPORT: 993
+      MAILER_USER: 
+      MAILER_PASSWORD: 
+      DELETE_PROCESSED_MAILS: false
+      ENABLE_REGISTRATION: false
+      MAILCHECK_SCHEDULE: "0 * * * *"
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
