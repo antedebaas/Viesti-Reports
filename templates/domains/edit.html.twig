@@ -50,7 +50,7 @@
                       </div>
                       <p></p>
                       <div class="card">
-                        <h5 class="card-header">MX-Records</h5>
+                        <h5 class="card-header">MX records</h5>
                         <div class="card-body">
                           <p class="card-text">
                             <span class="text-muted">Use full domain name (fqdn) without ending . (e.g.: "mail.domain.ext")</span>
@@ -104,19 +104,18 @@
                         </div>
                       </div>
                       <p></p>
-                      <div class="card">
-                        <h5 class="card-header">BIMI Files</h5>
-                        <div class="card-body">
-                          <p class="card-text">
-                            {{ form_row(form.bimisvgfile) }}
-                            {{ form_row(form.bimivmcfile) }}
-                          </p>
+                        <div class="card">
+                          <h5 class="card-header">DKIM configuration</h5>
+                          <div class="card-body">
+                            <p class="card-text">
+                              {{ form_row(form.dkimselector) }}
+                            </p>
+                          </div>
                         </div>
-                      </div>
                     </div>
                     <div class="col-12 col-lg-6 mb-4 mb-lg-0">
                         <div class="card">
-                            <h5 class="card-header">STS Policy</h5>
+                            <h5 class="card-header">STS policy</h5>
                             <div class="card-body">
                               <p class="card-text">
                                 {{ form_row(form.sts_version) }}
@@ -127,7 +126,18 @@
                           </div>
                         <p></p>
                         <div class="card">
-                            <h5 class="card-header">DNS Settings</h5>
+                          <h5 class="card-header">BIMI configuration</h5>
+                          <div class="card-body">
+                            <p class="card-text">
+                              {{ form_row(form.bimiselector) }}
+                              {{ form_row(form.bimisvgfile) }}
+                              {{ form_row(form.bimivmcfile) }}
+                            </p>
+                          </div>
+                        </div>
+                        <p></p>
+                        <div class="card">
+                            <h5 class="card-header">DNS settings</h5>
                             <div class="card-body">
                               <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDNS" aria-expanded="false" aria-controls="collapseDNS">
                                 Show Example DNS Records

@@ -70,6 +70,16 @@ class DomainFormType extends AbstractType
                 'by_reference' => false,
             ])
 
+            ->add('dkimselector', TextType::class, [
+                'label' => 'DKIM selector name',
+                'data' => 'default',
+            ])
+
+            ->add('bimiselector', TextType::class, [
+                'label' => 'BIMI selector name',
+                'data' => 'default',
+            ])
+
             ->add('bimisvgfile', FileType::class, [
                 'label' => 'BIMI Logo SVG file',
 

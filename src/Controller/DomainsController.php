@@ -20,6 +20,7 @@ use App\Entity\MXRecords;
 use App\Repository\DomainsRepository;
 
 use Ante\DnsParser\Dns;
+use Ante\DnsParser\TXTRecords;
 use App\Enums\TXTRecordStates;
 
 class DomainsController extends AbstractController
@@ -108,12 +109,21 @@ class DomainsController extends AbstractController
             return $this->render('not_found.html.twig', []);
         }
 
-            $dnsrecords = array();
+        $dkimselector = $domain->getDkimselector();
+        if($dkimselector == null || $dkimselector == '') { $dkimselector = 'default'; }
+        $bimiselector = $domain->getBimiselector();
+        if($bimiselector == null || $bimiselector == '') { $bimiselector = 'default'; }
+        $selectors = array(
+            'dkim' => $dkimselector,
+            'bimi' => $bimiselector,
+        );
+
+        $dnsrecords = array();
 
         $dns = new Dns();
         $dnsrecords = array_merge($dnsrecords,$dns->getRecords($domain->getFqdn(), 'TXT'));
-        $dnsrecords = array_merge($dnsrecords,$dns->getRecords('default._domainkey.'.$domain->getFqdn(), 'TXT'));
-        $dnsrecords = array_merge($dnsrecords,$dns->getRecords('default._bimi.'.$domain->getFqdn(), 'TXT'));
+        $dnsrecords = array_merge($dnsrecords,$dns->getRecords($dkimselector.'._domainkey.'.$domain->getFqdn(), 'TXT'));
+        $dnsrecords = array_merge($dnsrecords,$dns->getRecords($bimiselector.'._bimi.'.$domain->getFqdn(), 'TXT'));
         $dnsrecords = array_merge($dnsrecords,$dns->getRecords('_mta-sts.'.$domain->getFqdn(), 'TXT'));
         $dnsrecords = array_merge($dnsrecords,$dns->getRecords('_dmarc.'.$domain->getFqdn(), 'TXT'));
         $dnsrecords = array_merge($dnsrecords,$dns->getRecords('_smtp._tls.'.$domain->getFqdn(), 'TXT'));
@@ -126,6 +136,7 @@ class DomainsController extends AbstractController
         return $this->render('domains/check.html.twig', [
             'domain' => $domain,
             'validation' => $validation,
+            'selectors' => $selectors,
             'menuactive' => 'domains',
             'breadcrumbs' => array(
                 array('name' => $this->translator->trans("Domains"), 'url' => $this->router->generate('app_domains')),
@@ -136,23 +147,20 @@ class DomainsController extends AbstractController
 
     private function findvalidtxtrecords(array $records): array {
         $result = array(
-            'SPF'=> TXTRecordStates::FAIL,
-            'DKIM'=> TXTRecordStates::FAIL,
-            'BIMI'=> TXTRecordStates::FAIL,
-            'STS'=> TXTRecordStates::FAIL,
-            'DMARC'=> TXTRecordStates::FAIL,
-            'TLSRPT'=> TXTRecordStates::FAIL,
+            'SPF'=> array(new TXTRecords\SPF1(""),TXTRecordStates::FAIL),
+            'DKIM'=> array(new TXTRecords\DKIM1(""),TXTRecordStates::FAIL),
+            'BIMI'=> array(new TXTRecords\BIMI1(""),TXTRecordStates::FAIL),
+            'STS'=> array(new TXTRecords\STSV1(""),TXTRecordStates::FAIL),
+            'DMARC'=> array(new TXTRecords\DMARC1(""),TXTRecordStates::FAIL),
+            'TLSRPT'=> array(new TXTRecords\TLSRPTV1(""),TXTRecordStates::FAIL),
         );
 
         foreach($records as $record) {
             if($record->v()->version() == 1) {
-                $result[$record->v()->type()] = TXTRecordStates::GOOD;
+                $result[$record->v()->type()] = array($record->v(),TXTRecordStates::GOOD);
             }
         }
-        if($result['BIMI'] == TXTRecordStates::FAIL) {
-            $result['BIMI'] = TXTRecordStates::WARNING;
-        }
-
+        
         return $result;
     }
 
