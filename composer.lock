@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "775a8da4e568eb23732e3290a07b8e46",
+    "content-hash": "5b0e87a3dd46fe1d6cd1208520992042",
     "packages": [
         {
             "name": "antedebaas/dns-parser",
-            "version": "v1.2.0",
+            "version": "v1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antedebaas/dns-parser.git",
-                "reference": "ce2e35330f3eef8d787ed8496d23f188a8d2a3f9"
+                "reference": "1cf9f79c74173b8e5c635750efad3f2218c7c9cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antedebaas/dns-parser/zipball/ce2e35330f3eef8d787ed8496d23f188a8d2a3f9",
-                "reference": "ce2e35330f3eef8d787ed8496d23f188a8d2a3f9",
+                "url": "https://api.github.com/repos/antedebaas/dns-parser/zipball/1cf9f79c74173b8e5c635750efad3f2218c7c9cc",
+                "reference": "1cf9f79c74173b8e5c635750efad3f2218c7c9cc",
                 "shasum": ""
             },
             "require": {
@@ -74,9 +74,58 @@
             ],
             "support": {
                 "issues": "https://github.com/antedebaas/dns-parser/issues",
-                "source": "https://github.com/antedebaas/dns-parser/tree/v1.2.0"
+                "source": "https://github.com/antedebaas/dns-parser/tree/v1.2.1"
             },
-            "time": "2024-08-18T15:00:13+00:00"
+            "time": "2024-08-19T17:38:44+00:00"
+        },
+        {
+            "name": "buzzingpixel/twig-switch",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/buzzingpixel/twig-switch.git",
+                "reference": "f8e45f0ca0b68c1614733e02d163b22668be914a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/buzzingpixel/twig-switch/zipball/f8e45f0ca0b68c1614733e02d163b22668be914a",
+                "reference": "f8e45f0ca0b68c1614733e02d163b22668be914a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1",
+                "twig/twig": "^2.7|^3.0"
+            },
+            "require-dev": {
+                "phpmd/phpmd": "^2.6",
+                "roave/security-advisories": "dev-master",
+                "squizlabs/php_codesniffer": "^3.4"
+            },
+            "type": "library",
+            "extra": {
+                "twigExtensions": [
+                    "buzzingpixel\\twigswitch\\SwitchTwigExtension"
+                ]
+            },
+            "autoload": {
+                "psr-4": {
+                    "buzzingpixel\\twigswitch\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "TJ Draper",
+                    "email": "tj@buzzingpixel.com",
+                    "homepage": "https://buzzingpixel.com"
+                }
+            ],
+            "description": "Provides a {% switch %} tag for Twig switch case statements",
+            "support": {
+                "issues": "https://github.com/buzzingpixel/twig-switch/issues",
+                "source": "https://github.com/buzzingpixel/twig-switch/tree/1.0.2"
+            },
+            "time": "2020-06-21T00:42:23+00:00"
         },
         {
             "name": "doctrine/cache",

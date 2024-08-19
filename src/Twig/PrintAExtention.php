@@ -15,7 +15,7 @@ class PrintAExtention extends AbstractExtension
         ];
     }
 
-    public function printa(array $data): string
+    public function printa(object|array $data): string
     {
         return print_r($data);
     }

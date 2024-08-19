@@ -52,6 +52,12 @@ class Domains
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $bimivmcfile = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $bimiselector = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $dkimselector = null;
+
     public function __construct()
     {
         $this->DMARC_Reports = new ArrayCollection();
@@ -293,6 +299,30 @@ class Domains
     public function setBimiVMCFile(?string $bimivmcfile): static
     {
         $this->bimivmcfile = $bimivmcfile;
+
+        return $this;
+    }
+
+    public function getBimiselector(): ?string
+    {
+        return $this->bimiselector;
+    }
+
+    public function setBimiselector(?string $bimiselector): static
+    {
+        $this->bimiselector = $bimiselector;
+
+        return $this;
+    }
+
+    public function getDkimselector(): ?string
+    {
+        return $this->dkimselector;
+    }
+
+    public function setDkimselector(?string $dkimselector): static
+    {
+        $this->dkimselector = $dkimselector;
 
         return $this;
     }

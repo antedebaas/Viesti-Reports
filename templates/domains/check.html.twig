@@ -8,22 +8,104 @@
                   <div class="card">
                     <h5 class="card-header">Domain Check</h5>
                     <div class="card-body">
+                      <p>This does rudumentary checks on the domain to see if it is configured correctly, it is not a guarantee that the domain is configured propery (yet).</p>
                       <p class="card-text">
                         {% for key,value in validation %}
-                          {% if value.name == 'GOOD' %}
-                            <div class="alert alert-success" role="alert">
-                              <strong>{{ key }}</strong> Valid
+                         <div class="list-group mb-4">
+                            <li class="list-group-item list-group-item-{% if value.1.name == 'GOOD' %}success{% elseif value.1.name == 'WARNING' %}warning{% elseif value.1.name == 'FAIL' %}danger{% endif %}">
+                            <b>{{ key }}</b>
+                            <div class="list-group">
+                              {% switch key %}
+                                {% case 'SPF' %}
+                                  <li class="list-group-item">
+                                    <b>Version</b>: {{ value.0.version }}
+                                  </li>
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <b>Value</b>:<br>
+                                      {% for rule in value.0.value %}
+                                        <span class="mx-4">{{ rule }}</span><br>
+                                      {% endfor %}
+                                    </div>
+                                  </li>
+                                {% case 'DKIM' %}
+                                  <li class="list-group-item">
+                                    <b>Version</b>: {{ value.0.version }}
+                                  </li>
+                                  <li class="list-group-item">
+                                    <b>Selector</b>: {{ selectors.dkim }}
+                                  </li>
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <b>Value</b>:<br>
+                                      {% if value.0 is defined and value.0.k is defined %}<span class="mx-4"><b>Type</b>: {{ value.0.k }}</span><br>{% endif %}
+                                      {% if value.0.p is defined %}<span class="mx-4"><b>Key</b>: {{ value.0.p[:50] ~ '...' }}</span><br>{% endif %}
+                                    </div>
+                                  </li>
+                                {% case 'BIMI' %}
+                                  <li class="list-group-item">
+                                    <b>Version</b>: {{ value.0.version }}
+                                  </li>
+                                  <li class="list-group-item">
+                                    <b>Selector</b>: {{ selectors.bimi }}
+                                  </li>
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <b>Value</b>:<br>
+                                      <span class="mx-4"><b>Logo</b>: {{ value.0.l }}</span><br>
+                                      <span class="mx-4"><b>Vmc</b>: {{ value.0.a }}</span><br>
+                                    </div>
+                                  </li>
+                                {% case 'STS' %}
+                                  <li class="list-group-item">
+                                    <b>Version</b>: {{ value.0.version }}
+                                  </li>
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <b>Value</b>:<br>
+                                      <span class="mx-4"><b>Serial</b>: {{ value.0.id }}</span><br>
+                                    </div>
+                                  </li>
+                                {% case 'DMARC' %}
+                                  <li class="list-group-item">
+                                    <b>Version</b>: {{ value.0.version }}
+                                  </li>
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <b>Value</b>:<br>
+                                      <span class="mx-4"><b>P</b>: {{ value.0.p }}</span><br>
+                                      <span class="mx-4"><b>Rua</b>:
+                                      {% for address in value.0.rua %}
+                                        <br><span class="mx-5">{{ address }}</span>
+                                      {% endfor %}
+                                      </span><br>
+                                      <span class="mx-4"><b>Ruf</b>:
+                                      {% for address in value.0.ruf %}
+                                        <br><span class="mx-5">{{ address }}</span>
+                                      {% endfor %}
+                                      </span><br>
+                                      <span class="mx-4"><b>Sp</b>: {{ value.0.sp }}</span><br>
+                                      <span class="mx-4"><b>Pct</b>: {{ value.0.pct }}</span><br>
+                                      <span class="mx-4"><b>Fo</b>: {{ value.0.fo }}</span><br>
+                                    </div>
+                                  </li>
+                                {% case 'TLSRPT' %}
+                                  <li class="list-group-item">
+                                    <b>Version</b>: {{ value.0.version }}
+                                  </li>
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <b>Value</b>:<br>
+                                      <span class="mx-4"><b>Rua</b>:
+                                      {% for address in value.0.rua %}
+                                        <br><span class="mx-5">{{ address }}</span>
+                                      {% endfor %}
+                                      </span><br>
+                                    </div>
+                                  </li>
+                                {% default %}
+                              {% endswitch %}
                             </div>
-                          {% elseif value.name == 'WARNING' %}
-                            <div class="alert alert-warning" role="alert">
-                              <strong>{{ key }}</strong> Warning
-                            </div>
-                          {% elseif value.name == 'FAIL' %}
-                            <div class="alert alert-danger" role="alert">
-                              <strong>{{ key }}</strong> Failure
-                            </div>
-                          {% endif %}
-
                         {% endfor %}
                       </p>
                     </div>
