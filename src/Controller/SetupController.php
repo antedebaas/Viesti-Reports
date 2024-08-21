@@ -2,19 +2,18 @@
 
 namespace App\Controller;
 
+use Doctrine\DBAL\DriverManager;
+use Doctrine\ORM\EntityManagerInterface;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Finder\Finder;
 
 use App\Form\RegistrationFormType;
 use App\Form\CreateEnvType;
@@ -25,7 +24,7 @@ use App\EntityUnmanaged\DoctrineMigrationVersions;
 use App\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
-use Symfony\Component\Finder\Finder;
+
 
 class SetupController extends AbstractController
 {
@@ -58,17 +57,66 @@ class SetupController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $formdata = $form->getData();
-                $formdata['randomstring'] = $this->generateRandomString();
 
-                $envtemplate = $this->render('setup/env.txt.twig', [
-                    'f' => $formdata,
-                ]);
-                $envfile = __DIR__."/../../.env.local";
-                file_put_contents($envfile, $envtemplate->getContent());
+                $dbdriver = "sqlite3";
+                switch($formdata['database_type']){
+                    case 'mysql':
+                        $dbdriver = "mysqli";
+                        break;
+                    case 'postgresql':
+                        $dbdriver = "pgsql";
+                        break;
+                    case 'sqlite':
+                        $dbdriver = "sqlite3";
+                        break;
+                    default:
+                        $this->addFlash('danger', 'Connection failed: Unknown database type');
+                        return $this->redirectToRoute('app_setup');
+                        break;
+                }
 
-                $this->clearCacheAction();
+                $connectionParams = [
+                    'dbname' => $formdata['database_db'],
+                    'user' => $formdata['database_user'],
+                    'password' => $formdata['database_password'],
+                    'host' => $formdata['database_host'],
+                    'port' => intval($formdata['database_port']),
+                    'driver' => $dbdriver,
+                ];
+                
+                try {
+                    $newConnection = DriverManager::getConnection($connectionParams);
 
-                return $this->redirectToRoute('app_setup');
+                    $dbersion = "0";
+                    switch($formdata['database_type']){
+                        case 'mysql':
+                            $dbersion = $newConnection->fetchOne('SELECT VERSION()');
+                            break;
+                        case 'postgresql':
+                            $dbersion = $newConnection->fetchOne('SELECT VERSION()');
+                            preg_match('/PostgreSQL\W(\d+\.?\d*\.?\d*)/', $dbersion, $matches);
+                            $dbersion = $matches[1];
+                            break;
+                        case 'sqlite':
+                            $dbersion = "3";
+                            break;
+                    }
+
+                    $formdata['randomstring'] = $this->generateRandomString();
+
+                    $envtemplate = $this->render('setup/env.txt.twig', [
+                        'f' => $formdata,
+                        'v' => $dbersion,
+                    ]);
+                    $envfile = __DIR__."/../../.env.local";
+                    file_put_contents($envfile, $envtemplate->getContent());
+    
+                    $this->clearCacheAction();
+    
+                    return $this->redirectToRoute('app_setup');
+                } catch (\Exception $e) {
+                    $this->addFlash('danger', 'Connection failed: '.$e->getMessage());
+                }
             }
             $setup['users_form'] = $form->createView();
         } else {
