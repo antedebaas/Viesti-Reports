@@ -7,7 +7,7 @@
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "antedebaas/dns-parser": "^1.2.1",
+        "antedebaas/dns-parser": "^1.2.2",
         "buzzingpixel/twig-switch": "^1.0",
         "doctrine/doctrine-bundle": "^2.12",
         "doctrine/doctrine-migrations-bundle": "^3.2",
