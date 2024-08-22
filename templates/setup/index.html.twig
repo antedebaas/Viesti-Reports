@@ -152,7 +152,6 @@
       var elements = [
         'create_env_database_host',
         'create_env_database_port',
-        'create_env_database_name',
         'create_env_database_user',
         'create_env_database_password',
         'create_env_database_db',
@@ -160,7 +159,7 @@
       $('#create_env_database_type').on('change', function() {
         if ( $('#create_env_database_type').val() == 'sqlite' ) {
           for (i = 0; i < elements.length; ++i) {
-              $('#'+elements[i]).val("not applicable");
+              $('#'+elements[i]).val("not-applicable");
               $('#'+elements[i]).prop("disabled", true);
               $('#'+elements[i]).parent().hide();
           }

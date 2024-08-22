@@ -86,32 +86,45 @@ class GetReportsFromMailboxCommand extends Command
                 $this->em->persist($lock);
                 $this->em->flush();
 
-                $result = $this->open_mailbox($this->mailbox);
+                $results['primary'] = $this->open_mailbox($this->mailbox);
                 if($this->mailbox_secondary->isEnabled()) {
-                    $result = $this->open_mailbox($this->mailbox_secondary);
+                    $results['secondary'] = $this->open_mailbox($this->mailbox_secondary);
+                } else {
+                    $results['secondary'] = new MailboxResponse();
+                    $results['secondary']->setSuccess(true, 'Secondary mailbox is disabled.', array('count' => 0, 'reports' => array()));
                 }
-        
-                $log = new Logs();
-                $log->setTime(new \DateTime());
-                $log->setSuccess($result->getSuccess());
-                $log->setMessage($result->getMessage());
 
-                foreach ($result->getDetails()["reports"] as $report) {
-                    $report->setReport(null);
+                foreach($results as $result) {
+                    $log = new Logs();
+                    $log->setTime(new \DateTime());
+                    $log->setSuccess($result->getSuccess());
+                    $log->setMessage($result->getMessage());
+    
+                    foreach ($result->getDetails()["reports"] as $report) {
+                        $report->setReport(null);
+                    }
+                    $log->setDetails(serialize($result->getDetails()));
+                    $this->em->persist($log);
+                    $this->em->flush();
                 }
-                $log->setDetails(serialize($result->getDetails()));
-                $this->em->persist($log);
-                $this->em->flush();
-        
+
                 $lock->setValue('false');
                 $this->em->persist($lock);
                 $this->em->flush();
         
-                if($result->getSuccess() == true) {
-                    $io->success($result->getMessage());
+                if($results['primary']->getSuccess() == true && $results['secondary']->getSuccess() == true) {
+                    $io->success($results['primary']->getMessage());
+                    if($this->mailbox_secondary->isEnabled()) {
+                        $io->success($results['secondary']->getMessage());
+                    }
                     return Command::SUCCESS;
                 } else {
-                    $io->error($result->getMessage());
+                    if($results['primary']->getSuccess() == false) {
+                        $io->error($results['primary']->getMessage());
+                    }
+                    if($results['secondary']->getSuccess() == false) {
+                        $io->error($results['secondary']->getMessage());
+                    }
                     return Command::FAILURE;
                 }
             }

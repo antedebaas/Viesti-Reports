@@ -4,8 +4,6 @@ namespace App\Controller;
 
 use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManagerInterface;
-
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -15,6 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Finder\Finder;
 
+use SecIT\ImapBundle\Connection\Connection;
+
 use App\Form\RegistrationFormType;
 use App\Form\CreateEnvType;
 
@@ -23,7 +23,7 @@ use App\EntityUnmanaged\DoctrineMigrationVersions;
 
 use App\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 class SetupController extends AbstractController
@@ -87,7 +87,6 @@ class SetupController extends AbstractController
                 try {
                     $newConnection = DriverManager::getConnection($connectionParams);
 
-                    $dbersion = "0";
                     switch($formdata['database_type']){
                         case 'mysql':
                             $dbersion = $newConnection->fetchOne('SELECT VERSION()');
@@ -97,10 +96,20 @@ class SetupController extends AbstractController
                             preg_match('/PostgreSQL\W(\d+\.?\d*\.?\d*)/', $dbersion, $matches);
                             $dbersion = $matches[1];
                             break;
-                        case 'sqlite':
-                            $dbersion = "3";
+                        default:
+                            $dbersion = "0";
                             break;
                     }
+
+                    $imap_path = "{".$formdata['email_host'].":".intval($formdata['email_imap_ssl_port'])."/imap/ssl}INBOX";
+                    $connectionParams;
+                    $newConnection = new Connection(
+                        "defaultConnection",
+                        $imap_path,
+                        $formdata['email_user'],
+                        $formdata['email_password'],
+                    );
+                    $newConnection->tryTestConnection();
 
                     $formdata['randomstring'] = $this->generateRandomString();
 
