@@ -94,16 +94,28 @@ class GetReportsFromMailboxCommand extends Command
                     $results['secondary']->setSuccess(true, 'Secondary mailbox is disabled.', array('count' => 0, 'reports' => array()));
                 }
 
-                foreach($results as $result) {
+                $log = new Logs();
+                $log->setTime(new \DateTime());
+                $log->setSuccess($results['primary']->getSuccess());
+                $log->setMessage($results['primary']->getMessage());
+
+                foreach ($results['primary']->getDetails()["reports"] as $report) {
+                    $report->setReport(null);
+                }
+                $log->setDetails(serialize($results['primary']->getDetails()));
+                $this->em->persist($log);
+                $this->em->flush();
+
+                if($this->mailbox_secondary->isEnabled()) {
                     $log = new Logs();
                     $log->setTime(new \DateTime());
-                    $log->setSuccess($result->getSuccess());
-                    $log->setMessage($result->getMessage());
+                    $log->setSuccess($results['secondary']->getSuccess());
+                    $log->setMessage($results['secondary']->getMessage());
     
-                    foreach ($result->getDetails()["reports"] as $report) {
+                    foreach ($results['secondary']->getDetails()["reports"] as $report) {
                         $report->setReport(null);
                     }
-                    $log->setDetails(serialize($result->getDetails()));
+                    $log->setDetails(serialize($results['secondary']->getDetails()));
                     $this->em->persist($log);
                     $this->em->flush();
                 }
