@@ -89,7 +89,7 @@ class LogsController extends AbstractController
 
         if(empty($details)) {
             $response = new MailReportResponse();
-            $response->setSuccess(false, $log->getMessage());
+            $response->setSuccess($log->isSuccess(), $log->getMessage());
             $details['reports'] = array($response);
         };
 
