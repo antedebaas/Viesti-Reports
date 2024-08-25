@@ -80,10 +80,17 @@ class LogsController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        $details = array();
+        $repository = $this->em->getRepository(Logs::class);
+        foreach($repository->try_unserialize($log->getDetails()) as $key => $value) {
+            $details[$key] = $value;
+        }
+
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         return $this->render('logs/details.html.twig', [
             'log' => $log,
+            'details' => $details,
             'menuactive' => 'logs',
             'breadcrumbs' => array(array('name' => $this->translator->trans("Logs"), 'url' => $this->router->generate('app_logs'))),
         ]);

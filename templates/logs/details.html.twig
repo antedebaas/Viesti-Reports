@@ -13,7 +13,38 @@
                       <p class="card-text">
                         <p>
                           <b>Details:</b><br>
-                          <pre>{{ log.details|try_unserialize|printa }}</pre>
+                            <div class="table-responsive">
+                              <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th scope="col" class="d-none d-lg-table-cell">State</th>
+                                    <th scope="col" class="d-none d-lg-table-cell">Report Type</th>
+                                    <th scope="col">Message</th>
+                                    <th scope="col" class="d-none d-lg-table-cell">External Mail Id</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {% for detail in details['reports'] %}
+                                    <tr>
+                                      <th scope="row" class="d-none d-lg-table-cell">{% if detail.success %}<span class="text-success">Ok{% else %}<span class="text-danger">Failure{% endif %}</span></th>
+                                      <td scope="col">
+                                        {% if detail.reporttype == constant('App\\Enums\\ReportType::DMARC') %}
+                                            DMARC
+                                        {% elseif detail.reporttype == constant('App\\Enums\\ReportType::STS') %}
+                                            STS
+                                        {% elseif detail.reporttype == constant('App\\Enums\\ReportType::Unknown') %}
+                                            Unknown
+                                        {% endif %}
+                                      </td>
+                                      <td scope="col">{{ detail.message }}</td>
+                                      <td scope="col">{{ detail.mailid }}</td>
+                                    </td>
+                                  {% endfor %}
+                                </tbody>
+                              </table>
+                            </div>
+
+                          {# <pre>{{ log.details|try_unserialize|printa }}</pre> #}
                         </p>
                       </p>
                     </div>
