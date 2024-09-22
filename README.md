@@ -28,7 +28,7 @@ I you use it you should use it with a special sole-purpose email address.
 ### Prerequisites
 
 * composer
-* mariadb (10.5+)/postgresql (16.1+)/sqlite
+* mariadb (10.5+)/postgresql (13+)/sqlite
 * php (8.2+)
 * php-ctype
 * php-dom
