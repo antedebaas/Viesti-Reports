@@ -47,7 +47,7 @@ class DMARC_ReportsController extends AbstractController
         if(isset($_GET["perpage"]) && $_GET["perpage"] > 0) {
             $pages['perpage'] = intval($_GET["perpage"]);
         } else {
-            $pages['perpage'] = 17;
+            $pages['perpage'] = 10;
         }
 
         $repository = $this->em->getRepository(Domains::class);
