@@ -77,7 +77,7 @@ class DomainsController extends AbstractController
 
         $pages["totaldomains"] = $repository->getTotalRows();
         $pages["start"] = $pages["totaldomains"] - (($pages["page"] - 1) * $pages["perpage"]); 
-        $pages["end"] = $pages["totaldomains"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'];
+        $pages["end"] = $pages["totaldomains"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'] + 1;
         if ($pages["end"] < 0) {
             $pages["end"] = 1;
         }

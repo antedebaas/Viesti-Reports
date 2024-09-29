@@ -56,7 +56,7 @@ class LogsController extends AbstractController
         
         $pages["totallogs"] = $repository->getTotalRows();
         $pages["start"] = $pages["totallogs"] - (($pages["page"] - 1) * $pages["perpage"]); 
-        $pages["end"] = $pages["totallogs"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'];
+        $pages["end"] = $pages["totallogs"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'] + 1;
         if ($pages["end"] < 0) {
             $pages["end"] = 1;
         }

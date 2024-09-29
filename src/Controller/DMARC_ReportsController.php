@@ -62,7 +62,7 @@ class DMARC_ReportsController extends AbstractController
         }
         $pages["totalreports"] = $repository->getTotalRows($reports);
         $pages["start"] = $pages["totalreports"] - (($pages["page"] - 1) * $pages["perpage"]); 
-        $pages["end"] = $pages["totalreports"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'];
+        $pages["end"] = $pages["totalreports"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'] + 1;
         if ($pages["end"] < 0) {
             $pages["end"] = 1;
         }

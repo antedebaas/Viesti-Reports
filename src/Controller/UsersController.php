@@ -60,7 +60,7 @@ class UsersController extends AbstractController
         $users = $repository->findBy(array(), array('id' => 'DESC'), $pages["perpage"], ($pages["page"] - 1) * $pages["perpage"]);
         $pages["totalusers"] = $repository->getTotalRows();
         $pages["start"] = $pages["totalusers"] - (($pages["page"] - 1) * $pages["perpage"]); 
-        $pages["end"] = $pages["totalusers"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'];
+        $pages["end"] = $pages["totalusers"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'] + 1;
         if ($pages["end"] < 0) {
             $pages["end"] = 1;
         }
