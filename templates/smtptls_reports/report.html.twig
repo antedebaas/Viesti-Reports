@@ -147,7 +147,7 @@
                                     <div class="clearfix">
                                       <span class="float-start"><b>Policy type: </b> </span>
                                       <span class="float-end">
-                                          <span class="badge me-1 bg-{% if policy.policytype == 'no-policy-found' %}danger{% else %}success{% endif %}">{{ policy.policytype|upper }}</span>
+                                          <span class="badge me-1 text-white bg-{% if policy.policytype == 'no-policy-found' %}danger{% else %}success{% endif %}">{{ policy.policytype|upper }}</span>
                                       </span>
                                     </div>
                                   </li>
@@ -157,9 +157,9 @@
                                       <span class="float-start"><b>Version: </b> </span>
                                       <span class="float-end">
                                         {% if policy.policystringversion == 'STSv1' %}
-                                          <span class="badge me-1 bg-success">STSv1</span>
+                                          <span class="badge me-1 text-white bg-success">STSv1</span>
                                         {% else %}
-                                          <span class="badge me-1 bg-danger">Empty</span>
+                                          <span class="badge me-1 text-white bg-danger">Empty</span>
                                         {% endif %}
                                       </span>
                                     </div>
@@ -168,7 +168,7 @@
                                     <div class="clearfix">
                                       <span class="float-start"><b>Mode: </b> </span>
                                       <span class="float-end">
-                                        <span class="badge me-1 bg-{% if policy.policystringmode == 'enforce' %}success{% elseif policy.policystringmode == 'testing' %}warning{% else %}danger{% endif %}">{% if policy.policystringmode %}{{ policy.policystringmode|capitalize }}{% else %}Empty{% endif %}</span>
+                                        <span class="badge me-1 text-white bg-{% if policy.policystringmode == 'enforce' %}success{% elseif policy.policystringmode == 'testing' %}warning{% else %}danger{% endif %}">{% if policy.policystringmode %}{{ policy.policystringmode|capitalize }}{% else %}Empty{% endif %}</span>
                                       </span>
                                     </div>
                                   </li>
