@@ -91,13 +91,13 @@
 				{% set start_page = max(2, pages.page - 3) %}
 				{% set end_page = min((pages.total -1 ), pages.page + 3) %}
 				{% if start_page > 2 %}
-					...
+					<li class="page-item"> ... </li>
 				{% endif %}
 				{% for page in start_page..end_page %}
 					<li class="page-item {% if page == pages.page %}active{% endif %}"><a class="page-link" href="{{ path('app_users', {page: page, perpage: pages.perpage }) }}">{{ page }}</a></li>
 				{% endfor %}
 				{% if end_page < (pages.total -1) %}
-					...
+					<li class="page-item"> ... </li>
 				{% endif %}
 				{% else %}
 				{% for page in 2 .. (pages.total -1) %}
