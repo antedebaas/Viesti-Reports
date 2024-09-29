@@ -75,24 +75,44 @@ class DomainsController extends AbstractController
             }
         }
 
-        $totaldomains = $repository->getTotalRows();
+        $pages["totaldomains"] = $repository->getTotalRows();
+        $pages["start"] = $pages["totaldomains"] - (($pages["page"] - 1) * $pages["perpage"]); 
+        $pages["end"] = $pages["totaldomains"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'];
+        if ($pages["end"] < 0) {
+            $pages["end"] = 1;
+        }
 
-        if(count($domains) == 0 && $totaldomains != 0) {
+        if(count($domains) == 0 && $pages["totaldomains"] != 0) {
             return $this->redirectToRoute('app_domains');
         }
 
-        if($totaldomains / $pages["perpage"] > $pages["page"]) {
+        if($pages["totaldomains"] / $pages["perpage"] > $pages["page"]) {
             $pages["next"] = true;
         }
         if($pages["page"] - 1 > 0) {
             $pages["prev"] = true;
         }
+        $pages["total"] = ceil($pages["totaldomains"] / $pages['perpage']);
 
         return $this->render('domains/index.html.twig', [
             'domains' => $domains,
             'bimivmcinfo' => $bimivmcinfo,
             'pages' => $pages,
-            'menuactive' => 'domains',
+            'page' => array(
+                'menu' => array(
+                    'category' => 'domains',
+                    'item' => 'domains'
+                ),
+                'pretitle' => $this->translator->trans("Domains"),
+                'title' => $this->translator->trans("Home"),
+                'actions' => array(
+                    0 => array(
+                        'primary' => true,
+                        'name' => $this->translator->trans("Add"),
+                        'target' => $this->router->generate('app_domains_add')
+                    ),
+                ),
+            ),
             'breadcrumbs' => array(array('name' => $this->translator->trans("Domains"), 'url' => $this->router->generate('app_domains'))),
         ]);
     }
@@ -137,7 +157,15 @@ class DomainsController extends AbstractController
             'domain' => $domain,
             'validation' => $validation,
             'selectors' => $selectors,
-            'menuactive' => 'domains',
+            'page' => array(
+                'menu' => array(
+                    'category' => 'domains',
+                    'item' => 'check'
+                ),
+                'pretitle' => $this->translator->trans("Domains"),
+                'title' => $this->translator->trans("Check domain ").$domain->getFqdn(),
+                'actions' => array(),
+            ),
             'breadcrumbs' => array(
                 array('name' => $this->translator->trans("Domains"), 'url' => $this->router->generate('app_domains')),
                 array('name' => $this->translator->trans("Check domain settings for ").$domain->getFqdn(), 'url' => $this->router->generate('app_domains'))
@@ -215,13 +243,21 @@ class DomainsController extends AbstractController
         );
 
         return $this->render('domains/edit.html.twig', [
-            'menuactive' => 'domains',
+            'page' => array(
+                'menu' => array(
+                    'category' => 'domains',
+                    'item' => 'add'
+                ),
+                'pretitle' => $this->translator->trans("Domains"),
+                'title' => $this->translator->trans("Add domain"),
+                'actions' => array(),
+            ),
             'domain' => null,
             'dns_info' => $dns_info,
             'form' => $form,
             'breadcrumbs' => array(
                 array('name' => $this->translator->trans("Domains"), 'url' => $this->router->generate('app_domains')),
-                array('name' => "Add new domain manually", 'url' => $this->router->generate('app_domains_add'))
+                array('name' => "Add domain", 'url' => $this->router->generate('app_domains_add'))
             ),
         ]);
     }
@@ -274,7 +310,15 @@ class DomainsController extends AbstractController
         );
 
         return $this->render('domains/edit.html.twig', [
-            'menuactive' => 'domains',
+            'page' => array(
+                'menu' => array(
+                    'category' => 'domains',
+                    'item' => 'edit'
+                ),
+                'pretitle' => $this->translator->trans("Domains"),
+                'title' => $this->translator->trans("Edit domain")." ".$domain->getFqdn(),
+                'actions' => array(),
+            ),
             'domain' => $domain,
             'dns_info' => $dns_info,
             'form' => $form,

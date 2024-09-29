@@ -60,14 +60,19 @@ class SMTPTLS_ReportsController extends AbstractController
         } else {
             $reports = $repository->findBy(array('domain' => $domains), array('id' => 'DESC'), $pages["perpage"], ($pages["page"] - 1) * $pages["perpage"]);
         }
-        $totalreports = $repository->getTotalRows($reports);
+        $pages["totalreports"] = $repository->getTotalRows($reports);
+        $pages["start"] = $pages["totalreports"] - (($pages["page"] - 1) * $pages["perpage"]); 
+        $pages["end"] = $pages["totalreports"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'];
+        if ($pages["end"] < 0) {
+            $pages["end"] = 1;
+        }
 
-        if(count($reports) == 0 && $totalreports != 0 && $pages["page"] != 1) {
+        if(count($reports) == 0 && $pages["totalreports"] != 0 && $pages["page"] != 1) {
             return $this->redirectToRoute('app_smtptls_reports');
         }
 
-        $pages["total"] = ceil($totalreports / $pages['perpage']);
-        if($totalreports / $pages['perpage'] > $pages["page"]) {
+        $pages["total"] = ceil($pages["totalreports"] / $pages['perpage']);
+        if($pages["totalreports"] / $pages['perpage'] > $pages["page"]) {
             $pages["next"] = true;
         }
         if($pages["page"] - 1 > 0) {
@@ -77,7 +82,15 @@ class SMTPTLS_ReportsController extends AbstractController
         return $this->render('smtptls_reports/index.html.twig', [
             'reports' => $reports,
             'pages' => $pages,
-            'menuactive' => 'reports',
+            'page' => array(
+                'menu' => array(
+                    'category' => 'reports',
+                    'item' => 'smtptls'
+                ),
+                'pretitle' => $this->translator->trans("Reports"),
+                'title' => $this->translator->trans("SMTP-TLS reports"),
+                'actions' => array(),
+            ),
             'breadcrumbs' => array(
                 array('name' => $this->translator->trans("Reports"), 'url' => $this->router->generate('app_reports')),
                 array('name' => $this->translator->trans("SMTPTLS"), 'url' => $this->router->generate('app_smtptls_reports'))
@@ -107,7 +120,15 @@ class SMTPTLS_ReportsController extends AbstractController
         }
 
         return $this->render('smtptls_reports/report.html.twig', [
-            'menuactive' => 'reports',
+            'page' => array(
+                'menu' => array(
+                    'category' => 'reports',
+                    'item' => 'smtptls'
+                ),
+                'pretitle' => $this->translator->trans("Reports"),
+                'title' => $this->translator->trans("SMTP-TLS report #".$report->getId()),
+                'actions' => array(),
+            ),
             'breadcrumbs' => array(
                 array('name' => $this->translator->trans("Reports"), 'url' => $this->router->generate('app_reports')),
                 array('name' => $this->translator->trans("SMTPTLS"), 'url' => $this->router->generate('app_smtptls_reports')),

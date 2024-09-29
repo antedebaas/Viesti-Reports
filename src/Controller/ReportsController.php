@@ -51,7 +51,15 @@ class ReportsController extends AbstractController
         $smtptls_count = $repository->getTotalRows($domains);
 
         return $this->render('reports/index.html.twig', [
-            'menuactive' => 'reports',
+            'page' => array(
+                'menu' => array(
+                    'category' => 'reports',
+                    'item' => 'home'
+                ),
+                'pretitle' => $this->translator->trans("Reports"),
+                'title' => $this->translator->trans("Home"),
+                'actions' => array(),
+            ),
             'dmarc_count' => $dmarc_count,
             'smtptls_count' => $smtptls_count,
             'breadcrumbs' => array(array('name' => $this->translator->trans("Reports"), 'url' => $this->router->generate('app_reports'))),

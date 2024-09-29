@@ -53,13 +53,20 @@ class LogsController extends AbstractController
 
         $repository = $this->em->getRepository(Logs::class);
         $logs = $repository->findBy(array(), array('id' => 'DESC'), $pages["perpage"], ($pages["page"] - 1) * $pages["perpage"]);
-        $totallogs = $repository->getTotalRows();
+        
+        $pages["totallogs"] = $repository->getTotalRows();
+        $pages["start"] = $pages["totallogs"] - (($pages["page"] - 1) * $pages["perpage"]); 
+        $pages["end"] = $pages["totallogs"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'];
+        if ($pages["end"] < 0) {
+            $pages["end"] = 1;
+        }
 
-        if(count($logs) == 0 && $totallogs != 0) {
+        if(count($logs) == 0 && $pages["totallogs"] != 0) {
             return $this->redirectToRoute('app_logs');
         }
 
-        if($totallogs / $pages["perpage"] > $pages["page"]) {
+        $pages["total"] = ceil($pages["totallogs"] / $pages['perpage']);
+        if($pages["totallogs"] / $pages["perpage"] > $pages["page"]) {
             $pages["next"] = true;
         }
         if($pages["page"] - 1 > 0) {
@@ -69,7 +76,15 @@ class LogsController extends AbstractController
         return $this->render('logs/index.html.twig', [
             'logs' => $logs,
             'pages' => $pages,
-            'menuactive' => 'logs',
+            'page' => array(
+                'menu' => array(
+                    'category' => 'settings',
+                    'item' => 'logs'
+                ),
+                'pretitle' => $this->translator->trans("Settings"),
+                'title' => $this->translator->trans("Logs"),
+                'actions' => array(),
+            ),
             'breadcrumbs' => array(array('name' => $this->translator->trans("Logs"), 'url' => $this->router->generate('app_logs'))),
         ]);
     }
@@ -98,7 +113,15 @@ class LogsController extends AbstractController
         return $this->render('logs/details.html.twig', [
             'log' => $log,
             'details' => $details,
-            'menuactive' => 'logs',
+            'page' => array(
+                'menu' => array(
+                    'category' => 'settings',
+                    'item' => 'logs'
+                ),
+                'pretitle' => $this->translator->trans("Settings"),
+                'title' => $this->translator->trans("Details of log entry #". $log->getId()),
+                'actions' => array(),
+            ),
             'breadcrumbs' => array(array('name' => $this->translator->trans("Logs"), 'url' => $this->router->generate('app_logs'))),
         ]);
     }

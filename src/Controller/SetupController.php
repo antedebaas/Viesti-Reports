@@ -223,6 +223,7 @@ class SetupController extends AbstractController
 
         return $this->render('setup/index.html.twig', [
             'setup' => $setup,
+            'page' => array('title' => 'Setup'),
         ]);
     }
 

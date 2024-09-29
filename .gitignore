@@ -21,4 +21,5 @@
 
 /public/phpinfo.php
 /tools/
+/_dev/
 docker-compose-*.yml

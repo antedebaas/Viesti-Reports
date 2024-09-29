@@ -60,14 +60,19 @@ class DMARC_ReportsController extends AbstractController
         } else {
             $reports = $repository->findBy(array('domain' => $domains), array('id' => 'DESC'), $pages["perpage"], ($pages["page"] - 1) * $pages["perpage"]);
         }
-        $totalreports = $repository->getTotalRows($domains);
+        $pages["totalreports"] = $repository->getTotalRows($reports);
+        $pages["start"] = $pages["totalreports"] - (($pages["page"] - 1) * $pages["perpage"]); 
+        $pages["end"] = $pages["totalreports"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'];
+        if ($pages["end"] < 0) {
+            $pages["end"] = 1;
+        }
 
-        if(count($reports) == 0 && $totalreports != 0 && $pages["page"] != 1) {
+        if(count($reports) == 0 && $pages["totalreports"] != 0 && $pages["page"] != 1) {
             return $this->redirectToRoute('app_dmarc_reports');
         }
 
-        $pages["total"] = ceil($totalreports / $pages['perpage']);
-        if($totalreports / $pages['perpage'] > $pages["page"]) {
+        $pages["total"] = ceil($pages["totalreports"] / $pages['perpage']);
+        if($pages["totalreports"] / $pages['perpage'] > $pages["page"]) {
             $pages["next"] = true;
         }
         if($pages["page"] - 1 > 0) {
@@ -77,7 +82,15 @@ class DMARC_ReportsController extends AbstractController
         return $this->render('dmarc_reports/index.html.twig', [
             'reports' => $reports,
             'pages' => $pages,
-            'menuactive' => 'reports',
+            'page' => array(
+                'menu' => array(
+                    'category' => 'reports',
+                    'item' => 'dmarc'
+                ),
+                'pretitle' => $this->translator->trans("Reports"),
+                'title' => $this->translator->trans("DMARC reports"),
+                'actions' => array(),
+            ),
             'breadcrumbs' => array(
                 array('name' => $this->translator->trans("Reports"), 'url' => $this->router->generate('app_reports')),
                 array('name' => $this->translator->trans("DMARC"), 'url' => $this->router->generate('app_dmarc_reports'))
@@ -107,7 +120,15 @@ class DMARC_ReportsController extends AbstractController
         }
 
         return $this->render('dmarc_reports/report.html.twig', [
-            'menuactive' => 'reports',
+            'page' => array(
+                'menu' => array(
+                    'category' => 'reports',
+                    'item' => 'dmarc'
+                ),
+                'pretitle' => $this->translator->trans("Reports"),
+                'title' => $this->translator->trans("DMARC report #".$report->getId()),
+                'actions' => array(),
+            ),
             'breadcrumbs' => array(
                 array('name' => $this->translator->trans("Reports"), 'url' => $this->router->generate('app_reports')),
                 array('name' => $this->translator->trans("DMARC"), 'url' => $this->router->generate('app_dmarc_reports')),

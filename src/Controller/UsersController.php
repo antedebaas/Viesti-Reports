@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 use App\Form\UserFormType;
+use App\Form\UserProfileFormType;
 
 use App\Entity\Users;
 
@@ -57,13 +58,19 @@ class UsersController extends AbstractController
 
         $repository = $this->em->getRepository(Users::class);
         $users = $repository->findBy(array(), array('id' => 'DESC'), $pages["perpage"], ($pages["page"] - 1) * $pages["perpage"]);
-        $totalusers = $repository->getTotalRows();
+        $pages["totalusers"] = $repository->getTotalRows();
+        $pages["start"] = $pages["totalusers"] - (($pages["page"] - 1) * $pages["perpage"]); 
+        $pages["end"] = $pages["totalusers"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'];
+        if ($pages["end"] < 0) {
+            $pages["end"] = 1;
+        }
 
-        if(count($users) == 0 && $totalusers != 0) {
+        if(count($users) == 0 && $pages["totalusers"] != 0) {
             return $this->redirectToRoute('app_logs');
         }
 
-        if($totalusers / $pages["perpage"] > $pages["page"]) {
+        $pages["total"] = ceil($pages["totalusers"] / $pages['perpage']);
+        if($pages["totalusers"] / $pages["perpage"] > $pages["page"]) {
             $pages["next"] = true;
         }
         if($pages["page"] - 1 > 0) {
@@ -73,12 +80,26 @@ class UsersController extends AbstractController
         return $this->render('users/index.html.twig', [
             'users' => $users,
             'pages' => $pages,
-            'menuactive' => 'users',
+            'page' => array(
+                'menu' => array(
+                    'category' => 'settings',
+                    'item' => 'users'
+                ),
+                'pretitle' => $this->translator->trans("Settings"),
+                'title' => $this->translator->trans("Users"),
+                'actions' => array(
+                    0 => array(
+                        'primary' => true,
+                        'name' => $this->translator->trans("Add"),
+                        'target' => $this->router->generate('app_users_add')
+                    ),
+                ),
+            ),
             'breadcrumbs' => array(array('name' => $this->translator->trans("Users"), 'url' => $this->router->generate('app_users'))),
         ]);
     }
 
-    #[Route('/user/add', name: 'app_user_add')]
+    #[Route('/users/add', name: 'app_users_add')]
     public function add(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -125,7 +146,15 @@ class UsersController extends AbstractController
         $setup['users_form'] = $form->createView();
 
         return $this->render('users/edit.html.twig', [
-            'menuactive' => 'users',
+            'page' => array(
+                'menu' => array(
+                    'category' => 'settings',
+                    'item' => 'users'
+                ),
+                'pretitle' => $this->translator->trans("Settings"),
+                'title' => $this->translator->trans("Add user"),
+                'actions' => array(),
+            ),
             'user' => null,
             'form' => $form,
             'breadcrumbs' => array(
@@ -135,7 +164,7 @@ class UsersController extends AbstractController
         ]);
     }
 
-    #[Route('/user/edit/{id}', name: 'app_user_edit')]
+    #[Route('/users/edit/{id}', name: 'app_users_edit')]
     public function edit(Users $user, Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
@@ -179,10 +208,17 @@ class UsersController extends AbstractController
 
             return $this->redirectToRoute('app_users');
         }
-        $setup['users_form'] = $form->createView();
 
         return $this->render('users/edit.html.twig', [
-            'menuactive' => 'users',
+            'page' => array(
+                'menu' => array(
+                    'category' => 'settings',
+                    'item' => 'users'
+                ),
+                'pretitle' => $this->translator->trans("Settings"),
+                'title' => $this->translator->trans("Edit user ".$user->getEmail()),
+                'actions' => array(),
+            ),
             'user' => $user,
             'form' => $form,
             'breadcrumbs' => array(
@@ -192,7 +228,57 @@ class UsersController extends AbstractController
         ]);
     }
 
-    #[Route('/user/delete/{id}', name: 'app_user_delete')]
+    #[Route('/user/profile', name: 'app_user_profile')]
+    public function edit_profile(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
+    {
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $form = $this->createForm(UserProfileFormType::class, $this->getUser());
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formdata = $form->getData();
+
+            $password1 = $form->get("password1")->getData();
+            $password2 = $form->get("password2")->getData();
+
+            if($password1 == $password2 && $password1 != "") {
+                $formdata->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $formdata,
+                        $form->get('password1')->getData()
+                    )
+                );
+            }
+            $this->em->persist($formdata);
+            $this->em->flush();
+            
+
+            return $this->redirectToRoute('app_user_profile');
+        }
+        
+        return $this->render('users/edit_profile.html.twig', [
+            'page' => array(
+                'menu' => array(
+                    'category' => 'user',
+                    'item' => 'profile'
+                ),
+                'pretitle' => $this->translator->trans("User"),
+                'title' => $this->translator->trans("Profile"),
+                'actions' => array(),
+            ),
+            'user' => $this->getUser(),
+            'form' => $form,
+            'breadcrumbs' => array(
+                array('name' => $this->translator->trans("User"), 'url' => "#"),
+                array('name' => $this->translator->trans("Profile"), 'url' => $this->router->generate('app_user_profile'))
+            ),
+        ]);
+    }
+
+    #[Route('/users/delete/{id}', name: 'app_users_delete')]
     public function delete(Users $user): Response
     {
         if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {

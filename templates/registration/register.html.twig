@@ -1,6 +1,4 @@
-{% extends 'base.html.twig' %}
-
-{% set title = "Register" %}
+{% extends 'base/page.html.twig' %}
 
 {% block body %}
     {% for flash_error in app.flashes('verify_email_error') %}
