@@ -1,0 +1,14 @@
+{% extends 'base/page.html.twig' %}
+
+{% block body %}
+<div class="card">
+	<div class="card-header">
+		<h3 class="card-title">{{ "GNU General public lience, Version 2, June 1991"|trans }}</h3>
+	</div>
+  <div class="card-body">
+    <pre>
+    {% include 'help/LICENSE.txt' %}
+    </pre>
+  </div>
+</div>
+{% endblock %}

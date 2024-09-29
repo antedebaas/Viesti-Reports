@@ -98,16 +98,16 @@
 								<div class="dropdown-menu {% if page.menu.category == "help" %}show{% endif %}">
 									<div class="dropdown-menu-columns">
 										<div class="dropdown-menu-column">
-											<a class="dropdown-item {% if page.menu.category == "help" and page.menu.item == "docs" %}active{% endif %}" href="#">
+											<a class="dropdown-item {% if page.menu.category == "help" and page.menu.item == "documentation" %}active{% endif %}" href="{{ path('app_help_documentation') }}">
 												Documentation
 											</a>
-											<a class="dropdown-item {% if page.menu.category == "help" and page.menu.item == "licence" %}active{% endif %}" href="#">
+											<a class="dropdown-item {% if page.menu.category == "help" and page.menu.item == "licence" %}active{% endif %}" href="{{ path('app_help_licence') }}">
 												License
 											</a>
-											<a class="dropdown-item {% if page.menu.category == "help" and page.menu.item == "licence" %}active{% endif %}" href="https://github.com/antedebaas/viesti-reports">
+											<a class="dropdown-item {% if page.menu.category == "help" and page.menu.item == "sourcecode" %}active{% endif %}" href="https://github.com/antedebaas/viesti-reports">
 												Source Code
 											</a>
-											<a class="dropdown-item {% if page.menu.category == "help" and page.menu.item == "licence" %}active{% endif %}" href="https://github.com/sponsors/antedebaas">
+											<a class="dropdown-item {% if page.menu.category == "help" and page.menu.item == "sponsor" %}active{% endif %}" href="https://github.com/sponsors/antedebaas">
 												Sponsor
 											</a>
 										</div>
