@@ -12,8 +12,8 @@
 					{# <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices"></th> #}
 					<th class="w-1">{{ "Id"|trans }}</th>
 					<th>{{ "Name"|trans }}</th>
-					<th>{{ "Domains"|trans }}</th>
-					<th>{{ "Verified"|trans }}</th>
+					<th class="d-none d-lg-table-cell">{{ "Domains"|trans }}</th>
+					<th class="d-none d-lg-table-cell">{{ "Verified"|trans }}</th>
 					<th>{{ "Type"|trans }}</th>
 					<th></th>
 				</tr>
@@ -24,14 +24,14 @@
 				<tr>
 					<td><span class="text-secondary">{{ user.id }}</span></td>
 					<td>{{ user.firstname }} {{ user.lastname }}</td>
-					<td>
+					<td class="d-none d-lg-table-cell">
 						{% for domain in user.domains %}
 							{% if loop.index == 0 and user.domains|length > 0 %},{% endif %}
 								<span class="text-secondary">{{ domain.fqdn }}</span>
 							{% if loop.index != loop.length %},{% endif %}
 						{% endfor %}
 					</td>
-					<td>
+					<td class="d-none d-lg-table-cell">
 						{% if user.verified %}
 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="icon icon-tabler icons-tabler-filled icon-tabler-square-check text-green"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18.333 2c1.96 0 3.56 1.537 3.662 3.472l.005 .195v12.666c0 1.96 -1.537 3.56 -3.472 3.662l-.195 .005h-12.666a3.667 3.667 0 0 1 -3.662 -3.472l-.005 -.195v-12.666c0 -1.96 1.537 -3.56 3.472 -3.662l.195 -.005h12.666zm-2.626 7.293a1 1 0 0 0 -1.414 0l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.32 1.497l2 2l.094 .083a1 1 0 0 0 1.32 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z" /></svg>
 						{% else %}
@@ -62,72 +62,6 @@
 			</tbody>
 		</table>
 	</div>
-	<div class="card-footer d-flex align-items-center">
-		<p class="m-0 text-secondary">Showing <span>{{ pages.start }}</span> to <span>{{ pages.end }}</span> of <span>{{ pages.totalusers }}</span> entries</p>
-		<ul class="pagination m-0 ms-auto">
-			{% if pages.prev %}
-				<li class="page-item">
-					<a class="page-link" href="{{ path('app_users', {page: pages.page - 1, perpage: pages.perpage }) }}" tabindex="-1" aria-disabled="true">
-						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M15 6l-6 6l6 6"></path></svg>
-						prev
-					</a>
-				</li>
-			{% else %}
-				<li class="page-item disabled">
-					<a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M15 6l-6 6l6 6"></path></svg>
-						prev
-					</a>
-				</li>
-			{% endif %}
-			{% if pages.total <= 5 %}
-				{% for page in 1..pages.total %}
-				<li class="page-item {% if page == pages.page %}active{% endif %}"><a class="page-link" href="{{ path('app_users', {page: page, perpage: pages.perpage }) }}">{{ page }}</a></li>
-				{% endfor %}
-			{% else %}
-				<li class="page-item {% if page == 1 %}active{% endif %}"><a class="page-link" href="{{ path('app_users', {page: page, perpage: pages.perpage }) }}">1</a></li>
-
-				{% if pages.total >= 9 %}
-				{% set start_page = max(2, pages.page - 3) %}
-				{% set end_page = min((pages.total -1 ), pages.page + 3) %}
-				{% if start_page > 2 %}
-					<li class="page-item">
-						<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="page-link mt-1 icon icon-tabler icons-tabler-outline icon-tabler-dots"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
-					</li>
-				{% endif %}
-				{% for page in start_page..end_page %}
-					<li class="page-item {% if page == pages.page %}active{% endif %}"><a class="page-link" href="{{ path('app_users', {page: page, perpage: pages.perpage }) }}">{{ page }}</a></li>
-				{% endfor %}
-				{% if end_page < (pages.total -1) %}
-					<li class="page-item">
-						<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="page-link mt-1 icon icon-tabler icons-tabler-outline icon-tabler-dots"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
-					</li>
-				{% endif %}
-				{% else %}
-				{% for page in 2 .. (pages.total -1) %}
-					<li class="page-item {% if page == pages.page %}active{% endif %}"><a class="page-link" href="{{ path('app_users', {page: page, perpage: pages.perpage }) }}">{{ page }}</a></li>
-				{% endfor %}
-				{% endif %}
-
-				<li class="page-item {% if pages.page == pages.total %}active{% endif %}"><a class="page-link" href="{{ path('app_users', {page: pages.total, perpage: pages.perpage }) }}">{{ pages.total }}</a></li>
-			{% endif %}
-
-			{% if pages.next %}
-				<li class="page-item {% if pages.page == pages.total %}active{% endif %}">
-					<a class="page-link" href="{{ path('app_users', {page: pages.page + 1, perpage: pages.perpage }) }}">
-						next
-						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 6l6 6l-6 6"></path></svg>
-					</a>
-				</li>
-			{% else %}
-				<li class="page-item disabled">
-					<a class="page-link" href="#">
-						next
-						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 6l6 6l-6 6"></path></svg>
-					</a>
-				</li>
-			{% endif %}
-		</ul>
-	</div>
+	{% include 'base/pagination.html.twig' with { basepath: path('app_users')} %}
 </div>
 {% endblock %}

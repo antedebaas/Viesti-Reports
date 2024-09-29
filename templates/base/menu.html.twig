@@ -86,7 +86,7 @@
 								</div>
 							</li>
 							{% endif %}
-							{# <li class="nav-item {% if page.menu.category == "help" %}active{% endif %} dropdown">
+							<li class="nav-item {% if page.menu.category == "help" %}active{% endif %} dropdown">
 								<a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" >
 									<span class="nav-link-icon d-md-none d-lg-inline-block">
 										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path><path d="M15 15l3.35 3.35"></path><path d="M9 15l-3.35 3.35"></path><path d="M5.65 5.65l3.35 3.35"></path><path d="M18.35 5.65l-3.35 3.35"></path></svg>
@@ -101,9 +101,18 @@
 											<a class="dropdown-item {% if page.menu.category == "help" and page.menu.item == "docs" %}active{% endif %}" href="#">
 												Documentation
 											</a>
+											<a class="dropdown-item {% if page.menu.category == "help" and page.menu.item == "licence" %}active{% endif %}" href="#">
+												License
+											</a>
+											<a class="dropdown-item {% if page.menu.category == "help" and page.menu.item == "licence" %}active{% endif %}" href="https://github.com/antedebaas/viesti-reports">
+												Source Code
+											</a>
+											<a class="dropdown-item {% if page.menu.category == "help" and page.menu.item == "licence" %}active{% endif %}" href="https://github.com/sponsors/antedebaas">
+												Sponsor
+											</a>
 										</div>
 									</div>
 								</div>
-							</li> #}
+							</li>
 						</ul>
 					</div>

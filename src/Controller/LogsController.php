@@ -54,19 +54,19 @@ class LogsController extends AbstractController
         $repository = $this->em->getRepository(Logs::class);
         $logs = $repository->findBy(array(), array('id' => 'DESC'), $pages["perpage"], ($pages["page"] - 1) * $pages["perpage"]);
         
-        $pages["totallogs"] = $repository->getTotalRows();
-        $pages["start"] = $pages["totallogs"] - (($pages["page"] - 1) * $pages["perpage"]); 
-        $pages["end"] = $pages["totallogs"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'] + 1;
+        $pages["totalitems"] = $repository->getTotalRows();
+        $pages["start"] = $pages["totalitems"] - (($pages["page"] - 1) * $pages["perpage"]); 
+        $pages["end"] = $pages["totalitems"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'] + 1;
         if ($pages["end"] < 0) {
             $pages["end"] = 1;
         }
 
-        if(count($logs) == 0 && $pages["totallogs"] != 0) {
+        if(count($logs) == 0 && $pages["totalitems"] != 0) {
             return $this->redirectToRoute('app_logs');
         }
 
-        $pages["total"] = ceil($pages["totallogs"] / $pages['perpage']);
-        if($pages["totallogs"] / $pages["perpage"] > $pages["page"]) {
+        $pages["total"] = ceil($pages["totalitems"] / $pages['perpage']);
+        if($pages["totalitems"] / $pages["perpage"] > $pages["page"]) {
             $pages["next"] = true;
         }
         if($pages["page"] - 1 > 0) {

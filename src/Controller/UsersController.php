@@ -58,19 +58,19 @@ class UsersController extends AbstractController
 
         $repository = $this->em->getRepository(Users::class);
         $users = $repository->findBy(array(), array('id' => 'DESC'), $pages["perpage"], ($pages["page"] - 1) * $pages["perpage"]);
-        $pages["totalusers"] = $repository->getTotalRows();
-        $pages["start"] = $pages["totalusers"] - (($pages["page"] - 1) * $pages["perpage"]); 
-        $pages["end"] = $pages["totalusers"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'] + 1;
+        $pages["totalitems"] = $repository->getTotalRows();
+        $pages["start"] = $pages["totalitems"] - (($pages["page"] - 1) * $pages["perpage"]); 
+        $pages["end"] = $pages["totalitems"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'] + 1;
         if ($pages["end"] < 0) {
             $pages["end"] = 1;
         }
 
-        if(count($users) == 0 && $pages["totalusers"] != 0) {
+        if(count($users) == 0 && $pages["totalitems"] != 0) {
             return $this->redirectToRoute('app_logs');
         }
 
-        $pages["total"] = ceil($pages["totalusers"] / $pages['perpage']);
-        if($pages["totalusers"] / $pages["perpage"] > $pages["page"]) {
+        $pages["total"] = ceil($pages["totalitems"] / $pages['perpage']);
+        if($pages["totalitems"] / $pages["perpage"] > $pages["page"]) {
             $pages["next"] = true;
         }
         if($pages["page"] - 1 > 0) {
@@ -281,6 +281,7 @@ class UsersController extends AbstractController
     #[Route('/users/delete/{id}', name: 'app_users_delete')]
     public function delete(Users $user): Response
     {
+        dd("add confirmation");
         if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
             return $this->redirectToRoute('app_login');
         }

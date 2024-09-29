@@ -60,19 +60,19 @@ class DMARC_ReportsController extends AbstractController
         } else {
             $reports = $repository->findBy(array('domain' => $domains), array('id' => 'DESC'), $pages["perpage"], ($pages["page"] - 1) * $pages["perpage"]);
         }
-        $pages["totalreports"] = $repository->getTotalRows($reports);
-        $pages["start"] = $pages["totalreports"] - (($pages["page"] - 1) * $pages["perpage"]); 
-        $pages["end"] = $pages["totalreports"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'] + 1;
+        $pages["totalitems"] = $repository->getTotalRows($reports);
+        $pages["start"] = $pages["totalitems"] - (($pages["page"] - 1) * $pages["perpage"]); 
+        $pages["end"] = $pages["totalitems"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'] + 1;
         if ($pages["end"] < 0) {
             $pages["end"] = 1;
         }
 
-        if(count($reports) == 0 && $pages["totalreports"] != 0 && $pages["page"] != 1) {
+        if(count($reports) == 0 && $pages["totalitems"] != 0 && $pages["page"] != 1) {
             return $this->redirectToRoute('app_dmarc_reports');
         }
 
-        $pages["total"] = ceil($pages["totalreports"] / $pages['perpage']);
-        if($pages["totalreports"] / $pages['perpage'] > $pages["page"]) {
+        $pages["total"] = ceil($pages["totalitems"] / $pages['perpage']);
+        if($pages["totalitems"] / $pages['perpage'] > $pages["page"]) {
             $pages["next"] = true;
         }
         if($pages["page"] - 1 > 0) {
@@ -142,6 +142,8 @@ class DMARC_ReportsController extends AbstractController
     #[Route('/reports/dmarc/delete/{report}', name: 'app_dmarc_reports_delete')]
     public function delete(DMARC_Reports $report): Response
     {
+        dd("add confirmation");
+        
         if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
             return $this->redirectToRoute('app_login');
         }

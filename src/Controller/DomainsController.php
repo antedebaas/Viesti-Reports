@@ -75,24 +75,24 @@ class DomainsController extends AbstractController
             }
         }
 
-        $pages["totaldomains"] = $repository->getTotalRows();
-        $pages["start"] = $pages["totaldomains"] - (($pages["page"] - 1) * $pages["perpage"]); 
-        $pages["end"] = $pages["totaldomains"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'] + 1;
+        $pages["totalitems"] = $repository->getTotalRows();
+        $pages["start"] = $pages["totalitems"] - (($pages["page"] - 1) * $pages["perpage"]); 
+        $pages["end"] = $pages["totalitems"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'] + 1;
         if ($pages["end"] < 0) {
             $pages["end"] = 1;
         }
 
-        if(count($domains) == 0 && $pages["totaldomains"] != 0) {
+        if(count($domains) == 0 && $pages["totalitems"] != 0) {
             return $this->redirectToRoute('app_domains');
         }
 
-        if($pages["totaldomains"] / $pages["perpage"] > $pages["page"]) {
+        if($pages["totalitems"] / $pages["perpage"] > $pages["page"]) {
             $pages["next"] = true;
         }
         if($pages["page"] - 1 > 0) {
             $pages["prev"] = true;
         }
-        $pages["total"] = ceil($pages["totaldomains"] / $pages['perpage']);
+        $pages["total"] = ceil($pages["totalitems"] / $pages['perpage']);
 
         return $this->render('domains/index.html.twig', [
             'domains' => $domains,
@@ -332,6 +332,8 @@ class DomainsController extends AbstractController
     #[Route('/domains/delete/{id}', name: 'app_domains_delete')]
     public function delete(Domains $domain): Response
     {
+        dd("add confirmation");
+        
         if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
             return $this->redirectToRoute('app_login');
         }
