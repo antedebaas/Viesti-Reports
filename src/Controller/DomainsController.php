@@ -126,7 +126,7 @@ class DomainsController extends AbstractController
 
         $usersRepository = $this->em->getRepository(Users::class);
         if(!$usersRepository->denyAccessUnlessOwned(array($domain->getId()), $this->getUser())) {
-            return $this->render('not_found.html.twig', []);
+            return $this->render('base/error.html.twig', ['page' => array('title'=> 'Not found'), 'message' => $exception->getMessage()]);
         }
 
         $dkimselector = $domain->getDkimselector();
@@ -271,7 +271,7 @@ class DomainsController extends AbstractController
 
         $usersRepository = $this->em->getRepository(Users::class);
         if(!$usersRepository->denyAccessUnlessOwned(array($domain->getId()), $this->getUser())) {
-            return $this->render('not_found.html.twig', []);
+            return $this->render('base/error.html.twig', ['page' => array('title'=> 'Not found'), 'message' => $exception->getMessage()]);
         }
 
         $form = $this->createForm(DomainFormType::class, $domain);

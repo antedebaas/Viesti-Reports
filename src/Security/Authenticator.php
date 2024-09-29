@@ -63,7 +63,7 @@ class Authenticator extends AbstractLoginFormAuthenticator
         if($user->isVerified() == false) {
 
             return new Response(
-                $this->templating->render('registration/verifyFirst.html.twig'),
+                $this->templating->render('registration/verifyFirst.html.twig', ['page' => array('title'=> 'Verify your email')]),
                 Response::HTTP_SERVICE_UNAVAILABLE
             );
 
