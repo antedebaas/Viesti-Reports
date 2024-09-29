@@ -89,7 +89,6 @@
 				{% endfor %}
 				{% endif %}
 
-				<a href="{{ path('app_logs', {page: pages.total, perpage: pages.perpage }) }}" class="btn btn-sm btn-{% if pages.page == pages.total %}primary{% else %}secondary{% endif %}">{{ pages.total }}</a>
 				<li class="page-item {% if pages.page == pages.total %}active{% endif %}"><a class="page-link" href="{{ path('app_logs', {page: pages.total, perpage: pages.perpage }) }}">{{ pages.total }}</a></li>
 			{% endif %}
 
