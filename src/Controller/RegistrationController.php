@@ -17,16 +17,19 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class RegistrationController extends AbstractController
 {
     private $em;
     private EmailVerifier $emailVerifier;
+    private RequestStack $requestStack;
 
-    public function __construct(EntityManagerInterface $em, EmailVerifier $emailVerifier)
+    public function __construct(EntityManagerInterface $em, EmailVerifier $emailVerifier, RequestStack $requestStack)
     {
         $this->em = $em;
         $this->emailVerifier = $emailVerifier;
+        $this->requestStack = $requestStack;
     }
 
     #[Route('/register', name: 'app_register')]
@@ -65,6 +68,8 @@ class RegistrationController extends AbstractController
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
+                    ->textTemplate('registration/confirmation_email.txt.twig')
+                    ->context(['domain' => $this->requestStack->getCurrentRequest()->getHost()])
             );
             // do anything else you need here, like send an email
 
