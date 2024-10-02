@@ -94,6 +94,16 @@ class GetReportsFromMailboxCommand extends Command
                     $results['secondary']->setSuccess(true, 'Secondary mailbox is disabled.', array('count' => 0, 'reports' => array()));
                 }
 
+                if(!empty($this->params->get('app.pushover_api_key')) && !empty($this->params->get('app.pushover_user_key')))
+                {
+                    $count = $results['primary']->getDetails()["count"] + $results['secondary']->getDetails()["count"];
+                    $application = new Application($this->params->get('app.pushover_api_key'));
+                    $recipient = new Recipient($this->params->get('app.pushover_user_key'));
+                    $message = new Message($count.' new emails have been processed by viesti reports', 'New reports processed.');
+                    $notification = new Notification($application, $recipient, $message);
+                    $notification->push();
+                }
+
                 $log = new Logs();
                 $log->setTime(new \DateTime());
                 $log->setSuccess($results['primary']->getSuccess());
