@@ -21,6 +21,19 @@ class DMARC_ResultsRepository extends ServiceEntityRepository
         parent::__construct($registry, DMARC_Results::class);
     }
 
+    public function findaligned(string $type, string $result): int
+    {
+        return $this->createQueryBuilder('r')
+            ->select('count(r.id)')
+            ->andWhere('r.result = :result')
+            ->setParameter('result', $result)
+            ->andWhere('r.type = :type')
+            ->setParameter('type', $type)
+            ->getQuery()
+            ->getSingleScalarResult();
+        ;
+    }
+
     //    /**
     //     * @return DMARC_Results[] Returns an array of DMARC_Results objects
     //     */

@@ -21,6 +21,30 @@ class SMTPTLS_PoliciesRepository extends ServiceEntityRepository
         parent::__construct($registry, SMTPTLS_Policies::class);
     }
 
+    public function findpolicy(string $policy): int
+    {
+        return $this->createQueryBuilder('r')
+            ->select('count(r.id)')
+            ->andWhere('r.policy_type = :policy')
+            ->setParameter('policy', $policy)
+            ->getQuery()
+            ->getSingleScalarResult();
+        ;
+    }
+
+    public function findstsmode(?string $mode): int
+    {
+        return $this->createQueryBuilder('r')
+            ->select('count(r.id)')
+            ->andWhere('r.policy_type = :policy')
+            ->setParameter('policy', "sts")
+            ->andWhere('r.policy_string_mode = :mode')
+            ->setParameter('mode', $mode)
+            ->getQuery()
+            ->getSingleScalarResult();
+        ;
+    }
+
     //    /**
     //     * @return SMTPTLS_Policies[] Returns an array of SMTPTLS_Policies objects
     //     */

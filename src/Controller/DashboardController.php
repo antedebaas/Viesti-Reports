@@ -16,6 +16,9 @@ use App\Entity\DMARC_Reports;
 use App\Entity\SMTPTLS_Reports;
 use App\Entity\Logs;
 
+use App\Entity\DMARC_Results;
+use App\Entity\SMTPTLS_Policies;
+
 class DashboardController extends AbstractController
 {
     private $em;
@@ -67,6 +70,38 @@ class DashboardController extends AbstractController
         $repository = $this->em->getRepository(Logs::class);
         $logs = $repository->findBy(array(), array('id' => 'DESC'), 3, 0);
 
+        $dmarcresults_repository = $this->em->getRepository(DMARC_Results::class);
+        $smtptlspolicies_repository = $this->em->getRepository(SMTPTLS_Policies::class);
+        
+        $charts = array(
+            'dkim' => array(
+                'pass' => $dmarcresults_repository->findaligned("dkim","pass"),
+                'fail' => $dmarcresults_repository->findaligned("dkim","fail"),
+            ),
+            'spf' => array(
+                'pass' => $dmarcresults_repository->findaligned("spf","pass"),
+                'softfail' => $dmarcresults_repository->findaligned("spf","softfail"),
+                'temperror' => $dmarcresults_repository->findaligned("spf","temperror"),
+                'fail' => $dmarcresults_repository->findaligned("spf","fail"),
+            ),
+            'policy' => array (
+                'sts' => $smtptlspolicies_repository->findpolicy("sts"),
+                'nopolicy' => $smtptlspolicies_repository->findpolicy("no-policy-found"),
+            ),
+            'stsmode' => array (
+                'enforce' => $smtptlspolicies_repository->findstsmode("enforce"),
+                'testing' => $smtptlspolicies_repository->findstsmode("testing"),
+                'none' => $smtptlspolicies_repository->findstsmode(null),
+            ),
+            // 'dmarc' => array(
+            //     'total' => $totalreports,
+            // ),
+            // 'smtptls' => array(
+            //     'total' => $totalreports,
+            // ),
+        );
+        #dd($charts);
+        
         return $this->render('dashboard/index.html.twig', [
             'page' => array(
                 'menu' => array(
@@ -77,6 +112,7 @@ class DashboardController extends AbstractController
                 'title' => $this->translator->trans("Dashboard"),
                 'actions' => array(),
             ),
+            'charts' => $charts,
             'breadcrumbs' => array(array('name' => $this->translator->trans("Dashboard"), 'url' => $this->router->generate('app_dashboard'))),
             'dmarcreports' => $dmarcreports,
             'smtptlsreports' => $smtptlsreports,
