@@ -26,7 +26,7 @@ class GravatarUrlExtention extends AbstractExtension
     {
         $host = $this->requestStack->getCurrentRequest()->getHost();
         if ($host == 'localhost' || '127.0.0.1' || '::1') {
-            $host = 'https://epicgreen.fsn1.your-objectstorage.com/viesti/';
+            $host = 'https://epicgreen.fsn1.your-objectstorage.com/viesti';
         }
         
         $size = 32;
