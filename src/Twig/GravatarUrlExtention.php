@@ -26,11 +26,11 @@ class GravatarUrlExtention extends AbstractExtension
     {
         $host = $this->requestStack->getCurrentRequest()->getHost();
         if ($host == 'localhost' || '127.0.0.1' || '::1') {
-            $host = 'http://reports.epicgreen.nl'; // ToDo-Ante
+            $host = 'https://epicgreen.fsn1.your-objectstorage.com/viesti/';
         }
         
         $size = 32;
-        $default = $host."/assets/images/profile-default.jpg";
+        $default = $host."/profile-default.jpg";
         $grav_url = "https://www.gravatar.com/avatar/" . hash( "sha256", strtolower( trim( $email ) ) ) . "?d=" . urlencode( $default ) . "&s=" . $size;
 
         return $grav_url;
