@@ -30,6 +30,11 @@ use App\Entity\Config;
 use App\Response\MailboxResponse;
 use App\Response\MailReportResponse;
 
+use Serhiy\Pushover\Application;
+use Serhiy\Pushover\Recipient;
+use Serhiy\Pushover\Api\Message\Message;
+use Serhiy\Pushover\Api\Message\Notification;
+
 use App\Enums\ReportType;
 
 #[AsCommand(
