@@ -61,6 +61,10 @@ class LogsRepository extends ServiceEntityRepository
             $returndata = array("reports" => array('message' => array('success' => false, 'reporttype' => ReportType::Unknown, 'message'=> $data, 'mailid' => '')));
         }
 
+        if(is_bool($returndata)) {
+            $returndata = array("reports" => array('message' => array('success' => false, 'reporttype' => ReportType::Unknown, 'message'=> print_r($returndata), 'mailid' => '')));
+        }
+
         return $returndata;
     }
 
