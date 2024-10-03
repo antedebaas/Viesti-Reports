@@ -14,8 +14,9 @@
                           <div class="card-body">
                             <p class="card-text">
                                 {{ form_errors(registrationForm) }}
-
                                 {{ form_start(registrationForm) }}
+                                {{ form_row(registrationForm.first_name) }}
+                                {{ form_row(registrationForm.last_name) }}
                                 {{ form_row(registrationForm.email) }}
                                 {{ form_row(registrationForm.plainPassword, { label: 'Password' }) }}
                                 <button type="submit" class="btn btn-secondary">Register</button>
