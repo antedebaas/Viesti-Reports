@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Response\MailReportResponse;
 
+use App\Enums\ReportType;
+
 /**
  * @extends ServiceEntityRepository<Logs>
  *
@@ -49,22 +51,17 @@ class LogsRepository extends ServiceEntityRepository
 
     public function try_unserialize($data): array
     {
-        if(is_string($data)) {
-            try {
-                $data = unserialize($data);
-            } catch (\Exception $e) {
-                $response = new MailReportResponse();
-                if(!is_null($data)) {
-                    $response->setSuccess(false, $data);
-                }
-                $data = array('count' => 1, 'reports' => array($response));
+        try {
+            if(is_null($data)) {
+                $returndata = array("reports" => array('message' => array('success' => false, 'reporttype' => ReportType::Unknown, 'message'=> 'No data', 'mailid' => '')));
+            } else {
+                $returndata = unserialize($data);
             }
-        } elseif (is_null($data)) {
-            $data = array();
-        } else {
-            $data = array($data);
+        } catch (\Exception $e) {
+            $returndata = array("reports" => array('message' => array('success' => false, 'reporttype' => ReportType::Unknown, 'message'=> $data, 'mailid' => '')));
         }
-        return $data;
+
+        return $returndata;
     }
 
     public function getTotalRows(): int

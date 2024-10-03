@@ -98,6 +98,7 @@ class LogsController extends AbstractController
 
         $details = array();
         $repository = $this->em->getRepository(Logs::class);
+        
         foreach($repository->try_unserialize($log->getDetails()) as $key => $value) {
             $details[$key] = $value;
         }
