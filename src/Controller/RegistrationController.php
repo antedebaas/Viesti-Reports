@@ -35,8 +35,8 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, Authenticator $authenticator, EntityManagerInterface $entityManager): Response
     {
-        if ($this->getParameter('app.enable_registration') != "true") {
-            return $this->render('base/error.html.twig', ['page' => array('title'=> 'Not found'), 'message' => $exception->getMessage()]);
+        if ($this->getParameter('app.enable_registration') == false) {
+            return $this->render('base/error.html.twig', ['page' => array('title'=> 'Registration disabled'), 'message' => 'Registration is disabled.']);
         }
         $repository = $this->em->getRepository(Users::class);
         if(!file_exists(dirname(__FILE__).'/../../.env.local') || $repository->count([]) == 0) {
