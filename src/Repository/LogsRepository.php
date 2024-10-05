@@ -48,25 +48,6 @@ class LogsRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    public function try_unserialize($data): array
-    {
-        try {
-            if(is_null($data)) {
-                $returndata = array("reports" => array('message' => array('success' => false, 'reporttype' => ReportType::Other, 'message'=> 'No data', 'mailid' => '')));
-            } else {
-                $returndata = unserialize($data);
-            }
-        } catch (\Exception $e) {
-            $returndata = array("reports" => array('message' => array('success' => false, 'reporttype' => ReportType::Other, 'message'=> $data, 'mailid' => '')));
-        }
-
-        if(is_bool($returndata)) {
-            $returndata = array("reports" => array('message' => array('success' => false, 'reporttype' => ReportType::Other, 'message'=> print_r($returndata), 'mailid' => '')));
-        }
-
-        return $returndata;
-    }
-
     public function getTotalRows(): int
     {
         return $this->createQueryBuilder('r')
