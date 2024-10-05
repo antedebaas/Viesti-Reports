@@ -67,8 +67,8 @@ class RegistrationController extends AbstractController
                     ->from(new Address($_ENV['MAILBOX_USERNAME'], 'Viesti Reports'))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
-                    ->textTemplate('registration/confirmation_email.txt.twig')
+                    ->htmlTemplate('emails/confirmation_email.html.twig')
+                    ->textTemplate('emails/confirmation_email.txt.twig')
                     ->context(['domain' => $this->requestStack->getCurrentRequest()->getHost()])
             );
             // do anything else you need here, like send an email

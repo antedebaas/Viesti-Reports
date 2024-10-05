@@ -241,20 +241,28 @@ class UsersController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $formdata = $form->getData();
 
+            $password0 = $form->get("password0")->getData();
             $password1 = $form->get("password1")->getData();
             $password2 = $form->get("password2")->getData();
 
-            if($password1 == $password2 && $password1 != "") {
-                $formdata->setPassword(
-                    $userPasswordHasher->hashPassword(
-                        $formdata,
-                        $form->get('password1')->getData()
-                    )
-                );
+            //verify password
+            if($userPasswordHasher->isPasswordValid($this->getUser(), $password0)) {
+                if($password1 == $password2){
+                    $formdata->setPassword(
+                        $userPasswordHasher->hashPassword(
+                            $formdata,
+                            $form->get('password1')->getData()
+                        )
+                    );
+                    $this->em->persist($formdata);
+                    $this->em->flush();
+                    $this->addFlash('success', $this->translator->trans("Password updated"));
+                } else {
+                    $this->addFlash('danger', $this->translator->trans("Passwords do not match"));
+                }
+            } else {
+                $this->addFlash('danger', $this->translator->trans("Current password is incorrect"));
             }
-            $this->em->persist($formdata);
-            $this->em->flush();
-            
 
             return $this->redirectToRoute('app_user_profile');
         }

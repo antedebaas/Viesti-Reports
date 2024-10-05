@@ -27,7 +27,7 @@ security:
                 lifetime: 604800
                 path: /
                 always_remember_me: false
-                signature_properties: ['password', 'updatedAt']
+                signature_properties: ['password']
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
