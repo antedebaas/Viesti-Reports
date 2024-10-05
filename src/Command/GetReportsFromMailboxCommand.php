@@ -213,7 +213,7 @@ class GetReportsFromMailboxCommand extends Command
             $details['count']++;
         }
 
-        if($success == false) {
+        if($success == false && $details['count'] > 0) {
             $failedReports = 0;
             foreach ($details['reports'] as $report) {
                 if($report->getState() == StateType::Fail) {
