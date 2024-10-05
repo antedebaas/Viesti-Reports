@@ -7,6 +7,12 @@
 		</div>
 		<div class="card card-md">
 			<div class="card-body">
+				{% include "base/flash.html.twig" %}
+				{% if error %}
+					<div class="alert alert-danger">
+						{{ error.messageKey|trans(error.messageData, 'security') }}
+					</div>
+				{% endif %}
 				{% if app.user %}
 					<h2 class="h2 text-center mb-4">{{ 'Login to your account'|trans }}</h2>
 					<div class="mb-3">
