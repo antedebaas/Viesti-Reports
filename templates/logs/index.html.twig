@@ -14,6 +14,7 @@
 					<th>{{ "State"|trans }}</th>
 					<th>{{ "Date"|trans }}</th>
 					<th class="d-none d-lg-table-cell">{{ "Time"|trans }}</th>
+					<th>{{ "Mails"|trans }}</th>
 					<th class="d-none d-lg-table-cell">{{ "Message"|trans }}</th>
 					<th></th>
 				</tr>
@@ -24,14 +25,19 @@
 				<tr>
 					<td><span class="text-secondary">{{ log.id }}</span></td>
 					<td>
-						{% if log.success == false %}
-							<span class="badge bg-red"></span>
-						{% else %}
-							<span class="badge bg-green"></span>
-						{% endif %}
+					{% if log.state == constant('App\\Enums\\StateType::Fail') %}
+						<span class="badge bg-red"></span>
+					{% elseif log.state == constant('App\\Enums\\StateType::Warn') %}
+						<span class="badge bg-yellow"></span>
+					{% elseif log.state == constant('App\\Enums\\StateType::Good') %}
+						<span class="badge bg-green"></span>
+					{% else %}
+						<span class="badge bg-gray"></span>
+					{% endif %}
 					</td>
 					<td>{{ log.time|date("d-M-Y") }}</td>
 					<td class="d-none d-lg-table-cell">{{ log.time|date("H:i:s") }}</td>
+					<td><span class="badge bg-blue me-1 text-white">{{ log.mailcount }}</span></td>
 					<td class="d-none d-lg-table-cell">{{ log.message }} </td>
 					<td class="text-end">
 						<span class="dropdown">

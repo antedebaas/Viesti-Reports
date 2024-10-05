@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum TXTRecordStates : int
+enum StateType : int
 {
     case Fail = 0;
     case Warn = 1;

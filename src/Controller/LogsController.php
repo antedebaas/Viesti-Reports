@@ -13,7 +13,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Entity\Logs;
 
 use App\Repository\LogsRepository;
-use App\Response\MailReportResponse;
 
 class LogsController extends AbstractController
 {
@@ -99,15 +98,9 @@ class LogsController extends AbstractController
         $details = array();
         $repository = $this->em->getRepository(Logs::class);
         
-        foreach($repository->try_unserialize($log->getDetails()) as $key => $value) {
+        foreach($log->getDetails() as $key => $value) {
             $details[$key] = $value;
         }
-
-        if(empty($details)) {
-            $response = new MailReportResponse();
-            $response->setSuccess($log->isSuccess(), $log->getMessage());
-            $details['reports'] = array($response);
-        };
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 

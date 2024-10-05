@@ -15,6 +15,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Logs;
 use App\Entity\Config;
 
+use App\Enums\StateType;
+use App\Enums\ReportType;
+
 #[AsCommand(
     name: 'app:removemaillock',
     description: 'Remove mail locks',
@@ -42,14 +45,26 @@ class RemoveMailLock extends Command
         $lock->setValue('false');
         $this->em->persist($lock);
 
+        $details = array(
+            'count' => 1,
+            'reports' => array(
+                array(
+                    'type' => ReportType::Other,
+                    'state' => StateType::Good,
+                    'message' => 'Mail lock has been removed manually'
+                )
+            )
+        );
+
         if (!$input->getOption('quiet')) {
             $log = new Logs();
             $log->setTime(new \DateTime());
-            $log->setSuccess(true);
+            $log->setState(StateType::Good);
             $log->setMessage("Lock manually removed");
-            $log->setDetails("Lock has been removed manually");
+            $log->setDetails($details);
+            $log->setMailcount(0);
             $this->em->persist($log);
-            
+            $this->em->flush();
             $io->success('Lock manually removed');
         }
         $this->em->flush();

@@ -175,17 +175,17 @@ class DomainsController extends AbstractController
 
     private function findvalidtxtrecords(array $records): array {
         $result = array(
-            'SPF'=> array(new TXTRecords\SPF1(""),TXTRecordStates::FAIL),
-            'DKIM'=> array(new TXTRecords\DKIM1(""),TXTRecordStates::FAIL),
-            'BIMI'=> array(new TXTRecords\BIMI1(""),TXTRecordStates::FAIL),
-            'STS'=> array(new TXTRecords\STSV1(""),TXTRecordStates::FAIL),
-            'DMARC'=> array(new TXTRecords\DMARC1(""),TXTRecordStates::FAIL),
-            'TLSRPT'=> array(new TXTRecords\TLSRPTV1(""),TXTRecordStates::FAIL),
+            'SPF'=> array(new TXTRecords\SPF1(""),TXTRecordStates::Fail),
+            'DKIM'=> array(new TXTRecords\DKIM1(""),TXTRecordStates::Fail),
+            'BIMI'=> array(new TXTRecords\BIMI1(""),TXTRecordStates::Fail),
+            'STS'=> array(new TXTRecords\STSV1(""),TXTRecordStates::Fail),
+            'DMARC'=> array(new TXTRecords\DMARC1(""),TXTRecordStates::Fail),
+            'TLSRPT'=> array(new TXTRecords\TLSRPTV1(""),TXTRecordStates::Fail),
         );
 
         foreach($records as $record) {
             if($record->v()->version() == 1) {
-                $result[$record->v()->type()] = array($record->v(),TXTRecordStates::GOOD);
+                $result[$record->v()->type()] = array($record->v(),TXTRecordStates::Good);
             }
         }
         

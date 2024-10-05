@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\Logs;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Response\MailReportResponse;
 
 use App\Enums\ReportType;
 
@@ -53,16 +52,16 @@ class LogsRepository extends ServiceEntityRepository
     {
         try {
             if(is_null($data)) {
-                $returndata = array("reports" => array('message' => array('success' => false, 'reporttype' => ReportType::Unknown, 'message'=> 'No data', 'mailid' => '')));
+                $returndata = array("reports" => array('message' => array('success' => false, 'reporttype' => ReportType::Other, 'message'=> 'No data', 'mailid' => '')));
             } else {
                 $returndata = unserialize($data);
             }
         } catch (\Exception $e) {
-            $returndata = array("reports" => array('message' => array('success' => false, 'reporttype' => ReportType::Unknown, 'message'=> $data, 'mailid' => '')));
+            $returndata = array("reports" => array('message' => array('success' => false, 'reporttype' => ReportType::Other, 'message'=> $data, 'mailid' => '')));
         }
 
         if(is_bool($returndata)) {
-            $returndata = array("reports" => array('message' => array('success' => false, 'reporttype' => ReportType::Unknown, 'message'=> print_r($returndata), 'mailid' => '')));
+            $returndata = array("reports" => array('message' => array('success' => false, 'reporttype' => ReportType::Other, 'message'=> print_r($returndata), 'mailid' => '')));
         }
 
         return $returndata;

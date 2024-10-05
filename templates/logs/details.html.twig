@@ -7,7 +7,17 @@
 	</div>
   <div class="card-body">
     <p><b>Time:</b> {{ log.time|date("d-M-Y H:i:s") }}</small></p>
-    <p><b>State:</b> {{ log.success ? '<span class="text-success">success</span>' : '<span class="text-danger">Failure</span>' }}</p>
+    <p><b>State:</b>
+              {% if log.state == constant('App\\Enums\\StateType::Fail') %}
+                <span class="text-red">Failure</span>
+              {% elseif log.state == constant('App\\Enums\\StateType::Warn') %}
+                <span class="text-yellow">Warning</span>
+              {% elseif log.state == constant('App\\Enums\\StateType::Good') %}
+                <span class="text-green">Good</span>
+              {% else %}
+                <span class="text-grey">Unknown</span>
+              {% endif %}
+    </p>
     <p><b>Message:</b> {{ log.message }}</p>
   </div>
 	<div class="table-responsive">
@@ -23,26 +33,30 @@
 				</tr>
 			</thead>
       <tbody>
-        {% for detail in details['reports'] %}
+        {% for detail in details.reports %}
           <tr>
             <td>
-              {% if detail.success == false %}
+              {% if detail.state == constant('App\\Enums\\StateType::Fail') %}
                 <span class="badge bg-red"></span>
-              {% else %}
+              {% elseif detail.state == constant('App\\Enums\\StateType::Warn') %}
+                <span class="badge bg-yellow"></span>
+              {% elseif detail.state == constant('App\\Enums\\StateType::Good') %}
                 <span class="badge bg-green"></span>
+              {% else %}
+                <span class="badge bg-gray"></span>
               {% endif %}
             </td>
             <td>
-              {% if detail.reporttype == constant('App\\Enums\\ReportType::DMARC') %}
+              {% if detail.type == constant('App\\Enums\\ReportType::DMARC') %}
                 DMARC
-              {% elseif detail.reporttype == constant('App\\Enums\\ReportType::STS') %}
+              {% elseif detail.type == constant('App\\Enums\\ReportType::STS') %}
                 STS
-              {% elseif detail.reporttype == constant('App\\Enums\\ReportType::Unknown') %}
-                Unknown
+              {% else %}
+                Other
               {% endif %}
             </td>
             <td>{{ detail.message }}</td>
-            <td>{{ detail.mailid }}</td>
+            <td>{% if detail.mailid is defined %}{{ detail.mailid }}{% endif %}</td>
           </tr>
         {% endfor %}
       </tbody>
@@ -80,7 +94,7 @@
                                             DMARC
                                         {% elseif detail.reporttype == constant('App\\Enums\\ReportType::STS') %}
                                             STS
-                                        {% elseif detail.reporttype == constant('App\\Enums\\ReportType::Unknown') %}
+                                        {% elseif detail.reporttype == constant('App\\Enums\\ReportType::Other') %}
                                             Unknown
                                         {% endif %}
                                       </td>
