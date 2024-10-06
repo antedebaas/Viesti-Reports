@@ -70,32 +70,11 @@ class DashboardController extends AbstractController
         $repository = $this->em->getRepository(Logs::class);
         $logs = $repository->findBy(array(), array('id' => 'DESC'), 3, 0);
 
-        $dmarcresults_repository = $this->em->getRepository(DMARC_Results::class);
-        $smtptlspolicies_repository = $this->em->getRepository(SMTPTLS_Policies::class);
-        
-        $charts = array(
-            'dkim' => array(
-                'pass' => $dmarcresults_repository->findaligned("dkim","pass"),
-                'fail' => $dmarcresults_repository->findaligned("dkim","fail"),
-            ),
-            'spf' => array(
-                'pass' => $dmarcresults_repository->findaligned("spf","pass"),
-                'softfail' => $dmarcresults_repository->findaligned("spf","softfail"),
-                'temperror' => $dmarcresults_repository->findaligned("spf","temperror"),
-                'fail' => $dmarcresults_repository->findaligned("spf","fail"),
-            ),
-            'policy' => array (
-                'sts' => $smtptlspolicies_repository->findpolicy("sts"),
-                'nopolicy' => $smtptlspolicies_repository->findpolicy("no-policy-found"),
-            ),
-            'stsmode' => array (
-                'enforce' => $smtptlspolicies_repository->findstsmode("enforce"),
-                'testing' => $smtptlspolicies_repository->findstsmode("testing"),
-                'none' => $smtptlspolicies_repository->findstsmode(null),
-            ),
-        );
-        $repository = $this->em->getRepository(DMARC_Reports::class);
-        
+        $dmarc_repository = $this->em->getRepository(DMARC_Reports::class);
+        $smtptls_repository = $this->em->getRepository(SMTPTLS_Reports::class);
+        $stats['dmarc'] = $dmarc_repository->getReportsGrouped($this->getUser(), 'lastmonth');
+        $stats['smtptls'] = $smtptls_repository->getReportsGrouped($this->getUser(), 'lastmonth');
+
         return $this->render('dashboard/index.html.twig', [
             'page' => array(
                 'menu' => array(
@@ -106,8 +85,7 @@ class DashboardController extends AbstractController
                 'title' => $this->translator->trans("Dashboard"),
                 'actions' => array(),
             ),
-            'charts' => $charts,
-            'stats' => $repository->getReportsGroupedByMonth($this->getUser()),
+            'stats' => $stats,
             'breadcrumbs' => array(array('name' => $this->translator->trans("Dashboard"), 'url' => $this->router->generate('app_dashboard'))),
             'dmarcreports' => $dmarcreports,
             'smtptlsreports' => $smtptlsreports,

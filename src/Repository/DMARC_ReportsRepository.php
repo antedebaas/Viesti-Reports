@@ -3,11 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\DMARC_Reports;
+use App\Entity\Users;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\SecurityBundle\Security;
 
-use App\Entity\Users;
 /**
  * @extends ServiceEntityRepository<DMARC_Reports>
  *
@@ -74,23 +74,37 @@ class DMARC_ReportsRepository extends ServiceEntityRepository
         ;
     }
 
-    public function getReportsGroupedByMonth(Users $user): array
+    public function getReportsGrouped(Users $user, string $timeframe): array
     {
-        $currentDate = new \DateTime();
-        $months = array();
-        for ($i = 0; $i < 24; $i++) {
-            $months[] = $currentDate->format('Y-m');
-            $currentDate->modify('-1 month');
+        switch($timeframe) {
+            case '3months':
+                $daterange = $this->getDateRangesFor('-3 months');
+                break;
+            case 'lastmonth':
+                $daterange = $this->getDateRangesFor('-1 months');
+                break;
+            case'7days':
+                $daterange = $this->getDateRangesFor('-7 days');
+                break;
+            default:
+                $daterange = $this->getDateRangesFor('-3 months');
+                break;
         }
-        $months = array_reverse($months);
+        $daterange = array_reverse($daterange);
 
         $result = array();
-        foreach($months as $key => $month) {
-            $startDate = new \DateTime($month . '-01');
-            $endDate = (clone $startDate)->modify('last day of this month');
+        $global_stats = array(
+            'dkim_pass' => 0,
+            'dkim_fail' => 0,
+            'spf_pass' => 0,
+            'spf_fail' => 0,
+        );
+        foreach($daterange as $key => $date) {
+            $startDate = new \DateTime($date['start']);
+            $endDate = new \DateTime($date['end']);
 
             if(!in_array("ROLE_ADMIN", $user->getRoles())) {
-                $qb_thismonth = $this->createQueryBuilder('r')
+                $qb = $this->createQueryBuilder('r')
                     ->andWhere('r.begin_time >= :start')
                     ->andWhere('r.begin_time <= :end')
                     ->setParameter('start', $startDate)
@@ -100,7 +114,7 @@ class DMARC_ReportsRepository extends ServiceEntityRepository
                     ->getQuery()->getResult()
                 ;
             } else {
-                $qb_thismonth = $this->createQueryBuilder('r')
+                $qb = $this->createQueryBuilder('r')
                     ->andWhere('r.begin_time >= :start')
                     ->andWhere('r.begin_time <= :end')
                     ->setParameter('start', $startDate)
@@ -109,40 +123,78 @@ class DMARC_ReportsRepository extends ServiceEntityRepository
                 ;
             }
             
-            $result[$month] = $qb_thismonth;
+            $result['dates'][$date['start']] = $qb;
 
             $totals = array(
-                'name' => $month,
-                'policy_dkim_fail' => 0,
-                'policy_dkim_pass' => 0,
-                'policy_spf_fail' => 0,
-                'policy_spf_pass' => 0,
+                'name' => $date['start'],
+                'dkim_pass' => 0,
+                'dkim_fail' => 0,
+                'spf_pass' => 0,
+                'spf_fail' => 0,
             );
 
-            foreach($qb_thismonth as $report) {
+            foreach($qb as $report) {
                 foreach($report->getDMARC_Records() as $record) {
                     switch($record->getPolicyDkim()) {
                         case 'fail':
-                            $totals['policy_dkim_fail']++;
+                            $totals['dkim_fail']++;
+                            $global_stats['dkim_fail']++;
                             break;
                         default:
-                            $totals['policy_dkim_pass']++;
+                            $totals['dkim_pass']++;
+                            $global_stats['dkim_pass']++;
                             break;
                     }
                     switch($record->getPolicySpf()) {
                         case 'fail':
-                            $totals['policy_spf_fail']++;
+                            $totals['spf_fail']++;
+                            $global_stats['spf_fail']++;
                             break;
                         default:
-                            $totals['policy_spf_pass']++;
+                            $totals['spf_pass']++;
+                            $global_stats['spf_pass']++;
                             break;
                     }
-
                 }
             }
-
-            $result[$month] = $totals;
+            $result['dates'][$date['start']] = $totals;
         }
+
+        if($global_stats['dkim_pass'] > $global_stats['dkim_fail']) {
+            $result['dkim_trend'] = true;
+        } else {
+            $result['dkim_trend'] = false;
+        }
+        $result['dkim_total'] = $global_stats['dkim_pass'] + $global_stats['dkim_fail'];
+
+        if($global_stats['spf_pass'] > $global_stats['spf_fail']) {
+            $result['spf_trend'] = true;
+        } else {
+            $result['spf_trend'] = false;
+        }
+        $result['spf_total'] = $global_stats['spf_pass'] + $global_stats['spf_fail'];
+
         return $result;
+    }
+
+    private function getDateRangesFor($range): array
+    {
+        $currentDate = new \DateTime();
+        $startDate = (clone $currentDate)->modify($range);
+
+        $dateRanges = [];
+
+        while ($startDate <= $currentDate) {
+            $endDate = clone $startDate;
+
+            $dateRanges[] = [
+                'start' => $startDate->format('Y-m-d'),
+                'end' => $endDate->format('Y-m-d')
+            ];
+
+            $startDate->modify('+1 day');
+        }
+
+        return $dateRanges;
     }
 }
