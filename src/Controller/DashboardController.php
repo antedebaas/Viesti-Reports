@@ -93,14 +93,8 @@ class DashboardController extends AbstractController
                 'testing' => $smtptlspolicies_repository->findstsmode("testing"),
                 'none' => $smtptlspolicies_repository->findstsmode(null),
             ),
-            // 'dmarc' => array(
-            //     'total' => $totalreports,
-            // ),
-            // 'smtptls' => array(
-            //     'total' => $totalreports,
-            // ),
         );
-        #dd($charts);
+        $repository = $this->em->getRepository(DMARC_Reports::class);
         
         return $this->render('dashboard/index.html.twig', [
             'page' => array(
@@ -113,6 +107,7 @@ class DashboardController extends AbstractController
                 'actions' => array(),
             ),
             'charts' => $charts,
+            'stats' => $repository->getReportsGroupedByMonth($this->getUser()),
             'breadcrumbs' => array(array('name' => $this->translator->trans("Dashboard"), 'url' => $this->router->generate('app_dashboard'))),
             'dmarcreports' => $dmarcreports,
             'smtptlsreports' => $smtptlsreports,
