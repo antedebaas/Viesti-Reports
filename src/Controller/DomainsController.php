@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Form\DomainFormType;
+use App\Form\DeleteFormType;
 
 use App\Entity\Users;
 use App\Entity\Domains;
@@ -330,19 +331,48 @@ class DomainsController extends AbstractController
     }
 
     #[Route('/domains/delete/{id}', name: 'app_domains_delete')]
-    public function delete(Domains $domain): Response
+    public function delete(Domains $domain, Request $request): Response
     {
-        dd("add confirmation");
-        
         if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
             return $this->redirectToRoute('app_login');
         }
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        $this->em->remove($domain);
-        $this->em->flush();
+        $form = $this->createForm(DeleteFormType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $formdata = $form->getData();
+            if($formdata['item'] == $domain->getFqdn()) {
+                $this->addFlash('success', 'Domain deleted');
 
-        return $this->redirectToRoute('app_domains');
+                $this->em->remove($domain);
+                $this->em->flush();
+                
+                return $this->redirectToRoute('app_domains');
+            } else {
+                $this->addFlash('danger', 'The name you typed does not match the domain name');
+            }
+        }
+
+        return $this->render('base/delete.html.twig', [
+            'page' => array(
+                'menu' => array(
+                    'category' => 'domains',
+                    'item' => 'edit'
+                ),
+                'pretitle' => $this->translator->trans("Domains"),
+                'title' => $this->translator->trans("Delete domain")." ".$domain->getFqdn(),
+                'actions' => array(),
+            ),
+            'item' => $domain->getFqdn(),
+            'form' => $form,
+            'breadcrumbs' => array(
+                array('name' => $this->translator->trans("Domains"), 'url' => $this->router->generate('app_domains')),
+                array('name' => $domain->getFqdn(), 'url' => $this->router->generate('app_domains')),
+                array('name' => $domain->getFqdn(), 'url' => $this->router->generate('app_domains_delete', ['id' => $domain->getId()]))
+            ),
+        ]);
     }
 }

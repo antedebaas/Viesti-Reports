@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -13,6 +14,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Entity\Users;
 use App\Entity\SMTPTLS_Reports;
 use App\Entity\Domains;
+
+use App\Form\DeleteFormType;
 
 use App\Repository\SMTPTLS_ReportsRepository;
 
@@ -139,19 +142,49 @@ class SMTPTLS_ReportsController extends AbstractController
     }
 
     #[Route('/reports/smtptls/delete/{report}', name: 'app_smtptls_reports_delete')]
-    public function delete(SMTPTLS_Reports $report): Response
+    public function delete(SMTPTLS_Reports $report, Request $request): Response
     {
-        dd("add confirmation");
-        
         if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
             return $this->redirectToRoute('app_login');
         }
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        $this->em->remove($report);
-        $this->em->flush();
+        $form = $this->createForm(DeleteFormType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $formdata = $form->getData();
+            if($formdata['item'] == $report->getId()) {
+                $this->addFlash('success', 'Report deleted');
 
-        return $this->redirectToRoute('app_smtptls_reports');
+                $this->em->remove($report);
+                $this->em->flush();
+                
+                return $this->redirectToRoute('app_smtptls_reports');
+            } else {
+                $this->addFlash('danger', 'The id you typed does not match the report id');
+            }
+        }
+
+        return $this->render('base/delete.html.twig', [
+            'page' => array(
+                'menu' => array(
+                    'category' => 'domains',
+                    'item' => 'edit'
+                ),
+                'pretitle' => $this->translator->trans("SMTP-TLS Reports"),
+                'title' => $this->translator->trans("Delete report")." ".$report->getId(),
+                'actions' => array(),
+            ),
+            'item' => $report->getId(),
+            'form' => $form,
+            'breadcrumbs' => array(
+                array('name' => $this->translator->trans("Reports"), 'url' => $this->router->generate('app_reports')),
+                array('name' => $this->translator->trans("SMTP-TLS"), 'url' => $this->router->generate('app_smtptls_reports')),
+                array('name' => $this->translator->trans("Report")." #".$report->getId(), 'url' => $this->router->generate('app_smtptls_reports')),
+                array('name' => $report->getId(), 'url' => $this->router->generate('app_smtptls_reports_delete', ['report' => $report->getId()]))
+            ),
+        ]);
     }
 }

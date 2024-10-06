@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -10,11 +11,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 use App\Form\UserFormType;
 use App\Form\UserProfileFormType;
+use App\Form\DeleteFormType;
 
 use App\Entity\Users;
 
@@ -287,14 +288,49 @@ class UsersController extends AbstractController
     }
 
     #[Route('/users/delete/{id}', name: 'app_users_delete')]
-    public function delete(Users $user): Response
+    public function delete(Users $user, Request $request): Response
     {
-        dd("add confirmation");
         if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
             return $this->redirectToRoute('app_login');
         }
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $form = $this->createForm(DeleteFormType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $formdata = $form->getData();
+            if($formdata['item'] == $user->getEmail()) {
+                $this->addFlash('success', 'User deleted');
+
+                $this->em->remove($user);
+                $this->em->flush();
+                
+                return $this->redirectToRoute('app_users');
+            } else {
+                $this->addFlash('danger', 'The name you typed does not match the users email');
+            }
+        }
+
+        return $this->render('base/delete.html.twig', [
+            'page' => array(
+                'menu' => array(
+                    'category' => 'users',
+                    'item' => 'edit'
+                ),
+                'pretitle' => $this->translator->trans("Users"),
+                'title' => $this->translator->trans("Delete user")." ".$user->getEmail(),
+                'actions' => array(),
+            ),
+            'item' => $user->getEmail(),
+            'form' => $form,
+            'breadcrumbs' => array(
+                array('name' => $this->translator->trans("Users"), 'url' => $this->router->generate('app_users')),
+                array('name' => $user->getEmail(), 'url' => $this->router->generate('app_users')),
+                array('name' => $user->getEmail(), 'url' => $this->router->generate('app_users_delete', ['id' => $user->getId()]))
+            ),
+        ]);
 
         $this->em->remove($user);
         $this->em->flush();

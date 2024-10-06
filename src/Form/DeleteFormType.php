@@ -2,25 +2,19 @@
 
 namespace App\Form;
 
-use App\Entity\MXRecords;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class MXRecordsEmbeddedFormType extends AbstractType
+class DeleteFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', null, [
-                'label' => false,
-                'required' => true,
-            ])
-            ->add('in_sts', CheckboxType::class, [
-                'label' => 'In STS policy',
-                'required' => false,
+            ->add('item', TextType::class, [
+                'label' => 'Type the name to confirm deletion',
             ])
         ;
     }
@@ -28,7 +22,6 @@ class MXRecordsEmbeddedFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => MXRecords::class,
         ]);
     }
 }
