@@ -92,7 +92,8 @@ class UsersController extends AbstractController
                     0 => array(
                         'primary' => true,
                         'name' => $this->translator->trans("Add"),
-                        'target' => $this->router->generate('app_users_add')
+                        'target' => $this->router->generate('app_users_add'),
+                        'icon' => "plus"
                     ),
                 ),
             ),

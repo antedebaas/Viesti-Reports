@@ -3,21 +3,21 @@
 									<div class="btn-list">
 										{% if page.actions %}
 											{% for action in page.actions %}
-												{% if action.target[0:1] == "#" %}{# modal version #}
+												{% if action.target[0:1] == "#" %}
 													<a href="#" class="btn {% if action.primary|default(false) %}btn-primary{% endif %} d-none d-sm-inline" data-bs-toggle="modal" data-bs-target="{{ action.target }}">
-														<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+														{% include 'base/page_actions_icons.html.twig' %}
 														{{ action.name }}
 													</a>
-													<a href="#" class="btn {% if action.primary|default(false) %}btn-primary{% endif %} d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="{{ action.target }}" aria-label="{{ action.name }}">
-														<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+													<a href="#" class="btn {% if action.primary|default(false) %}btn-primary{% endif %} d-sm-none btn-action.icon" data-bs-toggle="modal" data-bs-target="{{ action.target }}" aria-label="{{ action.name }}">
+														{% include 'base/page_actions_icons.html.twig' %}
 													</a>
 												{% else %}
 													<a href="{{ action.target }}" class="btn {% if action.primary|default(false) %}btn-primary{% endif %} d-none d-sm-inline">
-														<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+														{% include 'base/page_actions_icons.html.twig' %}
 														{{ action.name }}
 													</a>
-													<a href="{{ action.target }}" class="btn {% if action.primary|default(false) %}btn-primary{% endif %} d-sm-none btn-icon" aria-label="{{ action.name }}">
-														<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+													<a href="{{ action.target }}" class="btn {% if action.primary|default(false) %}btn-primary{% endif %} d-sm-none btn-action.icon" aria-label="{{ action.name }}">
+														{% include 'base/page_actions_icons.html.twig' %}
 													</a>
 												{% endif %}
 											{% endfor %}

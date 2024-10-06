@@ -110,7 +110,8 @@ class DomainsController extends AbstractController
                     0 => array(
                         'primary' => true,
                         'name' => $this->translator->trans("Add"),
-                        'target' => $this->router->generate('app_domains_add')
+                        'target' => $this->router->generate('app_domains_add'),
+                        'icon' => "plus"
                     ),
                 ),
             ),
@@ -251,7 +252,14 @@ class DomainsController extends AbstractController
                 ),
                 'pretitle' => $this->translator->trans("Domains"),
                 'title' => $this->translator->trans("Add domain"),
-                'actions' => array(),
+                'actions' => array(
+                    0 => array(
+                        'primary' => false,
+                        'name' => $this->translator->trans("Example DNS Records"),
+                        'target' => "#modal-dnssettings",
+                        'icon' => "globe"
+                    ),
+                ),
             ),
             'domain' => null,
             'dns_info' => $dns_info,
