@@ -8,7 +8,7 @@
 	{% include 'dashboard/barchart.html.twig' with { stats: stats.dmarc, show: [['spf_pass','green'] ,['spf_fail','purple']], tag: 'spf', title: "SPF alignment", element: 'spf-aligned' } %}
 	{% include 'dashboard/barchart.html.twig' with { stats: stats.smtptls, show: [['policy_sts','green'],['policy_nopolicy','grey']], tag: 'policy', title: "STS-Policy alignment", element: 'policy-aligned' } %}
 	{% include 'dashboard/barchart.html.twig' with { stats: stats.smtptls, show: [['stsmode_enforce','green'],['stsmode_testing','yellow'],['stsmode_none','purple']], tag: 'stsmode',  title: "STS-Mode alignment",  element: 'stsmode-aligned' } %}
-
+</div>
 {% endblock %}
 
 {% block javascripts_footer %}
