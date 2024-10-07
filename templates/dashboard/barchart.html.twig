@@ -36,6 +36,7 @@
 			series: [
 			{% for key,element in show %}
 			{
+				name: "{{ show[key][2] }}",
 				data: [{% for item in stats.dates %}{{ attribute(item,show[key][0]) }},{% endfor %}],
 				color: tabler.getColor("{{ show[key][1] }}", 0.8)
 			},

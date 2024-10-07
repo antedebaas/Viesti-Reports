@@ -4,10 +4,10 @@
 
 {% block body %}
 <div class="row row-deck row-cards">
-	{% include 'dashboard/barchart.html.twig' with { stats: stats.dmarc, show: [['dkim_pass','green'],['dkim_fail','purple']], tag: 'dkim', title: "DKIM alignment", element: 'dkim-aligned' } %}
-	{% include 'dashboard/barchart.html.twig' with { stats: stats.dmarc, show: [['spf_pass','green'] ,['spf_fail','purple']], tag: 'spf', title: "SPF alignment", element: 'spf-aligned' } %}
-	{% include 'dashboard/barchart.html.twig' with { stats: stats.smtptls, show: [['policy_sts','green'],['policy_nopolicy','grey']], tag: 'policy', title: "STS-Policy alignment", element: 'policy-aligned' } %}
-	{% include 'dashboard/barchart.html.twig' with { stats: stats.smtptls, show: [['stsmode_enforce','green'],['stsmode_testing','yellow'],['stsmode_none','purple']], tag: 'stsmode',  title: "STS-Mode alignment",  element: 'stsmode-aligned' } %}
+	{% include 'dashboard/barchart.html.twig' with { stats: stats.dmarc, show: [['dkim_pass','green','Passed validation'],['dkim_fail','purple','Failed validation']], tag: 'dkim', title: "DKIM alignment", element: 'dkim-aligned' } %}
+	{% include 'dashboard/barchart.html.twig' with { stats: stats.dmarc, show: [['spf_pass','green','Passed validation'] ,['spf_fail','purple','Failed validation']], tag: 'spf', title: "SPF alignment", element: 'spf-aligned' } %}
+	{% include 'dashboard/barchart.html.twig' with { stats: stats.smtptls, show: [['policy_sts','green','STS'],['policy_nopolicy','grey','No Policy']], tag: 'policy', title: "STS-Policy alignment", element: 'policy-aligned' } %}
+	{% include 'dashboard/barchart.html.twig' with { stats: stats.smtptls, show: [['stsmode_enforce','green','Enforced'],['stsmode_testing','yellow','Testing'],['stsmode_none','purple','Disabled/None']], tag: 'stsmode',  title: "STS-Mode alignment",  element: 'stsmode-aligned' } %}
 </div>
 {% endblock %}
 
