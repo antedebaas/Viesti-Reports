@@ -25,7 +25,7 @@
 				<tr>
 					<td><span class="text-secondary">{{ domain.id }}</span></td>
 					<td>{{ domain.fqdn }}</td>
-					<td class="d-none d-lg-table-cell bimisvg">{{ domain.bimisvgfile|raw }}</td>
+					<td class="d-none d-lg-table-cell bimisvg"><span class="avatar">{{ domain.bimisvgfile|raw }}</span></td>
 					<td class="d-none d-lg-table-cell">
 						{% if bimivmcinfo[domain.id] is defined %}
 							{% if bimivmcinfo[domain.id]['validTo_time_t'] > now %}
