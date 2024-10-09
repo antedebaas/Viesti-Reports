@@ -27,6 +27,7 @@ RUN apk --update add ca-certificates && \
         nginx \
         php83 \
         php83-ctype \
+        php83-curl \
         php83-dom \
         php83-fileinfo \
         php83-fpm \
@@ -57,9 +58,9 @@ RUN chmod +x /usr/local/bin/containerstartup.sh && \
 
 WORKDIR /var/www/html
 COPY --chown=nobody . /var/www/html/
-RUN wget https://getcomposer.org/composer-stable.phar -O /usr/local/bin/composer
-RUN chmod +x /usr/local/bin/composer
-RUN /usr/local/bin/composer install
+RUN wget https://getcomposer.org/composer-stable.phar -O /usr/local/bin/composer && \
+    chmod +x /usr/local/bin/composer && \
+    /usr/local/bin/composer install
 
 RUN chown -R nobody.nobody /var/www/html && \
   chown -R nobody.nobody /run && \
