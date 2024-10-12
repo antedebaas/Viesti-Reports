@@ -90,13 +90,14 @@ class DMARC_ReportsRepository extends ServiceEntityRepository
                 $daterange = $this->getDateRangesFor('-3 months');
                 break;
         }
-        $daterange = array_reverse($daterange);
 
         $result = array();
-        $global_stats = array(
+        $global_totals = array(
+            'totals' => 0,
             'dkim_pass' => 0,
             'dkim_fail' => 0,
             'spf_pass' => 0,
+            'spf_softfail' => 0,
             'spf_fail' => 0,
         );
         foreach($daterange as $key => $date) {
@@ -122,59 +123,48 @@ class DMARC_ReportsRepository extends ServiceEntityRepository
                     ->getQuery()->getResult()
                 ;
             }
-            
-            $result['dates'][$date['start']] = $qb;
-
             $totals = array(
                 'name' => $date['start'],
                 'dkim_pass' => 0,
                 'dkim_fail' => 0,
                 'spf_pass' => 0,
+                'spf_softfail' => 0,
                 'spf_fail' => 0,
             );
 
-            foreach($qb as $report) {
-                foreach($report->getDMARC_Records() as $record) {
-                    switch($record->getPolicyDkim()) {
-                        case 'fail':
-                            $totals['dkim_fail']++;
-                            $global_stats['dkim_fail']++;
-                            break;
-                        default:
-                            $totals['dkim_pass']++;
-                            $global_stats['dkim_pass']++;
-                            break;
-                    }
-                    switch($record->getPolicySpf()) {
-                        case 'fail':
-                            $totals['spf_fail']++;
-                            $global_stats['spf_fail']++;
-                            break;
-                        default:
-                            $totals['spf_pass']++;
-                            $global_stats['spf_pass']++;
-                            break;
-                    }
+            foreach($qb as $reports) {
+                foreach($reports->getDMARC_Records() as $records) {
+                    $totals["dkim_".$records->getPolicyDkim()] += 1;
+                    $totals["spf_".$records->getPolicySpf()] += 1;
+                    $global_totals["dkim_".$records->getPolicyDkim()] += 1;
+                    $global_totals["spf_".$records->getPolicySpf()] += 1;
+                    $global_totals['totals'] += ($global_totals["dkim_".$records->getPolicyDkim()] + $global_totals["spf_".$records->getPolicySpf()]);
                 }
             }
             $result['dates'][$date['start']] = $totals;
         }
 
-        if($global_stats['dkim_pass'] > $global_stats['dkim_fail']) {
-            $result['dkim_trend'] = true;
+        if($global_totals['dkim_pass'] > $global_totals['dkim_fail']) {
+            $result['dkim_trend'] = true; //up
+        } elseif ($global_totals['dkim_pass'] < $global_totals['dkim_fail']) {
+            $result['dkim_trend'] = false; //down
         } else {
-            $result['dkim_trend'] = false;
+            $result['dkim_trend'] = null; //no_change
         }
-        $result['dkim_total'] = $global_stats['dkim_pass'] + $global_stats['dkim_fail'];
+        $result['dkim_total'] = $global_totals['dkim_pass'] + $global_totals['dkim_fail'];
 
-        if($global_stats['spf_pass'] > $global_stats['spf_fail']) {
-            $result['spf_trend'] = true;
+        if($global_totals['spf_pass'] > ($global_totals['spf_fail']+$global_totals['spf_softfail'])) {
+            $result['spf_trend'] = true; //up
+        } elseif($global_totals['spf_pass'] == ($global_totals['spf_fail']+$global_totals['spf_softfail'])) {
+            $result['spf_trend'] = null; //same
         } else {
-            $result['spf_trend'] = false;
+            $result['spf_trend'] = false; //down
         }
-        $result['spf_total'] = $global_stats['spf_pass'] + $global_stats['spf_fail'];
+        $result['spf_total'] = $global_totals['spf_pass'] + $global_totals['spf_fail'] + $global_totals['spf_softfail'];
 
+        dd($result);
         return $result;
+        
     }
 
     private function getDateRangesFor($range): array

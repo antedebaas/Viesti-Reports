@@ -1,0 +1,101 @@
+		<div class="col-lg-6">
+			<div class="card">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <div class="subheader">{{ title }}</div>
+                  <div class="ms-auto lh-1">
+                    <div class="dropdown">
+                      <a class="dropdown-toggle text-secondary" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ "This month"|trans }}</a>
+                      <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item" href="#">{{ "Last 7 days"|trans }}</a>
+                        <a class="dropdown-item active" href="#">{{ "This month"|trans }}</a>
+                        <a class="dropdown-item" href="#">{{ "Last 3 months"|trans }}</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex align-items-baseline">
+                  <div class="h1 mb-3 me-2">{{ attribute(stats,tag~'_total') }} {{ "Reports"|trans }}</div>
+                  <div class="me-auto">
+                  <span class="text-green d-inline-flex align-items-center lh-1">
+                    {# 4% #}
+					{% if attribute(stats,tag~'_trend') is same as(true) %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon ms-1"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 17l6 -6l4 4l8 -8" /><path d="M14 7l7 0l0 7" /></svg>
+					{% elseif attribute(stats,tag~'_trend') is same as(false) %}
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon ms-1"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7l6 6l4 -4l8 8" /><path d="M21 10l0 7l-7 0" /></svg>
+					{% else %}
+					<svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon ms-1"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 7a5 5 0 1 1 -4.995 5.217l-.005 -.217l.005 -.217a5 5 0 0 1 4.995 -4.783z" /></svg>
+					{% endif %}
+                  </span>
+                </div>
+              </div>
+              <div id="chart-{{ element }}" class="chart-sm"></div>
+			  <script>
+	document.addEventListener("DOMContentLoaded", function () {
+	var options = {
+          series: [
+			{% for key,element in show %}
+			{
+				name: "{{ show[key][2] }}",
+				data: [{% for item in stats.dates %}{{ attribute(item,show[key][0]) }},{% endfor %}],
+				color: tabler.getColor("{{ show[key][1] }}", 0.8)
+			},
+			{% endfor %}
+		  ],
+          chart: {
+			height: 240,
+			type: 'area',
+			toolbar: {
+				show: false,
+			},
+		},
+		stroke: {
+			show: false,
+			width: 1,
+			colors: ['transparent']
+		},
+		title: {
+			show: false
+		},
+		dataLabels: {
+			enabled: false
+		},
+		stroke: {
+			curve: 'smooth'
+		},
+		xaxis: {
+			type: 'datetime',
+			categories: [{% for item in stats.dates %}'{{ item.name }}',{% endfor %}]
+		},
+		tooltip: {
+			theme: 'dark',
+			y: {
+				formatter: function (val) {
+					return val
+				}
+			}
+		},
+		fill: {
+			opacity: 1
+		},
+		grid: {
+			width: 1,
+			strokeDashArray: 3,
+			colors: ['#f0f0f0']
+		},
+		legend: {
+			show: false
+		},
+		dataLabels: {
+			enabled: false,
+		}};
+
+        var chart = new ApexCharts(document.querySelector("#chart-{{ element }}"), options);
+        chart.render();
+      
+	});
+</script>
+            </div>
+          </div>
+		</div>
+

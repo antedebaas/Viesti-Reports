@@ -95,7 +95,7 @@ class SMTPTLS_ReportsRepository extends ServiceEntityRepository
                 $daterange = $this->getDateRangesFor('-3 months');
                 break;
         }
-        $daterange = array_reverse($daterange);
+        //$daterange = array_reverse($daterange);
 
         $result = array();
         $global_stats = array(
@@ -141,32 +141,32 @@ class SMTPTLS_ReportsRepository extends ServiceEntityRepository
             );
 
             foreach($qb as $report) {
-                foreach($report->getSMTPTLS_Policies() as $record) {
-                    switch($record->getPolicyType()) {
-                        case 'sts':
-                            $totals['policy_sts']++;
-                            $global_stats['policy_sts']++;
-                            break;
-                        default:
-                            $totals['policy_nopolicy']++;
-                            $global_stats['policy_nopolicy']++;
-                            break;
-                    }
-                    switch($record->getPolicyStringMode()) {
-                        case 'enforce':
-                            $totals['stsmode_enforce']++;
-                            $global_stats['stsmode_enforce']++;
-                            break;
-                        case 'testing':
-                            $totals['stsmode_testing']++;
-                            $global_stats['stsmode_testing']++;
-                            break;
-                        default:
-                            $totals['stsmode_none']++;
-                            $global_stats['stsmode_none']++;
-                            break;
-                    }
-                }
+                // foreach($report->getSMTPTLS_Policies() as $record) {
+                //     switch($record->getPolicyType()) {
+                //         case 'sts':
+                //             $totals['policy_sts']++;
+                //             $global_stats['policy_sts']++;
+                //             break;
+                //         default:
+                //             $totals['policy_nopolicy']++;
+                //             $global_stats['policy_nopolicy']++;
+                //             break;
+                //     }
+                //     switch($record->getPolicyStringMode()) {
+                //         case 'enforce':
+                //             $totals['stsmode_enforce']++;
+                //             $global_stats['stsmode_enforce']++;
+                //             break;
+                //         case 'testing':
+                //             $totals['stsmode_testing']++;
+                //             $global_stats['stsmode_testing']++;
+                //             break;
+                //         default:
+                //             $totals['stsmode_none']++;
+                //             $global_stats['stsmode_none']++;
+                //             break;
+                //     }
+                // }
             }
             $result['dates'][$date['start']] = $totals;
         }

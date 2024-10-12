@@ -173,9 +173,6 @@ class DMARC_Records
         return $this;
     }
 
-
-
-
     public function getAuthDkim(): ?int
     {
         return $this->auth_dkim;
