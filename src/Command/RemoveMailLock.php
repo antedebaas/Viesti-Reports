@@ -41,7 +41,7 @@ class RemoveMailLock extends Command
         $io = new SymfonyStyle($input, $output);
 
         $repository = $this->em->getRepository(Config::class);
-        $lock = $repository->findOneBy(array('key' => 'check_mailbox_lock'));
+        $lock = $repository->findOneBy(array('name' => 'check_mailbox_lock'));
         if($lock){
             $lock->setValue('0');
             $this->em->persist($lock);

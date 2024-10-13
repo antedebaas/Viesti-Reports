@@ -40,11 +40,11 @@ class ConfigurationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $formdata = $form->getData();
             
-            foreach ($formdata as $key => $value) {
-                if($key == "entries") {
+            foreach ($formdata as $name => $value) {
+                if($name == "entries") {
                     continue;
                 }
-                $entry = $repository->findOneBy(['key' => $key]);
+                $entry = $repository->findOneBy(['name' => $name]);
                 if($entry == null) {
                     continue;
                 }

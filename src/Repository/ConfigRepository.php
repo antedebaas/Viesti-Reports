@@ -19,7 +19,7 @@ class ConfigRepository extends ServiceEntityRepository
     public function getTotalRows(): int
     {
         $qb = $this->createQueryBuilder('r')
-        ->select('count(r.key)');
+        ->select('count(r.name)');
 
         return $qb->getQuery()
             ->getOneOrNullResult()[1]

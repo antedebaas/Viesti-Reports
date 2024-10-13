@@ -67,10 +67,10 @@ class GetReportsFromMailboxCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $repository = $this->em->getRepository(Config::class);
-        $lock = $repository->findOneBy(array('key' => 'check_mailbox_lock'));
+        $lock = $repository->findOneBy(array('name' => 'check_mailbox_lock'));
         if(!$lock) {
             $lock = new Config();
-            $lock->setKey('check_mailbox_lock');
+            $lock->setName('check_mailbox_lock');
             $lock->setValue('0');
             $lock->setType('boolean');
             $this->em->persist($lock);
@@ -78,7 +78,7 @@ class GetReportsFromMailboxCommand extends Command
         }
         
         try {
-            if($lock->getValue() == 'true') {
+            if($lock->getValue() == '1') {
                 $log = new Logs();
                 $log->setTime(new \DateTime());
                 $log->setState(StateType::Warn);
