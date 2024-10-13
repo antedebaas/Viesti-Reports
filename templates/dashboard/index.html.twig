@@ -1,8 +1,4 @@
-{% extends 'base.html.twig' %}
-
-{% set title = "Dashboard" %}
-
-{% block stylesheets %}{% endblock %}
+{% extends 'base/page.html.twig' %}
 
 {% block body %}
                 <div class="row">
@@ -11,65 +7,63 @@
                             <h5 class="card-header">Latest DMARC reports</h5>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                          <tr>
-                                            <th scope="col" class="d-none d-lg-table-cell">Id</th>
-                                            <th scope="col">Domain</th>
-                                            <th scope="col">Reporter</th>
-                                            <th scope="col" class="d-none d-lg-table-cell">Messages</th>
-                                            <th scope="col" class="d-none d-lg-table-cell">Results</th>
-                                            <th scope="col"></th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for report in dmarcreports %}
-                                          <tr {% for user in report.seen %}{% else %}class="table-warning"{% endfor %}>
-                                            <th scope="row" class="d-none d-lg-table-cell">{{ report.id }}</th>
-                                            <td>{{ report.domain.fqdn }}</td>
-                                            <td>{{ report.organisation }}</td>
-                                            <td class="d-none d-lg-table-cell">{{ report.dmarc_records.count }}</td>
-                                            <td class="d-none d-lg-table-cell">
-                                              {% set dkim_pass = true %}
-                                              {% set spf_pass = true %}
-                                              {% for record in report.dmarc_records %}
-                                                  {% if record.policydkim != "pass" %}
-                                                    {% set dkim_pass = false %}
-                                                  {% endif %}
-                                                  {% if record.policyspf != "pass" %}
-                                                    {% set spf_pass = false %}
-                                                  {% endif %}
-                                              {% endfor %}
-                                              <span class="btn btn-sm btn-{% if spf_pass %}success{% else %}danger{% endif %}">spf</span>
-                                              <span class="btn btn-sm btn-{% if dkim_pass %}success{% else %}danger{% endif %}">dkim</span>
-                                            </td>
-                                            <td class="text-end">
-                                              <a href="{{ path('app_dmarc_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Open Report">
-                                                <svg height='20px' width='20px' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 9v.906a2.25 2.25 0 0 1-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 0 0 1.183 1.981l6.478 3.488m8.839 2.51-4.66-2.51m0 0-1.023-.55a2.25 2.25 0 0 0-2.134 0l-1.022.55m0 0-4.661 2.51m16.5 1.615a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V8.844a2.25 2.25 0 0 1 1.183-1.981l7.5-4.039a2.25 2.25 0 0 1 2.134 0l7.5 4.039a2.25 2.25 0 0 1 1.183 1.98V19.5Z" />
-                                                </svg>
-                                              </a>
-                                            </td>
-                                          </tr>
-                                          <tr class="d-table-row d-lg-none {% for user in report.seen %}{% else %} table-warning{% endfor %}">
-                                            <td colspan="3">
-                                              {% set dkim_pass = true %}
-                                              {% set spf_pass = true %}
-                                              {% for record in report.dmarc_records %}
-                                                  {% if record.policydkim != "pass" %}
-                                                    {% set dkim_pass = false %}
-                                                  {% endif %}
-                                                  {% if record.policyspf != "pass" %}
-                                                    {% set spf_pass = false %}
-                                                  {% endif %}
-                                              {% endfor %}
-                                              <span class="btn btn-sm btn-{% if spf_pass %}success{% else %}danger{% endif %}">spf</span>
-                                              <span class="btn btn-sm btn-{% if dkim_pass %}success{% else %}danger{% endif %}">dkim</span>
-                                            </td>
-                                          </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                      </table>
+                                    		<table class="table card-table table-vcenter text-nowrap datatable">
+			<thead>
+				<tr>
+					<th>{{ "Id"|trans }}</th>
+					<th class="w-1">{{ "Messages"|trans }}</th>
+					<th>{{ "SPF"|trans }}</th>
+					<th>{{ "DKIM"|trans }}</th>
+					<th></th>
+				</tr>
+			</thead>
+
+			<tbody>
+{% for report in dmarcreports %}
+				<tr>
+					<td>
+						<span class="text-secondary">{{ report.id }}</span>
+						{% if app.user in report.seen %}{% else %}<span class="badge bg-yellow"></span>{% endif %}
+					</td>
+					<td><span class="badge bg-blue me-1 text-white">{{ report.dmarc_records.count }}</span></td>
+						{% set dkim_pass_count = 0 %}
+						{% set dkim_fail_count = 0 %}
+						{% set spf_pass_count = 0 %}
+						{% set spf_fail_count = 0 %}
+						{% for record in report.dmarc_records %}
+							{% if record.policydkim == "pass" %}
+								{% set dkim_pass_count = dkim_pass_count + 1 %}
+							{% else %}
+								{% set dkim_fail_count = dkim_fail_count + 1 %}
+							{% endif %}
+							{% if record.policyspf == "pass" %}
+								{% set spf_pass_count = spf_pass_count + 1 %}
+							{% else %}
+								{% set spf_fail_count = spf_fail_count + 1 %}
+							{% endif %}
+						{% endfor %}
+					<td>
+						{% if dkim_pass_count > 0 %}<span class="badge bg-green  me-1 text-white">{{ dkim_pass_count }}</span>{% endif %}
+						{% if dkim_fail_count > 0 %}<span class="badge bg-red  me-1 text-white">{{ dkim_fail_count }}</span>{% endif %}
+					</td>
+					<td>
+						{% if spf_pass_count > 0 %}<span class="badge bg-green  me-1 text-white">{{ spf_pass_count }}</span>{% endif %}
+						{% if spf_fail_count > 0 %}<span class="badge bg-red  me-1 text-white">{{ spf_fail_count }}</span>{% endif %}
+					</td>
+					<td class="text-end">
+						<span class="dropdown">
+							<button class="btn dropdown-toggle align-text-top"{# data-bs-boundary="viewport"#} data-bs-toggle="dropdown">{{ "Actions"|trans }}</button>
+							<div class="dropdown-menu dropdown-menu dropdown-menu-end">
+								<a class="dropdown-item" href="{{ path('app_dmarc_reports_report', {report: report.id}) }}">{{ "Open"|trans }}</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item " href="{{ path('app_dmarc_reports_delete', {report: report.id}) }}"><span class="text-red">{{ "Delete"|trans }}</span></a>
+							</div>
+						</span>
+					</td>
+				</tr>
+{% endfor %}
+			</tbody>
+		</table>
                                 </div>
                                 <a href="{{ path('app_dmarc_reports') }}" class="btn btn-block btn-secondary">View all</a>
                             </div>
@@ -80,87 +74,84 @@
                             <h5 class="card-header">Latest SMTP-TLS reports</h5>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                          <tr>
-                                            <th scope="col" class="d-none d-lg-table-cell">Id</th>
-                                            <th scope="col">Domain</th>
-                                            <th scope="col">Reporter</th>
-                                            <th scope="col">Results</th>
-                                            <th scope="col"></th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for report in smtptlsreports %}
-                                          <tr {% for user in report.seen %}{% else %}class="table-warning"{% endfor %}>
-                                            <th scope="row" class="d-none d-lg-table-cell">{{ report.id }}</th>
-                                            <td>
-                                              {% for policy in report.smtptls_policies %}
-                                                {{policy.policydomain.fqdn}}<br>
-                                              {% endfor %}
-                                            </td>
-                                            <td>{{ report.organisation }}</td>
-                                            <td class="d-none d-lg-table-cell">
-                                              {% set sts_type = false %}
-                                              {% set sts_version = true %}
-                                              {% set sts_mode = true %}
-                                              {% for policy in report.smtptls_policies %}
-                                                  <span class="btn btn-sm btn-{% if policy.summarysuccessfulcount == 0 %}secondary{% else %}success{% endif %}">{{ policy.summarysuccessfulcount }} Successful</span>
-                                                  <span class="btn btn-sm btn-{% if policy.summarysuccessfulcount == 0 %}danger{% else %}success{% endif %}">{{ policy.summaryfailedcount }} Failed</span>
-                                                  {% if policy.policytype == 'no-policy-found' %}
-                                                    <span class="btn btn-sm btn-danger">no-policy-found</span>
-                                                  {% else %}
-                                                    {% if policy.policytype == 'sts' %}
-                                                      {% if policy.policystringversion == 'STSv1' %}
-                                                        <span class="btn btn-sm btn-success">STSv1</span>
-                                                      {% else %}
-                                                        <span class="btn btn-sm btn-danger">Policy version empty</span>
-                                                      {% endif %}
-                                                      <span class="btn btn-sm btn-{% if policy.policystringmode == 'enforce' %}success{% elseif policy.policystringmode == 'testing' %}warning{% else %}danger{% endif %}">{% if policy.policystringmode %}{{ policy.policystringmode }}{% else %}Policy mode empty{% endif %}</span>
-                                                    {% elseif policy.policytype == 'tlsa' %}
-                                                      <span class="btn btn-sm btn-success">TLSA</span>
-                                                    {% endif %}
-                                                  {% endif %}
-                                              <br>
-                                              {% endfor %}
-                                            </td>
-                                            <td class="text-end">
-                                              <a href="{{ path('app_smtptls_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Open Report">
-                                                <svg height='20px' width='20px' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 9v.906a2.25 2.25 0 0 1-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 0 0 1.183 1.981l6.478 3.488m8.839 2.51-4.66-2.51m0 0-1.023-.55a2.25 2.25 0 0 0-2.134 0l-1.022.55m0 0-4.661 2.51m16.5 1.615a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V8.844a2.25 2.25 0 0 1 1.183-1.981l7.5-4.039a2.25 2.25 0 0 1 2.134 0l7.5 4.039a2.25 2.25 0 0 1 1.183 1.98V19.5Z" />
-                                                </svg>
-                                              </a>
-                                            </td>
-                                          </tr>
-                                          <tr class="d-table-row d-lg-none {% for user in report.seen %}{% else %} table-warning{% endfor %}">
-                                            <td colspan="3">
-                                              {% set sts_type = false %}
-                                              {% set sts_version = true %}
-                                              {% set sts_mode = true %}
-                                              {% for policy in report.smtptls_policies %}
-                                                  <span class="btn btn-sm btn-{% if policy.summarysuccessfulcount == 0 %}secondary{% else %}success{% endif %}">{{ policy.summarysuccessfulcount }} Successful</span>
-                                                  <span class="btn btn-sm btn-{% if policy.summarysuccessfulcount == 0 %}danger{% else %}success{% endif %}">{{ policy.summaryfailedcount }} Failed</span>
-                                                  {% if policy.policytype == 'no-policy-found' %}
-                                                    <span class="btn btn-sm btn-danger">no-policy-found</span>
-                                                  {% else %}
-                                                    {% if policy.policytype == 'sts' %}
-                                                      {% if policy.policystringversion == 'STSv1' %}
-                                                        <span class="btn btn-sm btn-success">STSv1</span>
-                                                      {% else %}
-                                                        <span class="btn btn-sm btn-danger">Policy version empty</span>
-                                                      {% endif %}
-                                                      <span class="btn btn-sm btn-{% if policy.policystringmode == 'enforce' %}success{% elseif policy.policystringmode == 'testing' %}warning{% else %}danger{% endif %}">{% if policy.policystringmode %}{{ policy.policystringmode }}{% else %}Policy mode empty{% endif %}</span>
-                                                    {% elseif policy.policytype == 'tlsa' %}
-                                                      <span class="btn btn-sm btn-success">TLSA</span>
-                                                    {% endif %}
-                                                  {% endif %}
-                                              <br>
-                                              {% endfor %}
-                                            </td>
-                                          </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                      </table>
+                                    		<table class="table card-table table-vcenter text-nowrap datatable">
+			<thead>
+				<tr>
+					<th class="w-1">{{ "Id"|trans }}</th>
+					<th>{{ "Messages"|trans }}</th>
+					<th>{{ "Policy"|trans }}</th>
+					<th>{{ "Type"|trans }}</th>
+					<th></th>
+				</tr>
+			</thead>
+
+			<tbody>
+{% for report in smtptlsreports %}
+				<tr>
+					<td>
+						<span class="text-secondary">{{ report.id }}</span>
+						{% if app.user in report.seen %}{% else %}<span class="badge bg-yellow"></span>{% endif %}
+					</td>
+					<td><span class="badge bg-blue me-1 text-white">{{ report.smtptls_policies.count }}</span></td>
+					{# <td>{{ report.domain.fqdn }}</td> #}
+						{% set successfulcount = 0 %}
+						{% set failedcount = 0 %}
+						{% set sts = 0 %}
+						{% set sts_v_empty = 0 %}
+						{% set sts_v1 = 0 %}
+						{% set tlsa = 0 %}
+						{% set mode_enforce = 0 %}
+						{% set mode_testing = 0 %}
+						{% set mode_disabled = 0 %}
+						{% for policy in report.smtptls_policies %}
+							{% set successfulcount = successfulcount + policy.summarysuccessfulcount %}
+							{% set failedcount = failedcount + policy.summaryfailedcount %}
+							{% if policy.policytype == 'sts' %}
+								{% set sts = sts + 1 %}
+								{% if policy.policystringversion == 'STSv1' %}
+									{% set sts_v1 = sts_v1 + 1 %}
+								{% else %}
+									{% set sts_v_empty = sts_v_empty + 1 %}
+								{% endif %}
+							{% endif %}
+							{% if policy.policytype == 'tlsa' %}
+								{% set tlsa = tlsa + 1 %}
+							{% endif %}
+							{% if policy.policystringmode == 'enforce' %}
+								{% set mode_enforce = mode_enforce + 1 %}
+							{% elseif policy.policystringmode == 'testing' %}
+								{% set mode_testing = mode_testing + 1 %}
+							{% else %}
+								{% set mode_disabled = mode_disabled + 1 %}
+							{% endif %}
+						{% endfor %}
+					<td>
+						{% if successfulcount > 0 %}<span class="badge bg-green  me-1 text-white">{{ successfulcount }}</span>{% endif %}
+						{% if failedcount > 0 %}<span class="badge bg-red  me-1 text-white">{{ failedcount }}</span>{% endif %}
+					</td>
+					<td>
+						{% if sts > 0 %}<span class="badge bg-green  me-1 text-white">STS</span>{% endif %}
+						{% if sts_v_empty > 0 %}<span class="badge bg-red  me-1 text-white">NoVersion</span>{% endif %}
+						{% if sts_v1 > 0 %}<span class="badge bg-green  me-1 text-white">STSv1</span>{% endif %}
+						{% if tlsa > 0 %}<span class="badge bg-green  me-1 text-white">TLSA</span>{% endif %}
+						{% if mode_enforce > 0 %}<span class="badge bg-green  me-1 text-white">Enforce</span>{% endif %}
+						{% if mode_testing > 0 %}<span class="badge bg-yellow  me-1 text-white">Testing</span>{% endif %}
+						{% if mode_disabled > 0 %}<span class="badge bg-red  me-1 text-white">Disabled</span>{% endif %}
+					</td>
+					<td class="text-end">
+						<span class="dropdown">
+							<button class="btn dropdown-toggle align-text-top"{# data-bs-boundary="viewport"#} data-bs-toggle="dropdown">{{ "Actions"|trans }}</button>
+							<div class="dropdown-menu dropdown-menu dropdown-menu-end">
+								<a class="dropdown-item" href="{{ path('app_smtptls_reports_report', {report: report.id}) }}">{{ "Open"|trans }}</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item " href="{{ path('app_smtptls_reports_delete', {report: report.id}) }}"><span class="text-red">{{ "Delete"|trans }}</span></a>
+							</div>
+						</span>
+					</td>
+				</tr>
+{% endfor %}
+			</tbody>
+		</table>
                                 </div>
                                 <a href="{{ path('app_smtptls_reports') }}" class="btn btn-block btn-secondary">View all</a>
                             </div>
@@ -174,24 +165,51 @@
                             <h5 class="card-header">Latest logs</h5>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                          <tr>
-                                            <th scope="col" class="d-none d-lg-table-cell">Id</th>
-                                            <th scope="col">Date &amp; Time</th>
-                                            <th scope="col">Message</th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for log in logs %}
-                                          <tr {% if log.success == false %}class="table-danger"{% endif %}>
-                                            <th scope="row" class="d-none d-lg-table-cell">{{ log.id }}</th>
-                                            <td>{{ log.time|date("d-M-Y H:i:s") }}</td>
-                                            <td>{{ log.message }}</td>
-                                          </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                      </table>
+		<table class="table card-table table-vcenter text-nowrap datatable">
+			<thead>
+				<tr>
+					{# <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices"></th> #}
+					<th class="w-1">{{ "Id"|trans }}</th>
+					<th>{{ "State"|trans }}</th>
+					<th>{{ "Date"|trans }}</th>
+					<th class="d-none d-lg-table-cell">{{ "Time"|trans }}</th>
+					<th>{{ "Mails"|trans }}</th>
+					<th class="d-none d-lg-table-cell">{{ "Message"|trans }}</th>
+					<th></th>
+				</tr>
+			</thead>
+
+			<tbody>
+{% for log in logs %}
+				<tr>
+					<td><span class="text-secondary">{{ log.id }}</span></td>
+					<td>
+					{% if log.state == constant('App\\Enums\\StateType::Fail') %}
+						<span class="badge bg-red"></span>
+					{% elseif log.state == constant('App\\Enums\\StateType::Warn') %}
+						<span class="badge bg-yellow"></span>
+					{% elseif log.state == constant('App\\Enums\\StateType::Good') %}
+						<span class="badge bg-green"></span>
+					{% else %}
+						<span class="badge bg-gray"></span>
+					{% endif %}
+					</td>
+					<td>{{ log.time|date("d-M-Y") }}</td>
+					<td class="d-none d-lg-table-cell">{{ log.time|date("H:i:s") }}</td>
+					<td><span class="badge bg-blue me-1 text-white">{{ log.mailcount }}</span></td>
+					<td class="d-none d-lg-table-cell">{{ log.message }} </td>
+					<td class="text-end">
+						<span class="dropdown">
+							<button class="btn dropdown-toggle align-text-top"{# data-bs-boundary="viewport"#} data-bs-toggle="dropdown">{{ "Actions"|trans }}</button>
+							<div class="dropdown-menu dropdown-menu dropdown-menu-end">
+								<a class="dropdown-item" href="{{ path('app_logs_details', {id: log.id}) }}">{{ "Details"|trans }}</a>
+							</div>
+						</span>
+					</td>
+				</tr>
+{% endfor %}
+			</tbody>
+		</table>
                                 </div>
                                 <a href="{{ path('app_logs') }}" class="btn btn-block btn-secondary">View all</a>
                             </div>

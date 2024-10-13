@@ -1,0 +1,43 @@
+{% extends 'base/page.html.twig' %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block body %}
+								{{ form_start(form) }}
+								<div class="row my-4">
+									<div class="col-6 col-md-6 col-lg-6 mb-4 mb-lg-0">
+										<div class="card">
+											<h5 class="card-header">{{ "Name"|trans }}</h5>
+											<div class="card-body">
+												<p class="card-text">
+													{{ form_row(form.first_name) }}
+													{{ form_row(form.last_name) }}
+												</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-6 col-md-6 col-lg-6 mb-4 mb-lg-0">
+										<div class="card mb-3">
+											<h5 class="card-header">{{ "Email address"|trans }}</h5>
+											<div class="card-body">
+												<p class="card-text">
+													{{ form_row(form.email) }}
+												</p>
+											</div>
+										</div>
+										<div class="card">
+											<h5 class="card-header">{{ "Change Password"|trans }}</h5>
+											<div class="card-body">
+												<p class="card-text">
+													{{ form_row(form.password0) }}
+													{{ form_row(form.password1) }}
+													{{ form_row(form.password2) }}
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<p></p>
+								<button class="btn btn-success" type="submit">{{ "Update profile"|trans }}</button>
+								{{ form_end(form) }}
+{% endblock %}

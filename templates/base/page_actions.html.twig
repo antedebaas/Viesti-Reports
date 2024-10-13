@@ -1,0 +1,26 @@
+								<!-- Page title actions -->
+								<div class="col-auto ms-auto d-print-none">
+									<div class="btn-list">
+										{% if page.actions %}
+											{% for action in page.actions %}
+												{% if action.target[0:1] == "#" %}
+													<a href="#" class="btn {% if action.primary|default(false) %}btn-primary{% endif %} d-none d-sm-inline" data-bs-toggle="modal" data-bs-target="{{ action.target }}">
+														{% include 'base/page_actions_icons.html.twig' %}
+														{{ action.name }}
+													</a>
+													<a href="#" class="btn {% if action.primary|default(false) %}btn-primary{% endif %} d-sm-none btn-action.icon" data-bs-toggle="modal" data-bs-target="{{ action.target }}" aria-label="{{ action.name }}">
+														{% include 'base/page_actions_icons.html.twig' %}
+													</a>
+												{% else %}
+													<a href="{{ action.target }}" class="btn {% if action.primary|default(false) %}btn-primary{% endif %} d-none d-sm-inline">
+														{% include 'base/page_actions_icons.html.twig' %}
+														{{ action.name }}
+													</a>
+													<a href="{{ action.target }}" class="btn {% if action.primary|default(false) %}btn-primary{% endif %} d-sm-none btn-action.icon" aria-label="{{ action.name }}">
+														{% include 'base/page_actions_icons.html.twig' %}
+													</a>
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									</div>
+								</div>

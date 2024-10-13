@@ -1,9 +1,7 @@
-{% extends 'base.html.twig' %}
-
-{% set title = "DMARC Report #" ~ report.id %}
+{% extends 'base/page.html.twig' %}
 
 {% block body %}
-                <div class="row my-4">
+                <div class="row mb-3">
                     <div class="col-12 col-md-12 col-lg-6 mb-4 mb-lg-0">
                       <div class="card">
                           <h5 class="card-header">Reporting organization: {{report.organisation}}</h5>
@@ -38,8 +36,7 @@
                             </p>
                           </div>
                         </div>
-                    </div>
-                    <div class="col-12 col-md-8 col-lg-4 mb-4 mb-lg-0">
+                        <p></p>
                       <div class="card">
                           <h5 class="card-header">Report timings</h5>
                           <div class="card-body">
@@ -60,71 +57,88 @@
                               </ul> 
                             </p>
                           </div>
-                        </div>
+                      </div>
                     </div>
-                    <div class="col-12 col-md-4 col-lg-2 mb-4 mb-lg-0">
-                      <div class="card">
-                          <h5 class="card-header">Published policy</h5>
-                          <div class="card-body">
-                            <p class="card-text">
-                              <ul class="list-group">
-                                <li class="list-group-item">
-                                  <div class="clearfix">
-                                    <span class="float-start" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="The optional adkim tag is the alignment mode for the DKIM protocol. A sample tag is adkim=r."><b>adkim: </b>
-                                      <svg class="help_info" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
-                                      </svg>
-                                    </span>
-                                    <span class="float-end">{{ report.policyadkim }}</span>
-                                  </div>
-                                </li>
-                                <li class="list-group-item">
-                                  <div class="clearfix">
-                                    <span class="float-start" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="The aspf tag represents alignment mode for SPF. An optional tag, aspf=r is a common example of its configuration."><b>aspf: </b>
-                                      <svg class="help_info" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
-                                      </svg>
-                                    </span>
-                                    <span class="float-end">{{ report.policyaspf }}</span>
-                                  </div>
-                                </li>
-                                <li class="list-group-item">
-                                  <div class="clearfix">
-                                    <span class="float-start" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="The required p tag demonstrates the policy for domain (or requested handling policy). It directs the receiver to report, quarantine, or reject emails that fail authentication checks. Policy options are: 1) None 2) Quarantine or 3) Reject."><b>p: </b>
-                                      <svg class="help_info" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
-                                      </svg>
-                                    </span>
-                                    <span class="float-end">{{ report.policyp }}</span>
-                                  </div>
-                                </li>
-                                <li class="list-group-item">
-                                  <div class="clearfix">
-                                    <span class="float-start" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="This tag represents the requested handling policy for subdomains."><b>sp: </b>
-                                      <svg class="help_info" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
-                                      </svg>
-                                    </span>
-                                    <span class="float-end">{{ report.policysp }}</span>
-                                  </div>
-                                </li>
-                                <li class="list-group-item">
-                                  <div class="clearfix">
-                                    <span class="float-start" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="This DMARC tag specifies the percentage of email messages subjected to filtering. For example, pct=25 means a quarter of your company’s emails will be filtered by the recipient."><b>pct: </b>
-                                      <svg class="help_info" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
-                                      </svg>
-                                    </span>
-                                    <span class="float-end">{{ report.policypct }}</span>
-                                  </div>
-                                </li>
-                              </ul> 
-                            </p>
+                    <div class="col-12 col-md-12 col-lg-6 mb-4 mb-lg-0">
+                        <div class="card">
+                            <h5 class="card-header">Published policy</h5>
+                            <div class="card-body">
+                              <p class="card-text">
+                                <ul class="list-group">
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <span class="float-start" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="The optional adkim tag is the alignment mode for the DKIM protocol. A sample tag is adkim=r."><b>DKIM-alignment (adkim): </b>
+                                        <svg class="help_info" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                                        </svg>
+                                      </span>
+                                      <span class="float-end">
+                                        {% if report.policyadkim == "r" %}
+                                          Relaxed
+                                        {% elseif report.policyadkim == "s" %}
+                                          Strict
+                                        {% else %}
+                                          None
+                                        {% endif %}
+                                      </span>
+                                    </div>
+                                  </li>
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <span class="float-start" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="The aspf tag represents alignment mode for SPF. An optional tag, aspf=r is a common example of its configuration."><b>SPF alignment (aspf): </b>
+                                        <svg class="help_info" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                                        </svg>
+                                      </span>
+                                      <span class="float-end">
+                                        {% if report.policyaspf == "r" %}
+                                          Relaxed
+                                        {% elseif report.policyaspf == "s" %}
+                                          Strict
+                                        {% else %}
+                                          None
+                                        {% endif %}
+                                      </span>
+                                    </div>
+                                  </li>
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <span class="float-start" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="The required p tag demonstrates the policy for domain (or requested handling policy). It directs the receiver to report, quarantine, or reject emails that fail authentication checks. Policy options are: 1) None 2) Quarantine or 3) Reject."><b>Handling policy (p): </b>
+                                        <svg class="help_info" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                                        </svg>
+                                      </span>
+                                      <span class="float-end">{{ report.policyp|capitalize  }}</span>
+                                    </div>
+                                  </li>
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <span class="float-start" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="This tag represents the requested handling policy for subdomains."><b>Subdomain handling policy (sp): </b>
+                                        <svg class="help_info" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                                        </svg>
+                                      </span>
+                                      <span class="float-end">{{ report.policysp|capitalize  }}</span>
+                                    </div>
+                                  </li>
+                                  <li class="list-group-item">
+                                    <div class="clearfix">
+                                      <span class="float-start" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="This DMARC tag specifies the percentage of email messages subjected to filtering. For example, pct=25 means a quarter of your company’s emails will be filtered by the recipient."><b>Filter percentage (pct): </b>
+                                        <svg class="help_info" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                                        </svg>
+                                      </span>
+                                      <span class="float-end">{{ report.policypct }}%</span>
+                                    </div>
+                                  </li>
+                                </ul> 
+                              </p>
+                            </div>
                           </div>
-                        </div>
                     </div>
+                    
                 </div>
-                <div class="row my-4">
+                <div class="row">
                   {% for record in report.dmarc_records|reverse %}
                     <div class="col-12 col-md-12 col-lg-12 mb-4 mb-lg-0">
                       <div class="card">
@@ -145,10 +159,10 @@
                                           {% if record.policyspf != "pass" %}
                                             {% set spf_pass = false %}
                                           {% endif %}
-                                          <span class="btn btn-sm btn-{% if spf_pass %}success{% else %}danger{% endif %}">spf</span>
-                                          <span class="btn btn-sm btn-{% if dkim_pass %}success{% else %}danger{% endif %}">dkim</span>
-                                          <span class="btn btn-sm btn-{% if record.policydisposition == 0 %}success{% elseif record.policydisposition == 1 %}warning{% else %}danger{% endif %}">
-                                            disposition: {% if record.policydisposition == 0 %}none{% elseif record.policydisposition == 1 %}quarantine{% else %}reject{% endif %}
+                                          <span class="badge me-1 text-white bg-{% if spf_pass %}success{% else %}danger{% endif %}">SPF</span>
+                                          <span class="badge me-1 text-white bg-{% if dkim_pass %}success{% else %}danger{% endif %}">DKIM</span>
+                                          <span class="badge me-1 text-white bg-{% if record.policydisposition == 0 %}success{% elseif record.policydisposition == 1 %}warning{% else %}danger{% endif %}">
+                                            Disposition: {% if record.policydisposition == 0 %}None{% elseif record.policydisposition == 1 %}Quarantine{% else %}Reject{% endif %}
                                           </span>
                                       </span>
                                     </div>
@@ -191,7 +205,7 @@
                                           {{ result.type }}
                                         </div>
                                         <div class="col-6 col-md-3 col-lg-2 mb-4 mb-lg-0">
-                                          <span class="btn btn-sm btn-{% if result.result == "pass" %}success{% else %}danger{% endif %}">{{ result.result }}</span>
+                                          <span class="badge me-1 text-white bg-{% if result.result == "pass" %}success{% else %}danger{% endif %}">{{ result.result|capitalize }}</span>
                                         </div>
                                         <div class="col-6 col-md-3 col-lg-3 mb-4 mb-lg-0">
                                           {% if result.type == "dkim" %}<b>Selector: </b> {{ result.dkimselector }}{% endif %}

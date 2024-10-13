@@ -1,0 +1,118 @@
+					<div class="navbar-nav flex-row d-lg-none">
+					</div>
+					<div class="collapse navbar-collapse" id="sidebar-menu">
+						<ul class="navbar-nav pt-lg-3">
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('app_dashboard') }}" >
+									<span class="nav-link-icon d-md-none d-lg-inline-block">
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg>
+									</span>
+									<span class="nav-link-title">
+										Home
+									</span>
+								</a>
+							</li>
+							<li class="nav-item dropdown {% if page.menu.category == "reports" %}active{% endif %}">
+								<a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" >
+									<span class="nav-link-icon d-md-none d-lg-inline-block">
+										<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-report"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h5.697" /><path d="M18 14v4h4" /><path d="M18 11v-4a2 2 0 0 0 -2 -2h-2" /><path d="M8 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" /><path d="M18 18m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M8 11h4" /><path d="M8 15h3" /></svg>
+									</span>
+									<span class="nav-link-title">
+										Reports
+									</span>
+								</a>
+								<div class="dropdown-menu show">
+									<div class="dropdown-menu-columns">
+										<div class="dropdown-menu-column">
+											<a class="dropdown-item {% if page.menu.category == "reports" and page.menu.item == "dmarc" %}active{% endif %}" href="{{ path('app_dmarc_reports') }}">
+												DMARC
+											</a>
+										</div>
+										<div class="dropdown-menu-column">
+											<a class="dropdown-item {% if page.menu.category == "reports" and page.menu.item == "smtptls" %}active{% endif %}" href="{{ path('app_smtptls_reports') }}">
+												SMTP-TLS
+											</a>
+										</div>
+									</div>
+								</div>
+							</li>
+							<li class="nav-item {% if page.menu.category == "domains" %}active{% endif %} dropdown">
+								<a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" >
+									<span class="nav-link-icon d-md-none d-lg-inline-block">
+										<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-world"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /><path d="M3.6 9h16.8" /><path d="M3.6 15h16.8" /><path d="M11.5 3a17 17 0 0 0 0 18" /><path d="M12.5 3a17 17 0 0 1 0 18" /></svg>
+									</span>
+									<span class="nav-link-title">
+										Domains
+									</span>
+								</a>
+								<div class="dropdown-menu {% if page.menu.category == "domains" %}show{% endif %}">
+									<div class="dropdown-menu-columns">
+										<div class="dropdown-menu-column">
+											<a class="dropdown-item {% if page.menu.category == "domains" and page.menu.item == "domains" %}active{% endif %}" href="{{ path('app_domains') }}">
+												Domains
+											</a>
+										</div>
+									</div>
+								</div>
+							</li>
+							{% if is_granted('ROLE_ADMIN') %}
+							<li class="nav-item {% if page.menu.category == "settings" %}active{% endif %} dropdown">
+								<a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" >
+									<span class="nav-link-icon d-md-none d-lg-inline-block">
+										<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-settings"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" /><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /></svg>
+									</span>
+									<span class="nav-link-title">
+										Settings
+									</span>
+								</a>
+								<div class="dropdown-menu {% if page.menu.category == "settings" %}show{% endif %}">
+									<div class="dropdown-menu-columns">
+										<div class="dropdown-menu-column">
+											<a class="dropdown-item {% if page.menu.category == "settings" and page.menu.item == "users" %}active{% endif %}" href="{{ path('app_users') }}">
+												Users
+											</a>
+										</div>
+										<div class="dropdown-menu-column">
+											<a class="dropdown-item {% if page.menu.category == "settings" and page.menu.item == "configuration" %}active{% endif %}" href="{{ path('app_configuration') }}">
+												Configuration
+											</a>
+										</div>
+										<div class="dropdown-menu-column">
+											<a class="dropdown-item {% if page.menu.category == "settings" and page.menu.item == "logs" %}active{% endif %}" href="{{ path('app_logs') }}">
+												Logs
+											</a>
+										</div>
+									</div>
+								</div>
+							</li>
+							{% endif %}
+							<li class="nav-item {% if page.menu.category == "help" %}active{% endif %} dropdown">
+								<a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" >
+									<span class="nav-link-icon d-md-none d-lg-inline-block">
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path><path d="M15 15l3.35 3.35"></path><path d="M9 15l-3.35 3.35"></path><path d="M5.65 5.65l3.35 3.35"></path><path d="M18.35 5.65l-3.35 3.35"></path></svg>
+									</span>
+									<span class="nav-link-title">
+										Help
+									</span>
+								</a>
+								<div class="dropdown-menu {% if page.menu.category == "help" %}show{% endif %}">
+									<div class="dropdown-menu-columns">
+										<div class="dropdown-menu-column">
+											<a class="dropdown-item {% if page.menu.category == "help" and page.menu.item == "documentation" %}active{% endif %}" href="{{ path('app_help_documentation') }}">
+												Documentation
+											</a>
+											<a class="dropdown-item {% if page.menu.category == "help" and page.menu.item == "licence" %}active{% endif %}" href="{{ path('app_help_licence') }}">
+												License
+											</a>
+											<a class="dropdown-item {% if page.menu.category == "help" and page.menu.item == "sourcecode" %}active{% endif %}" href="https://github.com/antedebaas/viesti-reports">
+												Source Code
+											</a>
+											<a class="dropdown-item {% if page.menu.category == "help" and page.menu.item == "sponsor" %}active{% endif %}" href="https://github.com/sponsors/antedebaas">
+												Sponsor
+											</a>
+										</div>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>

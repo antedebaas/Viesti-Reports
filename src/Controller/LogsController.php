@@ -13,7 +13,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Entity\Logs;
 
 use App\Repository\LogsRepository;
-use App\Response\MailReportResponse;
 
 class LogsController extends AbstractController
 {
@@ -48,18 +47,25 @@ class LogsController extends AbstractController
         if(isset($_GET["perpage"]) && $_GET["perpage"] > 0) {
             $pages["perpage"] = intval($_GET["perpage"]);
         } else {
-            $pages["perpage"] = 17;
+            $pages["perpage"] = 10;
         }
 
         $repository = $this->em->getRepository(Logs::class);
         $logs = $repository->findBy(array(), array('id' => 'DESC'), $pages["perpage"], ($pages["page"] - 1) * $pages["perpage"]);
-        $totallogs = $repository->getTotalRows();
+        
+        $pages["totalitems"] = $repository->getTotalRows();
+        $pages["start"] = $pages["totalitems"] - (($pages["page"] - 1) * $pages["perpage"]); 
+        $pages["end"] = $pages["totalitems"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'] + 1;
+        if ($pages["end"] < 0) {
+            $pages["end"] = 1;
+        }
 
-        if(count($logs) == 0 && $totallogs != 0) {
+        if(count($logs) == 0 && $pages["totalitems"] != 0) {
             return $this->redirectToRoute('app_logs');
         }
 
-        if($totallogs / $pages["perpage"] > $pages["page"]) {
+        $pages["total"] = ceil($pages["totalitems"] / $pages['perpage']);
+        if($pages["totalitems"] / $pages["perpage"] > $pages["page"]) {
             $pages["next"] = true;
         }
         if($pages["page"] - 1 > 0) {
@@ -69,7 +75,15 @@ class LogsController extends AbstractController
         return $this->render('logs/index.html.twig', [
             'logs' => $logs,
             'pages' => $pages,
-            'menuactive' => 'logs',
+            'page' => array(
+                'menu' => array(
+                    'category' => 'settings',
+                    'item' => 'logs'
+                ),
+                'pretitle' => $this->translator->trans("Settings"),
+                'title' => $this->translator->trans("Logs"),
+                'actions' => array(),
+            ),
             'breadcrumbs' => array(array('name' => $this->translator->trans("Logs"), 'url' => $this->router->generate('app_logs'))),
         ]);
     }
@@ -83,22 +97,25 @@ class LogsController extends AbstractController
 
         $details = array();
         $repository = $this->em->getRepository(Logs::class);
-        foreach($repository->try_unserialize($log->getDetails()) as $key => $value) {
+        
+        foreach($log->getDetails() as $key => $value) {
             $details[$key] = $value;
         }
-
-        if(empty($details)) {
-            $response = new MailReportResponse();
-            $response->setSuccess($log->isSuccess(), $log->getMessage());
-            $details['reports'] = array($response);
-        };
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         return $this->render('logs/details.html.twig', [
             'log' => $log,
             'details' => $details,
-            'menuactive' => 'logs',
+            'page' => array(
+                'menu' => array(
+                    'category' => 'settings',
+                    'item' => 'logs'
+                ),
+                'pretitle' => $this->translator->trans("Settings"),
+                'title' => $this->translator->trans("Details of log entry #". $log->getId()),
+                'actions' => array(),
+            ),
             'breadcrumbs' => array(array('name' => $this->translator->trans("Logs"), 'url' => $this->router->generate('app_logs'))),
         ]);
     }

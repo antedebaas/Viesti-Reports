@@ -17,23 +17,26 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class RegistrationController extends AbstractController
 {
     private $em;
     private EmailVerifier $emailVerifier;
+    private RequestStack $requestStack;
 
-    public function __construct(EntityManagerInterface $em, EmailVerifier $emailVerifier)
+    public function __construct(EntityManagerInterface $em, EmailVerifier $emailVerifier, RequestStack $requestStack)
     {
         $this->em = $em;
         $this->emailVerifier = $emailVerifier;
+        $this->requestStack = $requestStack;
     }
 
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, Authenticator $authenticator, EntityManagerInterface $entityManager): Response
     {
-        if ($this->getParameter('app.enable_registration') != "true") {
-            return $this->render('not_found.html.twig', []);
+        if ($this->getParameter('app.enable_registration') == false) {
+            return $this->render('base/error.html.twig', ['page' => array('title'=> 'Registration disabled'), 'message' => 'Registration is disabled.']);
         }
         $repository = $this->em->getRepository(Users::class);
         if(!file_exists(dirname(__FILE__).'/../../.env.local') || $repository->count([]) == 0) {
@@ -61,10 +64,12 @@ class RegistrationController extends AbstractController
                 'app_verify_email',
                 $user,
                 (new TemplatedEmail())
-                    ->from(new Address($_ENV['MAILBOX_USERNAME'], 'DMARC Reports'))
+                    ->from(new Address($_ENV['MAILBOX_USERNAME'], 'Viesti Reports'))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
+                    ->htmlTemplate('emails/confirmation_email.html.twig')
+                    ->textTemplate('emails/confirmation_email.txt.twig')
+                    ->context(['domain' => $this->requestStack->getCurrentRequest()->getHost()])
             );
             // do anything else you need here, like send an email
 
@@ -76,6 +81,7 @@ class RegistrationController extends AbstractController
         }
 
         return $this->render('registration/register.html.twig', [
+            'page' => array('title'=> 'Create account'),
             'registrationForm' => $form->createView(),
         ]);
     }
@@ -86,26 +92,26 @@ class RegistrationController extends AbstractController
         $id = $request->query->get('id');
 
         if (null === $id) {
-            return $this->redirectToRoute('app_register');
+            return $this->redirectToRoute('app_login');
         }
 
         $user = $usersRepository->find($id);
 
         if (null === $user) {
-            return $this->redirectToRoute('app_register');
+            return $this->redirectToRoute('app_login');
         }
 
         // validate email confirmation link, sets User::isVerified=true and persists
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('verify_email_error', $exception->getReason());
+            $this->addFlash('danger', $exception->getReason());
 
             return $this->redirectToRoute('app_register');
         }
 
         $this->addFlash('success', 'Your email address has been verified.');
 
-        return $this->redirectToRoute('app_register');
+        return $this->redirectToRoute('app_login');
     }
 }

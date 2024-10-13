@@ -10,19 +10,22 @@ class Config
 {
     #[ORM\Id]
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private ?string $key = null;
 
     #[ORM\Column(length: 255)]
     private ?string $value = null;
 
-    public function getName(): ?string
+    #[ORM\Column(length: 16)]
+    private ?string $Type = null;
+
+    public function getKey(): ?string
     {
-        return $this->name;
+        return $this->key;
     }
 
-    public function setName(string $name): static
+    public function setKey(string $key): static
     {
-        $this->name = $name;
+        $this->key = $key;
 
         return $this;
     }
@@ -35,6 +38,18 @@ class Config
     public function setValue(string $value): static
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->Type;
+    }
+
+    public function setType(string $Type): static
+    {
+        $this->Type = $Type;
 
         return $this;
     }

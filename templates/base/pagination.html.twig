@@ -1,0 +1,73 @@
+	<div class="card-footer d-flex align-items-center">
+		<p class="m-0 text-secondary d-none d-lg-table-cell">Showing <span>{{ pages.start }}</span> to <span>{{ pages.end }}</span> of <span>{{ pages.totalitems }}</span> entries</p>
+		<ul class="pagination m-0 ms-auto">
+{# prev button START #}
+			{% if pages.prev %}
+				<li class="page-item">
+					<a class="page-link" href="{{ basepath }}?page={{ pages.page - 1 }}&perpage={{ pages.perpage }}" tabindex="-1" aria-disabled="true">
+			{% else %}
+				<li class="page-item disabled">
+					<a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+			{% endif %}
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M15 6l-6 6l6 6"></path></svg>
+						prev
+					</a>
+				</li>
+{# prev button END #}
+
+			{% if pages.total <= 5 %}
+{# under 6 START #}
+				{% for page in 1..pages.total %}
+				<li class="page-item {% if page == pages.page %}active{% endif %}"><a class="page-link" href="{{ basepath }}?page={{page}}&perpage={{ pages.perpage }}">{{ page }}</a></li>
+				{% endfor %}
+{# under 6 END #}
+			{% else %}
+{# over 5 START #}
+				<li class="page-item {% if page == 1 %}active{% endif %}"><a class="page-link" href="{{ basepath }}?page=1&perpage={{ pages.perpage }}">1</a></li>
+
+				{% if pages.total >= 9 %}
+					{% set start_page = max(2, pages.page - 3) %}
+					{% set end_page = min((pages.total -1 ), pages.page + 3) %}
+{# dots START #}
+					{% if start_page > 2 %}
+						<li class="page-item">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="page-link mt-1 icon icon-tabler icons-tabler-outline icon-tabler-dots"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+						</li>
+					{% endif %}
+{# dots END #}
+					{% for page in start_page..end_page %}
+						<li class="page-item {% if page == pages.page %}active{% endif %}"><a class="page-link" href="{{ basepath }}?page={{ page }}&perpage={{ pages.perpage }}">{{ page }}</a></li>
+					{% endfor %}
+
+{# dots START #}
+					{% if end_page < (pages.total -1) %}
+						<li class="page-item">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="page-link mt-1 icon icon-tabler icons-tabler-outline icon-tabler-dots"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+						</li>
+					{% endif %}
+{# dots END #}
+				{% else %}
+					{% for page in 2 .. (pages.total -1) %}
+						<li class="page-item {% if page == pages.page %}active{% endif %}"><a class="page-link" href="{{ basepath }}?page={{ page }}&perpage={{ pages.perpage }}">{{ page }}</a></li>
+					{% endfor %}
+				{% endif %}
+
+				<li class="page-item {% if pages.page == pages.total %}active{% endif %}"><a class="page-link" href="{{ basepath }}?page={{ pages.total }}&perpage={{ pages.perpage }}">{{ pages.total }}</a></li>
+{# over 5 END #}
+			{% endif %}
+
+{# next button START #}
+			{% if pages.next %}
+				<li class="page-item {% if pages.page == pages.total %}active{% endif %}">
+					<a class="page-link" href="{{ basepath }}?page={{ pages.page + 1 }}&perpage={{ pages.perpage }}">
+			{% else %}
+				<li class="page-item disabled">
+					<a class="page-link" href="#">
+			{% endif %}
+						next
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 6l6 6l-6 6"></path></svg>
+					</a>
+				</li>
+{# next button END #}
+		</ul>
+	</div>

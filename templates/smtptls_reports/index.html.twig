@@ -1,158 +1,96 @@
-{% extends 'base.html.twig' %}
-
-{% set title = "SMTP-TLS Reports" %}
+{% extends 'base/page.html.twig' %}
 
 {% block body %}
-                <div class="row">
-                    <div class="col-12 col-xl-12 mb-4 mb-lg-0">
-                        <div class="card">
-                            <h5 class="card-header">SMTP-TLS Reports</h5>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                          <tr>
-                                            <th scope="col" class="d-none d-lg-table-cell">Id</th>
-                                            <th scope="col">Domain</th>
-                                            <th scope="col">Date/Time Range</th>
-                                            <th scope="col" class="d-none d-lg-table-cell">Reporter</th>
-                                            <th scope="col" class="d-none d-lg-table-cell">External Report Id</th>
-                                            <th scope="col" class="d-none d-lg-table-cell">Results</th>
-                                            <th scope="col"></th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for report in reports %}
-                                          <tr {% for user in report.seen %}{% else %}class="table-warning"{% endfor %}>
-                                            <th scope="row" class="d-none d-lg-table-cell">{{ report.id }}</th>
-                                            <td>
-                                              {% for policy in report.smtptls_policies %}
-                                                {{policy.policydomain.fqdn}}<br>
-                                              {% endfor %}
-                                            </td>
-                                            <td>
-                                              <div class="clearfix d-none d-lg-table-cell">
-                                                <span class="float-start">{{ report.begintime|date("d-M-Y H:i:s") }}</span>
-                                                <span class="float-end">{{ report.endtime|date("d-M-Y H:i:s") }}</span>
-                                              </div>
-                                              <div class="d-all d-lg-none">
-                                                <span>{{ report.begintime|date("d-m-Y") }}</span>
-                                                <span>{{ report.endtime|date("d-m-Y") }}</span>
-                                              </div>
-                                            </td>
-                                            <td class="d-none d-lg-table-cell">{{ report.organisation }}</td>
-                                            <td class="d-none d-lg-table-cell">{{ report.externalid }}</td>
-                                            <td class="d-none d-lg-table-cell">
-                                              {% set sts_type = false %}
-                                              {% set sts_version = true %}
-                                              {% set sts_mode = true %}
-                                              {% for policy in report.smtptls_policies %}
-                                                  <span class="btn btn-sm btn-{% if policy.summarysuccessfulcount == 0 %}secondary{% else %}success{% endif %}">{{ policy.summarysuccessfulcount }} Successful</span>
-                                                  <span class="btn btn-sm btn-{% if policy.summarysuccessfulcount == 0 %}danger{% else %}success{% endif %}">{{ policy.summaryfailedcount }} Failed</span>
-                                                  {% if policy.policytype == 'no-policy-found' %}
-                                                    <span class="btn btn-sm btn-danger">no-policy-found</span>
-                                                  {% else %}
-                                                    {% if policy.policytype == 'sts' %}
-                                                      {% if policy.policystringversion == 'STSv1' %}
-                                                        <span class="btn btn-sm btn-success">STSv1</span>
-                                                      {% else %}
-                                                        <span class="btn btn-sm btn-danger">Policy version empty</span>
-                                                      {% endif %}
-                                                      <span class="btn btn-sm btn-{% if policy.policystringmode == 'enforce' %}success{% elseif policy.policystringmode == 'testing' %}warning{% else %}danger{% endif %}">{% if policy.policystringmode %}{{ policy.policystringmode }}{% else %}Policy mode empty{% endif %}</span>
-                                                    {% elseif policy.policytype == 'tlsa' %}
-                                                      <span class="btn btn-sm btn-success">TLSA</span>
-                                                    {% endif %}
-                                                  {% endif %}
-                                              <br>
-                                              {% endfor %}
-                                            </td>
-                                            <td class="text-end">
-                                              <a href="{{ path('app_smtptls_reports_report', {report: report.id}) }}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Open Report">
-                                                <svg height='20px' width='20px' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 9v.906a2.25 2.25 0 0 1-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 0 0 1.183 1.981l6.478 3.488m8.839 2.51-4.66-2.51m0 0-1.023-.55a2.25 2.25 0 0 0-2.134 0l-1.022.55m0 0-4.661 2.51m16.5 1.615a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V8.844a2.25 2.25 0 0 1 1.183-1.981l7.5-4.039a2.25 2.25 0 0 1 2.134 0l7.5 4.039a2.25 2.25 0 0 1 1.183 1.98V19.5Z" />
-                                                </svg>
-                                              </a>
-                                              <a href="{{ path('app_smtptls_reports_delete', {report: report.id}) }}" class="btn btn-sm btn-danger" onclick="return confirm('{{'Are you sure? this can not be undone'|trans}}');" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                  <svg height='20px' width='20px' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' class='w-6 h-6'>
-                                                    <path stroke-linecap='round' stroke-linejoin='round' d='M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0' />
-                                                  </svg></a>
-                                            </td>
-                                          </tr>
-                                          <tr class="d-table-row d-lg-none {% for user in report.seen %}{% else %} table-warning{% endfor %}">
-                                            <td colspan="3">
-                                              {% set sts_type = false %}
-                                              {% set sts_version = true %}
-                                              {% set sts_mode = true %}
-                                              {% for policy in report.smtptls_policies %}
-                                                  <span class="btn btn-sm btn-{% if policy.summarysuccessfulcount == 0 %}secondary{% else %}success{% endif %}">{{ policy.summarysuccessfulcount }} Successful</span>
-                                                  <span class="btn btn-sm btn-{% if policy.summarysuccessfulcount == 0 %}danger{% else %}success{% endif %}">{{ policy.summaryfailedcount }} Failed</span>
-                                                  {% if policy.policytype == 'no-policy-found' %}
-                                                    <span class="btn btn-sm btn-danger">no-policy-found</span>
-                                                  {% else %}
-                                                    {% if policy.policytype == 'sts' %}
-                                                      {% if policy.policystringversion == 'STSv1' %}
-                                                        <span class="btn btn-sm btn-success">STSv1</span>
-                                                      {% else %}
-                                                        <span class="btn btn-sm btn-danger">Policy version empty</span>
-                                                      {% endif %}
-                                                      <span class="btn btn-sm btn-{% if policy.policystringmode == 'enforce' %}success{% elseif policy.policystringmode == 'testing' %}warning{% else %}danger{% endif %}">{% if policy.policystringmode %}{{ policy.policystringmode }}{% else %}Policy mode empty{% endif %}</span>
-                                                    {% elseif policy.policytype == 'tlsa' %}
-                                                      <span class="btn btn-sm btn-success">TLSA</span>
-                                                    {% endif %}
-                                                  {% endif %}
-                                              <br>
-                                              {% endfor %}
-                                            </td>
-                                          </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                      </table>
-                                </div>
-                                <div class="clearfix">
-                                  <span class="float-start">&nbsp;</span>
-                                  <span class="float-end">
-                                    {% if pages.prev %}
-                                      <a href="{{ path('app_smtptls_reports', {page: pages.page - 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&lt;</a>
-                                    {% else %}
-                                      <a href="#" class="btn btn-sm btn-light" disabled>&lt;</a>
-                                    {% endif %}
-                                    {% if pages.total <= 5 %}
-                                      {% for page in 1..pages.total %}
-                                        <a href="{{ path('app_smtptls_reports', {page: page, perpage: pages.perpage }) }}" class="btn btn-sm btn-{% if page == pages.page %}primary{% else %}secondary{% endif %}">{{ page }}</a>
-                                      {% endfor %}
-                                    {% else %}
-                                      <a href="{{ path('app_smtptls_reports', {page: 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-{% if pages.page == 1 %}primary{% else %}secondary{% endif %}">1</a>
+<div class="card">
+	<div class="card-header">
+		<h3 class="card-title">{{ "SMTP-TLS Reports"|trans }}</h3>
+	</div>
+	<div class="table-responsive">
+		<table class="table card-table table-vcenter text-nowrap datatable">
+			<thead>
+				<tr>
+					{# <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices"></th> #}
+					<th class="w-1">{{ "Id"|trans }}</th>
+					<th>{{ "Messages"|trans }}</th>
+					{# <th>{{ "Domain"|trans }}</th> #}
+					<th class="d-none d-lg-table-cell">{{ "Date"|trans }}</th>
+					<th class="d-none d-lg-table-cell">{{ "Reporter"|trans }}</th>
+					<th>{{ "Policy"|trans }}</th>
+					<th>{{ "Type"|trans }}</th>
+					<th></th>
+				</tr>
+			</thead>
 
-                                      {% if pages.total >= 9 %}
-                                        {% set start_page = max(2, pages.page - 3) %}
-                                        {% set end_page = min((pages.total -1 ), pages.page + 3) %}
-                                        {% if start_page > 2 %}
-                                          ...
-                                        {% endif %}
-                                        {% for page in start_page..end_page %}
-                                          <a href="{{ path('app_smtptls_reports', {page: page, perpage: pages.perpage }) }}" class="btn btn-sm btn-{% if page == pages.page %}primary{% else %}secondary{% endif %}">{{ page }}</a>
-                                        {% endfor %}
-                                        {% if end_page < (pages.total -1) %}
-                                          ...
-                                        {% endif %}
-                                      {% else %}
-                                        {% for page in 2 .. (pages.total -1) %}
-                                          <a href="{{ path('app_smtptls_reports', {page: page, perpage: pages.perpage }) }}" class="btn btn-sm btn-{% if page == pages.page %}primary{% else %}secondary{% endif %}">{{ page }}</a>
-                                        {% endfor %}
-                                      {% endif %}
-
-                                      <a href="{{ path('app_smtptls_reports', {page: pages.total, perpage: pages.perpage }) }}" class="btn btn-sm btn-{% if pages.page == pages.total %}primary{% else %}secondary{% endif %}">{{ pages.total }}</a>
-                                    {% endif %}
-
-                                    {% if pages.next %}
-                                      <a href="{{ path('app_smtptls_reports', {page: pages.page + 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&gt;</a>
-                                    {% else %}
-                                      <a href="#" class="btn btn-sm btn-light" disabled>&gt;</a>
-                                    {% endif %}
-                                  </span>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
+			<tbody>
+{% for report in reports %}
+				<tr>
+					<td>
+						<span class="text-secondary">{{ report.id }}</span>
+						{% if app.user in report.seen %}{% else %}<span class="badge bg-yellow"></span>{% endif %}
+					</td>
+					<td><span class="badge bg-blue me-1 text-white">{{ report.smtptls_policies.count }}</span></td>
+					{# <td>{{ report.domain.fqdn }}</td> #}
+					<td class="d-none d-lg-table-cell">{{ report.begintime|date("d-M-Y H:i:s") }}</td>
+					<td class="d-none d-lg-table-cell">{{ report.organisation }}</td>
+						{% set successfulcount = 0 %}
+						{% set failedcount = 0 %}
+						{% set sts = 0 %}
+						{% set sts_v_empty = 0 %}
+						{% set sts_v1 = 0 %}
+						{% set tlsa = 0 %}
+						{% set mode_enforce = 0 %}
+						{% set mode_testing = 0 %}
+						{% set mode_disabled = 0 %}
+						{% for policy in report.smtptls_policies %}
+							{% set successfulcount = successfulcount + policy.summarysuccessfulcount %}
+							{% set failedcount = failedcount + policy.summaryfailedcount %}
+							{% if policy.policytype == 'sts' %}
+								{% set sts = sts + 1 %}
+								{% if policy.policystringversion == 'STSv1' %}
+									{% set sts_v1 = sts_v1 + 1 %}
+								{% else %}
+									{% set sts_v_empty = sts_v_empty + 1 %}
+								{% endif %}
+							{% endif %}
+							{% if policy.policytype == 'tlsa' %}
+								{% set tlsa = tlsa + 1 %}
+							{% endif %}
+							{% if policy.policystringmode == 'enforce' %}
+								{% set mode_enforce = mode_enforce + 1 %}
+							{% elseif policy.policystringmode == 'testing' %}
+								{% set mode_testing = mode_testing + 1 %}
+							{% else %}
+								{% set mode_disabled = mode_disabled + 1 %}
+							{% endif %}
+						{% endfor %}
+					<td>
+						{% if successfulcount > 0 %}<span class="badge bg-green  me-1 text-white">{{ successfulcount }}</span>{% endif %}
+						{% if failedcount > 0 %}<span class="badge bg-red  me-1 text-white">{{ failedcount }}</span>{% endif %}
+					</td>
+					<td>
+						{% if sts > 0 %}<span class="badge bg-green  me-1 text-white">STS</span>{% endif %}
+						{% if sts_v_empty > 0 %}<span class="badge bg-red  me-1 text-white">NoVersion</span>{% endif %}
+						{% if sts_v1 > 0 %}<span class="badge bg-green  me-1 text-white">STSv1</span>{% endif %}
+						{% if tlsa > 0 %}<span class="badge bg-green  me-1 text-white">TLSA</span>{% endif %}
+						{% if mode_enforce > 0 %}<span class="badge bg-green  me-1 text-white">Enforce</span>{% endif %}
+						{% if mode_testing > 0 %}<span class="badge bg-yellow  me-1 text-white">Testing</span>{% endif %}
+						{% if mode_disabled > 0 %}<span class="badge bg-red  me-1 text-white">Disabled</span>{% endif %}
+					</td>
+					<td class="text-end">
+						<span class="dropdown">
+							<button class="btn dropdown-toggle align-text-top"{# data-bs-boundary="viewport"#} data-bs-toggle="dropdown">{{ "Actions"|trans }}</button>
+							<div class="dropdown-menu dropdown-menu dropdown-menu-end">
+								<a class="dropdown-item" href="{{ path('app_smtptls_reports_report', {report: report.id}) }}">{{ "Open"|trans }}</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item " href="{{ path('app_smtptls_reports_delete', {report: report.id}) }}"><span class="text-red">{{ "Delete"|trans }}</span></a>
+							</div>
+						</span>
+					</td>
+				</tr>
+{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	{% include 'base/pagination.html.twig' with { basepath: path('app_smtptls_reports') } %}
+</div>
 {% endblock %}

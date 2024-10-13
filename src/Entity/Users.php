@@ -37,6 +37,12 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Domains::class, inversedBy: 'users')]
     private Collection $domains;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $first_name = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $last_name = null;
+
     public function __construct()
     {
         $this->domains = new ArrayCollection();
@@ -144,6 +150,30 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeDomain(Domains $domain): static
     {
         $this->domains->removeElement($domain);
+
+        return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->first_name;
+    }
+
+    public function setFirstName(?string $first_name): static
+    {
+        $this->first_name = $first_name;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->last_name;
+    }
+
+    public function setLastName(?string $last_name): static
+    {
+        $this->last_name = $last_name;
 
         return $this;
     }

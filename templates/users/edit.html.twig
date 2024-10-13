@@ -1,43 +1,59 @@
-{% extends 'base.html.twig' %}
-
-
-{% if user != null %}
-  {% set title = "Edit user " ~ user.email %}
-{% else %}
-  {% set title = "Add user" %}
-{% endif %}
+{% extends 'base/page.html.twig' %}
 
 {% block stylesheets %}{% endblock %}
 
 {% block body %}
                 {{ form_start(form) }}
                 <div class="row my-4">
-                    <div class="col-6 col-md-6 col-lg-6 mb-4 mb-lg-0">
-                        <div class="card">
-                            <h5 class="card-header">{% if user != null %}Edit user{% else %}Add user{% endif %}</h5>
-                            <div class="card-body">
-                              <p class="card-text">
-                                {{ form_row(form.email) }}
-                                {{ form_row(form.password1) }}
-                                {{ form_row(form.password2) }}
-                                {{ form_row(form.isVerified) }}
-                              </p>
-                            </div>
-                          </div>
+									<div class="col-6 col-md-6 col-lg-6 mb-4 mb-lg-0">
+										<div class="card mb-3">
+											<h5 class="card-header">{{ "Name"|trans }}</h5>
+											<div class="card-body">
+												<p class="card-text">
+													{{ form_row(form.first_name) }}
+													{{ form_row(form.last_name) }}
+												</p>
+											</div>
+										</div>
+										<div class="card mb-3">
+											<h5 class="card-header">{{ "Email address"|trans }}</h5>
+											<div class="card-body">
+												<p class="card-text">
+													{{ form_row(form.email) }}
+                          {{ form_row(form.isVerified) }}
+												</p>
+											</div>
+										</div>
+										<div class="card mb-3">
+											<h5 class="card-header">{{ "Change Password"|trans }}</h5>
+											<div class="card-body">
+												<p class="card-text">
+													{{ form_row(form.password1) }}
+													{{ form_row(form.password2) }}
+												</p>
+											</div>
+										</div>
+									</div>
+                  <div class="col-6 col-md-6 col-lg-6 mb-4 mb-lg-0">
+                    <div class="card mb-3">
+                      <h5 class="card-header">{{ "Allowed domains"|trans }}</h5>
+                      <div class="card-body">
+                        <p class="card-text">
+                          {{ form_row(form.roles) }}
+                        </p>
+                      </div>
                     </div>
-                    <div class="col-6 col-md-6 col-lg-6 mb-4 mb-lg-0">
-                        <div class="card">
-                            <h5 class="card-header">Edit roles</h5>
-                            <div class="card-body">
-                              <p class="card-text">
-                                {{ form_row(form.roles) }}
-                                {{ form_row(form.isAdmin) }}
-                              </p>
-                            </div>
-                          </div>
+                    <div class="card mb-3">
+                      <h5 class="card-header">{{ "Admin role"|trans }}</h5>
+                      <div class="card-body">
+                        <p class="card-text">
+                          {{ form_row(form.isAdmin) }}
+                        </p>
+                      </div>
                     </div>
+                  </div>
                 </div>
                 <p></p>
-                <button class="btn btn-success" type="submit">{{ 'Edit user'|trans }}</button>
+                <button class="btn btn-success" type="submit">{% if user != null %}{{ 'Edit user'|trans }}{% else %}{{ 'Add user'|trans }}{% endif %}</button>
                 {{ form_end(form) }}
 {% endblock %}

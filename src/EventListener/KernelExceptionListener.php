@@ -21,19 +21,19 @@ class KernelExceptionListener
         switch($exception) {
             case $exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
                 $response = new Response(
-                    $this->templating->render('not_found.html.twig', ['message' => $exception->getMessage()]),
+                    $this->templating->render('base/error.html.twig', ['page' => array('title'=> 'Not found'), 'message' => "The object you tried to access could not be found."]),
                     Response::HTTP_NOT_FOUND
                 );
                 break;
             case $exception instanceof \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException:
                 $response = new Response(
-                    $this->templating->render('error.html.twig',['message' => "Nope! Access denied!"]),
+                    $this->templating->render('base/error.html.twig',['page' => array('title'=> 'Unauthorized'), 'message' => "Nope! Access denied!"]),
                     Response::HTTP_INTERNAL_SERVER_ERROR
                 );
                 break;
             default:
                 $response = new Response(
-                    $this->templating->render('error.html.twig',['message' => $exception->getMessage()]),
+                    $this->templating->render('base/error.html.twig',['page' => array('title'=> 'Error'), 'message' => $exception->getMessage()]),
                     Response::HTTP_INTERNAL_SERVER_ERROR
                 );
                 break;

@@ -2,9 +2,9 @@
 
 namespace App\Enums;
 
-enum ReportType
+enum ReportType: int
 {
-    case Unknown;
-    case DMARC;
-    case STS;
+    case Other = 0;
+    case DMARC = 1;
+    case STS = 2;
 }

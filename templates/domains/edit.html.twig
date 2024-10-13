@@ -1,10 +1,4 @@
-{% extends 'base.html.twig' %}
-
-{% if domain != null %}
-  {% set title = "Edit domain " ~ domain.fqdn %}
-{% else %}
-  {% set title = "Add domain" %}
-{% endif %}
+{% extends 'base/page.html.twig' %}
 
 {% block stylesheets %}{% endblock %}
 {% block javascripts_header %}
@@ -58,10 +52,10 @@
                             <span class="text-muted">You can not remove MX-Records that are bound to an MTA-TLS report. Trying to do so will result in a 500 error.</span>
                             <div class="js-mxrecord-wrapper"
                               data-prototype="<div class='col-xs-4 js-mxrecord-item row'>
-                                      <div class='col-9'>
+                                      <div class='col-8'>
                                         {{ form_row(form.mx_records.vars.prototype.name)|e('html_attr') }}
                                       </div>
-                                      <div class='col-2'>
+                                      <div class='col-3'>
                                         {{ form_row(form.mx_records.vars.prototype.in_sts)|e('html_attr') }}
                                       </div>
                                       <div class='col-1'>
@@ -75,28 +69,24 @@
                               data-index="{{ form.mx_records|length }}">
                                 {% for mxrecordFrom in form.mx_records %}
                                     <div class="col-xs-4 js-mxrecord-item row">
-                                      <div class="col-9">
+                                      <div class="col-8">
                                         {{ form_errors(mxrecordFrom) }}
                                         {{ form_row(mxrecordFrom.name) }}
                                       </div>
-                                      <div class="col-2">
+                                      <div class="col-3">
                                         {{ form_row(mxrecordFrom.in_sts) }}
                                       </div>
                                       <div class="col-1">
                                         <a href="#" class="js-remove-mxrecord">
-                                          <svg height="20px" width="20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                                          </svg>
+                                          <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
                                         </a>
                                       </div>
                                     </div>
                               {% endfor %}
                               <a href="#" class="js-mxrecord-add">
-                                <button class="btn btn-primary" type="button">
-                                  <svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                  </svg>
-                                  Add MX-Record    
+                                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDNS" aria-expanded="false" aria-controls="collapseDNS">
+                                  <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                  Add MX-Record
                                 </button>
                               </a>
                             </div>
@@ -135,112 +125,13 @@
                             </p>
                           </div>
                         </div>
-                        <p></p>
-                        <div class="card">
-                            <h5 class="card-header">DNS settings</h5>
-                            <div class="card-body">
-                              <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDNS" aria-expanded="false" aria-controls="collapseDNS">
-                                Show Example DNS Records
-                              </button>
-                              <div class="collapse" id="collapseDNS">
-                                <p class="card-text">
-                                  <br>
-                                  You can create the following DNS Records for this domain:<br>
-                                  Please note that you need to update the STSv1 with a higher number each time you update the policy.<br>
-                                  This will enable MTA-STS, TLS-RPT, DMARC, BIMI and Outlook Autoconfig.
-                                  <table class="table">
-                                    <thead>
-                                      <tr>
-                                        <th scope="col">Type</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Value</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                        <td>A</td>
-                                        <td>autoconfig.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
-                                        <td>{{ dns_info.ip }}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>A</td>
-                                        <td>autodiscover.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
-                                        <td>{{ dns_info.ip }}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>A</td>
-                                        <td>mta-sts.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
-                                        <td>{{ dns_info.ip }}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>A</td>
-                                        <td>_autodiscover._tcp.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
-                                        <td>{{ dns_info.ip }}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>A</td>
-                                        <td>bimi.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
-                                        <td>{{ dns_info.ip }}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>SRV</td>
-                                        <td>_imaps._tcp.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
-                                        <td>0 1 993</td>
-                                      </tr>
-                                      <tr>
-                                        <td>SRV</td>
-                                        <td>_submission._tcp.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
-                                        <td>0 1 587</td>
-                                      </tr>
-                                      <tr>
-                                        <td>SRV</td>
-                                        <td>_autodiscover._tcp.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
-                                        <td>0 1 443</td>
-                                      </tr>
-                                      <tr>
-                                        <td>TXT</td>
-                                        <td>@</td>
-                                        <td>"mailconf=https://autoconfig.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}/autodiscover/autodiscover.xml"</td>
-                                      </tr>
-                                      <tr>
-                                        <td>TXT</td>
-                                        <td>@</td>
-                                        <td>"v=spf1 ip4:{{ dns_info.ip }} ~all"</td>
-                                      </tr>
-                                      <tr>
-                                        <td>TXT</td>
-                                        <td>_mta-sts.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
-                                        <td>"v=STSv1; id={{ dns_info.now|date("YmdHis") }};"</td>
-                                      </tr>
-                                      <tr>
-                                        <td>TXT</td>
-                                        <td>_smtp._tls.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
-                                        <td>"v=TLSRPTv1; rua=mailto:{{ dns_info.email }}"</td>
-                                      </tr>
-                                      <tr>
-                                        <td>TXT</td>
-                                        <td>_dmarc.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
-                                        <td>"v=DMARC1; p=reject; rua=mailto:{{ dns_info.email }}; ruf=mailto:{{ dns_info.email }}; fo=1"</td>
-                                      </tr>
-                                      <tr>
-                                        <td>TXT</td>
-                                        <td>default._domainkey.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
-                                        <td>[Key from your DKIM installation]</td>
-                                      </tr>
-                                      <tr>
-                                        <td>TXT</td>
-                                        <td>default._bimi.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
-                                        <td>v=BIMI1; l=https://bimi.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}/.well-known/bimi/logo.svg; a=https://bimi.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}/.well-known/bimi/vmc.pem</td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </p>
-                              </div>
-                            </div>
-                          </div>
                     </div>
                 </div>
                 <p></p>
                 <button class="btn btn-success" type="submit">{% if domain != null %}{{ 'Edit domain'|trans }}{% else %}{{ 'Add domain'|trans }}{% endif %}</button>
                 {{ form_end(form) }}
+{% endblock %}
+
+{% block modals %}
+{% include 'domains/modals.html.twig' %}
 {% endblock %}

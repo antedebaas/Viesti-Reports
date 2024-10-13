@@ -19,7 +19,7 @@ class MXRecordsEmbeddedFormType extends AbstractType
                 'required' => true,
             ])
             ->add('in_sts', CheckboxType::class, [
-                'label' => 'In STS policy',
+                'label' => 'In STS policy',
                 'required' => false,
             ])
         ;

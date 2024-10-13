@@ -11,10 +11,10 @@ use App\Command\GetReportsFromMailboxCommand;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
+use App\Enum\StateType;
+
 class GetReportsFromMailboxCommandTest extends KernelTestCase
 {
-
-
     public function testExecute(): void
     {
         //$mockEm = $this->getMockBuilder(EntityManagerInterface::class)->disableOriginalConstructor()->getMock();

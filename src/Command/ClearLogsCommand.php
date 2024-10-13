@@ -13,6 +13,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Logs;
+use App\Enums\StateType;
+use App\Enums\ReportType;
 
 #[AsCommand(
     name: 'app:clearlogs',
@@ -42,11 +44,23 @@ class ClearLogsCommand extends Command
             $this->em->remove($log);
         }
 
+        $details = array(
+            'count' => 1,
+            'reports' => array(
+                array(
+                    'type' => ReportType::Other,
+                    'state' => StateType::Good,
+                    'message' => 'Logs have been cleared manually'
+                )
+            )
+        );
+
         $log = new Logs();
         $log->setTime(new \DateTime());
-        $log->setSuccess(true);
+        $log->setState(StateType::Good);
         $log->setMessage("Logs cleared");
-        $log->setDetails("Logs have been cleared manually");
+        $log->setDetails($details);
+        $log->setMailcount(0);
         $this->em->persist($log);
         $this->em->flush();
 

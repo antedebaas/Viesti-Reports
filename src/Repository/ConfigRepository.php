@@ -16,6 +16,16 @@ class ConfigRepository extends ServiceEntityRepository
         parent::__construct($registry, Config::class);
     }
 
+    public function getTotalRows(): int
+    {
+        $qb = $this->createQueryBuilder('r')
+        ->select('count(r.key)');
+
+        return $qb->getQuery()
+            ->getOneOrNullResult()[1]
+        ;
+    }
+
     //    /**
     //     * @return Config[] Returns an array of Config objects
     //     */

@@ -12,6 +12,8 @@ if [ ! -f "/var/www/html/.env.local" ]; then
     echo "MAILBOX_PASSWORD=\"$MAILER_PASSWORD\"" >> /var/www/html/.env.local
     echo "DELETE_PROCESSED_MAILS=\"$DELETE_PROCESSED_MAILS\"" >> /var/www/html/.env.local
     echo "ENABLE_REGISTRATION=\"$ENABLE_REGISTRATION\"" >> /var/www/html/.env.local
+    echo "PUSHOVER_API_KEY=\"$PUSHOVER_API_KEY\"" >> /var/www/html/.env.local
+    echo "PUSHOVER_USER_KEY=\"$PUSHOVER_USER_KEY\"" >> /var/www/html/.env.local
 fi
 
 echo "Check if attachments directory exists"
