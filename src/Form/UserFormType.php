@@ -32,6 +32,8 @@ class UserFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+        ->add('first_name')
+        ->add('last_name')
         ->add('email')
         ->add('password1', PasswordType::class, [
             'label' => 'New password',
@@ -53,7 +55,7 @@ class UserFormType extends AbstractType
             'choice_label' => function ($domain) {
                 return $domain->getFqdn();
             },
-
+            'attr' => [ 'size' => "20"],
             'choices' => $this->DomainsRepository->findBy(array()),
         ])
         ->add('isVerified')

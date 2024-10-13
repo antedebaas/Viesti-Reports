@@ -1,85 +1,68 @@
-{% extends 'base.html.twig' %}
-
-{% set title = "Users" %}
-
-{% block addButton %}<a href="{{ path('app_user_add') }}" class="btn btn-sm btn-success">Add new user</a>{% endblock %}
+{% extends 'base/page.html.twig' %}
 
 {% block body %}
-                <div class="row">
-                    <div class="col-12 col-xl-12 mb-4 mb-lg-0">
-                        <div class="card">
-                            <h5 class="card-header">Users</h5>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                          <tr>
-                                            <th scope="col">E-Mail</th>
-                                            <th scope="col">Verified</th>
-                                            <th scope="col">Roles</th>
-                                            <th scope="col"></th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for user in users %}
-                                          <tr>
-                                            <th scope="row">{{ user.email }}</th>
-                                            <td>
-                                                {% if user.verified %}
-                                                    <span class="text-success">Verified</span>
-                                                {% else %}
-                                                    <span class="text-danger">Not verified</span>
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                {% for role in user.roles %}
-                                                    {% if role == "ROLE_ADMIN" %}
-                                                        <span class="text-danger">Admin</span>
-                                                    {% elseif role == "ROLE_USER" %}
-                                                        <span class="text-secondary">User</span>
-                                                    {% endif %}
-                                                    {% if loop.index != loop.length %},{% endif %}
-                                                {% endfor %}
-                                                {% for role in user.domains %}
-                                                    {% if loop.index == 1 and user.roles|length > 0 %},{% endif %}
-                                                      <span class="text-secondary">{{ role.fqdn }}</span>
-                                                    {% if loop.index != loop.length %},{% endif %}
-                                                {% endfor %}
-                                            </td>
-                                            <td class="text-end">
-                                                <a href="{{ path('app_user_edit', {id: user.id}) }}" class="btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="Edit">
-                                                  <svg height='20px' width='20px' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                                  </svg>
-                                                </a>
-                                                <a href="{{ path('app_user_delete', {id: user.id}) }}" class="btn btn-sm btn-danger" onclick="return confirm('{{'Are you sure? this can not be undone'|trans}}');" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                  <svg height='20px' width='20px' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' class='w-6 h-6'>
-                                                    <path stroke-linecap='round' stroke-linejoin='round' d='M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0' />
-                                                  </svg>
-                                                
-                                            </td>
-                                          </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                      </table>
-                                </div>
-                                <div class="clearfix">
-                                  <span class="float-start">&nbsp;</span>
-                                  <span class="float-end">
-                                  {% if pages.prev %}
-                                    <a href="{{ path('app_logs', {page: pages.page - 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&lt;</a>
-                                  {% else %}
-                                    <a href="#" class="btn btn-sm btn-light" disabled>&lt;</a>
-                                  {% endif %}
-                                  {% if pages.next %}
-                                    <a href="{{ path('app_logs', {page: pages.page + 1, perpage: pages.perpage }) }}" class="btn btn-sm btn-secondary">&gt;</a>
-                                  {% else %}
-                                    <a href="#" class="btn btn-sm btn-light" disabled>&gt;</a>
-                                  {% endif %}
-                                  </span>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
+<div class="card">
+	<div class="card-header">
+		<h3 class="card-title">{{ "Users"|trans }}</h3>
+	</div>
+	<div class="table-responsive">
+		<table class="table card-table table-vcenter text-nowrap datatable">
+			<thead>
+				<tr>
+					{# <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices"></th> #}
+					<th class="w-1">{{ "Id"|trans }}</th>
+					<th>{{ "Name"|trans }}</th>
+					<th class="d-none d-lg-table-cell">{{ "Domains"|trans }}</th>
+					<th class="d-none d-lg-table-cell">{{ "Verified"|trans }}</th>
+					<th>{{ "Type"|trans }}</th>
+					<th></th>
+				</tr>
+			</thead>
+
+			<tbody>
+{% for user in users %}
+				<tr>
+					<td><span class="text-secondary">{{ user.id }}</span></td>
+					<td>{{ user.firstname }} {{ user.lastname }}</td>
+					<td class="d-none d-lg-table-cell">
+						{% for domain in user.domains %}
+							{% if loop.index == 0 and user.domains|length > 0 %},{% endif %}
+								<span class="text-secondary">{{ domain.fqdn }}</span>
+							{% if loop.index != loop.length %},{% endif %}
+						{% endfor %}
+					</td>
+					<td class="d-none d-lg-table-cell">
+						{% if user.verified %}
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="icon icon-tabler icons-tabler-filled icon-tabler-square-check text-green"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18.333 2c1.96 0 3.56 1.537 3.662 3.472l.005 .195v12.666c0 1.96 -1.537 3.56 -3.472 3.662l-.195 .005h-12.666a3.667 3.667 0 0 1 -3.662 -3.472l-.005 -.195v-12.666c0 -1.96 1.537 -3.56 3.472 -3.662l.195 -.005h12.666zm-2.626 7.293a1 1 0 0 0 -1.414 0l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.32 1.497l2 2l.094 .083a1 1 0 0 0 1.32 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z" /></svg>
+						{% else %}
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="icon icon-tabler icons-tabler-filled icon-tabler-square-x text-red"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19 2h-14a3 3 0 0 0 -3 3v14a3 3 0 0 0 3 3h14a3 3 0 0 0 3 -3v-14a3 3 0 0 0 -3 -3zm-9.387 6.21l.094 .083l2.293 2.292l2.293 -2.292a1 1 0 0 1 1.497 1.32l-.083 .094l-2.292 2.293l2.292 2.293a1 1 0 0 1 -1.32 1.497l-.094 -.083l-2.293 -2.292l-2.293 2.292a1 1 0 0 1 -1.497 -1.32l.083 -.094l2.292 -2.293l-2.292 -2.293a1 1 0 0 1 1.32 -1.497z" /></svg>
+						{% endif %}
+					</td>
+					<td>
+						{% for role in user.roles %}
+							{% if role == "ROLE_ADMIN" %}
+								<span class="text-red">Admin</span>
+							{% elseif role == "ROLE_USER" %}
+								<span class="text-secondary">User</span>
+							{% endif %}
+							{% if loop.index != loop.length %},{% endif %}
+						{% endfor %}
+					</td>
+					<td class="text-end">
+						<span class="dropdown">
+							<button class="btn dropdown-toggle align-text-top"{# data-bs-boundary="viewport"#} data-bs-toggle="dropdown">{{ "Actions"|trans }}</button>
+							<div class="dropdown-menu dropdown-menu dropdown-menu-end">
+								<a class="dropdown-item" href="{{ path('app_users_edit', {id: user.id}) }}">{{ "Edit"|trans }}</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item " href="{{ path('app_users_delete', {id: user.id}) }}"><span class="text-red">{{ "Delete"|trans }}</span></a>
+							</div>
+						</span>
+					</td>
+				</tr>
+{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	{% include 'base/pagination.html.twig' with { basepath: path('app_users')} %}
+</div>
 {% endblock %}

@@ -1,17 +1,16 @@
-{% extends 'base.html.twig' %}
-
-{% set title = "Setup" %}
+{% extends 'base/index.html.twig' %}
 
 {% block javascripts_header %}
 {{ parent() }}
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 {% endblock %}
 
-{% block body %}
-<div class="row my-4">
-&nbsp;
-</div>
-                <div class="row my-4">
+{% block base %}
+                <div class="row m-4">
+                  <div class="text-center mb-4">
+                    {% include "base/brand.html.twig" %}
+                  </div>
+                    {% include "base/flash.html.twig" %}
                     <div class="col-12 col-md-12 col-lg-6 mb-4 mb-lg-0">
                       <div class="card">
                           <h5 class="card-header">Validating installation</h5>

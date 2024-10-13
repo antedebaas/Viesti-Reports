@@ -1,0 +1,38 @@
+{% extends 'base/page.html.twig' %}
+
+{% block body %}
+{{ form_start(form) }}
+<div class="card">
+	<div class="card-header">
+		<h3 class="card-title">{{ "Configuration"|trans }}</h3>
+	</div>
+	<div class="table-responsive">
+		<table class="table card-table table-vcenter text-nowrap datatable">
+			<thead>
+				<tr>
+					<th class="w-3">{{ "Key"|trans }}</th>
+					<th>{{ "Value"|trans }}</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+{% for key, entry in form %}
+{% if key != "_token" %}
+				<tr>
+					<td><span class="text-secondary">{{ form_label(entry) }}</span></td>
+					<td>{{ form_widget(entry) }}</td>
+				</tr>
+{% endif %}
+{% endfor %}
+
+			</tbody>
+			
+		</table>
+	</div>
+	{% include 'base/pagination.html.twig' with { basepath: path('app_domains') } %}
+
+</div>
+<p></p>
+<button class="btn btn-success" type="submit">{{ 'Update Config'|trans }}</button>
+{{ form_end(form) }}
+{% endblock %}

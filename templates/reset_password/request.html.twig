@@ -1,0 +1,37 @@
+{% extends 'base/index.html.twig' %}
+
+{% block title %}Reset your password{% endblock %}
+
+{% block base %}
+<div class="page page-center">
+	<div class="container container-tight py-4">
+		<div class="text-center mb-4">
+			{% include "base/brand.html.twig" %}
+		</div>
+		<div class="card card-md">
+			<div class="card-body">
+				{% include "base/flash.html.twig" %}
+				{% if app.user %}
+					<h2 class="h2 text-center mb-4">{{ 'Login to your account'|trans }}</h2>
+					<div class="mb-3">
+						{{ 'You are logged in as {{username}}'|trans({'{{username}}': app.user.userIdentifier}) }}
+					</div>
+					<div class="mb-3">
+						<a href="{{ path('app_dashboard') }}">{{ 'Dashbaord'|trans }}</a> - <a href="{{ path('app_logout') }}">{{ 'Logout'|trans }}</a>
+					</div>
+				{% else %}
+				{{ form_start(requestForm) }}
+					<div class="mb-3">
+						<label class="form-label" for="inputEmail">{{ 'Email address'|trans }}</label>
+                        {{ form_widget(requestForm.email) }}
+					</div>
+					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+					<div class="form-footer">
+						<button type="submit" class="btn btn-primary w-100">{{ 'Request password reset'|trans }}</button>
+					</div>
+				{{ form_end(requestForm) }}
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endblock %}

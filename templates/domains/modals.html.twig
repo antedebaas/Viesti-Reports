@@ -1,0 +1,102 @@
+<div class="modal modal-blur fade" id="modal-dnssettings" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Sample DNS Records</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>
+					These are sample dns records that are advised by Viesti Reports.<br>
+					This will also enable managed MTA-STS, TLS-RPT, DMARC, BIMI and Outlook Autoconfig.<br>
+				</p>
+				<table class="table">
+				<thead>
+					<tr>
+					<th scope="col">Type</th>
+					<th scope="col">Name</th>
+					<th scope="col">Value</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+					<td>A</td>
+					<td>autoconfig.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
+					<td>{{ dns_info.ip }}</td>
+					</tr>
+					<tr>
+					<td>A</td>
+					<td>autodiscover.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
+					<td>{{ dns_info.ip }}</td>
+					</tr>
+					<tr>
+					<td>A</td>
+					<td>mta-sts.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
+					<td>{{ dns_info.ip }}</td>
+					</tr>
+					<tr>
+					<td>A</td>
+					<td>_autodiscover._tcp.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
+					<td>{{ dns_info.ip }}</td>
+					</tr>
+					<tr>
+					<td>A</td>
+					<td>bimi.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
+					<td>{{ dns_info.ip }}</td>
+					</tr>
+					<tr>
+					<td>SRV</td>
+					<td>_imaps._tcp.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
+					<td>0 1 993</td>
+					</tr>
+					<tr>
+					<td>SRV</td>
+					<td>_submission._tcp.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
+					<td>0 1 587</td>
+					</tr>
+					<tr>
+					<td>SRV</td>
+					<td>_autodiscover._tcp.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
+					<td>0 1 443</td>
+					</tr>
+					<tr>
+					<td>TXT</td>
+					<td>@</td>
+					<td>"mailconf=https://autoconfig.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}/autodiscover/autodiscover.xml"</td>
+					</tr>
+					<tr>
+					<td>TXT</td>
+					<td>@</td>
+					<td>"v=spf1 ip4:{{ dns_info.ip }} ~all"</td>
+					</tr>
+					<tr>
+					<td>TXT</td>
+					<td>_mta-sts.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
+					<td>"v=STSv1; id={{ dns_info.now|date("YmdHis") }};"</td>
+					</tr>
+					<tr>
+					<td>TXT</td>
+					<td>_smtp._tls.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
+					<td>"v=TLSRPTv1; rua=mailto:{{ dns_info.email }}"</td>
+					</tr>
+					<tr>
+					<td>TXT</td>
+					<td>_dmarc.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
+					<td>"v=DMARC1; p=reject; rua=mailto:{{ dns_info.email }}; ruf=mailto:{{ dns_info.email }}; fo=1"</td>
+					</tr>
+					<tr>
+					<td>TXT</td>
+					<td>default._domainkey.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
+					<td>[Key from your DKIM installation]</td>
+					</tr>
+					<tr>
+					<td>TXT</td>
+					<td>default._bimi.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}.</td>
+					<td>v=BIMI1; l=https://bimi.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}/.well-known/bimi/logo.svg; a=https://bimi.{% if domain != null %}{{ domain.fqdn }}{% else %}domain.ext{% endif %}/.well-known/bimi/vmc.pem</td>
+					</tr>
+				</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

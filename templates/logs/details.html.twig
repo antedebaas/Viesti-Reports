@@ -1,18 +1,80 @@
-{% extends 'base.html.twig' %}
-
-{% set title = "Details of log entry  " ~ log.id %}
+{% extends 'base/page.html.twig' %}
 
 {% block body %}
-              <div class="row my-4">
-                <div class="col-12 mb-lg-0">
+<div class="card">
+	<div class="card-header">
+		<h3 class="card-title">{{ "Log entry #" ~ log.id }}</h3>
+	</div>
+  <div class="card-body">
+    <p><b>Time:</b> {{ log.time|date("d-M-Y H:i:s") }}</small></p>
+    <p><b>State:</b>
+              {% if log.state == constant('App\\Enums\\StateType::Fail') %}
+                <span class="text-red">Failure</span>
+              {% elseif log.state == constant('App\\Enums\\StateType::Warn') %}
+                <span class="text-yellow">Warning</span>
+              {% elseif log.state == constant('App\\Enums\\StateType::Good') %}
+                <span class="text-green">Good</span>
+              {% else %}
+                <span class="text-grey">Unknown</span>
+              {% endif %}
+    </p>
+    <p><b>Message:</b> {{ log.message }}</p>
+  </div>
+	<div class="table-responsive">
+		<table class="table card-table table-vcenter text-nowrap datatable">
+			<thead>
+				<tr>
+					{# <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices"></th> #}
+					<th class="w-1">{{ "State"|trans }}</th>
+					<th>{{ "Report Type"|trans }}</th>
+					<th>{{ "Message"|trans }}</th>
+					<th>{{ "External MailID"|trans }}</th>
+					<th></th>
+				</tr>
+			</thead>
+      <tbody>
+        {% for detail in details.reports %}
+          <tr>
+            <td>
+              {% if detail.state == constant('App\\Enums\\StateType::Fail') %}
+                <span class="badge bg-red"></span>
+              {% elseif detail.state == constant('App\\Enums\\StateType::Warn') %}
+                <span class="badge bg-yellow"></span>
+              {% elseif detail.state == constant('App\\Enums\\StateType::Good') %}
+                <span class="badge bg-green"></span>
+              {% else %}
+                <span class="badge bg-gray"></span>
+              {% endif %}
+            </td>
+            <td>
+              {% if detail.type == constant('App\\Enums\\ReportType::DMARC') %}
+                DMARC
+              {% elseif detail.type == constant('App\\Enums\\ReportType::STS') %}
+                STS
+              {% else %}
+                Other
+              {% endif %}
+            </td>
+            <td>{{ detail.message }}</td>
+            <td>{% if detail.mailid is defined %}{{ detail.mailid }}{% endif %}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+
+{# 
                   <div class="card">
-                    <h5 class="card-header">{{ log.message }}</h5>
+                    <div class="card-header">
+                      <h3 class="card-title"></h3>
+                    </div>
+                  <div class="card">
                     <div class="card-body">
                       <p><small class="muted">Time: {{ log.time|date("d-M-Y H:i:s") }}</small></p>
                       <p>State: {{ log.success ? '<span class="text-success">success</span>' : '<span class="text-danger">Failure</span>' }}</p>
-                      <p class="card-text">
-                        <p>
-                          <b>Details:</b><br>
                             <div class="table-responsive">
                               <table class="table">
                                 <thead>
@@ -32,7 +94,7 @@
                                             DMARC
                                         {% elseif detail.reporttype == constant('App\\Enums\\ReportType::STS') %}
                                             STS
-                                        {% elseif detail.reporttype == constant('App\\Enums\\ReportType::Unknown') %}
+                                        {% elseif detail.reporttype == constant('App\\Enums\\ReportType::Other') %}
                                             Unknown
                                         {% endif %}
                                       </td>
@@ -43,12 +105,6 @@
                                 </tbody>
                               </table>
                             </div>
-
-                          {# <pre>{{ log.details|try_unserialize|printa }}</pre> #}
-                        </p>
-                      </p>
                     </div>
                   </div>
-                </div>
-              </div>
-{% endblock %}
+{% endblock %} #}

@@ -3,25 +3,26 @@
 namespace App\Response;
 
 use App\Enums\ReportType;
+use App\Enums\StateType;
 
 class MailReportResponse
 {
-    public bool $success = false;
+    public StateType $state = StateType::Fail;
     public string $message = 'Unknown error.';
     public string $mailid = '';
-    public ReportType $reporttype = ReportType::Unknown;
+    public ReportType $type = ReportType::Other;
     public ?object $report;
 
-    public function setSuccess($success, $message = '')
+    public function setState($state, $message = '')
     {
-        $this->success = $success;
+        $this->state = $state;
         $this->message = $message;
         return $this;
     }
 
-    public function getSuccess()
+    public function getState()
     {
-        return $this->success;
+        return $this->state;
     }
 
     public function getMessage()
@@ -40,15 +41,15 @@ class MailReportResponse
         return $this->mailid;
     }
 
-    public function setReportType($reporttype)
+    public function setType($type)
     {
-        $this->reporttype = $reporttype;
+        $this->type = $type;
         return $this;
     }
 
-    public function getReportType()
+    public function getType()
     {
-        return $this->reporttype;
+        return $this->type;
     }
 
     public function getReport()

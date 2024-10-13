@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+		<link rel="icon" href="/favicon.ico" sizes="any" />
+		<link rel="icon" href="/favicon.png" type="image/png" sizes="48x48">
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" type="image/png" sizes="180x180"/>
+		<title>Viesti Reports - {{ page.title }}</title>
+		<link rel="stylesheet" href="/tabler-1.0.0beta21-dist/css/tabler.min.css">
+		{# <link rel="stylesheet" href="/tabler-1.0.0beta21-dist/css/tabler-flags.min.css">
+		<link rel="stylesheet" href="/tabler-1.0.0beta21-dist/css/tabler-payments.min.css">
+		<link rel="stylesheet" href="/tabler-1.0.0beta21-dist/css/tabler-vendors.min.css"> #}
+		<link rel="stylesheet" href="/viesti.css">
+		{% block stylesheets %}{% endblock %}
+		{% block javascripts_header %}{% endblock %}
+	</head>
+	<body>
+		{% block base %}{% endblock %}
+
+		{% block modals %}{% endblock %}
+		<script>
+			const storedTheme = localStorage.getItem("displayTheme");
+			selectedTheme = storedTheme ? storedTheme : "light";
+			if (selectedTheme === 'dark') {
+				document.body.setAttribute("data-bs-theme", selectedTheme);
+			} 
+
+			function setTheme(theme) {
+				if (theme === 'dark') {
+					document.body.setAttribute("data-bs-theme", theme);
+					document.body.classList.toggle("theme-dark");
+				} else {
+					document.body.removeAttribute("data-bs-theme");
+					document.body.classList.toggle("theme-dark");
+				}
+				localStorage.setItem("displayTheme", theme);
+			}
+		</script>
+		{% block javascripts_footer %}{% endblock %}
+		<!-- Tabler Core -->
+		<script src="/tabler-1.0.0beta21-dist/js/tabler.min.js"></script>
+	</body>
+</html>

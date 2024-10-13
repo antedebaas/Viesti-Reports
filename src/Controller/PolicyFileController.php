@@ -63,10 +63,10 @@ class PolicyFileController extends AbstractController
             if(!is_null($logo)) {
                 $response = new Response($domain->getBimiSVGFile(), 200, ['Content-Type' => 'image/svg+xml']);
             } else {
-                $response = $this->render('not_found.html.twig', []);
+                $response = $this->render('base/error.html.twig', ['page' => array('title'=> 'Not found'), 'message' => $exception->getMessage()]);
             }
         } else {
-            $response = $this->render('not_found.html.twig', []);
+            $response = $this->render('base/error.html.twig', ['page' => array('title'=> 'Not found'), 'message' => $exception->getMessage()]);
         }
         
         return $response;
@@ -86,10 +86,10 @@ class PolicyFileController extends AbstractController
             if(!is_null($logo)) {
                 $response = new Response($domain->getBimiVMCFile(), 200, ['Content-Type' => 'application/x-pem-file']);
             } else {
-                $response = $this->render('not_found.html.twig', []);
+                $response = $this->render('base/error.html.twig', ['page' => array('title'=> 'Not found'), 'message' => $exception->getMessage()]);
             }
         } else {
-            $response = $this->render('not_found.html.twig', []);
+            $response = $this->render('base/error.html.twig', ['page' => array('title'=> 'Not found'), 'message' => $exception->getMessage()]);
         }
         
         return $response;

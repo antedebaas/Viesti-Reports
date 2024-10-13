@@ -30,7 +30,13 @@ use App\Entity\Config;
 use App\Response\MailboxResponse;
 use App\Response\MailReportResponse;
 
+use Serhiy\Pushover\Application;
+use Serhiy\Pushover\Recipient;
+use Serhiy\Pushover\Api\Message\Message;
+use Serhiy\Pushover\Api\Message\Notification;
+
 use App\Enums\ReportType;
+use App\Enums\StateType;
 
 #[AsCommand(
     name: 'app:getreportsfrommailbox',
@@ -61,11 +67,12 @@ class GetReportsFromMailboxCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $repository = $this->em->getRepository(Config::class);
-        $lock = $repository->findOneBy(array('name' => 'getreportsfrommailbox.lock'));
+        $lock = $repository->findOneBy(array('key' => 'check_mailbox_lock'));
         if(!$lock) {
             $lock = new Config();
-            $lock->setName('getreportsfrommailbox.lock');
-            $lock->setValue('false');
+            $lock->setKey('check_mailbox_lock');
+            $lock->setValue('0');
+            $lock->setType('boolean');
             $this->em->persist($lock);
             $this->em->flush();
         }
@@ -74,15 +81,17 @@ class GetReportsFromMailboxCommand extends Command
             if($lock->getValue() == 'true') {
                 $log = new Logs();
                 $log->setTime(new \DateTime());
-                $log->setSuccess(false);
+                $log->setState(StateType::Warn);
                 $log->setMessage("GetReportsFromMailbox command was already running.");
+                $log->setDetails(array('count' => 0, 'reports' => array(array('type' => ReportType::Other, 'state' => StateType::Warn, 'message' => "GetReportsFromMailbox command was already running."))));
+                $log->setMailcount(0);
                 $this->em->persist($log);
                 $this->em->flush();
 
                 $io->error('GetReportsFromMailbox command is already running.');
                 return Command::FAILURE;
             } else {
-                $lock->setValue('true');
+                $lock->setValue('1');
                 $this->em->persist($lock);
                 $this->em->flush();
 
@@ -91,50 +100,63 @@ class GetReportsFromMailboxCommand extends Command
                     $results['secondary'] = $this->open_mailbox($this->mailbox_secondary);
                 } else {
                     $results['secondary'] = new MailboxResponse();
-                    $results['secondary']->setSuccess(true, 'Secondary mailbox is disabled.', array('count' => 0, 'reports' => array()));
+                    $results['secondary']->setState(StateType::Warn, 'Secondary mailbox is disabled.', array('count' => 0, 'reports' => array()));
+                }
+
+                if(!empty($this->params->get('app.pushover_api_key')) && !empty($this->params->get('app.pushover_user_key')))
+                {
+                    $count = $results['primary']->getDetails()["count"] + $results['secondary']->getDetails()["count"];
+                    if($count > 0) {
+                        $application = new Application($this->params->get('app.pushover_api_key'));
+                        $recipient = new Recipient($this->params->get('app.pushover_user_key'));
+                        $message = new Message($count.' new emails have been processed by viesti reports', 'New reports processed.');
+                        $notification = new Notification($application, $recipient, $message);
+                        $notification->push();
+                    }
                 }
 
                 $log = new Logs();
                 $log->setTime(new \DateTime());
-                $log->setSuccess($results['primary']->getSuccess());
+                $log->setState($results['primary']->getState());
                 $log->setMessage($results['primary']->getMessage());
-
                 foreach ($results['primary']->getDetails()["reports"] as $report) {
                     $report->setReport(null);
                 }
-                $log->setDetails(serialize($results['primary']->getDetails()));
+                $log->setDetails($results['primary']->getDetails());
+                $log->setMailcount($results['primary']->getDetails()["count"]);
                 $this->em->persist($log);
                 $this->em->flush();
 
                 if($this->mailbox_secondary->isEnabled()) {
                     $log = new Logs();
                     $log->setTime(new \DateTime());
-                    $log->setSuccess($results['secondary']->getSuccess());
+                    $log->setState($results['secondary']->getState());
                     $log->setMessage($results['secondary']->getMessage());
     
                     foreach ($results['secondary']->getDetails()["reports"] as $report) {
                         $report->setReport(null);
                     }
-                    $log->setDetails(serialize($results['secondary']->getDetails()));
+                    $log->setDetails($results['primary']->getDetails());
+                    $log->setMailcount($results['primary']->getDetails()["count"]);
                     $this->em->persist($log);
                     $this->em->flush();
                 }
 
-                $lock->setValue('false');
+                $lock->setValue('0');
                 $this->em->persist($lock);
                 $this->em->flush();
         
-                if($results['primary']->getSuccess() == true && $results['secondary']->getSuccess() == true) {
+                if($results['primary']->getState() == true && $results['secondary']->getState() == true) {
                     $io->success($results['primary']->getMessage());
                     if($this->mailbox_secondary->isEnabled()) {
                         $io->success($results['secondary']->getMessage());
                     }
                     return Command::SUCCESS;
                 } else {
-                    if($results['primary']->getSuccess() == false) {
+                    if($results['primary']->getState() == false) {
                         $io->error($results['primary']->getMessage());
                     }
-                    if($results['secondary']->getSuccess() == false) {
+                    if($results['secondary']->getState() == false) {
                         $io->error($results['secondary']->getMessage());
                     }
                     return Command::FAILURE;
@@ -143,10 +165,13 @@ class GetReportsFromMailboxCommand extends Command
         } catch (\Exception $e) {
             $log = new Logs();
             $log->setTime(new \DateTime());
-            $log->setSuccess(false);
+            $log->setState(StateType::Fail);
             $log->setMessage("Exception in GetReportsFromMailbox command");
-            $log->setDetails($e->getMessage());
+            $log->setDetails(array('count' => 0, 'reports' => array(array('type' => ReportType::Other, 'state' => StateType::Fail, 'message' => $e->getMessage()))));
+            $log->setMailcount(0);
             $this->em->persist($log);
+            $lock->setValue('0');
+            $this->em->persist($lock);
             $this->em->flush();
 
             $io->error($e->getMessage());
@@ -154,10 +179,13 @@ class GetReportsFromMailboxCommand extends Command
         } catch (\Error $e) {
             $log = new Logs();
             $log->setTime(new \DateTime());
-            $log->setSuccess(false);
+            $log->setState(StateType::Fail);
             $log->setMessage("Error in GetReportsFromMailbox command");
-            $log->setDetails($e->getMessage());
+            $log->setDetails(array('count' => 0, 'reports' => array(array('type' => ReportType::Other, 'state' => StateType::Fail, 'message' => $e->getMessage()))));
+            $log->setMailcount(0);
             $this->em->persist($log);
+            $lock->setValue('0');
+            $this->em->persist($lock);
             $this->em->flush();
 
             $io->error($e->getMessage());
@@ -173,7 +201,7 @@ class GetReportsFromMailboxCommand extends Command
         $mail_ids = $mailbox->searchMailbox('UNSEEN');
         $details = array('count' => 0, 'reports' => array());
 
-        $failed = false;
+        $success = false;
         foreach($mail_ids as $mailid) {
             $result = $this->process_email($mailbox, $mailid);
 
@@ -181,26 +209,26 @@ class GetReportsFromMailboxCommand extends Command
                 if ($this->params->get('app.delete_processed_mails') == "true") {
                     $mailbox->deleteMail($mailid);
                 }
+                $success = true;
             } else {
                 //$mailbox->moveMail // https://github.com/barbushin/php-imap/blob/94107fdd1383285459a7f6c2dd2f39e25a1b8373/src/PhpImap/Mailbox.php#L757C21-L757C29
                 $mailbox->setFlag(array($mailid), '\\Flagged');
-                $failed = true;
             }
             $details['reports'] = array_merge($details['reports'], $result['reports']);
             $details['count']++;
         }
 
-        if($failed == true) {
+        if($success == false && $details['count'] > 0) {
             $failedReports = 0;
             foreach ($details['reports'] as $report) {
-                if($report->getSuccess() == false) {
+                if($report->getState() == StateType::Fail) {
                     $failedReports++;
                 }
               }
 
-            $response->setSuccess(false, $failedReports.' out of '.$details['count'].' emails failed to process, check flagged emails.', $details);
+            $response->setState(StateType::Fail, $failedReports.' out of '.$details['count'].' emails failed to process, check flagged emails.', $details);
         } else {
-            $response->setSuccess(true, 'Processed '.$details['count'].' emails successfully.', $details);
+            $response->setState(StateType::Good, 'Processed '.$details['count'].' emails successfully.', $details);
         }
 
         return $response;
@@ -217,9 +245,9 @@ class GetReportsFromMailboxCommand extends Command
             $attachments = $mail->getAttachments();
             if (empty($attachments)) {
                 $report = new MailReportResponse();
-                $report->setReportType(ReportType::Unknown);
+                $report->setType(ReportType::Other);
                 $report->setMailId($mail->headers->message_id ?? "mail-id-".$mailid);
-                $report->setSuccess(false, 'Email does not have any attachment.');
+                $report->setState(StateType::Fail, 'Email does not have any attachment.');
             } else {
                 foreach ($attachments as $attachment) {
                     $report = new MailReportResponse();
@@ -227,27 +255,27 @@ class GetReportsFromMailboxCommand extends Command
     
                     $result = $this->open_archive($attachment->filePath);
                     if($result['success'] == true) {
-                        $report->setSuccess(true, 'Report loaded successfully.');
-                        $report->setReportType($result['reporttype']);
+                        $report->setState(StateType::Good, 'Report loaded successfully.');
+                        $report->setType($result['type']);
                         $report->setReport($result['report']);
                         $response['reports'][] = $report;
                     } else {
-                        $report->setSuccess(false, 'Failed to open report.');
+                        $report->setState(StateType::Fail, 'Failed to open report.');
                     }
                     unlink($attachment->filePath);
                 }
             }
         } catch (\Exception $e) {
             $report = new MailReportResponse();
-            $report->setReportType(ReportType::Unknown);
+            $report->setType(ReportType::Other);
             $report->setMailId($mail->headers->message_id ?? "mail-id-".$mailid);
-            $report->setSuccess(false, 'Failed to open email attachment.');
+            $report->setState(StateType::Fail, 'Failed to open email attachment.');
             $response['reports'][] = $report;
         } catch (\Error $e) {
             $report = new MailReportResponse();
-            $report->setReportType(ReportType::Unknown);
+            $report->setType(ReportType::Other);
             $report->setMailId($mail->headers->message_id ?? "mail-id-".$mailid);
-            $report->setSuccess(false, $e->getMessage());
+            $report->setState(StateType::Fail, $e->getMessage());
             $response['reports'][] = $report;
         }
 
@@ -256,9 +284,9 @@ class GetReportsFromMailboxCommand extends Command
         foreach($response['reports'] as $report) {
             try {
                 if(!is_null($report)) {
-                    if($report->getReportType() == ReportType::DMARC) {
+                    if($report->getType() == ReportType::DMARC) {
                         $result = $this->process_dmarc_report($report);
-                    } elseif($report->getReportType() == ReportType::STS) {
+                    } elseif($report->getType() == ReportType::STS) {
                         $result = $this->process_sts_report($report);
                     } else {
                         $result = false;
@@ -274,9 +302,14 @@ class GetReportsFromMailboxCommand extends Command
                 if($result == false) {
                     $log = new Logs();
                     $log->setTime(new \DateTime());
-                    $log->setSuccess($result);
+                    if($result == false) {
+                        $log->setState(StateType::Fail);
+                    } else {
+                        $log->setState(StateType::Good);
+                    }
                     $log->setMessage($report->getMailId());
-                    $log->setDetails($report->getMessage());
+                    $log->setDetails(array('count' => 0, 'reports' => array(array('type' => ReportType::Other, 'state' => StateType::Fail, 'message' => $report->getMessage()))));
+                    $log->setMailcount(0);
                     $this->em->persist($log);
                     $this->em->flush();
                 }
@@ -285,20 +318,26 @@ class GetReportsFromMailboxCommand extends Command
 
                 $log = new Logs();
                 $log->setTime(new \DateTime());
-                $log->setSuccess(false);
+                $log->setState(StateType::Fail);
                 $log->setMessage("Exception while processing mailid: ".$report->getMailId());
-                $log->setDetails($e->getMessage());
+                $log->setDetails(array('count' => 0, 'reports' => array(array('type' => ReportType::Other, 'state' => StateType::Fail, 'message' => $e->getMessage()))));
+                $log->setMailcount(1);
                 $this->em->persist($log);
+                $lock->setValue('0');
+                $this->em->persist($lock);
                 $this->em->flush();
             }  catch (\Error $e) {
                 $result = false;
 
                 $log = new Logs();
                 $log->setTime(new \DateTime());
-                $log->setSuccess(false);
+                $log->setState(StateType::Fail);
                 $log->setMessage("Error while processing mailid: ".$report->getMailId());
-                $log->setDetails($e->getMessage());
+                $log->setDetails(array('count' => 0, 'reports' => array(array('type' => ReportType::Other, 'state' => StateType::Fail, 'message' => $e->getMessage()))));
+                $log->setMailcount(1);
                 $this->em->persist($log);
+                $lock->setValue('0');
+                $this->em->persist($lock);
                 $this->em->flush();
             } finally {
                 $results[] = $result;
@@ -317,7 +356,7 @@ class GetReportsFromMailboxCommand extends Command
     private function open_archive($file): array
     {
         $report = null;
-        $reporttype = ReportType::Unknown;
+        $reporttype = ReportType::Other;
         $success = false;
 
         try {
@@ -341,18 +380,24 @@ class GetReportsFromMailboxCommand extends Command
         } catch(\Exception $e) {
             $log = new Logs();
             $log->setTime(new \DateTime());
-            $log->setSuccess(false);
-            $log->setMessage("Exception while operning archive");
-            $log->setDetails($e->getMessage());
+            $log->setState(StateType::Fail);
+            $log->setMessage("Exception while while operning archive");
+            $log->setDetails(array('count' => 0, 'reports' => array(array('type' => ReportType::Other, 'state' => StateType::Fail, 'message' => $e->getMessage()))));
+            $log->setMailcount(1);
             $this->em->persist($log);
+            $lock->setValue('0');
+            $this->em->persist($lock);
             $this->em->flush();
         } catch(\Error $e) {
             $log = new Logs();
             $log->setTime(new \DateTime());
-            $log->setSuccess(false);
-            $log->setMessage("Error while operning archive");
-            $log->setDetails($e->getMessage());
+            $log->setState(StateType::Fail);
+            $log->setMessage("Error while while operning archive");
+            $log->setDetails(array('count' => 0, 'reports' => array(array('type' => ReportType::Other, 'state' => StateType::Fail, 'message' => $e->getMessage()))));
+            $log->setMailcount(1);
             $this->em->persist($log);
+            $lock->setValue('0');
+            $this->em->persist($lock);
             $this->em->flush();
         }
 
@@ -365,10 +410,13 @@ class GetReportsFromMailboxCommand extends Command
             } catch (\Exception $e) {
                 $log = new Logs();
                 $log->setTime(new \DateTime());
-                $log->setSuccess(false);
+                $log->setState(StateType::Fail);
                 $log->setMessage("Failed to open DMARC report");
-                $log->setDetails($e->getMessage());
+                $log->setDetails(array('count' => 0, 'reports' => array(array('type' => ReportType::Other, 'state' => StateType::Fail, 'message' => $e->getMessage()))));
+                $log->setMailcount(1);
                 $this->em->persist($log);
+                $lock->setValue('0s');
+                $this->em->persist($lock);
                 $this->em->flush();
                 $success = false;
             }
@@ -381,16 +429,19 @@ class GetReportsFromMailboxCommand extends Command
             } catch (\Exception $e) {
                 $log = new Logs();
                 $log->setTime(new \DateTime());
-                $log->setSuccess(false);
+                $log->setState(StateType::Fail);
                 $log->setMessage("Failed to open MTA-STS report");
-                $log->setDetails($e->getMessage());
+                $log->setDetails(array('count' => 0, 'reports' => array(array('type' => ReportType::Other, 'state' => StateType::Fail, 'message' => $e->getMessage()))));
+                $log->setMailcount(1);
                 $this->em->persist($log);
+                $lock->setValue('0');
+                $this->em->persist($lock);
                 $this->em->flush();
                 $success = false;
             }
         }
 
-        return array('reporttype' => $reporttype, 'report' => $report, 'success' => $success);
+        return array('type' => $reporttype, 'report' => $report, 'success' => $success);
     }
 
     private function isJson($string)
@@ -478,19 +529,25 @@ class GetReportsFromMailboxCommand extends Command
         } catch (\Exception $e) {
             $log = new Logs();
             $log->setTime(new \DateTime());
-            $log->setSuccess(false);
+            $log->setState(StateType::Fail);
             $log->setMessage("Exception while procesing DMARC report");
-            $log->setDetails($e->getMessage());
+            $log->setDetails(array('count' => 0, 'reports' => array(array('type' => ReportType::Other, 'state' => StateType::Fail, 'message' => $e->getMessage()))));
+            $log->setMailcount(1);
             $this->em->persist($log);
+            $lock->setValue('0');
+            $this->em->persist($lock);
             $this->em->flush();
             return false;
         } catch (\Error $e) {
             $log = new Logs();
             $log->setTime(new \DateTime());
-            $log->setSuccess(false);
+            $log->setState(StateType::Fail);
             $log->setMessage("Error while procesing DMARC report");
-            $log->setDetails($e->getMessage());
+            $log->setDetails(array('count' => 0, 'reports' => array(array('type' => ReportType::Other, 'state' => StateType::Fail, 'message' => $e->getMessage()))));
+            $log->setMailcount(1);
             $this->em->persist($log);
+            $lock->setValue('0');
+            $this->em->persist($lock);
             $this->em->flush();
             return false;
         }
@@ -640,19 +697,25 @@ class GetReportsFromMailboxCommand extends Command
         } catch (\Exception $e) {
             $log = new Logs();
             $log->setTime(new \DateTime());
-            $log->setSuccess(false);
+            $log->setState(StateType::Fail);
             $log->setMessage("Exception while procesing MTA-STS report");
-            $log->setDetails($e->getMessage());
+            $log->setDetails(array('count' => 0, 'reports' => array(array('type' => ReportType::Other, 'state' => StateType::Fail, 'message' => $e->getMessage()))));
+            $log->setMailcount(1);
             $this->em->persist($log);
+            $lock->setValue('0');
+            $this->em->persist($lock);
             $this->em->flush();
             return false;
         } catch (\Error $e) {
             $log = new Logs();
             $log->setTime(new \DateTime());
-            $log->setSuccess(false);
+            $log->setState(StateType::Fail);
             $log->setMessage("Error while procesing MTA-STS report");
-            $log->setDetails($e->getMessage());
+            $log->setDetails(array('count' => 0, 'reports' => array(array('type' => ReportType::Other, 'state' => StateType::Fail, 'message' => $e->getMessage()))));
+            $log->setMailcount(1);
             $this->em->persist($log);
+            $lock->setValue('0');
+            $this->em->persist($lock);
             $this->em->flush();
             return false;
         }

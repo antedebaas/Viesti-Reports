@@ -16,6 +16,8 @@ ENV MAILER_SMTPPORT=25
 ENV MAILER_IMAPPORT=993
 ENV MAILER_USER=
 ENV MAILER_PASSWORD=
+ENV PUSHOVER_API_KEY=
+ENV PUSHOVER_USER_KEY=
 ENV DELETE_PROCESSED_MAILS=false
 ENV ENABLE_REGISTRATION=true
 ENV MAILCHECK_SCHEDULE="0 * * * *"
@@ -27,6 +29,7 @@ RUN apk --update add ca-certificates && \
         nginx \
         php83 \
         php83-ctype \
+        php83-curl \
         php83-dom \
         php83-fileinfo \
         php83-fpm \

@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta content="telephone=no" name="format-detection" />
+        <style>
+            :root {
+                --tblr-green: #2fb344;
+            }
+        </style>
+    </head>
+
+    <body class="bg-body" style="font-size: 15px; line-height: 160%; mso-line-height-rule: exactly; color: #4b5563; width: 100%; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-font-feature-settings: &quot;cv02&quot;, &quot;cv03&quot;, &quot;cv04&quot;, &quot;cv11&quot;; font-feature-settings: &quot;cv02&quot;, &quot;cv03&quot;, &quot;cv04&quot;, &quot;cv11&quot;; font-family: Inter, -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; margin: 0; padding: 0;" bgcolor="#f9fafb">
+        <center>
+            <br>
+            {% include "base/brand.html.twig" with {'brandpath': domain} %}
+            <h1>Welcome to Viesti Reports</h1>.<br>
+            You're almost there.<br>
+            <br>
+            Click the link below to confirm your email address and finish your account setup<br>
+            <a href="{{ signedUrl|raw }}">Confirm email address</a><br>
+            Is the link not working? Copy and paste the link below into your web browser:<br>
+            {{ signedUrl|raw }}<br>
+            <br>
+            This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.<br>
+            If you did not make this request, you can ignore this email<br>
+            <br>
+            Copyright &copy; <a href="https://www.epicgreen.nl" class="link-secondary">EpicGreen <img height="12" src="{{ domain }}/epicgreen-logo-xxs.png"> </a>. All rights reserved.
+
+        </center>
+    </body>
+</html>

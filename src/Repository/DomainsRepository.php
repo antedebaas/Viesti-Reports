@@ -73,7 +73,6 @@ class DomainsRepository extends ServiceEntityRepository
         } else {
           // Check baseProfile and version values
           if (isset($matches[1]) && isset($matches[3])) {
-            dd($matches);
             if ($matches[1] == 'baseProfile' && strtolower($matches[3]) != 'tiny-ps') {
               $result['result'] = false;
               $result['errors'][] = 'Invalid SVG: baseProfile attribute on <svg> element should be set to "tiny-ps".';

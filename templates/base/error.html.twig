@@ -1,0 +1,15 @@
+{% extends 'base/index.html.twig' %}
+{% block base %}
+<div class="page page-center">
+    <div class="container container-tight py-4">
+        <div class="text-center mb-4">
+            {% include "base/brand.html.twig" %}
+        </div>
+        <div class="card card-md">
+            <div class="card-body">
+                <h2 class="h2 text-center mb-4">{{ page.title }}</h2>
+                {{ message}}
+        </div>
+    </div>
+</div>
+{% endblock %}

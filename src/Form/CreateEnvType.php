@@ -78,6 +78,14 @@ class CreateEnvType extends AbstractType
                 new Assert\NotBlank(),
             ]
         ])
+        ->add('pushover_api_key', TextType::class, [
+            'label' =>  $this->translator->trans('Pushover API key'),
+            'required' => false,
+        ])
+        ->add('pushover_user_key', TextType::class, [
+            'label' =>  $this->translator->trans('Pushover user key'),
+            'required' => false,
+        ])
         ->add('delete_processed_mails', ChoiceType::class, [
             'label' =>  $this->translator->trans('For each mail that has been processed'),
             'choices'  => [

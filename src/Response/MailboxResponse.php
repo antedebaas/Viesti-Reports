@@ -1,24 +1,25 @@
 <?php
 
 namespace App\Response;
+use App\Enums\StateType;
 
 class MailboxResponse
 {
-    private bool $success = false;
+    private StateType $state = StateType::Fail;
     private string $message = 'Unknown error.';
     private array $details = array();
 
-    public function setSuccess($success, $message = '', $details = array())
+    public function setState($state, $message = '', $details = array())
     {
-        $this->success = $success;
+        $this->state = $state;
         $this->message = $message;
         $this->details = $details;
         return $this;
     }
 
-    public function getSuccess()
+    public function getState()
     {
-        return $this->success;
+        return $this->state;
     }
 
     public function getMessage()

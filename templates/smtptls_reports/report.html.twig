@@ -1,9 +1,7 @@
-{% extends 'base.html.twig' %}
-
-{% set title = "SMTP-TLS Report #" ~ report.id %}
+{% extends 'base/page.html.twig' %}
 
 {% block body %}
-                <div class="row my-4">
+                <div class="row mb-3">
                     <div class="col-12 col-md-12 col-lg-6 mb-4 mb-lg-0">
                       <div class="card">
                           <h5 class="card-header">Reporting organization: {{report.organisation}}</h5>
@@ -51,7 +49,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row my-4">
+                <div class="row">
                   {% for policy in report.smtptls_policies|reverse %}
                     <div class="col-12 col-md-12 col-lg-12 mb-4 mb-lg-0">
                       <div class="card">
@@ -149,7 +147,7 @@
                                     <div class="clearfix">
                                       <span class="float-start"><b>Policy type: </b> </span>
                                       <span class="float-end">
-                                          <span class="btn btn-sm btn-{% if policy.policytype == 'no-policy-found' %}danger{% else %}success{% endif %}">{{ policy.policytype }}</span>
+                                          <span class="badge me-1 text-white bg-{% if policy.policytype == 'no-policy-found' %}danger{% else %}success{% endif %}">{{ policy.policytype|upper }}</span>
                                       </span>
                                     </div>
                                   </li>
@@ -159,9 +157,9 @@
                                       <span class="float-start"><b>Version: </b> </span>
                                       <span class="float-end">
                                         {% if policy.policystringversion == 'STSv1' %}
-                                          <span class="btn btn-sm btn-success">STSv1</span>
+                                          <span class="badge me-1 text-white bg-success">STSv1</span>
                                         {% else %}
-                                          <span class="btn btn-sm btn-danger">Policy version empty</span>
+                                          <span class="badge me-1 text-white bg-danger">Empty</span>
                                         {% endif %}
                                       </span>
                                     </div>
@@ -170,7 +168,7 @@
                                     <div class="clearfix">
                                       <span class="float-start"><b>Mode: </b> </span>
                                       <span class="float-end">
-                                        <span class="btn btn-sm btn-{% if policy.policystringmode == 'enforce' %}success{% elseif policy.policystringmode == 'testing' %}warning{% else %}danger{% endif %}">{% if policy.policystringmode %}{{ policy.policystringmode }}{% else %}Policy mode empty{% endif %}</span>
+                                        <span class="badge me-1 text-white bg-{% if policy.policystringmode == 'enforce' %}success{% elseif policy.policystringmode == 'testing' %}warning{% else %}danger{% endif %}">{% if policy.policystringmode %}{{ policy.policystringmode|capitalize }}{% else %}Empty{% endif %}</span>
                                       </span>
                                     </div>
                                   </li>
@@ -247,5 +245,4 @@
                     </div>
                     <p></p>
                   {% endfor %}
-                </div>
 {% endblock %}

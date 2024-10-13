@@ -8,6 +8,8 @@ parameters:
     app.delete_processed_mails: '%env(bool:DELETE_PROCESSED_MAILS)%'
     app.database_url: '%env(string:DATABASE_URL)%'
     app.enable_registration: '%env(bool:ENABLE_REGISTRATION)%'
+    app.pushover_api_key: '%env(string:PUSHOVER_API_KEY)%'
+    app.pushover_user_key: '%env(string:PUSHOVER_USER_KEY)%'
 
 services:
     # default configuration for services in *this* file

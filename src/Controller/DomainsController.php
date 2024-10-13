@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Form\DomainFormType;
+use App\Form\DeleteFormType;
 
 use App\Entity\Users;
 use App\Entity\Domains;
@@ -56,7 +57,7 @@ class DomainsController extends AbstractController
         if(isset($_GET["perpage"]) && $_GET["perpage"] > 0) {
             $pages["perpage"] = intval($_GET["perpage"]);
         } else {
-            $pages["perpage"] = 17;
+            $pages["perpage"] = 10;
         }
 
         $repository = $this->em->getRepository(Domains::class);
@@ -75,24 +76,45 @@ class DomainsController extends AbstractController
             }
         }
 
-        $totaldomains = $repository->getTotalRows();
+        $pages["totalitems"] = $repository->getTotalRows();
+        $pages["start"] = $pages["totalitems"] - (($pages["page"] - 1) * $pages["perpage"]); 
+        $pages["end"] = $pages["totalitems"] - (($pages["page"] - 1) * $pages["perpage"]) - $pages['perpage'] + 1;
+        if ($pages["end"] < 0) {
+            $pages["end"] = 1;
+        }
 
-        if(count($domains) == 0 && $totaldomains != 0) {
+        if(count($domains) == 0 && $pages["totalitems"] != 0) {
             return $this->redirectToRoute('app_domains');
         }
 
-        if($totaldomains / $pages["perpage"] > $pages["page"]) {
+        if($pages["totalitems"] / $pages["perpage"] > $pages["page"]) {
             $pages["next"] = true;
         }
         if($pages["page"] - 1 > 0) {
             $pages["prev"] = true;
         }
+        $pages["total"] = ceil($pages["totalitems"] / $pages['perpage']);
 
         return $this->render('domains/index.html.twig', [
             'domains' => $domains,
             'bimivmcinfo' => $bimivmcinfo,
             'pages' => $pages,
-            'menuactive' => 'domains',
+            'page' => array(
+                'menu' => array(
+                    'category' => 'domains',
+                    'item' => 'domains'
+                ),
+                'pretitle' => $this->translator->trans("Domains"),
+                'title' => $this->translator->trans("Home"),
+                'actions' => array(
+                    0 => array(
+                        'primary' => true,
+                        'name' => $this->translator->trans("Add"),
+                        'target' => $this->router->generate('app_domains_add'),
+                        'icon' => "plus"
+                    ),
+                ),
+            ),
             'breadcrumbs' => array(array('name' => $this->translator->trans("Domains"), 'url' => $this->router->generate('app_domains'))),
         ]);
     }
@@ -106,7 +128,7 @@ class DomainsController extends AbstractController
 
         $usersRepository = $this->em->getRepository(Users::class);
         if(!$usersRepository->denyAccessUnlessOwned(array($domain->getId()), $this->getUser())) {
-            return $this->render('not_found.html.twig', []);
+            return $this->render('base/error.html.twig', ['page' => array('title'=> 'Not found'), 'message' => $exception->getMessage()]);
         }
 
         $dkimselector = $domain->getDkimselector();
@@ -137,7 +159,15 @@ class DomainsController extends AbstractController
             'domain' => $domain,
             'validation' => $validation,
             'selectors' => $selectors,
-            'menuactive' => 'domains',
+            'page' => array(
+                'menu' => array(
+                    'category' => 'domains',
+                    'item' => 'check'
+                ),
+                'pretitle' => $this->translator->trans("Domains"),
+                'title' => $this->translator->trans("Check domain ").$domain->getFqdn(),
+                'actions' => array(),
+            ),
             'breadcrumbs' => array(
                 array('name' => $this->translator->trans("Domains"), 'url' => $this->router->generate('app_domains')),
                 array('name' => $this->translator->trans("Check domain settings for ").$domain->getFqdn(), 'url' => $this->router->generate('app_domains'))
@@ -147,17 +177,17 @@ class DomainsController extends AbstractController
 
     private function findvalidtxtrecords(array $records): array {
         $result = array(
-            'SPF'=> array(new TXTRecords\SPF1(""),TXTRecordStates::FAIL),
-            'DKIM'=> array(new TXTRecords\DKIM1(""),TXTRecordStates::FAIL),
-            'BIMI'=> array(new TXTRecords\BIMI1(""),TXTRecordStates::FAIL),
-            'STS'=> array(new TXTRecords\STSV1(""),TXTRecordStates::FAIL),
-            'DMARC'=> array(new TXTRecords\DMARC1(""),TXTRecordStates::FAIL),
-            'TLSRPT'=> array(new TXTRecords\TLSRPTV1(""),TXTRecordStates::FAIL),
+            'SPF'=> array(new TXTRecords\SPF1(""),TXTRecordStates::Fail),
+            'DKIM'=> array(new TXTRecords\DKIM1(""),TXTRecordStates::Fail),
+            'BIMI'=> array(new TXTRecords\BIMI1(""),TXTRecordStates::Fail),
+            'STS'=> array(new TXTRecords\STSV1(""),TXTRecordStates::Fail),
+            'DMARC'=> array(new TXTRecords\DMARC1(""),TXTRecordStates::Fail),
+            'TLSRPT'=> array(new TXTRecords\TLSRPTV1(""),TXTRecordStates::Fail),
         );
 
         foreach($records as $record) {
             if($record->v()->version() == 1) {
-                $result[$record->v()->type()] = array($record->v(),TXTRecordStates::GOOD);
+                $result[$record->v()->type()] = array($record->v(),TXTRecordStates::Good);
             }
         }
         
@@ -215,13 +245,28 @@ class DomainsController extends AbstractController
         );
 
         return $this->render('domains/edit.html.twig', [
-            'menuactive' => 'domains',
+            'page' => array(
+                'menu' => array(
+                    'category' => 'domains',
+                    'item' => 'add'
+                ),
+                'pretitle' => $this->translator->trans("Domains"),
+                'title' => $this->translator->trans("Add domain"),
+                'actions' => array(
+                    0 => array(
+                        'primary' => false,
+                        'name' => $this->translator->trans("Example DNS Records"),
+                        'target' => "#modal-dnssettings",
+                        'icon' => "globe"
+                    ),
+                ),
+            ),
             'domain' => null,
             'dns_info' => $dns_info,
             'form' => $form,
             'breadcrumbs' => array(
                 array('name' => $this->translator->trans("Domains"), 'url' => $this->router->generate('app_domains')),
-                array('name' => "Add new domain manually", 'url' => $this->router->generate('app_domains_add'))
+                array('name' => "Add domain", 'url' => $this->router->generate('app_domains_add'))
             ),
         ]);
     }
@@ -235,7 +280,7 @@ class DomainsController extends AbstractController
 
         $usersRepository = $this->em->getRepository(Users::class);
         if(!$usersRepository->denyAccessUnlessOwned(array($domain->getId()), $this->getUser())) {
-            return $this->render('not_found.html.twig', []);
+            return $this->render('base/error.html.twig', ['page' => array('title'=> 'Not found'), 'message' => $exception->getMessage()]);
         }
 
         $form = $this->createForm(DomainFormType::class, $domain);
@@ -274,7 +319,15 @@ class DomainsController extends AbstractController
         );
 
         return $this->render('domains/edit.html.twig', [
-            'menuactive' => 'domains',
+            'page' => array(
+                'menu' => array(
+                    'category' => 'domains',
+                    'item' => 'edit'
+                ),
+                'pretitle' => $this->translator->trans("Domains"),
+                'title' => $this->translator->trans("Edit domain")." ".$domain->getFqdn(),
+                'actions' => array(),
+            ),
             'domain' => $domain,
             'dns_info' => $dns_info,
             'form' => $form,
@@ -286,7 +339,7 @@ class DomainsController extends AbstractController
     }
 
     #[Route('/domains/delete/{id}', name: 'app_domains_delete')]
-    public function delete(Domains $domain): Response
+    public function delete(Domains $domain, Request $request): Response
     {
         if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
             return $this->redirectToRoute('app_login');
@@ -294,9 +347,40 @@ class DomainsController extends AbstractController
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        $this->em->remove($domain);
-        $this->em->flush();
+        $form = $this->createForm(DeleteFormType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $formdata = $form->getData();
+            if($formdata['item'] == $domain->getFqdn()) {
+                $this->addFlash('success', 'Domain deleted');
 
-        return $this->redirectToRoute('app_domains');
+                $this->em->remove($domain);
+                $this->em->flush();
+                
+                return $this->redirectToRoute('app_domains');
+            } else {
+                $this->addFlash('danger', 'The name you typed does not match the domain name');
+            }
+        }
+
+        return $this->render('base/delete.html.twig', [
+            'page' => array(
+                'menu' => array(
+                    'category' => 'domains',
+                    'item' => 'edit'
+                ),
+                'pretitle' => $this->translator->trans("Domains"),
+                'title' => $this->translator->trans("Delete domain")." ".$domain->getFqdn(),
+                'actions' => array(),
+            ),
+            'item' => $domain->getFqdn(),
+            'form' => $form,
+            'breadcrumbs' => array(
+                array('name' => $this->translator->trans("Domains"), 'url' => $this->router->generate('app_domains')),
+                array('name' => $domain->getFqdn(), 'url' => $this->router->generate('app_domains')),
+                array('name' => $domain->getFqdn(), 'url' => $this->router->generate('app_domains_delete', ['id' => $domain->getId()]))
+            ),
+        ]);
     }
 }
