@@ -19,18 +19,19 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 #[Route('/reset-password')]
 class ResetPasswordController extends AbstractController
 {
     use ResetPasswordControllerTrait;
 
-    public function __construct(
-        private ResetPasswordHelperInterface $resetPasswordHelper,
-        private EntityManagerInterface $entityManager
-    ) {
-    }
+    private RequestStack $requestStack;
 
+    public function __construct( private ResetPasswordHelperInterface $resetPasswordHelper, private EntityManagerInterface $entityManager, RequestStack $requestStack )
+    {
+        $this->requestStack = $requestStack;
+    }
     /**
      * Display & process form to request a password reset.
      */
