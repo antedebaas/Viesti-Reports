@@ -49,10 +49,10 @@ class ResetPasswordControllerTest extends WebTestCase
         $this->client->request('GET', '/reset-password');
 
         self::assertResponseIsSuccessful();
-        self::assertPageTitleContains('Reset your password');
+        self::assertPageTitleContains('Viesti Reports - Forgot password');
 
         // Submit the reset password form and test email message is queued / sent
-        $this->client->submitForm('Send password reset email', [
+        $this->client->submitForm('Request password reset', [
             'reset_password_request_form[email]' => 'me@example.com',
         ]);
 
