@@ -51,16 +51,17 @@
 								{% else %}
 									{% set sts_v_empty = sts_v_empty + 1 %}
 								{% endif %}
+								
+								{% if policy.policystringmode == 'enforce' %}
+									{% set mode_enforce = mode_enforce + 1 %}
+								{% elseif policy.policystringmode == 'testing' %}
+									{% set mode_testing = mode_testing + 1 %}
+								{% else %}
+									{% set mode_disabled = mode_disabled + 1 %}
+								{% endif %}
 							{% endif %}
 							{% if policy.policytype == 'tlsa' %}
 								{% set tlsa = tlsa + 1 %}
-							{% endif %}
-							{% if policy.policystringmode == 'enforce' %}
-								{% set mode_enforce = mode_enforce + 1 %}
-							{% elseif policy.policystringmode == 'testing' %}
-								{% set mode_testing = mode_testing + 1 %}
-							{% else %}
-								{% set mode_disabled = mode_disabled + 1 %}
 							{% endif %}
 						{% endfor %}
 					<td>
