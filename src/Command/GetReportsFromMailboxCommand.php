@@ -197,12 +197,16 @@ class GetReportsFromMailboxCommand extends Command
     {
         $response = new MailboxResponse();
 
+        $repository = $this->em->getRepository(Config::class);
+        $lock = $repository->findOneBy(array('name' => 'check_mailbox_lock'));
+
         $mailbox = $ci_mailbox->getMailbox();
         $mail_ids = $mailbox->searchMailbox('UNSEEN');
         $details = array('count' => 0, 'reports' => array());
 
         $success = false;
         foreach($mail_ids as $mailid) {
+
             $result = $this->process_email($mailbox, $mailid);
 
             if($result['success'] == true) {
@@ -236,6 +240,9 @@ class GetReportsFromMailboxCommand extends Command
 
     private function process_email(\PhpImap\Mailbox $mailbox, int $mailid): array
     {
+        $repository = $this->em->getRepository(Config::class);
+        $lock = $repository->findOneBy(array('name' => 'check_mailbox_lock'));
+
         $mail = $mailbox->getMail($mailid);
         $reports = array();
         $response = array('success' => false, 'reports' => array());
@@ -355,6 +362,9 @@ class GetReportsFromMailboxCommand extends Command
 
     private function open_archive($file): array
     {
+        $repository = $this->em->getRepository(Config::class);
+        $lock = $repository->findOneBy(array('name' => 'check_mailbox_lock'));
+
         $report = null;
         $reporttype = ReportType::Other;
         $success = false;
@@ -452,6 +462,9 @@ class GetReportsFromMailboxCommand extends Command
 
     private function process_dmarc_report(MailReportResponse $report): bool
     {
+        $repository = $this->em->getRepository(Config::class);
+        $lock = $repository->findOneBy(array('name' => 'check_mailbox_lock'));
+
         $dmarcreport = $report->getReport();
         try {
             $domain_repository = $this->em->getRepository(Domains::class);
@@ -555,6 +568,9 @@ class GetReportsFromMailboxCommand extends Command
 
     private function process_sts_report(MailReportResponse $report): bool
     {
+        $repository = $this->em->getRepository(Config::class);
+        $lock = $repository->findOneBy(array('name' => 'check_mailbox_lock'));
+
         $smtptlsreport = $report->getReport();
         try {
             $dbreport = new SMTPTLS_Reports();
