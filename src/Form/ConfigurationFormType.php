@@ -19,7 +19,7 @@ class ConfigurationFormType extends AbstractType
     {
         foreach($options['data']['entries'] as $name => $item) {
             switch ($item->getType()) {
-                case 'text':
+                case 'string':
                     $builder->add($item->getName(), TextType::class, [
                         'data' => $item->getValue(),
                         'label' => $item->getName(),
