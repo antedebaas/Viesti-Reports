@@ -31,6 +31,12 @@ class ConfigurationController extends AbstractController
     #[Route('/configuration', name: 'app_configuration')]
     public function index(Request $request): Response
     {
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         $repository = $this->em->getRepository(Config::class);
         $entries = $repository->findAll();
 
