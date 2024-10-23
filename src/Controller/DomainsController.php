@@ -326,7 +326,14 @@ class DomainsController extends AbstractController
                 ),
                 'pretitle' => $this->translator->trans("Domains"),
                 'title' => $this->translator->trans("Edit domain")." ".$domain->getFqdn(),
-                'actions' => array(),
+                'actions' => array(
+                    0 => array(
+                        'primary' => false,
+                        'name' => $this->translator->trans("Example DNS Records"),
+                        'target' => "#modal-dnssettings",
+                        'icon' => "globe"
+                    ),
+                ),
             ),
             'domain' => $domain,
             'dns_info' => $dns_info,
