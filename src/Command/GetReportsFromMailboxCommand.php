@@ -76,7 +76,6 @@ class GetReportsFromMailboxCommand extends Command
             $this->em->persist($lock);
             $this->em->flush();
         }
-        
         try {
             if($lock->getValue() == '1') {
                 $log = new Logs();
@@ -95,20 +94,50 @@ class GetReportsFromMailboxCommand extends Command
                 $this->em->persist($lock);
                 $this->em->flush();
 
-                $results['primary'] = $this->open_mailbox($this->mailbox);
+                $results['primary'] = $this->open_mailbox($this->mailbox,$lock);
                 if($this->mailbox_secondary->isEnabled()) {
-                    $results['secondary'] = $this->open_mailbox($this->mailbox_secondary);
+                    $results['secondary'] = $this->open_mailbox($this->mailbox_secondary,$lock);
                 } else {
                     $results['secondary'] = new MailboxResponse();
                     $results['secondary']->setState(StateType::Warn, 'Secondary mailbox is disabled.', array('count' => 0, 'reports' => array()));
                 }
 
-                if(!empty($this->params->get('app.pushover_api_key')) && !empty($this->params->get('app.pushover_user_key')))
+                $repository = $this->em->getRepository(Config::class);
+                $pusover = $repository->getKey('enable_pushover');
+                if(!$pusover) {
+                    $pusover = new Config();
+                    $pusover->setName('enable_pushover');
+                    $pusover->setValue('0');
+                    $pusover->setType('boolean');
+                    $this->em->persist($pusover);
+                    $this->em->flush();
+                } else {
+                    $pusover_api_key = $repository->getKey('pushover_api_key');
+                    if(!$pusover_api_key) {
+                        $pusover_api_key = new Config();
+                        $pusover_api_key->setName('pushover_api_key');
+                        $pusover_api_key->setValue('');
+                        $pusover_api_key->setType('string');
+                        $this->em->persist($pusover_api_key);
+                        $this->em->flush();
+                    }
+                    $pushover_user_key = $repository->getKey('pushover_user_key');
+                    if(!$pushover_user_key) {
+                        $pushover_user_key = new Config();
+                        $pushover_user_key->setName('pushover_user_key');
+                        $pushover_user_key->setValue('');
+                        $pushover_user_key->setType('string');
+                        $this->em->persist($pushover_user_key);
+                        $this->em->flush();
+                    }
+                }
+
+                if($pusover->getValue() == '1' && (!empty($pusover_api_key->getValue()) && !empty($pushover_user_key->getValue())))
                 {
                     $count = $results['primary']->getDetails()["count"] + $results['secondary']->getDetails()["count"];
                     if($count > 0) {
-                        $application = new Application($this->params->get('app.pushover_api_key'));
-                        $recipient = new Recipient($this->params->get('app.pushover_user_key'));
+                        $application = new Application($pusover_api_key->getValue());
+                        $recipient = new Recipient($pushover_user_key->getValue());
                         $message = new Message($count.' new emails have been processed by viesti reports', 'New reports processed.');
                         $notification = new Notification($application, $recipient, $message);
                         $notification->push();
@@ -193,12 +222,9 @@ class GetReportsFromMailboxCommand extends Command
         }
     }
 
-    private function open_mailbox(ConnectionInterface $ci_mailbox): MailboxResponse
+    private function open_mailbox(ConnectionInterface $ci_mailbox, Config $lock): MailboxResponse
     {
         $response = new MailboxResponse();
-
-        $repository = $this->em->getRepository(Config::class);
-        $lock = $repository->findOneBy(array('name' => 'check_mailbox_lock'));
 
         $mailbox = $ci_mailbox->getMailbox();
         $mail_ids = $mailbox->searchMailbox('UNSEEN');
@@ -207,10 +233,20 @@ class GetReportsFromMailboxCommand extends Command
         $success = false;
         foreach($mail_ids as $mailid) {
 
-            $result = $this->process_email($mailbox, $mailid);
+            $result = $this->process_email($mailbox, $mailid, $lock);
 
             if($result['success'] == true) {
-                if ($this->params->get('app.delete_processed_mails') == "true") {
+                $repository = $this->em->getRepository(Config::class);
+                $delete = $repository->getKey('delete_processed_mails');
+                if(!$delete) {
+                    $delete = new Config();
+                    $delete->setName('delete_processed_mails');
+                    $delete->setValue('0');
+                    $delete->setType('boolean');
+                    $this->em->persist($delete);
+                    $this->em->flush();
+                }
+                if ($delete->getValue() === true) {
                     $mailbox->deleteMail($mailid);
                 }
                 $success = true;
@@ -238,11 +274,8 @@ class GetReportsFromMailboxCommand extends Command
         return $response;
     }
 
-    private function process_email(\PhpImap\Mailbox $mailbox, int $mailid): array
+    private function process_email(\PhpImap\Mailbox $mailbox, int $mailid, Config $lock): array
     {
-        $repository = $this->em->getRepository(Config::class);
-        $lock = $repository->findOneBy(array('name' => 'check_mailbox_lock'));
-
         $mail = $mailbox->getMail($mailid);
         $reports = array();
         $response = array('success' => false, 'reports' => array());
@@ -260,7 +293,7 @@ class GetReportsFromMailboxCommand extends Command
                     $report = new MailReportResponse();
                     $report->setMailId($mail->headers->message_id ?? "mail-id-".$mailid);
     
-                    $result = $this->open_archive($attachment->filePath);
+                    $result = $this->open_archive($attachment->filePath, $lock);
                     if($result['success'] == true) {
                         $report->setState(StateType::Good, 'Report loaded successfully.');
                         $report->setType($result['type']);
@@ -292,9 +325,9 @@ class GetReportsFromMailboxCommand extends Command
             try {
                 if(!is_null($report)) {
                     if($report->getType() == ReportType::DMARC) {
-                        $result = $this->process_dmarc_report($report);
+                        $result = $this->process_dmarc_report($report, $lock);
                     } elseif($report->getType() == ReportType::STS) {
-                        $result = $this->process_sts_report($report);
+                        $result = $this->process_sts_report($report, $lock);
                     } else {
                         $result = false;
                     }
@@ -360,11 +393,8 @@ class GetReportsFromMailboxCommand extends Command
         return $response;
     }
 
-    private function open_archive($file): array
+    private function open_archive($file, Config $lock): array
     {
-        $repository = $this->em->getRepository(Config::class);
-        $lock = $repository->findOneBy(array('name' => 'check_mailbox_lock'));
-
         $report = null;
         $reporttype = ReportType::Other;
         $success = false;
@@ -460,11 +490,8 @@ class GetReportsFromMailboxCommand extends Command
         return json_last_error() === JSON_ERROR_NONE;
     }
 
-    private function process_dmarc_report(MailReportResponse $report): bool
+    private function process_dmarc_report(MailReportResponse $report, Config $lock): bool
     {
-        $repository = $this->em->getRepository(Config::class);
-        $lock = $repository->findOneBy(array('name' => 'check_mailbox_lock'));
-
         $dmarcreport = $report->getReport();
         try {
             $domain_repository = $this->em->getRepository(Domains::class);
@@ -566,11 +593,8 @@ class GetReportsFromMailboxCommand extends Command
         }
     }
 
-    private function process_sts_report(MailReportResponse $report): bool
+    private function process_sts_report(MailReportResponse $report, Config $lock): bool
     {
-        $repository = $this->em->getRepository(Config::class);
-        $lock = $repository->findOneBy(array('name' => 'check_mailbox_lock'));
-
         $smtptlsreport = $report->getReport();
         try {
             $dbreport = new SMTPTLS_Reports();

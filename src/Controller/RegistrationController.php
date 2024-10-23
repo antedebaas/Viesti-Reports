@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Users;
+use App\Entity\Config;
 use App\Form\RegistrationFormType;
 use App\Repository\UsersRepository;
 use App\Security\Authenticator;
@@ -33,9 +34,20 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, Authenticator $authenticator, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, Authenticator $authenticator): Response
     {
-        if ($this->getParameter('app.enable_registration') == false) {
+        $repository = $this->em->getRepository(Config::class);
+        $enable_registration = $repository->getKey('enable_registration');
+        if(!$enable_registration) {
+            $enable_registration = new Config();
+            $enable_registration->setName('enable_registration');
+            $enable_registration->setValue('0');
+            $enable_registration->setType('boolean');
+            $this->em->persist($enable_registration);
+            $this->em->flush();
+        }
+
+        if ($enable_registration->getValue() == false) {
             return $this->render('base/error.html.twig', ['page' => array('title'=> 'Registration disabled'), 'message' => 'Registration is disabled.']);
         }
         $repository = $this->em->getRepository(Users::class);

@@ -6,9 +6,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Doctrine\ORM\EntityManagerInterface;
+
+use App\Entity\Config;
 
 class SecurityController extends AbstractController
 {
+    private $em;
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -22,11 +32,22 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
+        $repository = $this->em->getRepository(Config::class);
+        $enable_registration = $repository->getKey('enable_registration');
+        if(!$enable_registration) {
+            $enable_registration = new Config();
+            $enable_registration->setName('enable_registration');
+            $enable_registration->setValue('0');
+            $enable_registration->setType('boolean');
+            $this->em->persist($enable_registration);
+            $this->em->flush();
+        }
+
         return $this->render('security/login.html.twig', [
             'page' => array('title' => 'Login'),
             'last_username' => $lastUsername,
             'error' => $error,
-            'enable_registration' => $this->getParameter('app.enable_registration')
+            'enable_registration' => $enable_registration->getValue()
         ]);
     }
 
