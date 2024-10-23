@@ -67,7 +67,7 @@ class GetReportsFromMailboxCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $repository = $this->em->getRepository(Config::class);
-        $lock = $repository->findOneBy(array('name' => 'check_mailbox_lock'));
+        $lock = $repository->getKey('check_mailbox_lock');
         if(!$lock) {
             $lock = new Config();
             $lock->setName('check_mailbox_lock');

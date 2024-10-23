@@ -16,7 +16,7 @@ class Config
     private ?string $value = null;
 
     #[ORM\Column(length: 16)]
-    private ?string $Type = null;
+    private ?string $type = null;
 
     public function getName(): ?string
     {
@@ -44,12 +44,12 @@ class Config
 
     public function getType(): ?string
     {
-        return $this->Type;
+        return $this->type;
     }
 
-    public function setType(string $Type): static
+    public function setType(string $type): static
     {
-        $this->Type = $Type;
+        $this->type = $type;
 
         return $this;
     }
