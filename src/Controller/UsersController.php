@@ -126,6 +126,9 @@ class UsersController extends AbstractController
                         $form->get('password1')->getData()
                     )
                 );
+            } else {
+                $this->addFlash('danger', "Passwords do not match");
+                return $this->redirectToRoute('app_users_add');
             }
 
             $is_admin = $form->get("isAdmin")->getData();
@@ -166,7 +169,7 @@ class UsersController extends AbstractController
         ]);
     }
 
-    #[Route('/users/edit/{id}', name: 'app_users_edit')]
+    #[Route('/users/edit/{user}', name: 'app_users_edit')]
     public function edit(Users $user, Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
@@ -184,13 +187,19 @@ class UsersController extends AbstractController
             $password1 = $form->get("password1")->getData();
             $password2 = $form->get("password2")->getData();
 
-            if($password1 == $password2 && $password1 != "") {
-                $formdata->setPassword(
-                    $userPasswordHasher->hashPassword(
-                        $formdata,
-                        $form->get('password1')->getData()
-                    )
-                );
+            if(!is_null($password1)) {
+                if($password1 == $password2) {
+                    $formdata->setPassword(
+                        $userPasswordHasher->hashPassword(
+                            $formdata,
+                            $form->get('password1')->getData()
+                        )
+                    );
+                    $this->addFlash('success', "Password updated");
+                } else {
+                    $this->addFlash('danger', "Passwords do not match");
+                    return $this->redirectToRoute('app_users_edit', ['user' => $user->getId()]);
+                }
             }
 
             $is_admin = $form->get("isAdmin")->getData();
@@ -245,7 +254,7 @@ class UsersController extends AbstractController
             
             if(!empty($form->get("password0")->getData())) {
                 $formdata->setPassword($this->getUser()->getPassword());
-                //verify password
+
                 if($userPasswordHasher->isPasswordValid($this->getUser(), $form->get("password0")->getData())) {
                     if($form->get("password1")->getData() == $form->get("password2")->getData()){
                         $formdata->setPassword(
@@ -288,7 +297,7 @@ class UsersController extends AbstractController
         ]);
     }
 
-    #[Route('/users/delete/{id}', name: 'app_users_delete')]
+    #[Route('/users/delete/{user}', name: 'app_users_delete')]
     public function delete(Users $user, Request $request): Response
     {
         if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
@@ -329,7 +338,7 @@ class UsersController extends AbstractController
             'breadcrumbs' => array(
                 array('name' => $this->translator->trans("Users"), 'url' => $this->router->generate('app_users')),
                 array('name' => $user->getEmail(), 'url' => $this->router->generate('app_users')),
-                array('name' => $user->getEmail(), 'url' => $this->router->generate('app_users_delete', ['id' => $user->getId()]))
+                array('name' => $user->getEmail(), 'url' => $this->router->generate('app_users_delete', ['user' => $user->getId()]))
             ),
         ]);
 

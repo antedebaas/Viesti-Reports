@@ -52,9 +52,9 @@
 						<span class="dropdown">
 							<button class="btn dropdown-toggle align-text-top"{# data-bs-boundary="viewport"#} data-bs-toggle="dropdown">{{ "Actions"|trans }}</button>
 							<div class="dropdown-menu dropdown-menu dropdown-menu-end">
-								<a class="dropdown-item" href="{{ path('app_users_edit', {id: user.id}) }}">{{ "Edit"|trans }}</a>
+								<a class="dropdown-item" href="{{ path('app_users_edit', {user: user.id}) }}">{{ "Edit"|trans }}</a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item " href="{{ path('app_users_delete', {id: user.id}) }}"><span class="text-red">{{ "Delete"|trans }}</span></a>
+								<a class="dropdown-item " href="{{ path('app_users_delete', {user: user.id}) }}"><span class="text-red">{{ "Delete"|trans }}</span></a>
 							</div>
 						</span>
 					</td>
