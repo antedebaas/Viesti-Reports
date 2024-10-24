@@ -34,7 +34,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
-    #[ORM\ManyToMany(targetEntity: Domains::class, inversedBy: 'users')]
+    #[ORM\ManyToMany(targetEntity: Domains::class, inversedBy: 'users', orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $domains;
 
     #[ORM\Column(length: 255, nullable: true)]
