@@ -110,8 +110,7 @@ class GetReportsFromMailboxCommand extends Command
                     $pusover->setValue('0');
                     $pusover->setType('boolean');
                     $this->em->persist($pusover);
-                    $this->em->flush();
-                } else {
+
                     $pusover_api_key = $repository->getKey('pushover_api_key');
                     if(!$pusover_api_key) {
                         $pusover_api_key = new Config();
@@ -130,6 +129,7 @@ class GetReportsFromMailboxCommand extends Command
                         $this->em->persist($pushover_user_key);
                         $this->em->flush();
                     }
+                    $this->em->flush();
                 }
 
                 if($pusover->getValue() == '1' && (!empty($pusover_api_key->getValue()) && !empty($pushover_user_key->getValue())))

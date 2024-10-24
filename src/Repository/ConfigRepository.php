@@ -16,7 +16,7 @@ class ConfigRepository extends ServiceEntityRepository
         parent::__construct($registry, Config::class);
     }
 
-    public function getKey(string $name): Config
+    public function getKey(string $name): ?Config
     {
         $entry = $this->createQueryBuilder('c')
             ->andWhere('c.name = :name')
