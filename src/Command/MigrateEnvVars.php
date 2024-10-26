@@ -41,6 +41,7 @@ class MigrateEnvVars extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        $migrated = false;
 
         $repository = $this->em->getRepository(Config::class);
         $fileContents = file_get_contents(__DIR__.'/../../.env.local');
@@ -62,6 +63,7 @@ class MigrateEnvVars extends Command
                             $config->setType('boolean');
                             $this->em->persist($config);
                             $this->em->flush();
+                            $migrated = true;
                         }
                         break;
                     case 'ENABLE_REGISTRATION':
@@ -73,6 +75,7 @@ class MigrateEnvVars extends Command
                             $config->setType('boolean');
                             $this->em->persist($config);
                             $this->em->flush();
+                            $migrated = true;
                         }
                         break;
                     case 'PUSHOVER_API_KEY':
@@ -84,6 +87,7 @@ class MigrateEnvVars extends Command
                             $config_pushover->setType('boolean');
                             $this->em->persist($config_pushover);
                             $this->em->flush();
+                            $migrated = true;
                         }
                         $config_apikey = $repository->getKey('pushover_api_key');
                         if(!$config_apikey){
@@ -97,6 +101,7 @@ class MigrateEnvVars extends Command
                             }
                             $this->em->persist($config_apikey);
                             $this->em->flush();
+                            $migrated = true;
                         }
                         break;
                     case 'PUSHOVER_USER_KEY':
@@ -111,6 +116,7 @@ class MigrateEnvVars extends Command
                             }
                             $this->em->persist($config_userkey);
                             $this->em->flush();
+                            $migrated = true;
                         }
                         break;
                     default:
@@ -130,7 +136,7 @@ class MigrateEnvVars extends Command
             )
         );
 
-        if (!$input->getOption('quiet')) {
+        if (!$input->getOption('quiet') && $migrated == true) {
             $log = new Logs();
             $log->setTime(new \DateTime());
             $log->setState(StateType::Good);
