@@ -38,7 +38,7 @@ class ConfigurationController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         
         $repository = $this->em->getRepository(Config::class);
-        $entries = $repository->findAll();
+        $entries = $repository->findBy(array(), array('name' => 'ASC'));
 
         $form = $this->createForm(ConfigurationFormType::class, ['entries' => $entries]);
 
