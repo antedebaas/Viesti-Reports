@@ -57,7 +57,7 @@ class ConfigurationController extends AbstractController
                 if($entry->getType() == 'boolean') {
                     $entry->setValue($value == 'true' ? '1' : '0');
                 } else {
-                    $entry->setValue($value);
+                    $entry->setValue($value ?? '');
                 }
                 $this->em->persist($entry);
             }
