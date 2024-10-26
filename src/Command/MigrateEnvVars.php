@@ -58,60 +58,60 @@ class MigrateEnvVars extends Command
                         if(!$config){
                             $config = new Config();
                             $config->setName('delete_processed_mails');
+                            $config->setValue($matches[2]); 
+                            $config->setType('boolean');
+                            $this->em->persist($config);
+                            $this->em->flush();
                         }
-                        $config->setValue($matches[2]); 
-                        $config->setType('boolean');
-                        $this->em->persist($config);
-                        $this->em->flush();
                         break;
                     case 'ENABLE_REGISTRATION':
                         $config = $repository->getKey('enable_registration');
                         if(!$config){
                             $config = new Config();
                             $config->setName('enable_registration');
+                            $config->setValue($matches[2]); 
+                            $config->setType('boolean');
+                            $this->em->persist($config);
+                            $this->em->flush();
                         }
-                        $config->setValue($matches[2]); 
-                        $config->setType('boolean');
-                        $this->em->persist($config);
-                        $this->em->flush();
                         break;
                     case 'PUSHOVER_API_KEY':
                         $config_pushover = $repository->getKey('enable_pushover');
                         if(!$config_pushover){
                             $config_pushover = new Config();
                             $config_pushover->setName('enable_pushover');
+                            $config_pushover->setValue(0);
+                            $config_pushover->setType('boolean');
+                            $this->em->persist($config_pushover);
+                            $this->em->flush();
                         }
-                        $config_pushover->setValue(0);
-                        $config_pushover->setType('boolean');
-
                         $config_apikey = $repository->getKey('pushover_api_key');
                         if(!$config_apikey){
                             $config_apikey = new Config();
                             $config_apikey->setName('pushover_api_key');
+                            $config_apikey->setValue(""); 
+                            $config_apikey->setType('string');
+                            if($matches[2] != ''){
+                                $config_pushover->setValue(1);
+                                $config_apikey->setValue($matches[2]); 
+                            }
+                            $this->em->persist($config_apikey);
+                            $this->em->flush();
                         }
-                        $config_apikey->setValue(""); 
-                        $config_apikey->setType('string');
-                        if($matches[2] != ''){
-                            $config_pushover->setValue(1);
-                            $config_apikey->setValue($matches[2]); 
-                        }
-                        $this->em->persist($config_pushover);
-                        $this->em->persist($config_apikey);
-                        $this->em->flush();
                         break;
                     case 'PUSHOVER_USER_KEY':
                         $config_userkey = $repository->getKey('pushover_user_key');
                         if(!$config_userkey){
                             $config_userkey = new Config();
                             $config_userkey->setName('pushover_user_key');
+                            $config_userkey->setValue(""); 
+                            $config_userkey->setType('string');
+                            if($matches[2] != ''){
+                                $config_userkey->setValue($matches[2]); 
+                            }
+                            $this->em->persist($config_userkey);
+                            $this->em->flush();
                         }
-                        $config_userkey->setValue(""); 
-                        $config_userkey->setType('string');
-                        if($matches[2] != ''){
-                            $config_userkey->setValue($matches[2]); 
-                        }
-                        $this->em->persist($config_userkey);
-                        $this->em->flush();
                         break;
                     default:
                         break;

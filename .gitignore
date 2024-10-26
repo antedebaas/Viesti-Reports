@@ -22,3 +22,4 @@
 /public/phpinfo.php
 /tools/
 docker-compose-*.yml
+**.nogit
