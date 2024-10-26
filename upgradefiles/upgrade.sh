@@ -25,6 +25,6 @@ if [ -f .env.local ]; then
 fi
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-php $SCRIPT_DIR/bin/console app:migrateenvvars
+php $SCRIPT_DIR/../bin/console app:migrateenvvars
 echo "done"
 echo ""
