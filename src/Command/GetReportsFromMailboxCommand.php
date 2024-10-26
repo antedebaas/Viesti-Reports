@@ -132,15 +132,17 @@ class GetReportsFromMailboxCommand extends Command
                     $this->em->flush();
                 }
 
-                if($pusover->getValue() == '1' && (!empty($pusover_api_key->getValue()) && !empty($pushover_user_key->getValue())))
+                if($pusover->getValue() == '1')
                 {
-                    $count = $results['primary']->getDetails()["count"] + $results['secondary']->getDetails()["count"];
-                    if($count > 0) {
-                        $application = new Application($pusover_api_key->getValue());
-                        $recipient = new Recipient($pushover_user_key->getValue());
-                        $message = new Message($count.' new emails have been processed by viesti reports', 'New reports processed.');
-                        $notification = new Notification($application, $recipient, $message);
-                        $notification->push();
+                    if(!empty($pusover_api_key->getValue()) && !empty($pushover_user_key->getValue())) {
+                        $count = $results['primary']->getDetails()["count"] + $results['secondary']->getDetails()["count"];
+                        if($count > 0) {
+                            $application = new Application($pusover_api_key->getValue());
+                            $recipient = new Recipient($pushover_user_key->getValue());
+                            $message = new Message($count.' new emails have been processed by viesti reports', 'New reports processed.');
+                            $notification = new Notification($application, $recipient, $message);
+                            $notification->push();
+                        }
                     }
                 }
 
