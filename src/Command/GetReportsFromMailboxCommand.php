@@ -104,6 +104,8 @@ class GetReportsFromMailboxCommand extends Command
 
                 $repository = $this->em->getRepository(Config::class);
                 $pusover = $repository->getKey('enable_pushover');
+                $pusover_api_key = $repository->getKey('pushover_api_key');
+                $pushover_user_key = $repository->getKey('pushover_user_key');
                 if(!$pusover) {
                     $pusover = new Config();
                     $pusover->setName('enable_pushover');
@@ -111,7 +113,6 @@ class GetReportsFromMailboxCommand extends Command
                     $pusover->setType('boolean');
                     $this->em->persist($pusover);
 
-                    $pusover_api_key = $repository->getKey('pushover_api_key');
                     if(!$pusover_api_key) {
                         $pusover_api_key = new Config();
                         $pusover_api_key->setName('pushover_api_key');
@@ -120,7 +121,6 @@ class GetReportsFromMailboxCommand extends Command
                         $this->em->persist($pusover_api_key);
                         $this->em->flush();
                     }
-                    $pushover_user_key = $repository->getKey('pushover_user_key');
                     if(!$pushover_user_key) {
                         $pushover_user_key = new Config();
                         $pushover_user_key->setName('pushover_user_key');
