@@ -146,31 +146,50 @@ class GetReportsFromMailboxCommand extends Command
                     }
                 }
 
-                $log = new Logs();
-                $log->setTime(new \DateTime());
-                $log->setState($results['primary']->getState());
-                $log->setMessage($results['primary']->getMessage());
-                foreach ($results['primary']->getDetails()["reports"] as $report) {
-                    $report->setReport(null);
+                $repository = $this->em->getRepository(Config::class);
+                $log_zero_mails = $repository->getKey('log_zero_mails');
+                if(!$log_zero_mails) {
+                    $log_zero_mails = new Config();
+                    $log_zero_mails->setName('log_zero_mails');
+                    $log_zero_mails->setValue('1');
+                    $log_zero_mails->setType('boolean');
+                    $this->em->persist($log_zero_mails);
+                    $this->em->flush();
                 }
-                $log->setDetails($results['primary']->getDetails());
-                $log->setMailcount($results['primary']->getDetails()["count"]);
-                $this->em->persist($log);
-                $this->em->flush();
 
-                if($this->mailbox_secondary->isEnabled()) {
+                #dd($results['primary']->getDetails()["count"]);
+                #dd($results['secondary']->getDetails()["count"]);
+
+                if($results['primary']->getDetails()["count"] > 0 || $log_zero_mails->getValue() == '1')
+                {
                     $log = new Logs();
                     $log->setTime(new \DateTime());
-                    $log->setState($results['secondary']->getState());
-                    $log->setMessage($results['secondary']->getMessage());
-    
-                    foreach ($results['secondary']->getDetails()["reports"] as $report) {
+                    $log->setState($results['primary']->getState());
+                    $log->setMessage($results['primary']->getMessage());
+                    foreach ($results['primary']->getDetails()["reports"] as $report) {
                         $report->setReport(null);
                     }
                     $log->setDetails($results['primary']->getDetails());
                     $log->setMailcount($results['primary']->getDetails()["count"]);
                     $this->em->persist($log);
                     $this->em->flush();
+                }
+                if($this->mailbox_secondary->isEnabled()) {
+                    if($results['secondary']->getDetails()["count"] > 0 || $log_zero_mails->getValue() == '1')
+                    {
+                        $log = new Logs();
+                        $log->setTime(new \DateTime());
+                        $log->setState($results['secondary']->getState());
+                        $log->setMessage($results['secondary']->getMessage());
+        
+                        foreach ($results['secondary']->getDetails()["reports"] as $report) {
+                            $report->setReport(null);
+                        }
+                        $log->setDetails($results['primary']->getDetails());
+                        $log->setMailcount($results['primary']->getDetails()["count"]);
+                        $this->em->persist($log);
+                        $this->em->flush();
+                    }
                 }
 
                 $lock->setValue('0');
