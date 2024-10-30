@@ -21,8 +21,6 @@ use App\Entity\MXRecords;
 use App\Repository\DomainsRepository;
 
 use Ante\DnsParser\Dns;
-use Ante\DnsParser\TXTRecords;
-use App\Enums\TXTRecordStates;
 
 class DomainsController extends AbstractController
 {
@@ -69,12 +67,8 @@ class DomainsController extends AbstractController
             $domains = $repository->findOwnedBy($usersRepository->findDomains($this->getUser()), array('fqdn' => 'DESC'), $pages["perpage"], ($pages["page"] - 1) * $pages["perpage"]);
         }
 
-        $bimivmcinfo = array();
-        foreach($domains as $key => $domain) {
-            if(!is_null($domain->getBimivmcfile())){
-                $bimivmcinfo[$domain->getId()] = openssl_x509_parse($domain->getBimivmcfile());
-            }
-        }
+        $bimivmcinfo = $repository->get_bimi_vmc_details($domains);
+        dd($bimivmcinfo);
 
         $pages["totalitems"] = $repository->getTotalRows();
         $pages["start"] = $pages["totalitems"] - (($pages["page"] - 1) * $pages["perpage"]); 
@@ -112,7 +106,7 @@ class DomainsController extends AbstractController
                         'name' => $this->translator->trans("Add"),
                         'target' => $this->router->generate('app_domains_add'),
                         'icon' => "plus"
-                    ),
+                    )
                 ),
             ),
             'breadcrumbs' => array(array('name' => $this->translator->trans("Domains"), 'url' => $this->router->generate('app_domains'))),
@@ -153,12 +147,15 @@ class DomainsController extends AbstractController
         //dnssec
         //mx ptr records
 
-        $validation = $this->findvalidtxtrecords($dnsrecords);
+        $repository = $this->em->getRepository(Domains::class);
+        $validation = $repository->findvalidtxtrecords($dnsrecords);
+        $bimivmcinfo = $repository->get_bimi_vmc_details(array($domain));
 
         return $this->render('domains/check.html.twig', [
             'domain' => $domain,
             'validation' => $validation,
             'selectors' => $selectors,
+            'bimivmcinfo' => $bimivmcinfo,
             'page' => array(
                 'menu' => array(
                     'category' => 'domains',
@@ -166,32 +163,20 @@ class DomainsController extends AbstractController
                 ),
                 'pretitle' => $this->translator->trans("Domains"),
                 'title' => $this->translator->trans("Check domain ").$domain->getFqdn(),
-                'actions' => array(),
+                'actions' => array(
+                    0 => array(
+                        'primary' => false,
+                        'name' => $this->translator->trans("VMC Details"),
+                        'target' => "#modal-bimivmc",
+                        'icon' => "certificate"
+                    ),
+                ),
             ),
             'breadcrumbs' => array(
                 array('name' => $this->translator->trans("Domains"), 'url' => $this->router->generate('app_domains')),
                 array('name' => $this->translator->trans("Check domain settings for ").$domain->getFqdn(), 'url' => $this->router->generate('app_domains'))
             ),
         ]);
-    }
-
-    private function findvalidtxtrecords(array $records): array {
-        $result = array(
-            'SPF'=> array(new TXTRecords\SPF1(""),TXTRecordStates::Fail),
-            'DKIM'=> array(new TXTRecords\DKIM1(""),TXTRecordStates::Fail),
-            'BIMI'=> array(new TXTRecords\BIMI1(""),TXTRecordStates::Fail),
-            'STS'=> array(new TXTRecords\STSV1(""),TXTRecordStates::Fail),
-            'DMARC'=> array(new TXTRecords\DMARC1(""),TXTRecordStates::Fail),
-            'TLSRPT'=> array(new TXTRecords\TLSRPTV1(""),TXTRecordStates::Fail),
-        );
-
-        foreach($records as $record) {
-            if($record->v()->version() == 1) {
-                $result[$record->v()->type()] = array($record->v(),TXTRecordStates::Good);
-            }
-        }
-        
-        return $result;
     }
 
     #[Route('/domains/add', name: 'app_domains_add')]
@@ -333,9 +318,16 @@ class DomainsController extends AbstractController
                         'target' => "#modal-dnssettings",
                         'icon' => "globe"
                     ),
+                    1 => array(
+                        'primary' => false,
+                        'name' => $this->translator->trans("VMC Details"),
+                        'target' => "#modal-bimivmc",
+                        'icon' => "certificate"
+                    ),
                 ),
             ),
             'domain' => $domain,
+            'bimivmcinfo' => $bimivmcinfo,
             'dns_info' => $dns_info,
             'form' => $form,
             'breadcrumbs' => array(

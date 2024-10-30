@@ -1,0 +1,121 @@
+<div class="modal modal-blur fade" id="modal-bimivmc" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Verified Mark Certificate details</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>
+					These are the technical details for the installed BIMI VMC.<br>
+				</p>
+				<table class="table">
+					<thead>
+						<tr>
+						<th scope="col">Subject Detail</th>
+						<th scope="col">Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Serial Number</td>
+							<td>{{ bimivmcinfo[domain.id]['serialNumberHex'] }}</td>
+						</tr>
+						<tr>
+							<td>Valid From</td>
+							<td>{{ bimivmcinfo[domain.id]['validFrom_time_t']|date("d-M-Y") }}</td>
+						</tr>
+						<tr>
+							<td>Valid To</td>
+							<td>{{ bimivmcinfo[domain.id]['validTo_time_t']|date("d-M-Y") }}</td>
+						</tr>
+						<tr>
+							<td>Signature Type</td>
+							<td>{{ bimivmcinfo[domain.id]['signatureTypeSN'] }}</td>
+						</tr>
+						<tr>
+							<td>Key Identifier</td>
+							<td>{{ bimivmcinfo[domain.id]['extensions']['subjectKeyIdentifier'] }}</td>
+						</tr>
+						<tr>
+							<td>Embedded Logo</td>
+							<td>
+							<span class="avatar"><img src="data:image/svg+xml;base64,{{ bimivmcinfo[domain.id]['extensions']['1.3.6.1.5.5.7.1.12']|slice(4)}}"></span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<p></p>
+				<table class="table">
+					<thead>
+						<tr>
+						<th scope="col">Subject Detail</th>
+						<th scope="col">Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Country</td>
+							<td>{{ bimivmcinfo[domain.id]['subject']['C']}}</td>
+						</tr>
+						<tr>
+							<td>State/Province</td>
+							<td>{{ bimivmcinfo[domain.id]['subject']['ST']}}</td>
+						</tr>
+						<tr>
+							<td>Locality</td>
+							<td>{{ bimivmcinfo[domain.id]['subject']['L']}}</td>
+						</tr>
+						<tr>
+							<td>Organisation</td>
+							<td>{{ bimivmcinfo[domain.id]['subject']['O']}}</td>
+						</tr>
+						<tr>
+							<td>Organisation Unit</td>
+							<td>{{ bimivmcinfo[domain.id]['subject']['OU']}}</td>
+						</tr>
+						<tr>
+							<td>Common Name</td>
+							<td>{{ bimivmcinfo[domain.id]['subject']['CN']}}</td>
+						</tr>
+					</tbody>
+				</table>
+				<p></p>
+				<table class="table">
+					<thead>
+						<tr>
+						<th scope="col">Issuer Detail</th>
+						<th scope="col">Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Country</td>
+							<td>{{ bimivmcinfo[domain.id]['issuer']['C']}}</td>
+						</tr>
+						<tr>
+							<td>State/Province</td>
+							<td>{{ bimivmcinfo[domain.id]['issuer']['ST']}}</td>
+						</tr>
+						<tr>
+							<td>Locality</td>
+							<td>{{ bimivmcinfo[domain.id]['issuer']['L']}}</td>
+						</tr>
+						<tr>
+							<td>Organisation</td>
+							<td>{{ bimivmcinfo[domain.id]['issuer']['O']}}</td>
+						</tr>
+						<tr>
+							<td>Organisation Unit</td>
+							<td>{{ bimivmcinfo[domain.id]['issuer']['OU']}}</td>
+						</tr>
+						<tr>
+							<td>Common Name</td>
+							<td>{{ bimivmcinfo[domain.id]['issuer']['CN']}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

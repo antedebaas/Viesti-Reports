@@ -28,11 +28,17 @@
 					<td class="d-none d-lg-table-cell bimisvg"><span class="avatar">{{ domain.bimisvgfile|raw }}</span></td>
 					<td class="d-none d-lg-table-cell">
 						{% if bimivmcinfo[domain.id] is defined %}
-							{% if bimivmcinfo[domain.id]['validTo_time_t'] > now %}
-								<span class="badge bg-green  me-1 text-white">{{ bimivmcinfo[domain.id]['validTo_time_t']|date("d-M-Y") }}</span>
+						
+						<span class="badge me-1 bg-green text-white">{{ bimivmcinfo[domain.id]['signatureTypeSN'] }}</span>
+							<span class="badge me-1
+							{% if bimivmcinfo[domain.id]['validTo_time_t'] > "now"|date_modify("+1 month")|date("d-M-Y") %}
+								bg-green text-white
+							{% elseif bimivmcinfo[domain.id]['validTo_time_t'] > "now"|date_modify("+14 days")|date("d-M-Y")  %}
+								bg-yellow text-dark
 							{% else %}
-								<span class="badge bg-red  me-1 text-white">{{ bimivmcinfo[domain.id]['validTo_time_t']|date("d-M-Y") }}</span>
+								bg-red text-white
 							{% endif %}
+							 ">{{ bimivmcinfo[domain.id]['validTo_time_t']|date("d-M-Y") }}</span>
 						{% endif %}
 					</td>
 					<td class="d-none d-lg-table-cell">
