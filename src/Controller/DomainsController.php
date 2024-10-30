@@ -68,7 +68,6 @@ class DomainsController extends AbstractController
         }
 
         $bimivmcinfo = $repository->get_bimi_vmc_details($domains);
-        dd($bimivmcinfo);
 
         $pages["totalitems"] = $repository->getTotalRows();
         $pages["start"] = $pages["totalitems"] - (($pages["page"] - 1) * $pages["perpage"]); 
