@@ -269,6 +269,9 @@ class DomainsController extends AbstractController
 
         $form = $this->createForm(DomainFormType::class, $domain);
 
+        $repository = $this->em->getRepository(Domains::class);
+        $bimivmcinfo = $repository->get_bimi_vmc_details(array($domain));
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $formdata = $form->getData();
