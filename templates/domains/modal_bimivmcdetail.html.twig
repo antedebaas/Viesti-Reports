@@ -6,6 +6,7 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
+{% if bimivmcinfo[domain.id] is defined %}
 				<p>
 					These are the technical details for the installed BIMI VMC.<br>
 				</p>
@@ -115,6 +116,9 @@
 						</tr>
 					</tbody>
 				</table>
+{% else %}
+				No BIMI VMC installed for this domain.
+{% endif %}
 			</div>
 		</div>
 	</div>
