@@ -99,7 +99,7 @@ class DomainsController extends AbstractController
             'domains' => $domains,
             'bimivmcinfo' => $bimivmcinfo,
             'pages' => $pages,
-            //'now' => , //Todo-Ante: this is the now for VMC date checking, it needs to be current time but check time notation
+            'timestamp' => array('now' => date('U'), 'soon' => date('U', strtotime('+60 days'))),
             'page' => array(
                 'menu' => array(
                     'category' => 'domains',
