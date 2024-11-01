@@ -6,6 +6,9 @@ use App\Entity\Domains;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+use Ante\DnsParser\TXTRecords;
+use App\Enums\TXTRecordStates;
+
 /**
  * @extends ServiceEntityRepository<Domains>
  *
@@ -48,6 +51,36 @@ class DomainsRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function get_bimi_vmc_details(array $domains): array
+    {
+      $bimivmcinfo = array();
+      foreach($domains as $key => $domain) {
+          if(!is_null($domain->getBimivmcfile())){
+              $bimivmcinfo[$domain->getId()] = openssl_x509_parse($domain->getBimivmcfile());
+          }
+      }
+      return $bimivmcinfo;
+    }
+
+    public function findvalidtxtrecords(array $records): array {
+      $result = array(
+          'SPF'=> array(new TXTRecords\SPF1(""),TXTRecordStates::Fail),
+          'DKIM'=> array(new TXTRecords\DKIM1(""),TXTRecordStates::Fail),
+          'BIMI'=> array(new TXTRecords\BIMI1(""),TXTRecordStates::Fail),
+          'STS'=> array(new TXTRecords\STSV1(""),TXTRecordStates::Fail),
+          'DMARC'=> array(new TXTRecords\DMARC1(""),TXTRecordStates::Fail),
+          'TLSRPT'=> array(new TXTRecords\TLSRPTV1(""),TXTRecordStates::Fail),
+      );
+
+      foreach($records as $record) {
+          if($record->v()->version() == 1) {
+              $result[$record->v()->type()] = array($record->v(),TXTRecordStates::Good);
+          }
+      }
+      
+      return $result;
+  }
 
     public function validate_bimiv1_svg_file($svgContent) {
         $result = ['result' => true, 'errors' => []];

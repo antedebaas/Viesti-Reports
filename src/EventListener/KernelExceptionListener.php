@@ -18,6 +18,9 @@ class KernelExceptionListener
     public function onKernelException(ExceptionEvent $event)
     {
         $exception = $event->getThrowable();
+        if($_ENV["APP_ENV"]  == 'dev') {
+            return;
+        }
         switch($exception) {
             case $exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
                 $response = new Response(
