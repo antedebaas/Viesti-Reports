@@ -37,7 +37,7 @@
                                     <div class="clearfix">
                                       <b>Value</b>:<br>
                                       {% if value.0 is defined and value.0.k is defined %}<span class="mx-4"><b>Type</b>: {{ value.0.k }}</span><br>{% endif %}
-                                      {% if value.0.p is defined %}<span class="mx-4"><b>Key</b>: {{ value.0.p[:50] ~ '...' }}</span><br>{% endif %}
+                                      {% if value.0.p is defined %}<span class="mx-4"><b>Bits</b>: {{ value.0.p|rsabits }}</span><br>{% endif %}
                                     </div>
                                   </li>
                                 {% case 'BIMI' %}

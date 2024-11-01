@@ -40,7 +40,7 @@ class DomainsController extends AbstractController
     }
 
     #[Route('/domains', name: 'app_domains')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
         if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED')) {
             return $this->redirectToRoute('app_login');
@@ -99,6 +99,7 @@ class DomainsController extends AbstractController
             'domains' => $domains,
             'bimivmcinfo' => $bimivmcinfo,
             'pages' => $pages,
+            //'now' => , //Todo-Ante: this is the now for VMC date checking, it needs to be current time but check time notation
             'page' => array(
                 'menu' => array(
                     'category' => 'domains',
