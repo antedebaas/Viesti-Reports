@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="VXFwlwn" resname="Settings">
+        <source>Settings</source>
+        <target>Settings</target>
+      </trans-unit>
+      <trans-unit id="nkUQV2V" resname="Configuration">
+        <source>Configuration</source>
+        <target>Configuration</target>
+      </trans-unit>
+      <trans-unit id="ExFLJqx" resname="Home">
+        <source>Home</source>
+        <target>Home</target>
+      </trans-unit>
+      <trans-unit id="xHsbIh6" resname="Dashboard">
+        <source>Dashboard</source>
+        <target>Dashboard</target>
+      </trans-unit>
+      <trans-unit id="MXt2JoC" resname="Reports">
+        <source>Reports</source>
+        <target>Reports</target>
+      </trans-unit>
+      <trans-unit id="CiSZ0CB" resname="DMARC reports">
+        <source>DMARC reports</source>
+        <target>DMARC reports</target>
+      </trans-unit>
+      <trans-unit id="eEem7sv" resname="DMARC">
+        <source>DMARC</source>
+        <target>DMARC</target>
+      </trans-unit>
+      <trans-unit id="5M1WzYk" resname="Not found">
+        <source>Not found</source>
+        <target>Not found</target>
+      </trans-unit>
+      <trans-unit id="8y3O_e." resname="Report">
+        <source>Report</source>
+        <target>Report</target>
+      </trans-unit>
+      <trans-unit id="s4WhC3P" resname="Report deleted">
+        <source>Report deleted</source>
+        <target>Report deleted</target>
+      </trans-unit>
+      <trans-unit id="9nqOGqU" resname="The id you entered does not match the report id">
+        <source>The id you entered does not match the report id</source>
+        <target>The id you entered does not match the report id</target>
+      </trans-unit>
+      <trans-unit id="D7yzfx5" resname="DMARC Reports">
+        <source>DMARC Reports</source>
+        <target>DMARC Reports</target>
+      </trans-unit>
+      <trans-unit id="gxwefET" resname="Delete report">
+        <source>Delete report</source>
+        <target>Delete report</target>
+      </trans-unit>
+      <trans-unit id="wnUqQBn" resname="Domains">
+        <source>Domains</source>
+        <target>Domains</target>
+      </trans-unit>
+      <trans-unit id="g.hyGgB" resname="Add">
+        <source>Add</source>
+        <target>Add</target>
+      </trans-unit>
+      <trans-unit id="r1_u28h" resname="Check domain ">
+        <source>Check domain </source>
+        <target>Check domain </target>
+      </trans-unit>
+      <trans-unit id="RjRksZt" resname="VMC Details">
+        <source>VMC Details</source>
+        <target>VMC Details</target>
+      </trans-unit>
+      <trans-unit id="iWdzaiM" resname="Check domain settings for ">
+        <source>Check domain settings for </source>
+        <target>Check domain settings for </target>
+      </trans-unit>
+      <trans-unit id="APp_IFE" resname="Add domain">
+        <source>Add domain</source>
+        <target>Add domain</target>
+      </trans-unit>
+      <trans-unit id="q7K7Zec" resname="Example DNS Records">
+        <source>Example DNS Records</source>
+        <target>Example DNS Records</target>
+      </trans-unit>
+      <trans-unit id="ucjtyM_" resname="Edit domain">
+        <source>Edit domain</source>
+        <target>Edit domain</target>
+      </trans-unit>
+      <trans-unit id="RgI7F_V" resname="Domain deleted">
+        <source>Domain deleted</source>
+        <target>Domain deleted</target>
+      </trans-unit>
+      <trans-unit id="oGdLy6r" resname="The name you entered does not match the domain name">
+        <source>The name you entered does not match the domain name</source>
+        <target>The name you entered does not match the domain name</target>
+      </trans-unit>
+      <trans-unit id="KcoZDbj" resname="Delete domain">
+        <source>Delete domain</source>
+        <target>Delete domain</target>
+      </trans-unit>
+      <trans-unit id="eouxoDu" resname="Help">
+        <source>Help</source>
+        <target>Help</target>
+      </trans-unit>
+      <trans-unit id="WlNHRJ6" resname="Index">
+        <source>Index</source>
+        <target>Index</target>
+      </trans-unit>
+      <trans-unit id="UFDUEFW" resname="help">
+        <source>help</source>
+        <target>help</target>
+      </trans-unit>
+      <trans-unit id="OJyuyp1" resname="Documentation">
+        <source>Documentation</source>
+        <target>Documentation</target>
+      </trans-unit>
+      <trans-unit id="b5ZUvKN" resname="documentation">
+        <source>documentation</source>
+        <target>documentation</target>
+      </trans-unit>
+      <trans-unit id="JxwTB.S" resname="Licence">
+        <source>Licence</source>
+        <target>Licence</target>
+      </trans-unit>
+      <trans-unit id="phu3i5r" resname="licence">
+        <source>licence</source>
+        <target>licence</target>
+      </trans-unit>
+      <trans-unit id="OtXKrfq" resname="Logs">
+        <source>Logs</source>
+        <target>Logs</target>
+      </trans-unit>
+      <trans-unit id="PwbBrPz" resname="Registration disabled">
+        <source>Registration disabled</source>
+        <target>Registration disabled</target>
+      </trans-unit>
+      <trans-unit id="lrjSF9w" resname="Registration is disabled.">
+        <source>Registration is disabled.</source>
+        <target>Registration is disabled.</target>
+      </trans-unit>
+      <trans-unit id="6EclFME" resname="Please Confirm your Email">
+        <source>Please Confirm your Email</source>
+        <target>Please Confirm your Email</target>
+      </trans-unit>
+      <trans-unit id="dAu3o5M" resname="Create account">
+        <source>Create account</source>
+        <target>Create account</target>
+      </trans-unit>
+      <trans-unit id="m80cBv0" resname="Your email address has been verified.">
+        <source>Your email address has been verified.</source>
+        <target>Your email address has been verified.</target>
+      </trans-unit>
+      <trans-unit id="hQGAAGu" resname="Forgot password">
+        <source>Forgot password</source>
+        <target>Forgot password</target>
+      </trans-unit>
+      <trans-unit id="o6WwCao" resname="Check your email">
+        <source>Check your email</source>
+        <target>Check your email</target>
+      </trans-unit>
+      <trans-unit id="nGvdzqn" resname="No reset password token found in the URL or in the session.">
+        <source>No reset password token found in the URL or in the session.</source>
+        <target>No reset password token found in the URL or in the session.</target>
+      </trans-unit>
+      <trans-unit id="9JCvQkt" resname="Reset password">
+        <source>Reset password</source>
+        <target>Reset password</target>
+      </trans-unit>
+      <trans-unit id="1mKb9HT" resname="Viesti Reports: password reset">
+        <source>Viesti Reports: password reset</source>
+        <target>Viesti Reports: password reset</target>
+      </trans-unit>
+      <trans-unit id="YDIkAA1" resname="Your password reset request">
+        <source>Your password reset request</source>
+        <target>Your password reset request</target>
+      </trans-unit>
+      <trans-unit id="4f3WEva" resname="Login">
+        <source>Login</source>
+        <target>Login</target>
+      </trans-unit>
+      <trans-unit id="Nm8HNj5" resname="Connection failed: Unknown database type">
+        <source>Connection failed: Unknown database type</source>
+        <target>Connection failed: Unknown database type</target>
+      </trans-unit>
+      <trans-unit id="y0L6pfH" resname="Connection failed: ">
+        <source>Connection failed: </source>
+        <target>Connection failed: </target>
+      </trans-unit>
+      <trans-unit id="aSoQlA_" resname="Setup">
+        <source>Setup</source>
+        <target>Setup</target>
+      </trans-unit>
+      <trans-unit id="MpLaukC" resname="SMTP-TLS reports">
+        <source>SMTP-TLS reports</source>
+        <target>SMTP-TLS reports</target>
+      </trans-unit>
+      <trans-unit id="ZK4edgS" resname="SMTPTLS">
+        <source>SMTPTLS</source>
+        <target>SMTPTLS</target>
+      </trans-unit>
+      <trans-unit id="wZR.Bk1" resname="SMTP-TLS Reports">
+        <source>SMTP-TLS Reports</source>
+        <target>SMTP-TLS Reports</target>
+      </trans-unit>
+      <trans-unit id="sRW0hlV" resname="SMTP-TLS">
+        <source>SMTP-TLS</source>
+        <target>SMTP-TLS</target>
+      </trans-unit>
+      <trans-unit id="BCGjfox" resname="Users">
+        <source>Users</source>
+        <target>Users</target>
+      </trans-unit>
+      <trans-unit id="9GAN2.6" resname="Passwords do not match">
+        <source>Passwords do not match</source>
+        <target>Passwords do not match</target>
+      </trans-unit>
+      <trans-unit id="CjLtZbl" resname="Add user">
+        <source>Add user</source>
+        <target>Add user</target>
+      </trans-unit>
+      <trans-unit id="3EZgAIw" resname="Add new user">
+        <source>Add new user</source>
+        <target>Add new user</target>
+      </trans-unit>
+      <trans-unit id="MhqD0td" resname="Password updated">
+        <source>Password updated</source>
+        <target>Password updated</target>
+      </trans-unit>
+      <trans-unit id="XvqeAUp" resname="Current password is incorrect">
+        <source>Current password is incorrect</source>
+        <target>Current password is incorrect</target>
+      </trans-unit>
+      <trans-unit id="TkiKoB6" resname="User">
+        <source>User</source>
+        <target>User</target>
+      </trans-unit>
+      <trans-unit id="5Y34z39" resname="Profile">
+        <source>Profile</source>
+        <target>Profile</target>
+      </trans-unit>
+      <trans-unit id="3gFSO4B" resname="User deleted">
+        <source>User deleted</source>
+        <target>User deleted</target>
+      </trans-unit>
+      <trans-unit id="kTsWv33" resname="The name you entered does not match the users email">
+        <source>The name you entered does not match the users email</source>
+        <target>The name you entered does not match the users email</target>
+      </trans-unit>
+      <trans-unit id="UECH8jg" resname="Delete user">
+        <source>Delete user</source>
+        <target>Delete user</target>
+      </trans-unit>
+      <trans-unit id="0GwAKqE" resname="Database type">
+        <source>Database type</source>
+        <target>Database type</target>
+      </trans-unit>
+      <trans-unit id="auPWZU." resname="Database hostname">
+        <source>Database hostname</source>
+        <target>Database hostname</target>
+      </trans-unit>
+      <trans-unit id="QeBL5gD" resname="Database port">
+        <source>Database port</source>
+        <target>Database port</target>
+      </trans-unit>
+      <trans-unit id="IBfxCHM" resname="Database username">
+        <source>Database username</source>
+        <target>Database username</target>
+      </trans-unit>
+      <trans-unit id="KYqaiCo" resname="Database password">
+        <source>Database password</source>
+        <target>Database password</target>
+      </trans-unit>
+      <trans-unit id="UxNTKoQ" resname="Database name">
+        <source>Database name</source>
+        <target>Database name</target>
+      </trans-unit>
+      <trans-unit id="oifGrHy" resname="E-mail hostname">
+        <source>E-mail hostname</source>
+        <target>E-mail hostname</target>
+      </trans-unit>
+      <trans-unit id="roIB_CO" resname="E-mail smtp port">
+        <source>E-mail smtp port</source>
+        <target>E-mail smtp port</target>
+      </trans-unit>
+      <trans-unit id="FFnHWg9" resname="E-mail imap ssl port">
+        <source>E-mail imap ssl port</source>
+        <target>E-mail imap ssl port</target>
+      </trans-unit>
+      <trans-unit id="1uMfe9A" resname="E-mail username">
+        <source>E-mail username</source>
+        <target>E-mail username</target>
+      </trans-unit>
+      <trans-unit id="EFPGLow" resname="E-mail password">
+        <source>E-mail password</source>
+        <target>E-mail password</target>
+      </trans-unit>
+      <trans-unit id="x3LKlcS" resname="Pushover API key">
+        <source>Pushover API key</source>
+        <target>Pushover API key</target>
+      </trans-unit>
+      <trans-unit id="UTlddFR" resname="Pushover user key">
+        <source>Pushover user key</source>
+        <target>Pushover user key</target>
+      </trans-unit>
+      <trans-unit id="5AHF5t3" resname="For each mail that has been processed">
+        <source>For each mail that has been processed</source>
+        <target>For each mail that has been processed</target>
+      </trans-unit>
+      <trans-unit id="ACnFRRQ" resname="Mark as read, and ignore">
+        <source>Mark as read, and ignore</source>
+        <target>Mark as read, and ignore</target>
+      </trans-unit>
+      <trans-unit id="Z_crX_u" resname="Delete">
+        <source>Delete</source>
+        <target>Delete</target>
+      </trans-unit>
+      <trans-unit id="wbMeKOh" resname="Name">
+        <source>Name</source>
+        <target>Name</target>
+      </trans-unit>
+      <trans-unit id="NXe.m.c" resname="Value">
+        <source>Value</source>
+        <target>Value</target>
+      </trans-unit>
+      <trans-unit id="_pJ.jbP" resname="Update Config">
+        <source>Update Config</source>
+        <target>Update Config</target>
+      </trans-unit>
+      <trans-unit id="hm.JYE2" resname="Id">
+        <source>Id</source>
+        <target>Id</target>
+      </trans-unit>
+      <trans-unit id="1Z8uBHi" resname="Messages">
+        <source>Messages</source>
+        <target>Messages</target>
+      </trans-unit>
+      <trans-unit id="02MfB9V" resname="SPF">
+        <source>SPF</source>
+        <target>SPF</target>
+      </trans-unit>
+      <trans-unit id="HPqjAPZ" resname="DKIM">
+        <source>DKIM</source>
+        <target>DKIM</target>
+      </trans-unit>
+      <trans-unit id="1_MZEgP" resname="Actions">
+        <source>Actions</source>
+        <target>Actions</target>
+      </trans-unit>
+      <trans-unit id="_SqArFZ" resname="Open">
+        <source>Open</source>
+        <target>Open</target>
+      </trans-unit>
+      <trans-unit id="ngK4Psc" resname="Policy">
+        <source>Policy</source>
+        <target>Policy</target>
+      </trans-unit>
+      <trans-unit id="DL_wAnF" resname="Type">
+        <source>Type</source>
+        <target>Type</target>
+      </trans-unit>
+      <trans-unit id="A6Xxd7y" resname="State">
+        <source>State</source>
+        <target>State</target>
+      </trans-unit>
+      <trans-unit id="1cuPpsS" resname="Date">
+        <source>Date</source>
+        <target>Date</target>
+      </trans-unit>
+      <trans-unit id="Dptvysv" resname="Time">
+        <source>Time</source>
+        <target>Time</target>
+      </trans-unit>
+      <trans-unit id="5M_5BFT" resname="Mails">
+        <source>Mails</source>
+        <target>Mails</target>
+      </trans-unit>
+      <trans-unit id="vtsk56f" resname="Message">
+        <source>Message</source>
+        <target>Message</target>
+      </trans-unit>
+      <trans-unit id="gsJV736" resname="Details">
+        <source>Details</source>
+        <target>Details</target>
+      </trans-unit>
+      <trans-unit id="Rd99jzp" resname="Reporter">
+        <source>Reporter</source>
+        <target>Reporter</target>
+      </trans-unit>
+      <trans-unit id="t.peHN3" resname="Domain">
+        <source>Domain</source>
+        <target>Domain</target>
+      </trans-unit>
+      <trans-unit id="8oJeBOq" resname="Logo">
+        <source>Logo</source>
+        <target>Logo</target>
+      </trans-unit>
+      <trans-unit id="2i5nW4l" resname="Certificate">
+        <source>Certificate</source>
+        <target>Certificate</target>
+      </trans-unit>
+      <trans-unit id="M.l1CPU" resname="Edit">
+        <source>Edit</source>
+        <target>Edit</target>
+      </trans-unit>
+      <trans-unit id="2Aemfhm" resname="Check">
+        <source>Check</source>
+        <target>Check</target>
+      </trans-unit>
+      <trans-unit id="vr8fS4t" resname="GNU General public lience, Version 2, June 1991">
+        <source>GNU General public lience, Version 2, June 1991</source>
+        <target>GNU General public lience, Version 2, June 1991</target>
+      </trans-unit>
+      <trans-unit id="IB8qUxQ" resname="Report Type">
+        <source>Report Type</source>
+        <target>Report Type</target>
+      </trans-unit>
+      <trans-unit id="qpBLfmU" resname="External MailID">
+        <source>External MailID</source>
+        <target>External MailID</target>
+      </trans-unit>
+      <trans-unit id="h.1XdpV" resname="Please verify your email address.">
+        <source>Please verify your email address.</source>
+        <target>Please verify your email address.</target>
+      </trans-unit>
+      <trans-unit id="bwnneWY" resname="Login to your account">
+        <source>Login to your account</source>
+        <target>Login to your account</target>
+      </trans-unit>
+      <trans-unit id="wCtgdeR" resname="You are logged in as {{username}}">
+        <source>You are logged in as {{username}}</source>
+        <target>You are logged in as {{username}}</target>
+      </trans-unit>
+      <trans-unit id="vxNSK9L" resname="Dashbaord">
+        <source>Dashbaord</source>
+        <target>Dashbaord</target>
+      </trans-unit>
+      <trans-unit id="JKl2Twv" resname="Logout">
+        <source>Logout</source>
+        <target>Logout</target>
+      </trans-unit>
+      <trans-unit id="3PkXx5O" resname="Email address">
+        <source>Email address</source>
+        <target>Email address</target>
+      </trans-unit>
+      <trans-unit id="529jbUa" resname="Request password reset">
+        <source>Request password reset</source>
+        <target>Request password reset</target>
+      </trans-unit>
+      <trans-unit id="GqmFSHc" resname="Password">
+        <source>Password</source>
+        <target>Password</target>
+      </trans-unit>
+      <trans-unit id="iva2itA" resname="Remember me on this device">
+        <source>Remember me on this device</source>
+        <target>Remember me on this device</target>
+      </trans-unit>
+      <trans-unit id="pNIxNSX" resname="Sign in">
+        <source>Sign in</source>
+        <target>Sign in</target>
+      </trans-unit>
+      <trans-unit id="FBBhxeM" resname="Don't have account yet?">
+        <source>Don't have account yet?</source>
+        <target>Don't have account yet?</target>
+      </trans-unit>
+      <trans-unit id="eCAq286" resname="Sign up">
+        <source>Sign up</source>
+        <target>Sign up</target>
+      </trans-unit>
+      <trans-unit id="tSe6GGr" resname="Create environment file">
+        <source>Create environment file</source>
+        <target>Create environment file</target>
+      </trans-unit>
+      <trans-unit id="_oSwOP9" resname="There are new schema updates available">
+        <source>There are new schema updates available</source>
+        <target>There are new schema updates available</target>
+      </trans-unit>
+      <trans-unit id="pOjdc0g" resname="The following migrations have not been processed:">
+        <source>The following migrations have not been processed:</source>
+        <target>The following migrations have not been processed:</target>
+      </trans-unit>
+      <trans-unit id="K5jPmKf" resname="Update database schema">
+        <source>Update database schema</source>
+        <target>Update database schema</target>
+      </trans-unit>
+      <trans-unit id="o1UbrUs" resname="There are missing migration files and can thus not confirm if the database schema is correct">
+        <source>There are missing migration files and can thus not confirm if the database schema is correct</source>
+        <target>There are missing migration files and can thus not confirm if the database schema is correct</target>
+      </trans-unit>
+      <trans-unit id=".IQ0OSj" resname="The following files are missing:">
+        <source>The following files are missing:</source>
+        <target>The following files are missing:</target>
+      </trans-unit>
+      <trans-unit id="HPbDdhy" resname="Create user">
+        <source>Create user</source>
+        <target>Create user</target>
+      </trans-unit>
+      <trans-unit id="MWgJixa" resname="Change Password">
+        <source>Change Password</source>
+        <target>Change Password</target>
+      </trans-unit>
+      <trans-unit id="gPyQUcC" resname="Allowed domains">
+        <source>Allowed domains</source>
+        <target>Allowed domains</target>
+      </trans-unit>
+      <trans-unit id="y8t8Mgz" resname="Admin role">
+        <source>Admin role</source>
+        <target>Admin role</target>
+      </trans-unit>
+      <trans-unit id="0f.CMcm" resname="Edit user">
+        <source>Edit user</source>
+        <target>Edit user</target>
+      </trans-unit>
+      <trans-unit id="4alxKV7" resname="Update profile">
+        <source>Update profile</source>
+        <target>Update profile</target>
+      </trans-unit>
+      <trans-unit id="3KZLUtu" resname="Verified">
+        <source>Verified</source>
+        <target>Verified</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
