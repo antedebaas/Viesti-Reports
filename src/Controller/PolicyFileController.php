@@ -63,10 +63,10 @@ class PolicyFileController extends AbstractController
             if(!is_null($logo)) {
                 $response = new Response($domain->getBimiSVGFile(), 200, ['Content-Type' => 'image/svg+xml']);
             } else {
-                $response = $this->render('base/error.html.twig', ['page' => array('title'=> 'Not found'), 'message' => $exception->getMessage()]);
+                $response = $this->render('base/error.html.twig', ['page' => array('title'=> $this->translator->trans('Not found')), 'message' => $exception->getMessage()]);
             }
         } else {
-            $response = $this->render('base/error.html.twig', ['page' => array('title'=> 'Not found'), 'message' => $exception->getMessage()]);
+            $response = $this->render('base/error.html.twig', ['page' => array('title'=> $this->translator->trans('Not found')), 'message' => $exception->getMessage()]);
         }
         
         return $response;

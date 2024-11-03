@@ -70,7 +70,7 @@ class SetupController extends AbstractController
                         $dbdriver = "sqlite3";
                         break;
                     default:
-                        $this->addFlash('danger', 'Connection failed: Unknown database type');
+                        $this->addFlash('danger', $this->translator->trans('Connection failed: Unknown database type'));
                         return $this->redirectToRoute('app_setup');
                         break;
                 }
@@ -124,7 +124,7 @@ class SetupController extends AbstractController
     
                     return $this->redirectToRoute('app_setup');
                 } catch (\Exception $e) {
-                    $this->addFlash('danger', 'Connection failed: '.$e->getMessage());
+                    $this->addFlash('danger', $this->translator->trans('Connection failed: ').$e->getMessage());
                 }
             }
             $setup['users_form'] = $form->createView();
@@ -223,7 +223,7 @@ class SetupController extends AbstractController
 
         return $this->render('setup/index.html.twig', [
             'setup' => $setup,
-            'page' => array('title' => 'Setup'),
+            'page' => array('title' => $this->translator->trans('Setup')),
         ]);
     }
 

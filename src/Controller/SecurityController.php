@@ -44,7 +44,7 @@ class SecurityController extends AbstractController
         }
 
         return $this->render('security/login.html.twig', [
-            'page' => array('title' => 'Login'),
+            'page' => array('title' => $this->translator->trans('Login')),
             'last_username' => $lastUsername,
             'error' => $error,
             'enable_registration' => $enable_registration->getValue()

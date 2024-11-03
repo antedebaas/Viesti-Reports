@@ -251,7 +251,7 @@ class DomainsController extends AbstractController
             'form' => $form,
             'breadcrumbs' => array(
                 array('name' => $this->translator->trans("Domains"), 'url' => $this->router->generate('app_domains')),
-                array('name' => "Add domain", 'url' => $this->router->generate('app_domains_add'))
+                array('name' => $this->translator->trans("Add domain"), 'url' => $this->router->generate('app_domains_add'))
             ),
         ]);
     }
@@ -265,7 +265,7 @@ class DomainsController extends AbstractController
 
         $usersRepository = $this->em->getRepository(Users::class);
         if(!$usersRepository->denyAccessUnlessOwned(array($domain->getId()), $this->getUser())) {
-            return $this->render('base/error.html.twig', ['page' => array('title'=> 'Not found'), 'message' => $exception->getMessage()]);
+            return $this->render('base/error.html.twig', ['page' => array('title'=> $this->translator->trans('Not found')), 'message' => $exception->getMessage()]);
         }
 
         $form = $this->createForm(DomainFormType::class, $domain);
@@ -355,14 +355,14 @@ class DomainsController extends AbstractController
         {
             $formdata = $form->getData();
             if($formdata['item'] == $domain->getFqdn()) {
-                $this->addFlash('success', 'Domain deleted');
+                $this->addFlash('success', $this->translator->trans('Domain deleted'));
 
                 $this->em->remove($domain);
                 $this->em->flush();
                 
                 return $this->redirectToRoute('app_domains');
             } else {
-                $this->addFlash('danger', 'The name you typed does not match the domain name');
+                $this->addFlash('danger', $this->translator->trans('The name you entered does not match the domain name'));
             }
         }
 

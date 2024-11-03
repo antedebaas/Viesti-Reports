@@ -156,14 +156,14 @@ class SMTPTLS_ReportsController extends AbstractController
         {
             $formdata = $form->getData();
             if($formdata['item'] == $report->getId()) {
-                $this->addFlash('success', 'Report deleted');
+                $this->addFlash('success', $this->translator->trans('Report deleted'));
 
                 $this->em->remove($report);
                 $this->em->flush();
                 
                 return $this->redirectToRoute('app_smtptls_reports');
             } else {
-                $this->addFlash('danger', 'The id you typed does not match the report id');
+                $this->addFlash('danger', $this->translator->trans('The id you entered does not match the report id'));
             }
         }
 

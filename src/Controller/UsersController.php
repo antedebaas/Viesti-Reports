@@ -127,7 +127,7 @@ class UsersController extends AbstractController
                     )
                 );
             } else {
-                $this->addFlash('danger', "Passwords do not match");
+                $this->addFlash('danger', $this->translator->trans("Passwords do not match"));
                 return $this->redirectToRoute('app_users_add');
             }
 
@@ -164,7 +164,7 @@ class UsersController extends AbstractController
             'form' => $form,
             'breadcrumbs' => array(
                 array('name' => $this->translator->trans("Users"), 'url' => $this->router->generate('app_users')),
-                array('name' => "Add new user", 'url' => $this->router->generate('app_users'))
+                array('name' => $this->translator->trans("Add new user"), 'url' => $this->router->generate('app_users'))
             ),
         ]);
     }
@@ -195,9 +195,9 @@ class UsersController extends AbstractController
                             $form->get('password1')->getData()
                         )
                     );
-                    $this->addFlash('success', "Password updated");
+                    $this->addFlash('success', $this->translator->trans("Password updated"));
                 } else {
-                    $this->addFlash('danger', "Passwords do not match");
+                    $this->addFlash('danger', $this->translator->trans("Passwords do not match"));
                     return $this->redirectToRoute('app_users_edit', ['user' => $user->getId()]);
                 }
             }
@@ -312,14 +312,14 @@ class UsersController extends AbstractController
         {
             $formdata = $form->getData();
             if($formdata['item'] == $user->getEmail()) {
-                $this->addFlash('success', 'User deleted');
+                $this->addFlash('success', $this->translator->trans('User deleted'));
 
                 $this->em->remove($user);
                 $this->em->flush();
                 
                 return $this->redirectToRoute('app_users');
             } else {
-                $this->addFlash('danger', 'The name you typed does not match the users email');
+                $this->addFlash('danger', $this->translator->trans('The name you entered does not match the users email'));
             }
         }
 

@@ -48,7 +48,7 @@ class RegistrationController extends AbstractController
         }
 
         if ($enable_registration->getValue() == false) {
-            return $this->render('base/error.html.twig', ['page' => array('title'=> 'Registration disabled'), 'message' => 'Registration is disabled.']);
+            return $this->render('base/error.html.twig', ['page' => array('title'=> $this->translator->trans('Registration disabled')), 'message' => $this->translator->trans('Registration is disabled.')]);
         }
         $repository = $this->em->getRepository(Users::class);
         if(!file_exists(dirname(__FILE__).'/../../.env.local') || $repository->count([]) == 0) {
@@ -78,7 +78,7 @@ class RegistrationController extends AbstractController
                 (new TemplatedEmail())
                     ->from(new Address($_ENV['MAILBOX_USERNAME'], 'Viesti Reports'))
                     ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
+                    ->subject($this->translator->trans('Please Confirm your Email'))
                     ->htmlTemplate('emails/confirmation_email.html.twig')
                     ->textTemplate('emails/confirmation_email.txt.twig')
                     ->context(['domain' => $this->requestStack->getCurrentRequest()->getHost()])
@@ -93,7 +93,7 @@ class RegistrationController extends AbstractController
         }
 
         return $this->render('registration/register.html.twig', [
-            'page' => array('title'=> 'Create account'),
+            'page' => array('title'=> $this->translator->trans('Create account')),
             'registrationForm' => $form->createView(),
         ]);
     }
@@ -122,7 +122,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_register');
         }
 
-        $this->addFlash('success', 'Your email address has been verified.');
+        $this->addFlash('success', $this->translator->trans('Your email address has been verified.'));
 
         return $this->redirectToRoute('app_login');
     }

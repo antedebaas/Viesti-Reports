@@ -51,7 +51,7 @@ class ResetPasswordController extends AbstractController
 
         return $this->render('reset_password/request.html.twig', [
             'requestForm' => $form,
-            'page' => array('title' => 'Forgot password')
+            'page' => array('title' => $this->translator->trans('Forgot password'))
         ]);
     }
 
@@ -69,7 +69,7 @@ class ResetPasswordController extends AbstractController
 
         return $this->render('reset_password/check_email.html.twig', [
             'resetToken' => $resetToken,
-            'page' => array('title' => 'Check your email')
+            'page' => array('title' => $this->translator->trans('Check your email'))
         ]);
     }
 
@@ -90,7 +90,7 @@ class ResetPasswordController extends AbstractController
         $token = $this->getTokenFromSession();
 
         if (null === $token) {
-            throw $this->createNotFoundException('No reset password token found in the URL or in the session.');
+            throw $this->createNotFoundException($this->translator->trans('No reset password token found in the URL or in the session.'));
         }
 
         try {
@@ -129,7 +129,7 @@ class ResetPasswordController extends AbstractController
 
         return $this->render('reset_password/reset.html.twig', [
             'resetForm' => $form,
-            'page' => array('title'=> 'Reset password'),
+            'page' => array('title'=> $this->translator->trans('Reset password')),
         ]);
     }
 
@@ -161,9 +161,9 @@ class ResetPasswordController extends AbstractController
         }
 
         $email = (new TemplatedEmail())
-            ->from(new Address($_ENV['MAILBOX_USERNAME'], 'Viesti Reports: Password reset'))
+            ->from(new Address($_ENV['MAILBOX_USERNAME'], $this->translator->trans('Viesti Reports: password reset')))
             ->to((string) $user->getEmail())
-            ->subject('Your password reset request')
+            ->subject($this->translator->trans('Your password reset request'))
             ->htmlTemplate('emails/reset_email.html.twig')
             ->textTemplate('emails/reset_email.txt.twig')
             ->context([
