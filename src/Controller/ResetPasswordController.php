@@ -27,10 +27,12 @@ class ResetPasswordController extends AbstractController
     use ResetPasswordControllerTrait;
 
     private RequestStack $requestStack;
+    private TranslatorInterface $translator;
 
-    public function __construct( private ResetPasswordHelperInterface $resetPasswordHelper, private EntityManagerInterface $entityManager, RequestStack $requestStack )
+    public function __construct( private ResetPasswordHelperInterface $resetPasswordHelper, private EntityManagerInterface $entityManager, RequestStack $requestStack, TranslatorInterface $translator)
     {
         $this->requestStack = $requestStack;
+        $this->translator = $translator;
     }
     /**
      * Display & process form to request a password reset.

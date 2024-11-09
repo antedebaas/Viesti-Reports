@@ -19,18 +19,21 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RegistrationController extends AbstractController
 {
     private $em;
     private EmailVerifier $emailVerifier;
     private RequestStack $requestStack;
+    private $translator;
 
-    public function __construct(EntityManagerInterface $em, EmailVerifier $emailVerifier, RequestStack $requestStack)
+    public function __construct(EntityManagerInterface $em, EmailVerifier $emailVerifier, RequestStack $requestStack, TranslatorInterface $translator)
     {
         $this->em = $em;
         $this->emailVerifier = $emailVerifier;
         $this->requestStack = $requestStack;
+        $this->translator = $translator;
     }
 
     #[Route('/register', name: 'app_register')]

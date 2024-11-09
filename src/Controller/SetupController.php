@@ -12,6 +12,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Finder\Finder;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use SecIT\ImapBundle\Connection\Connection;
 
@@ -30,11 +31,13 @@ class SetupController extends AbstractController
 {
     private $em;
     private $params;
+    private $translator;
 
-    public function __construct(EntityManagerInterface $em, ParameterBagInterface $params)
+    public function __construct(EntityManagerInterface $em, ParameterBagInterface $params, TranslatorInterface $translator)
     {
         $this->em = $em;
         $this->params = $params;
+        $this->translator = $translator;
     }
 
     #[Route('/setup', name: 'app_setup')]
