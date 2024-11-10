@@ -12,7 +12,7 @@
 					{# <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices"></th> #}
 					<th class="w-1">{{ "Id"|trans }}</th>
 					<th>{{ "Messages"|trans }}</th>
-					{# <th>{{ "Domain"|trans }}</th> #}
+					<th class="d-none d-lg-table-cell">{{ "Domain"|trans }}</th>
 					<th class="d-none d-lg-table-cell">{{ "Date"|trans }}</th>
 					<th class="d-none d-lg-table-cell">{{ "Reporter"|trans }}</th>
 					<th>{{ "SPF"|trans }}</th>
@@ -29,7 +29,7 @@
 						{% if app.user in report.seen %}{% else %}<span class="badge bg-yellow"></span>{% endif %}
 					</td>
 					<td><span class="badge bg-blue me-1 text-white">{{ report.dmarc_records.count }}</span></td>
-					{# <td>{{ report.domain.fqdn }}</td> #}
+					<td class="d-none d-lg-table-cell">{{ report.domain.fqdn }}</td>
 					<td class="d-none d-lg-table-cell">{{ report.begintime|date("d-M-Y H:i:s") }}</td>
 					<td class="d-none d-lg-table-cell">{{ report.organisation }}</td>
 						{% set dkim_pass_count = 0 %}
