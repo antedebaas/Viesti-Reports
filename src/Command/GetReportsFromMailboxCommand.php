@@ -185,8 +185,8 @@ class GetReportsFromMailboxCommand extends Command
                         foreach ($results['secondary']->getDetails()["reports"] as $report) {
                             $report->setReport(null);
                         }
-                        $log->setDetails($results['primary']->getDetails());
-                        $log->setMailcount($results['primary']->getDetails()["count"]);
+                        $log->setDetails($results['secondary']->getDetails());
+                        $log->setMailcount($results['secondary']->getDetails()["count"]);
                         $this->em->persist($log);
                         $this->em->flush();
                     }
