@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+	<file original="file.ext" datatype="plaintext" xml:space="preserve" source-language="en" target-language="en">
+		<header>
+			<tool tool-id="lokalise.com" tool-name="Lokalise"></tool>
+		</header>
+		<body>
+			<trans-unit id="VXFwlwn" resname="VXFwlwn">
+				<source>Settings</source>
+				<target>Settings</target>
+			</trans-unit>
+			<trans-unit id="nkUQV2V" resname="nkUQV2V">
+				<source>Configuration</source>
+				<target>Configuration</target>
+			</trans-unit>
+			<trans-unit id="ExFLJqx" resname="ExFLJqx">
+				<source>Home</source>
+				<target>Home</target>
+			</trans-unit>
+			<trans-unit id="xHsbIh6" resname="xHsbIh6">
+				<source>Dashboard</source>
+				<target>Dashboard</target>
+			</trans-unit>
+			<trans-unit id="MXt2JoC" resname="MXt2JoC">
+				<source>Reports</source>
+				<target>Reports</target>
+			</trans-unit>
+			<trans-unit id="CiSZ0CB" resname="CiSZ0CB">
+				<source>DMARC reports</source>
+				<target>DMARC reports</target>
+			</trans-unit>
+			<trans-unit id="eEem7sv" resname="eEem7sv">
+				<source>DMARC</source>
+				<target>DMARC</target>
+			</trans-unit>
+			<trans-unit id="5M1WzYk" resname="5M1WzYk">
+				<source>Not found</source>
+				<target>Not found</target>
+			</trans-unit>
+			<trans-unit id="8y3O_e." resname="8y3O_e.">
+				<source>Report</source>
+				<target>Report</target>
+			</trans-unit>
+			<trans-unit id="s4WhC3P" resname="s4WhC3P">
+				<source>Report deleted</source>
+				<target>Report deleted</target>
+			</trans-unit>
+			<trans-unit id="9nqOGqU" resname="9nqOGqU">
+				<source>The id you entered does not match the report id</source>
+				<target>The id you entered does not match the report id</target>
+			</trans-unit>
+			<trans-unit id="D7yzfx5" resname="D7yzfx5">
+				<source>DMARC Reports</source>
+				<target>DMARC Reports</target>
+			</trans-unit>
+			<trans-unit id="gxwefET" resname="gxwefET">
+				<source>Delete report</source>
+				<target>Delete report</target>
+			</trans-unit>
+			<trans-unit id="wnUqQBn" resname="wnUqQBn">
+				<source>Domains</source>
+				<target>Domains</target>
+			</trans-unit>
+			<trans-unit id="g.hyGgB" resname="g.hyGgB">
+				<source>Add</source>
+				<target>Add</target>
+			</trans-unit>
+			<trans-unit id="r1_u28h" resname="r1_u28h">
+				<source>Check domain </source>
+				<target>Check domain </target>
+			</trans-unit>
+			<trans-unit id="RjRksZt" resname="RjRksZt">
+				<source>VMC Details</source>
+				<target>VMC Details</target>
+			</trans-unit>
+			<trans-unit id="iWdzaiM" resname="iWdzaiM">
+				<source>Check domain settings for </source>
+				<target>Check domain settings for </target>
+			</trans-unit>
+			<trans-unit id="APp_IFE" resname="APp_IFE">
+				<source>Add domain</source>
+				<target>Add domain</target>
+			</trans-unit>
+			<trans-unit id="q7K7Zec" resname="q7K7Zec">
+				<source>Example DNS Records</source>
+				<target>Example DNS Records</target>
+			</trans-unit>
+			<trans-unit id="ucjtyM_" resname="ucjtyM_">
+				<source>Edit domain</source>
+				<target>Edit domain</target>
+			</trans-unit>
+			<trans-unit id="RgI7F_V" resname="RgI7F_V">
+				<source>Domain deleted</source>
+				<target>Domain deleted</target>
+			</trans-unit>
+			<trans-unit id="oGdLy6r" resname="oGdLy6r">
+				<source>The name you entered does not match the domain name</source>
+				<target>The name you entered does not match the domain name</target>
+			</trans-unit>
+			<trans-unit id="KcoZDbj" resname="KcoZDbj">
+				<source>Delete domain</source>
+				<target>Delete domain</target>
+			</trans-unit>
+			<trans-unit id="eouxoDu" resname="eouxoDu">
+				<source>Help</source>
+				<target>Help</target>
+			</trans-unit>
+			<trans-unit id="WlNHRJ6" resname="WlNHRJ6">
+				<source>Index</source>
+				<target>Index</target>
+			</trans-unit>
+			<trans-unit id="UFDUEFW" resname="UFDUEFW">
+				<source>help</source>
+				<target>help</target>
+			</trans-unit>
+			<trans-unit id="OJyuyp1" resname="OJyuyp1">
+				<source>Documentation</source>
+				<target>Documentation</target>
+			</trans-unit>
+			<trans-unit id="b5ZUvKN" resname="b5ZUvKN">
+				<source>documentation</source>
+				<target>documentation</target>
+			</trans-unit>
+			<trans-unit id="JxwTB.S" resname="JxwTB.S">
+				<source>Licence</source>
+				<target>Licence</target>
+			</trans-unit>
+			<trans-unit id="phu3i5r" resname="phu3i5r">
+				<source>licence</source>
+				<target>licence</target>
+			</trans-unit>
+			<trans-unit id="OtXKrfq" resname="OtXKrfq">
+				<source>Logs</source>
+				<target>Logs</target>
+			</trans-unit>
+			<trans-unit id="PwbBrPz" resname="PwbBrPz">
+				<source>Registration disabled</source>
+				<target>Registration disabled</target>
+			</trans-unit>
+			<trans-unit id="lrjSF9w" resname="lrjSF9w">
+				<source>Registration is disabled.</source>
+				<target>Registration is disabled.</target>
+			</trans-unit>
+			<trans-unit id="6EclFME" resname="6EclFME">
+				<source>Please Confirm your Email</source>
+				<target>Please Confirm your Email</target>
+			</trans-unit>
+			<trans-unit id="dAu3o5M" resname="dAu3o5M">
+				<source>Create account</source>
+				<target>Create account</target>
+			</trans-unit>
+			<trans-unit id="m80cBv0" resname="m80cBv0">
+				<source>Your email address has been verified.</source>
+				<target>Your email address has been verified.</target>
+			</trans-unit>
+			<trans-unit id="hQGAAGu" resname="hQGAAGu">
+				<source>Forgot password</source>
+				<target>Forgot password</target>
+			</trans-unit>
+			<trans-unit id="o6WwCao" resname="o6WwCao">
+				<source>Check your email</source>
+				<target>Check your email</target>
+			</trans-unit>
+			<trans-unit id="nGvdzqn" resname="nGvdzqn">
+				<source>No reset password token found in the URL or in the session.</source>
+				<target>No reset password token found in the URL or in the session.</target>
+			</trans-unit>
+			<trans-unit id="9JCvQkt" resname="9JCvQkt">
+				<source>Reset password</source>
+				<target>Reset password</target>
+			</trans-unit>
+			<trans-unit id="1mKb9HT" resname="1mKb9HT">
+				<source>Viesti Reports: password reset</source>
+				<target>Viesti Reports: password reset</target>
+			</trans-unit>
+			<trans-unit id="YDIkAA1" resname="YDIkAA1">
+				<source>Your password reset request</source>
+				<target>Your password reset request</target>
+			</trans-unit>
+			<trans-unit id="4f3WEva" resname="4f3WEva">
+				<source>Login</source>
+				<target>Login</target>
+			</trans-unit>
+			<trans-unit id="Nm8HNj5" resname="Nm8HNj5">
+				<source>Connection failed: Unknown database type</source>
+				<target>Connection failed: Unknown database type</target>
+			</trans-unit>
+			<trans-unit id="y0L6pfH" resname="y0L6pfH">
+				<source>Connection failed: </source>
+				<target>Connection failed: </target>
+			</trans-unit>
+			<trans-unit id="aSoQlA_" resname="aSoQlA_">
+				<source>Setup</source>
+				<target>Setup</target>
+			</trans-unit>
+			<trans-unit id="MpLaukC" resname="MpLaukC">
+				<source>SMTP-TLS reports</source>
+				<target>SMTP-TLS reports</target>
+			</trans-unit>
+			<trans-unit id="ZK4edgS" resname="ZK4edgS">
+				<source>SMTPTLS</source>
+				<target>SMTPTLS</target>
+			</trans-unit>
+			<trans-unit id="wZR.Bk1" resname="wZR.Bk1">
+				<source>SMTP-TLS Reports</source>
+				<target>SMTP-TLS Reports</target>
+			</trans-unit>
+			<trans-unit id="sRW0hlV" resname="sRW0hlV">
+				<source>SMTP-TLS</source>
+				<target>SMTP-TLS</target>
+			</trans-unit>
+			<trans-unit id="BCGjfox" resname="BCGjfox">
+				<source>Users</source>
+				<target>Users</target>
+			</trans-unit>
+			<trans-unit id="9GAN2.6" resname="9GAN2.6">
+				<source>Passwords do not match</source>
+				<target>Passwords do not match</target>
+			</trans-unit>
+			<trans-unit id="CjLtZbl" resname="CjLtZbl">
+				<source>Add user</source>
+				<target>Add user</target>
+			</trans-unit>
+			<trans-unit id="3EZgAIw" resname="3EZgAIw">
+				<source>Add new user</source>
+				<target>Add new user</target>
+			</trans-unit>
+			<trans-unit id="MhqD0td" resname="MhqD0td">
+				<source>Password updated</source>
+				<target>Password updated</target>
+			</trans-unit>
+			<trans-unit id="XvqeAUp" resname="XvqeAUp">
+				<source>Current password is incorrect</source>
+				<target>Current password is incorrect</target>
+			</trans-unit>
+			<trans-unit id="TkiKoB6" resname="TkiKoB6">
+				<source>User</source>
+				<target>User</target>
+			</trans-unit>
+			<trans-unit id="5Y34z39" resname="5Y34z39">
+				<source>Profile</source>
+				<target>Profile</target>
+			</trans-unit>
+			<trans-unit id="3gFSO4B" resname="3gFSO4B">
+				<source>User deleted</source>
+				<target>User deleted</target>
+			</trans-unit>
+			<trans-unit id="kTsWv33" resname="kTsWv33">
+				<source>The name you entered does not match the users email</source>
+				<target>The name you entered does not match the users email</target>
+			</trans-unit>
+			<trans-unit id="UECH8jg" resname="UECH8jg">
+				<source>Delete user</source>
+				<target>Delete user</target>
+			</trans-unit>
+			<trans-unit id="0GwAKqE" resname="0GwAKqE">
+				<source>Database type</source>
+				<target>Database type</target>
+			</trans-unit>
+			<trans-unit id="auPWZU." resname="auPWZU.">
+				<source>Database hostname</source>
+				<target>Database hostname</target>
+			</trans-unit>
+			<trans-unit id="QeBL5gD" resname="QeBL5gD">
+				<source>Database port</source>
+				<target>Database port</target>
+			</trans-unit>
+			<trans-unit id="IBfxCHM" resname="IBfxCHM">
+				<source>Database username</source>
+				<target>Database username</target>
+			</trans-unit>
+			<trans-unit id="KYqaiCo" resname="KYqaiCo">
+				<source>Database password</source>
+				<target>Database password</target>
+			</trans-unit>
+			<trans-unit id="UxNTKoQ" resname="UxNTKoQ">
+				<source>Database name</source>
+				<target>Database name</target>
+			</trans-unit>
+			<trans-unit id="oifGrHy" resname="oifGrHy">
+				<source>E-mail hostname</source>
+				<target>E-mail hostname</target>
+			</trans-unit>
+			<trans-unit id="roIB_CO" resname="roIB_CO">
+				<source>E-mail smtp port</source>
+				<target>E-mail smtp port</target>
+			</trans-unit>
+			<trans-unit id="FFnHWg9" resname="FFnHWg9">
+				<source>E-mail imap ssl port</source>
+				<target>E-mail imap ssl port</target>
+			</trans-unit>
+			<trans-unit id="1uMfe9A" resname="1uMfe9A">
+				<source>E-mail username</source>
+				<target>E-mail username</target>
+			</trans-unit>
+			<trans-unit id="EFPGLow" resname="EFPGLow">
+				<source>E-mail password</source>
+				<target>E-mail password</target>
+			</trans-unit>
+			<trans-unit id="x3LKlcS" resname="x3LKlcS">
+				<source>Pushover API key</source>
+				<target>Pushover API key</target>
+			</trans-unit>
+			<trans-unit id="UTlddFR" resname="UTlddFR">
+				<source>Pushover user key</source>
+				<target>Pushover user key</target>
+			</trans-unit>
+			<trans-unit id="5AHF5t3" resname="5AHF5t3">
+				<source>For each mail that has been processed</source>
+				<target>For each mail that has been processed</target>
+			</trans-unit>
+			<trans-unit id="ACnFRRQ" resname="ACnFRRQ">
+				<source>Mark as read, and ignore</source>
+				<target>Mark as read, and ignore</target>
+			</trans-unit>
+			<trans-unit id="Z_crX_u" resname="Z_crX_u">
+				<source>Delete</source>
+				<target>Delete</target>
+			</trans-unit>
+			<trans-unit id="wbMeKOh" resname="wbMeKOh">
+				<source>Name</source>
+				<target>Name</target>
+			</trans-unit>
+			<trans-unit id="NXe.m.c" resname="NXe.m.c">
+				<source>Value</source>
+				<target>Value</target>
+			</trans-unit>
+			<trans-unit id="_pJ.jbP" resname="_pJ.jbP">
+				<source>Update Config</source>
+				<target>Update Config</target>
+			</trans-unit>
+			<trans-unit id="hm.JYE2" resname="hm.JYE2">
+				<source>Id</source>
+				<target>Id</target>
+			</trans-unit>
+			<trans-unit id="1Z8uBHi" resname="1Z8uBHi">
+				<source>Messages</source>
+				<target>Messages</target>
+			</trans-unit>
+			<trans-unit id="02MfB9V" resname="02MfB9V">
+				<source>SPF</source>
+				<target>SPF</target>
+			</trans-unit>
+			<trans-unit id="HPqjAPZ" resname="HPqjAPZ">
+				<source>DKIM</source>
+				<target>DKIM</target>
+			</trans-unit>
+			<trans-unit id="1_MZEgP" resname="1_MZEgP">
+				<source>Actions</source>
+				<target>Actions</target>
+			</trans-unit>
+			<trans-unit id="_SqArFZ" resname="_SqArFZ">
+				<source>Open</source>
+				<target>Open</target>
+			</trans-unit>
+			<trans-unit id="ngK4Psc" resname="ngK4Psc">
+				<source>Policy</source>
+				<target>Policy</target>
+			</trans-unit>
+			<trans-unit id="DL_wAnF" resname="DL_wAnF">
+				<source>Type</source>
+				<target>Type</target>
+			</trans-unit>
+			<trans-unit id="A6Xxd7y" resname="A6Xxd7y">
+				<source>State</source>
+				<target>State</target>
+			</trans-unit>
+			<trans-unit id="1cuPpsS" resname="1cuPpsS">
+				<source>Date</source>
+				<target>Date</target>
+			</trans-unit>
+			<trans-unit id="Dptvysv" resname="Dptvysv">
+				<source>Time</source>
+				<target>Time</target>
+			</trans-unit>
+			<trans-unit id="5M_5BFT" resname="5M_5BFT">
+				<source>Mails</source>
+				<target>Mails</target>
+			</trans-unit>
+			<trans-unit id="vtsk56f" resname="vtsk56f">
+				<source>Message</source>
+				<target>Message</target>
+			</trans-unit>
+			<trans-unit id="gsJV736" resname="gsJV736">
+				<source>Details</source>
+				<target>Details</target>
+			</trans-unit>
+			<trans-unit id="Rd99jzp" resname="Rd99jzp">
+				<source>Reporter</source>
+				<target>Reporter</target>
+			</trans-unit>
+			<trans-unit id="t.peHN3" resname="t.peHN3">
+				<source>Domain</source>
+				<target>Domain</target>
+			</trans-unit>
+			<trans-unit id="8oJeBOq" resname="8oJeBOq">
+				<source>Logo</source>
+				<target>Logo</target>
+			</trans-unit>
+			<trans-unit id="2i5nW4l" resname="2i5nW4l">
+				<source>Certificate</source>
+				<target>Certificate</target>
+			</trans-unit>
+			<trans-unit id="M.l1CPU" resname="M.l1CPU">
+				<source>Edit</source>
+				<target>Edit</target>
+			</trans-unit>
+			<trans-unit id="2Aemfhm" resname="2Aemfhm">
+				<source>Check</source>
+				<target>Check</target>
+			</trans-unit>
+			<trans-unit id="vr8fS4t" resname="vr8fS4t">
+				<source>GNU General public lience, Version 2, June 1991</source>
+				<target>GNU General public lience, Version 2, June 1991</target>
+			</trans-unit>
+			<trans-unit id="IB8qUxQ" resname="IB8qUxQ">
+				<source>Report Type</source>
+				<target>Report Type</target>
+			</trans-unit>
+			<trans-unit id="qpBLfmU" resname="qpBLfmU">
+				<source>External MailID</source>
+				<target>External MailID</target>
+			</trans-unit>
+			<trans-unit id="h.1XdpV" resname="h.1XdpV">
+				<source>Please verify your email address.</source>
+				<target>Please verify your email address.</target>
+			</trans-unit>
+			<trans-unit id="bwnneWY" resname="bwnneWY">
+				<source>Login to your account</source>
+				<target>Login to your account</target>
+			</trans-unit>
+			<trans-unit id="wCtgdeR" resname="wCtgdeR">
+				<source>You are logged in as {{username}}</source>
+				<target>You are logged in as {{username}}</target>
+			</trans-unit>
+			<trans-unit id="vxNSK9L" resname="vxNSK9L">
+				<source>Dashbaord</source>
+				<target>Dashbaord</target>
+			</trans-unit>
+			<trans-unit id="JKl2Twv" resname="JKl2Twv">
+				<source>Logout</source>
+				<target>Logout</target>
+			</trans-unit>
+			<trans-unit id="3PkXx5O" resname="3PkXx5O">
+				<source>Email address</source>
+				<target>Email address</target>
+			</trans-unit>
+			<trans-unit id="529jbUa" resname="529jbUa">
+				<source>Request password reset</source>
+				<target>Request password reset</target>
+			</trans-unit>
+			<trans-unit id="GqmFSHc" resname="GqmFSHc">
+				<source>Password</source>
+				<target>Password</target>
+			</trans-unit>
+			<trans-unit id="iva2itA" resname="iva2itA">
+				<source>Remember me on this device</source>
+				<target>Remember me on this device</target>
+			</trans-unit>
+			<trans-unit id="pNIxNSX" resname="pNIxNSX">
+				<source>Sign in</source>
+				<target>Sign in</target>
+			</trans-unit>
+			<trans-unit id="FBBhxeM" resname="FBBhxeM">
+				<source>Don't have account yet?</source>
+				<target>Don't have account yet?</target>
+			</trans-unit>
+			<trans-unit id="eCAq286" resname="eCAq286">
+				<source>Sign up</source>
+				<target>Sign up</target>
+			</trans-unit>
+			<trans-unit id="tSe6GGr" resname="tSe6GGr">
+				<source>Create environment file</source>
+				<target>Create environment file</target>
+			</trans-unit>
+			<trans-unit id="_oSwOP9" resname="_oSwOP9">
+				<source>There are new schema updates available</source>
+				<target>There are new schema updates available</target>
+			</trans-unit>
+			<trans-unit id="pOjdc0g" resname="pOjdc0g">
+				<source>The following migrations have not been processed:</source>
+				<target>The following migrations have not been processed:</target>
+			</trans-unit>
+			<trans-unit id="K5jPmKf" resname="K5jPmKf">
+				<source>Update database schema</source>
+				<target>Update database schema</target>
+			</trans-unit>
+			<trans-unit id="o1UbrUs" resname="o1UbrUs">
+				<source>There are missing migration files and can thus not confirm if the database schema is correct</source>
+				<target>There are missing migration files and can thus not confirm if the database schema is correct</target>
+			</trans-unit>
+			<trans-unit id=".IQ0OSj" resname=".IQ0OSj">
+				<source>The following files are missing:</source>
+				<target>The following files are missing:</target>
+			</trans-unit>
+			<trans-unit id="HPbDdhy" resname="HPbDdhy">
+				<source>Create user</source>
+				<target>Create user</target>
+			</trans-unit>
+			<trans-unit id="MWgJixa" resname="MWgJixa">
+				<source>Change Password</source>
+				<target>Change Password</target>
+			</trans-unit>
+			<trans-unit id="gPyQUcC" resname="gPyQUcC">
+				<source>Allowed domains</source>
+				<target>Allowed domains</target>
+			</trans-unit>
+			<trans-unit id="y8t8Mgz" resname="y8t8Mgz">
+				<source>Admin role</source>
+				<target>Admin role</target>
+			</trans-unit>
+			<trans-unit id="0f.CMcm" resname="0f.CMcm">
+				<source>Edit user</source>
+				<target>Edit user</target>
+			</trans-unit>
+			<trans-unit id="4alxKV7" resname="4alxKV7">
+				<source>Update profile</source>
+				<target>Update profile</target>
+			</trans-unit>
+			<trans-unit id="3KZLUtu" resname="3KZLUtu">
+				<source>Verified</source>
+				<target>Verified</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+	<file original="file.ext" datatype="plaintext" xml:space="preserve" source-language="en" target-language="nl">
+		<header>
+			<tool tool-id="lokalise.com" tool-name="Lokalise"></tool>
+		</header>
+		<body>
+			<trans-unit id="U_NoHhq" resname="U_NoHhq">
+				<source>%count% year|%count% years</source>
+				<target></target>
+			</trans-unit>
+			<trans-unit id="NCe6niW" resname="NCe6niW">
+				<source>%count% month|%count% months</source>
+				<target></target>
+			</trans-unit>
+			<trans-unit id="E69bPZ6" resname="E69bPZ6">
+				<source>%count% day|%count% days</source>
+				<target></target>
+			</trans-unit>
+			<trans-unit id="H3jnVKg" resname="H3jnVKg">
+				<source>%count% hour|%count% hours</source>
+				<target></target>
+			</trans-unit>
+			<trans-unit id="30tji6_" resname="30tji6_">
+				<source>%count% minute|%count% minutes</source>
+				<target></target>
+			</trans-unit>
+			<trans-unit id="F0PcQoi" resname="F0PcQoi">
+				<source>The link to verify your email has expired. Please request a new link.</source>
+				<target></target>
+			</trans-unit>
+			<trans-unit id="dSF4hGL" resname="dSF4hGL">
+				<source>The link to verify your email is invalid. Please request a new link.</source>
+				<target></target>
+			</trans-unit>
+			<trans-unit id="GTlrnoK" resname="GTlrnoK">
+				<source>The link to verify your email appears to be for a different account or email. Please request a new link.</source>
+				<target></target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
