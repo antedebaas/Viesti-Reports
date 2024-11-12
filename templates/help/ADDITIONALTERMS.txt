@@ -1,0 +1,34 @@
+            ADDITIONAL TERMS TO GNU AFFERO GENERAL PUBLIC LICENSE
+                       Version 3, 19 November 2007
+
+  Pursuant to Section 7 of the GNU Affero General Public License Version 3 ("AGPLv3"),
+the following additional terms are applicable:
+
+  1. Attribution and Credit Requirements
+Any distribution, modification, or network use of this software must retain
+and prominently display: The original copyright notice, All author attributions,
+A link to the original repository and the following notice:
+"This software includes work that was created by [Your Name/Organization]".
+
+These attribution requirements apply to:
+User interfaces, Documentation, Source code, Binary distributions,
+Network interfaces where the software is accessed remotely
+
+  2. Logo and Branding Protection
+The following items are excluded from the permissions granted under AGPLv3:
+Company logos, Trademark designs, Brand identity elements
+
+You may not Remove or modify any logo or branding elements, Use the protected
+logos or branding in derivative works and/or Create confusingly similar logos
+or branding elements.
+
+  3. Compliance and Enforcement
+These additional terms are governed by Section 7 of AGPLv3 and do not violate
+the basic permissions granted by the license.
+Non-compliance with these additional terms will result in automatic termination
+of all rights under AGPLv3, subject to the reinstatement provisions in Section 8
+of AGPLv3.
+
+  4. Severability
+If any portion of these additional terms is found to be invalid or unenforceable,
+the remaining portions shall remain in effect.
