@@ -112,7 +112,8 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the GPL v2 License ONLY. See `LICENSE.txt` for more information.
+Distributed under the AGPL v3 License with additional terms concerning branding.
+See `LICENSE.txt` for both the license and the additional terms below.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
