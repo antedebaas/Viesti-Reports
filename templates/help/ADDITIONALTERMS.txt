@@ -8,16 +8,13 @@ the following additional terms are applicable:
 Any distribution, modification, or network use of this software must retain
 and prominently display: The original copyright notice, All author attributions,
 A link to the original repository and the following notice:
-"This software includes work that was created by [Your Name/Organization]".
+"This software includes work that was created by Ante de Baas".
 
 These attribution requirements apply to:
 User interfaces, Documentation, Source code, Binary distributions,
 Network interfaces where the software is accessed remotely
 
   2. Logo and Branding Protection
-The following items are excluded from the permissions granted under AGPLv3:
-Company logos, Trademark designs, Brand identity elements
-
 You may not Remove or modify any logo or branding elements, Use the protected
 logos or branding in derivative works and/or Create confusingly similar logos
 or branding elements.
