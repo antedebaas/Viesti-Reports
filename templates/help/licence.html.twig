@@ -3,11 +3,37 @@
 {% block body %}
 <div class="card">
 	<div class="card-header">
-		<h3 class="card-title">{{ "GNU General public lience, Version 2, June 1991"|trans }}</h3>
+		<h3 class="card-title">{{ "License"|trans }}</h3>
 	</div>
   <div class="card-body">
-    <pre>
-    {% include 'help/LICENSE.txt' %}
+    The license of this software is the Affero GNU General Public License, Version 3.0.<br>
+    The license is ammended by Additional Terms to the Affero GNU General Public License, Version 3.0.<br>
+    <p></p>
+    The full text of the license can be found in the following sections below.<br>
+    [1] <a href="#agpl-v3">Affero GNU General public lience, Version 3, 19 November 2007</a><br>
+    [2] <a href="#additional-terms">Additional Terms to the Affero GNU General public lience, Version 3</a><br>
+  </div>
+</div>
+<p></p>
+
+<div class="card">
+	<div class="card-header">
+		<h3 class="card-title">{{ "Affero GNU General public lience, Version 3, 19 November 2007"|trans }}</h3>
+	</div>
+  <div class="card-body">
+    <pre id="agpl-v3">
+    {% include 'help/AGPLV3.txt' %}
+    </pre>
+  </div>
+</div>
+<p></p>
+<div class="card">
+	<div class="card-header">
+		<h3 class="card-title">{{ "Additional Terms to the Affero GNU General public lience, Version 3"|trans }}</h3>
+	</div>
+  <div class="card-body">
+    <pre id="additional-terms">
+    {% include 'help/ADDITIONALTERMS.txt' %}
     </pre>
   </div>
 </div>
