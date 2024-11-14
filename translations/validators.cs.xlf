@@ -13,9 +13,9 @@
         <source>This value should be true.</source>
         <target>Tato hodnota musí být pravdivá (true).</target>
       </trans-unit>
-      <trans-unit id="HL55su4" resname="This value should be of type {{ type }}.">
-        <source>This value should be of type {{ type }}.</source>
-        <target>Tato hodnota musí být typu {{ type }}.</target>
+      <trans-unit id="HL55su4" resname="This value should be of type {{type}}.">
+        <source>This value should be of type {{type}}.</source>
+        <target>Tato hodnota musí být typu {{type}}.</target>
       </trans-unit>
       <trans-unit id="K5oLZkw" resname="This value should be blank.">
         <source>This value should be blank.</source>
@@ -25,13 +25,13 @@
         <source>The value you selected is not a valid choice.</source>
         <target>Vybraná hodnota není platnou možností.</target>
       </trans-unit>
-      <trans-unit id="4xOpbwN" resname="You must select at least {{ limit }} choice.|You must select at least {{ limit }} choices.">
-        <source>You must select at least {{ limit }} choice.|You must select at least {{ limit }} choices.</source>
-        <target>Musí být vybrána nejméně {{ limit }} možnost.|Musí být vybrány nejméně {{ limit }} možnosti.|Musí být vybráno nejméně {{ limit }} možností.</target>
+      <trans-unit id="4xOpbwN" resname="You must select at least {{limit}} choice.|You must select at least {{limit}} choices.">
+        <source>You must select at least {{limit}} choice.|You must select at least {{limit}} choices.</source>
+        <target>Musí být vybrána nejméně {{limit}} možnost.|Musí být vybrány nejméně {{limit}} možnosti.|Musí být vybráno nejméně {{limit}} možností.</target>
       </trans-unit>
-      <trans-unit id="65n9dGQ" resname="You must select at most {{ limit }} choice.|You must select at most {{ limit }} choices.">
-        <source>You must select at most {{ limit }} choice.|You must select at most {{ limit }} choices.</source>
-        <target>Musí být vybrána maximálně {{ limit }} možnost.|Musí být vybrány maximálně {{ limit }} možnosti.|Musí být vybráno maximálně {{ limit }} možností.</target>
+      <trans-unit id="65n9dGQ" resname="You must select at most {{limit}} choice.|You must select at most {{limit}} choices.">
+        <source>You must select at most {{limit}} choice.|You must select at most {{limit}} choices.</source>
+        <target>Musí být vybrána maximálně {{limit}} možnost.|Musí být vybrány maximálně {{limit}} možnosti.|Musí být vybráno maximálně {{limit}} možností.</target>
       </trans-unit>
       <trans-unit id="bV9ETHe" resname="One or more of the given values is invalid.">
         <source>One or more of the given values is invalid.</source>
@@ -65,29 +65,29 @@
         <source>The file is not readable.</source>
         <target>Soubor je nečitelný.</target>
       </trans-unit>
-      <trans-unit id="xmVWVqA" resname="The file is too large ({{ size }} {{ suffix }}). Allowed maximum size is {{ limit }} {{ suffix }}.">
-        <source>The file is too large ({{ size }} {{ suffix }}). Allowed maximum size is {{ limit }} {{ suffix }}.</source>
-        <target>Soubor je příliš velký ({{ size }} {{ suffix }}). Maximální povolená velikost souboru je {{ limit }} {{ suffix }}.</target>
+      <trans-unit id="xmVWVqA" resname="The file is too large ({{size}} {{suffix}}). Allowed maximum size is {{limit}} {{suffix}}.">
+        <source>The file is too large ({{size}} {{suffix}}). Allowed maximum size is {{limit}} {{suffix}}.</source>
+        <target>Soubor je příliš velký ({{size}} {{suffix}}). Maximální povolená velikost souboru je {{limit}} {{suffix}}.</target>
       </trans-unit>
-      <trans-unit id="COERTaP" resname="The mime type of the file is invalid ({{ type }}). Allowed mime types are {{ types }}.">
-        <source>The mime type of the file is invalid ({{ type }}). Allowed mime types are {{ types }}.</source>
-        <target>Neplatný mime typ souboru ({{ type }}). Povolené mime typy souborů jsou {{ types }}.</target>
+      <trans-unit id="COERTaP" resname="The mime type of the file is invalid ({{type}}). Allowed mime types are {{types}}.">
+        <source>The mime type of the file is invalid ({{type}}). Allowed mime types are {{types}}.</source>
+        <target>Neplatný mime typ souboru ({{type}}). Povolené mime typy souborů jsou {{types}}.</target>
       </trans-unit>
-      <trans-unit id="xJV2eT8" resname="This value should be {{ limit }} or less.">
-        <source>This value should be {{ limit }} or less.</source>
-        <target>Tato hodnota musí být {{ limit }} nebo méně.</target>
+      <trans-unit id="xJV2eT8" resname="This value should be {{limit}} or less.">
+        <source>This value should be {{limit}} or less.</source>
+        <target>Tato hodnota musí být {{limit}} nebo méně.</target>
       </trans-unit>
-      <trans-unit id="Zuairxy" resname="This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.">
-        <source>This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.</source>
-        <target>Tato hodnota je příliš dlouhá. Musí obsahovat maximálně {{ limit }} znak.|Tato hodnota je příliš dlouhá. Musí obsahovat maximálně {{ limit }} znaky.|Tato hodnota je příliš dlouhá. Musí obsahovat maximálně {{ limit }} znaků.</target>
+      <trans-unit id="Zuairxy" resname="This value is too long. It should have {{limit}} character or less.|This value is too long. It should have {{limit}} characters or less.">
+        <source>This value is too long. It should have {{limit}} character or less.|This value is too long. It should have {{limit}} characters or less.</source>
+        <target>Tato hodnota je příliš dlouhá. Musí obsahovat maximálně {{limit}} znak.|Tato hodnota je příliš dlouhá. Musí obsahovat maximálně {{limit}} znaky.|Tato hodnota je příliš dlouhá. Musí obsahovat maximálně {{limit}} znaků.</target>
       </trans-unit>
-      <trans-unit id="3bh29vT" resname="This value should be {{ limit }} or more.">
-        <source>This value should be {{ limit }} or more.</source>
-        <target>Tato hodnota musí být {{ limit }} nebo více.</target>
+      <trans-unit id="3bh29vT" resname="This value should be {{limit}} or more.">
+        <source>This value should be {{limit}} or more.</source>
+        <target>Tato hodnota musí být {{limit}} nebo více.</target>
       </trans-unit>
-      <trans-unit id="Muq3W.6" resname="This value is too short. It should have {{ limit }} character or more.|This value is too short. It should have {{ limit }} characters or more.">
-        <source>This value is too short. It should have {{ limit }} character or more.|This value is too short. It should have {{ limit }} characters or more.</source>
-        <target>Tato hodnota je příliš krátká. Musí obsahovat minimálně {{ limit }} znak.|Tato hodnota je příliš krátká. Musí obsahovat minimálně {{ limit }} znaky.|Tato hodnota je příliš krátká. Musí obsahovat minimálně {{ limit }} znaků.</target>
+      <trans-unit id="Muq3W.6" resname="This value is too short. It should have {{limit}} character or more.|This value is too short. It should have {{limit}} characters or more.">
+        <source>This value is too short. It should have {{limit}} character or more.|This value is too short. It should have {{limit}} characters or more.</source>
+        <target>Tato hodnota je příliš krátká. Musí obsahovat minimálně {{limit}} znak.|Tato hodnota je příliš krátká. Musí obsahovat minimálně {{limit}} znaky.|Tato hodnota je příliš krátká. Musí obsahovat minimálně {{limit}} znaků.</target>
       </trans-unit>
       <trans-unit id="vLBiKCD" resname="This value should not be blank.">
         <source>This value should not be blank.</source>
@@ -117,9 +117,9 @@
         <source>The two values should be equal.</source>
         <target>Tyto dvě hodnoty musí být stejné.</target>
       </trans-unit>
-      <trans-unit id="UPTnJIu" resname="The file is too large. Allowed maximum size is {{ limit }} {{ suffix }}.">
-        <source>The file is too large. Allowed maximum size is {{ limit }} {{ suffix }}.</source>
-        <target>Soubor je příliš velký. Maximální povolená velikost souboru je {{ limit }} {{ suffix }}.</target>
+      <trans-unit id="UPTnJIu" resname="The file is too large. Allowed maximum size is {{limit}} {{suffix}}.">
+        <source>The file is too large. Allowed maximum size is {{limit}} {{suffix}}.</source>
+        <target>Soubor je příliš velký. Maximální povolená velikost souboru je {{limit}} {{suffix}}.</target>
       </trans-unit>
       <trans-unit id="OEeVt7G" resname="The file is too large.">
         <source>The file is too large.</source>
@@ -161,29 +161,29 @@
         <source>The size of the image could not be detected.</source>
         <target>Nepodařily se zjistit rozměry obrázku.</target>
       </trans-unit>
-      <trans-unit id="YD_yE46" resname="The image width is too big ({{ width }}px). Allowed maximum width is {{ max_width }}px.">
-        <source>The image width is too big ({{ width }}px). Allowed maximum width is {{ max_width }}px.</source>
-        <target>Obrázek je příliš široký ({{ width }}px). Maximální povolená šířka obrázku je {{ max_width }}px.</target>
+      <trans-unit id="YD_yE46" resname="The image width is too big ({{width}}px). Allowed maximum width is {{max_width}}px.">
+        <source>The image width is too big ({{width}}px). Allowed maximum width is {{max_width}}px.</source>
+        <target>Obrázek je příliš široký ({{width}}px). Maximální povolená šířka obrázku je {{max_width}}px.</target>
       </trans-unit>
-      <trans-unit id="pfL2.fo" resname="The image width is too small ({{ width }}px). Minimum width expected is {{ min_width }}px.">
-        <source>The image width is too small ({{ width }}px). Minimum width expected is {{ min_width }}px.</source>
-        <target>Obrázek je příliš úzký ({{ width }}px). Minimální šířka musí být {{ min_width }}px.</target>
+      <trans-unit id="pfL2.fo" resname="The image width is too small ({{width}}px). Minimum width expected is {{min_width}}px.">
+        <source>The image width is too small ({{width}}px). Minimum width expected is {{min_width}}px.</source>
+        <target>Obrázek je příliš úzký ({{width}}px). Minimální šířka musí být {{min_width}}px.</target>
       </trans-unit>
-      <trans-unit id="zV9L7pv" resname="The image height is too big ({{ height }}px). Allowed maximum height is {{ max_height }}px.">
-        <source>The image height is too big ({{ height }}px). Allowed maximum height is {{ max_height }}px.</source>
-        <target>Obrázek je příliš vysoký ({{ height }}px). Maximální povolená výška obrázku je {{ max_height }}px.</target>
+      <trans-unit id="zV9L7pv" resname="The image height is too big ({{height}}px). Allowed maximum height is {{max_height}}px.">
+        <source>The image height is too big ({{height}}px). Allowed maximum height is {{max_height}}px.</source>
+        <target>Obrázek je příliš vysoký ({{height}}px). Maximální povolená výška obrázku je {{max_height}}px.</target>
       </trans-unit>
-      <trans-unit id="A7vLGPA" resname="The image height is too small ({{ height }}px). Minimum height expected is {{ min_height }}px.">
-        <source>The image height is too small ({{ height }}px). Minimum height expected is {{ min_height }}px.</source>
-        <target>Obrázek je příliš nízký ({{ height }}px). Minimální výška obrázku musí být {{ min_height }}px.</target>
+      <trans-unit id="A7vLGPA" resname="The image height is too small ({{height}}px). Minimum height expected is {{min_height}}px.">
+        <source>The image height is too small ({{height}}px). Minimum height expected is {{min_height}}px.</source>
+        <target>Obrázek je příliš nízký ({{height}}px). Minimální výška obrázku musí být {{min_height}}px.</target>
       </trans-unit>
       <trans-unit id="hbSSYMh" resname="This value should be the user's current password.">
         <source>This value should be the user's current password.</source>
         <target>Tato hodnota musí být aktuální heslo uživatele.</target>
       </trans-unit>
-      <trans-unit id="A1Hv7nv" resname="This value should have exactly {{ limit }} character.|This value should have exactly {{ limit }} characters.">
-        <source>This value should have exactly {{ limit }} character.|This value should have exactly {{ limit }} characters.</source>
-        <target>Tato hodnota musí mít přesně {{ limit }} znak.|Tato hodnota musí mít přesně {{ limit }} znaky.|Tato hodnota musí mít přesně {{ limit }} znaků.</target>
+      <trans-unit id="A1Hv7nv" resname="This value should have exactly {{limit}} character.|This value should have exactly {{limit}} characters.">
+        <source>This value should have exactly {{limit}} character.|This value should have exactly {{limit}} characters.</source>
+        <target>Tato hodnota musí mít přesně {{limit}} znak.|Tato hodnota musí mít přesně {{limit}} znaky.|Tato hodnota musí mít přesně {{limit}} znaků.</target>
       </trans-unit>
       <trans-unit id="H.ZNP57" resname="The file was only partially uploaded.">
         <source>The file was only partially uploaded.</source>
@@ -205,17 +205,17 @@
         <source>A PHP extension caused the upload to fail.</source>
         <target>Rozšíření PHP zabránilo nahrání souboru.</target>
       </trans-unit>
-      <trans-unit id=".K7ySMo" resname="This collection should contain {{ limit }} element or more.|This collection should contain {{ limit }} elements or more.">
-        <source>This collection should contain {{ limit }} element or more.|This collection should contain {{ limit }} elements or more.</source>
-        <target>Tato kolekce musí obsahovat minimálně {{ limit }} prvek.|Tato kolekce musí obsahovat minimálně {{ limit }} prvky.|Tato kolekce musí obsahovat minimálně {{ limit }} prvků.</target>
+      <trans-unit id=".K7ySMo" resname="This collection should contain {{limit}} element or more.|This collection should contain {{limit}} elements or more.">
+        <source>This collection should contain {{limit}} element or more.|This collection should contain {{limit}} elements or more.</source>
+        <target>Tato kolekce musí obsahovat minimálně {{limit}} prvek.|Tato kolekce musí obsahovat minimálně {{limit}} prvky.|Tato kolekce musí obsahovat minimálně {{limit}} prvků.</target>
       </trans-unit>
-      <trans-unit id="aSvx2eb" resname="This collection should contain {{ limit }} element or less.|This collection should contain {{ limit }} elements or less.">
-        <source>This collection should contain {{ limit }} element or less.|This collection should contain {{ limit }} elements or less.</source>
-        <target>Tato kolekce musí obsahovat maximálně {{ limit }} prvek.|Tato kolekce musí obsahovat maximálně {{ limit }} prvky.|Tato kolekce musí obsahovat maximálně {{ limit }} prvků.</target>
+      <trans-unit id="aSvx2eb" resname="This collection should contain {{limit}} element or less.|This collection should contain {{limit}} elements or less.">
+        <source>This collection should contain {{limit}} element or less.|This collection should contain {{limit}} elements or less.</source>
+        <target>Tato kolekce musí obsahovat maximálně {{limit}} prvek.|Tato kolekce musí obsahovat maximálně {{limit}} prvky.|Tato kolekce musí obsahovat maximálně {{limit}} prvků.</target>
       </trans-unit>
-      <trans-unit id="d4HuxpA" resname="This collection should contain exactly {{ limit }} element.|This collection should contain exactly {{ limit }} elements.">
-        <source>This collection should contain exactly {{ limit }} element.|This collection should contain exactly {{ limit }} elements.</source>
-        <target>Tato kolekce musí obsahovat přesně {{ limit }} prvek.|Tato kolekce musí obsahovat přesně {{ limit }} prvky.|Tato kolekce musí obsahovat přesně {{ limit }} prvků.</target>
+      <trans-unit id="d4HuxpA" resname="This collection should contain exactly {{limit}} element.|This collection should contain exactly {{limit}} elements.">
+        <source>This collection should contain exactly {{limit}} element.|This collection should contain exactly {{limit}} elements.</source>
+        <target>Tato kolekce musí obsahovat přesně {{limit}} prvek.|Tato kolekce musí obsahovat přesně {{limit}} prvky.|Tato kolekce musí obsahovat přesně {{limit}} prvků.</target>
       </trans-unit>
       <trans-unit id="Ia5ts7h" resname="Invalid card number.">
         <source>Invalid card number.</source>
@@ -249,57 +249,57 @@
         <source>This value is not a valid currency.</source>
         <target>Tato měna neexistuje.</target>
       </trans-unit>
-      <trans-unit id="G8HNxQM" resname="This value should be equal to {{ compared_value }}.">
-        <source>This value should be equal to {{ compared_value }}.</source>
-        <target>Tato hodnota musí být rovna {{ compared_value }}.</target>
+      <trans-unit id="G8HNxQM" resname="This value should be equal to {{compared_value}}.">
+        <source>This value should be equal to {{compared_value}}.</source>
+        <target>Tato hodnota musí být rovna {{compared_value}}.</target>
       </trans-unit>
-      <trans-unit id="Xgf_Y8C" resname="This value should be greater than {{ compared_value }}.">
-        <source>This value should be greater than {{ compared_value }}.</source>
-        <target>Tato hodnota musí být větší než {{ compared_value }}.</target>
+      <trans-unit id="Xgf_Y8C" resname="This value should be greater than {{compared_value}}.">
+        <source>This value should be greater than {{compared_value}}.</source>
+        <target>Tato hodnota musí být větší než {{compared_value}}.</target>
       </trans-unit>
-      <trans-unit id="OrsJXWO" resname="This value should be greater than or equal to {{ compared_value }}.">
-        <source>This value should be greater than or equal to {{ compared_value }}.</source>
-        <target>Tato hodnota musí být větší nebo rovna {{ compared_value }}.</target>
+      <trans-unit id="OrsJXWO" resname="This value should be greater than or equal to {{compared_value}}.">
+        <source>This value should be greater than or equal to {{compared_value}}.</source>
+        <target>Tato hodnota musí být větší nebo rovna {{compared_value}}.</target>
       </trans-unit>
-      <trans-unit id="wni8iKB" resname="This value should be identical to {{ compared_value_type }} {{ compared_value }}.">
-        <source>This value should be identical to {{ compared_value_type }} {{ compared_value }}.</source>
-        <target>Tato hodnota musí být typu {{ compared_value_type }} a zároveň musí být rovna {{ compared_value }}.</target>
+      <trans-unit id="wni8iKB" resname="This value should be identical to {{compared_value_type}} {{compared_value}}.">
+        <source>This value should be identical to {{compared_value_type}} {{compared_value}}.</source>
+        <target>Tato hodnota musí být typu {{compared_value_type}} a zároveň musí být rovna {{compared_value}}.</target>
       </trans-unit>
-      <trans-unit id="EgRc_Qq" resname="This value should be less than {{ compared_value }}.">
-        <source>This value should be less than {{ compared_value }}.</source>
-        <target>Tato hodnota musí být menší než {{ compared_value }}.</target>
+      <trans-unit id="EgRc_Qq" resname="This value should be less than {{compared_value}}.">
+        <source>This value should be less than {{compared_value}}.</source>
+        <target>Tato hodnota musí být menší než {{compared_value}}.</target>
       </trans-unit>
-      <trans-unit id="vNn72MQ" resname="This value should be less than or equal to {{ compared_value }}.">
-        <source>This value should be less than or equal to {{ compared_value }}.</source>
-        <target>Tato hodnota musí být menší nebo rovna {{ compared_value }}.</target>
+      <trans-unit id="vNn72MQ" resname="This value should be less than or equal to {{compared_value}}.">
+        <source>This value should be less than or equal to {{compared_value}}.</source>
+        <target>Tato hodnota musí být menší nebo rovna {{compared_value}}.</target>
       </trans-unit>
-      <trans-unit id="N4F464Y" resname="This value should not be equal to {{ compared_value }}.">
-        <source>This value should not be equal to {{ compared_value }}.</source>
-        <target>Tato hodnota nesmí být rovna {{ compared_value }}.</target>
+      <trans-unit id="N4F464Y" resname="This value should not be equal to {{compared_value}}.">
+        <source>This value should not be equal to {{compared_value}}.</source>
+        <target>Tato hodnota nesmí být rovna {{compared_value}}.</target>
       </trans-unit>
-      <trans-unit id="T8lYq4L" resname="This value should not be identical to {{ compared_value_type }} {{ compared_value }}.">
-        <source>This value should not be identical to {{ compared_value_type }} {{ compared_value }}.</source>
-        <target>Tato hodnota nesmí být typu {{ compared_value_type }} a zároveň nesmí být rovna {{ compared_value }}.</target>
+      <trans-unit id="T8lYq4L" resname="This value should not be identical to {{compared_value_type}} {{compared_value}}.">
+        <source>This value should not be identical to {{compared_value_type}} {{compared_value}}.</source>
+        <target>Tato hodnota nesmí být typu {{compared_value_type}} a zároveň nesmí být rovna {{compared_value}}.</target>
       </trans-unit>
-      <trans-unit id="x5xpcfK" resname="The image ratio is too big ({{ ratio }}). Allowed maximum ratio is {{ max_ratio }}.">
-        <source>The image ratio is too big ({{ ratio }}). Allowed maximum ratio is {{ max_ratio }}.</source>
-        <target>Poměr stran obrázku je příliš velký ({{ ratio }}). Maximální povolený poměr stran obrázku je {{ max_ratio }}.</target>
+      <trans-unit id="x5xpcfK" resname="The image ratio is too big ({{ratio}}). Allowed maximum ratio is {{max_ratio}}.">
+        <source>The image ratio is too big ({{ratio}}). Allowed maximum ratio is {{max_ratio}}.</source>
+        <target>Poměr stran obrázku je příliš velký ({{ratio}}). Maximální povolený poměr stran obrázku je {{max_ratio}}.</target>
       </trans-unit>
-      <trans-unit id="5cB4RCN" resname="The image ratio is too small ({{ ratio }}). Minimum ratio expected is {{ min_ratio }}.">
-        <source>The image ratio is too small ({{ ratio }}). Minimum ratio expected is {{ min_ratio }}.</source>
-        <target>Poměr stran obrázku je příliš malý ({{ ratio }}). Minimální povolený poměr stran obrázku je {{ min_ratio }}.</target>
+      <trans-unit id="5cB4RCN" resname="The image ratio is too small ({{ratio}}). Minimum ratio expected is {{min_ratio}}.">
+        <source>The image ratio is too small ({{ratio}}). Minimum ratio expected is {{min_ratio}}.</source>
+        <target>Poměr stran obrázku je příliš malý ({{ratio}}). Minimální povolený poměr stran obrázku je {{min_ratio}}.</target>
       </trans-unit>
-      <trans-unit id="SVgw5SP" resname="The image is square ({{ width }}x{{ height }}px). Square images are not allowed.">
-        <source>The image is square ({{ width }}x{{ height }}px). Square images are not allowed.</source>
-        <target>Strany obrázku jsou čtvercové ({{ width }}x{{ height }}px). Čtvercové obrázky nejsou povolené.</target>
+      <trans-unit id="SVgw5SP" resname="The image is square ({{width}}x{{height}}px). Square images are not allowed.">
+        <source>The image is square ({{width}}x{{height}}px). Square images are not allowed.</source>
+        <target>Strany obrázku jsou čtvercové ({{width}}x{{height}}px). Čtvercové obrázky nejsou povolené.</target>
       </trans-unit>
-      <trans-unit id="wpV7oxR" resname="The image is landscape oriented ({{ width }}x{{ height }}px). Landscape oriented images are not allowed.">
-        <source>The image is landscape oriented ({{ width }}x{{ height }}px). Landscape oriented images are not allowed.</source>
-        <target>Obrázek je orientovaný na šířku ({{ width }}x{{ height }}px). Obrázky orientované na šířku nejsou povolené.</target>
+      <trans-unit id="wpV7oxR" resname="The image is landscape oriented ({{width}}x{{height}}px). Landscape oriented images are not allowed.">
+        <source>The image is landscape oriented ({{width}}x{{height}}px). Landscape oriented images are not allowed.</source>
+        <target>Obrázek je orientovaný na šířku ({{width}}x{{height}}px). Obrázky orientované na šířku nejsou povolené.</target>
       </trans-unit>
-      <trans-unit id="t7f5lY9" resname="The image is portrait oriented ({{ width }}x{{ height }}px). Portrait oriented images are not allowed.">
-        <source>The image is portrait oriented ({{ width }}x{{ height }}px). Portrait oriented images are not allowed.</source>
-        <target>Obrázek je orientovaný na výšku ({{ width }}x{{ height }}px). Obrázky orientované na výšku nejsou povolené.</target>
+      <trans-unit id="t7f5lY9" resname="The image is portrait oriented ({{width}}x{{height}}px). Portrait oriented images are not allowed.">
+        <source>The image is portrait oriented ({{width}}x{{height}}px). Portrait oriented images are not allowed.</source>
+        <target>Obrázek je orientovaný na výšku ({{width}}x{{height}}px). Obrázky orientované na výšku nejsou povolené.</target>
       </trans-unit>
       <trans-unit id="L9tKe2y" resname="An empty file is not allowed.">
         <source>An empty file is not allowed.</source>
@@ -309,9 +309,9 @@
         <source>The host could not be resolved.</source>
         <target>Hostitele nebylo možné rozpoznat.</target>
       </trans-unit>
-      <trans-unit id="tD.RkRe" resname="This value does not match the expected {{ charset }} charset.">
-        <source>This value does not match the expected {{ charset }} charset.</source>
-        <target>Tato hodnota neodpovídá očekávané znakové sadě {{ charset }}.</target>
+      <trans-unit id="tD.RkRe" resname="This value does not match the expected {{charset}} charset.">
+        <source>This value does not match the expected {{charset}} charset.</source>
+        <target>Tato hodnota neodpovídá očekávané znakové sadě {{charset}}.</target>
       </trans-unit>
       <trans-unit id="w2dRFcU" resname="This is not a valid Business Identifier Code (BIC).">
         <source>This is not a valid Business Identifier Code (BIC).</source>
@@ -325,13 +325,13 @@
         <source>This is not a valid UUID.</source>
         <target>Tato hodnota není platným UUID.</target>
       </trans-unit>
-      <trans-unit id="BmDYW0B" resname="This value should be a multiple of {{ compared_value }}.">
-        <source>This value should be a multiple of {{ compared_value }}.</source>
-        <target>Tato hodnota musí být násobek hodnoty {{ compared_value }}.</target>
+      <trans-unit id="BmDYW0B" resname="This value should be a multiple of {{compared_value}}.">
+        <source>This value should be a multiple of {{compared_value}}.</source>
+        <target>Tato hodnota musí být násobek hodnoty {{compared_value}}.</target>
       </trans-unit>
-      <trans-unit id="7urGdp4" resname="This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.">
-        <source>This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.</source>
-        <target>Bankovní identifikační kód (BIC) neodpovídá mezinárodnímu číslu účtu (IBAN) {{ iban }}.</target>
+      <trans-unit id="7urGdp4" resname="This Business Identifier Code (BIC) is not associated with IBAN {{iban}}.">
+        <source>This Business Identifier Code (BIC) is not associated with IBAN {{iban}}.</source>
+        <target>Bankovní identifikační kód (BIC) neodpovídá mezinárodnímu číslu účtu (IBAN) {{iban}}.</target>
       </trans-unit>
       <trans-unit id="NpIt6EV" resname="This value should be valid JSON.">
         <source>This value should be valid JSON.</source>
@@ -365,17 +365,17 @@
         <source>This password has been leaked in a data breach, it must not be used. Please use another password.</source>
         <target>Zadané heslo bylo součástí úniku dat, takže ho není možné použít. Použijte prosím jiné heslo.</target>
       </trans-unit>
-      <trans-unit id="nNegxai" resname="This value should be between {{ min }} and {{ max }}.">
-        <source>This value should be between {{ min }} and {{ max }}.</source>
-        <target>Hodnota musí být mezi {{ min }} a {{ max }}.</target>
+      <trans-unit id="nNegxai" resname="This value should be between {{min}} and {{max}}.">
+        <source>This value should be between {{min}} and {{max}}.</source>
+        <target>Hodnota musí být mezi {{min}} a {{max}}.</target>
       </trans-unit>
       <trans-unit id="q0JXpA2" resname="This value is not a valid hostname.">
         <source>This value is not a valid hostname.</source>
         <target>Tato hodnota není platný hostname.</target>
       </trans-unit>
-      <trans-unit id="Co_98pi" resname="The number of elements in this collection should be a multiple of {{ compared_value }}.">
-        <source>The number of elements in this collection should be a multiple of {{ compared_value }}.</source>
-        <target>Počet prvků v této kolekci musí být násobek {{ compared_value }}.</target>
+      <trans-unit id="Co_98pi" resname="The number of elements in this collection should be a multiple of {{compared_value}}.">
+        <source>The number of elements in this collection should be a multiple of {{compared_value}}.</source>
+        <target>Počet prvků v této kolekci musí být násobek {{compared_value}}.</target>
       </trans-unit>
       <trans-unit id="rfebLrY" resname="This value should satisfy at least one of the following constraints:">
         <source>This value should satisfy at least one of the following constraints:</source>
@@ -401,13 +401,13 @@
         <source>This value is not a valid CIDR notation.</source>
         <target>Tato hodnota není platná notace CIDR.</target>
       </trans-unit>
-      <trans-unit id="ERGRJhK" resname="The value of the netmask should be between {{ min }} and {{ max }}.">
-        <source>The value of the netmask should be between {{ min }} and {{ max }}.</source>
-        <target>Hodnota masky sítě musí být mezi {{ min }} a {{ max }}.</target>
+      <trans-unit id="ERGRJhK" resname="The value of the netmask should be between {{min}} and {{max}}.">
+        <source>The value of the netmask should be between {{min}} and {{max}}.</source>
+        <target>Hodnota masky sítě musí být mezi {{min}} a {{max}}.</target>
       </trans-unit>
-      <trans-unit id="7db7kQD" resname="The filename is too long. It should have {{ filename_max_length }} character or less.|The filename is too long. It should have {{ filename_max_length }} characters or less.">
-        <source>The filename is too long. It should have {{ filename_max_length }} character or less.|The filename is too long. It should have {{ filename_max_length }} characters or less.</source>
-        <target>Název souboru je příliš dlouhý. Měl by obsahovat {{ filename_max_length }} znak nebo méně.|Název souboru je příliš dlouhý. Měl by obsahovat {{ filename_max_length }} znaky nebo méně.|Název souboru je příliš dlouhý. Měl by obsahovat {{ filename_max_length }} znaků nebo méně.</target>
+      <trans-unit id="7db7kQD" resname="The filename is too long. It should have {{filename_max_length}} character or less.|The filename is too long. It should have {{filename_max_length}} characters or less.">
+        <source>The filename is too long. It should have {{filename_max_length}} character or less.|The filename is too long. It should have {{filename_max_length}} characters or less.</source>
+        <target>Název souboru je příliš dlouhý. Měl by obsahovat {{filename_max_length}} znak nebo méně.|Název souboru je příliš dlouhý. Měl by obsahovat {{filename_max_length}} znaky nebo méně.|Název souboru je příliš dlouhý. Měl by obsahovat {{filename_max_length}} znaků nebo méně.</target>
       </trans-unit>
       <trans-unit id="7JLHuYX" resname="The password strength is too low. Please use a stronger password.">
         <source>The password strength is too low. Please use a stronger password.</source>
@@ -429,13 +429,13 @@
         <source>Using hidden overlay characters is not allowed.</source>
         <target>Použití skrytých překrývajících znaků není povoleno.</target>
       </trans-unit>
-      <trans-unit id="1seErdG" resname="The extension of the file is invalid ({{ extension }}). Allowed extensions are {{ extensions }}.">
-        <source>The extension of the file is invalid ({{ extension }}). Allowed extensions are {{ extensions }}.</source>
-        <target>Přípona souboru je neplatná ({{ extension }}). Povolené přípony jsou {{ extensions }}.</target>
+      <trans-unit id="1seErdG" resname="The extension of the file is invalid ({{extension}}). Allowed extensions are {{extensions}}.">
+        <source>The extension of the file is invalid ({{extension}}). Allowed extensions are {{extensions}}.</source>
+        <target>Přípona souboru je neplatná ({{extension}}). Povolené přípony jsou {{extensions}}.</target>
       </trans-unit>
-      <trans-unit id="uyl6nQ7" resname="The detected character encoding is invalid ({{ detected }}). Allowed encodings are {{ encodings }}.">
-        <source>The detected character encoding is invalid ({{ detected }}). Allowed encodings are {{ encodings }}.</source>
-        <target>Zjištěné kódování znaků je neplatné ({{ detected }}). Povolená kódování jsou {{ encodings }}.</target>
+      <trans-unit id="uyl6nQ7" resname="The detected character encoding is invalid ({{detected}}). Allowed encodings are {{encodings}}.">
+        <source>The detected character encoding is invalid ({{detected}}). Allowed encodings are {{encodings}}.</source>
+        <target>Zjištěné kódování znaků je neplatné ({{detected}}). Povolená kódování jsou {{encodings}}.</target>
       </trans-unit>
       <trans-unit id="65jFl8b" resname="This value is not a valid MAC address.">
         <source>This value is not a valid MAC address.</source>
@@ -445,13 +445,13 @@
         <source>This URL is missing a top-level domain.</source>
         <target>Této URL není doména nejvyššího řádu.</target>
       </trans-unit>
-      <trans-unit id="gbpWGsC" resname="This value is too short. It should contain at least one word.|This value is too short. It should contain at least {{ min }} words.">
-        <source>This value is too short. It should contain at least one word.|This value is too short. It should contain at least {{ min }} words.</source>
-        <target>Tato hodnota je příliš krátká, měla by obsahovat alespoň jedno slovo|Tato hodnota je příliš krátká, měla by obsahovat alespoň {{ min }} slova.</target>
+      <trans-unit id="gbpWGsC" resname="This value is too short. It should contain at least one word.|This value is too short. It should contain at least {{min}} words.">
+        <source>This value is too short. It should contain at least one word.|This value is too short. It should contain at least {{min}} words.</source>
+        <target>Tato hodnota je příliš krátká, měla by obsahovat alespoň jedno slovo|Tato hodnota je příliš krátká, měla by obsahovat alespoň {{min}} slova.</target>
       </trans-unit>
-      <trans-unit id="1WpHUSt" resname="This value is too long. It should contain one word.|This value is too long. It should contain {{ max }} words or less.">
-        <source>This value is too long. It should contain one word.|This value is too long. It should contain {{ max }} words or less.</source>
-        <target>Tato hodnota je příliš dlouhá, měla obsahovat pouze jedno slovo.|Tato hodnota je příliš dlouhá, měla by obsahovat {{ max }} slova a nebo méně.</target>
+      <trans-unit id="1WpHUSt" resname="This value is too long. It should contain one word.|This value is too long. It should contain {{max}} words or less.">
+        <source>This value is too long. It should contain one word.|This value is too long. It should contain {{max}} words or less.</source>
+        <target>Tato hodnota je příliš dlouhá, měla obsahovat pouze jedno slovo.|Tato hodnota je příliš dlouhá, měla by obsahovat {{max}} slova a nebo méně.</target>
       </trans-unit>
       <trans-unit id="egUw40j" resname="This value does not represent a valid week in the ISO 8601 format.">
         <source>This value does not represent a valid week in the ISO 8601 format.</source>
@@ -461,13 +461,13 @@
         <source>This value is not a valid week.</source>
         <target>Tato hodnota není validní týden.</target>
       </trans-unit>
-      <trans-unit id="RX1vHSU" resname="This value should not be before week &quot;{{ min }}&quot;.">
-        <source>This value should not be before week "{{ min }}".</source>
-        <target>Tato hodnota by neměla být týden před "{{ min }}".</target>
+      <trans-unit id="RX1vHSU" resname="This value should not be before week &quot;{{min}}&quot;.">
+        <source>This value should not be before week "{{min}}".</source>
+        <target>Tato hodnota by neměla být týden před "{{min}}".</target>
       </trans-unit>
-      <trans-unit id="pOcsUec" resname="This value should not be after week &quot;{{ max }}&quot;.">
-        <source>This value should not be after week "{{ max }}".</source>
-        <target>Tato hodnota by neměla být týden za "{{ max }}".</target>
+      <trans-unit id="pOcsUec" resname="This value should not be after week &quot;{{max}}&quot;.">
+        <source>This value should not be after week "{{max}}".</source>
+        <target>Tato hodnota by neměla být týden za "{{max}}".</target>
       </trans-unit>
       <trans-unit id="tDkL4Jc" resname="This form should not contain extra fields.">
         <source>This form should not contain extra fields.</source>
@@ -609,8 +609,8 @@
         <source>Please enter a password</source>
         <target></target>
       </trans-unit>
-      <trans-unit id="_OmnKuR" resname="Your password should be at least {{ limit }} characters">
-        <source>Your password should be at least {{ limit }} characters</source>
+      <trans-unit id="_OmnKuR" resname="Your password should be at least {{limit}} characters">
+        <source>Your password should be at least {{limit}} characters</source>
         <target></target>
       </trans-unit>
       <trans-unit id="cxKjSt2" resname="Please upload a valid SVG image">
