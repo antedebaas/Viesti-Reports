@@ -22,6 +22,16 @@ I you use it you should use it with a special sole-purpose email address.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<!-- LICENSE -->
+## License
+
+This project is licenced under the AGPLv3 with some additional terms.
+The additional terms are there to prevent rebranding and then pretending someone else made it.
+
+See `LICENSE.txt` for both the license and the additional terms below.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 <!-- GETTING STARTED -->
 ## Getting Started
 
@@ -109,11 +119,14 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- LICENSE -->
-## License
+<!-- TRANSLATING -->
+## Translating
 
-Distributed under the AGPL v3 License with additional terms concerning branding.
-See `LICENSE.txt` for both the license and the additional terms below.
+![Lokalise][logo-lokalise]
+<a href="http://www.lokalise.com/">Lokalise.com</a> has provided us with an opensource licence for translations.
+
+If you want to contribute you can join the project there using the following link:
+https://app.lokalise.com/public/943233106735f8aa5bd752.59947412/
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -136,3 +149,5 @@ See `LICENSE.txt` for both the license and the additional terms below.
 [screenshot-dashboard]: screenshot-dashboard.png
 [screenshot-dmarc]: screenshot-dmarc.png
 [screenshot-smtptls]: screenshot-smtptls.png
+
+[logo-lokalise]: logo-lokalise.svg
