@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="nl" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="U_NoHhq" resname="%count% year|%count% years">
+        <source>%count% year|%count% years</source>
+        <target>{count, plural, =0 {0 jaar} one {1 jaar} other {# jaren}}</target>
+      </trans-unit>
+      <trans-unit id="NCe6niW" resname="%count% month|%count% months">
+        <source>%count% month|%count% months</source>
+        <target>{count, plural, =0 {0 maanden} one {1 maand} other {# maanden}}</target>
+      </trans-unit>
+      <trans-unit id="E69bPZ6" resname="%count% day|%count% days">
+        <source>%count% day|%count% days</source>
+        <target>{count, plural, =0 {0 dagen} one {1 dag} other {# dagen}}</target>
+      </trans-unit>
+      <trans-unit id="H3jnVKg" resname="%count% hour|%count% hours">
+        <source>%count% hour|%count% hours</source>
+        <target>{count, plural, =0 {0 uur} one {1 uur} other {# uren}}</target>
+      </trans-unit>
+      <trans-unit id="30tji6_" resname="%count% minute|%count% minutes">
+        <source>%count% minute|%count% minutes</source>
+        <target>{count, plural, =0 {0 minuten} one {1 minuut} other {# minuten}}</target>
+      </trans-unit>
+      <trans-unit id="F0PcQoi" resname="The link to verify your email has expired. Please request a new link.">
+        <source>The link to verify your email has expired. Please request a new link.</source>
+        <target>De link om je e-mailadres te verifiëren is verlopen. Vraag een nieuwe link aan.</target>
+      </trans-unit>
+      <trans-unit id="dSF4hGL" resname="The link to verify your email is invalid. Please request a new link.">
+        <source>The link to verify your email is invalid. Please request a new link.</source>
+        <target>De link om je e-mailadres the verifiëren is ongeldig. Vraag een nieuwe link aan.</target>
+      </trans-unit>
+      <trans-unit id="GTlrnoK" resname="The link to verify your email appears to be for a different account or email. Please request a new link.">
+        <source>The link to verify your email appears to be for a different account or email. Please request a new link.</source>
+        <target>De link om je e-mailadres the verifiëren is voor een andere gebruiker of e-mailadres. Vraag een nieuwe link aan.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
