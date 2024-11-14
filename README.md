@@ -25,9 +25,9 @@ I you use it you should use it with a special sole-purpose email address.
 <!-- LICENSE -->
 ## License
 
-This project is licenced under the AGPLv3 with some additional terms.
+This project is licenced under the AGPLv3 with some additional terms.<br>
 The additional terms are there to prevent rebranding and then pretending someone else made it.
-
+<br>
 See `LICENSE.txt` for both the license and the additional terms below.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -122,10 +122,10 @@ Don't forget to give the project a star! Thanks again!
 <!-- TRANSLATING -->
 ## Translating
 
-![Lokalise][logo-lokalise]
+![Lokalise][logo-lokalise]<br>
 <a href="http://www.lokalise.com/">Lokalise.com</a> has provided us with an opensource licence for translations.
 
-If you want to contribute you can join the project there using the following link:
+If you want to contribute you can join the project there using the following link:<br>
 https://app.lokalise.com/public/943233106735f8aa5bd752.59947412/
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
