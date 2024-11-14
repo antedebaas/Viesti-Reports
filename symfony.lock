@@ -110,6 +110,15 @@
             "./src/Kernel.php"
         ]
     },
+    "symfony/lokalise-translation-provider": {
+        "version": "7.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.3",
+            "ref": "638a6729ec78eb5c1f5bc35d096e548c1bf7a586"
+        }
+    },
     "symfony/mailer": {
         "version": "6.3",
         "recipe": {

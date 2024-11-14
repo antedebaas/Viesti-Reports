@@ -21,6 +21,7 @@
         "symfony/form": "7.1.*",
         "symfony/framework-bundle": "7.1.*",
         "symfony/http-client": "7.1.*",
+        "symfony/lokalise-translation-provider": "7.1.*",
         "symfony/mailer": "7.1.*",
         "symfony/runtime": "7.1.*",
         "symfony/security-bundle": "7.1.*",
