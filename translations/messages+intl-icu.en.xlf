@@ -409,9 +409,9 @@
         <source>Check</source>
         <target>Check</target>
       </trans-unit>
-      <trans-unit id="vr8fS4t" resname="GNU General public lience, Version 2, June 1991">
-        <source>GNU General public lience, Version 2, June 1991</source>
-        <target>GNU General public lience, Version 2, June 1991</target>
+      <trans-unit id="vr8fS4t" resname="GNU General public licence, Version 2, June 1991">
+        <source>GNU General public licence, Version 2, June 1991</source>
+        <target>GNU General public licence, Version 2, June 1991</target>
       </trans-unit>
       <trans-unit id="IB8qUxQ" resname="Report Type">
         <source>Report Type</source>
@@ -520,6 +520,18 @@
       <trans-unit id="3KZLUtu" resname="Verified">
         <source>Verified</source>
         <target>Verified</target>
+      </trans-unit>
+      <trans-unit id="6EtaWNj" resname="License">
+        <source>License</source>
+        <target>License</target>
+      </trans-unit>
+      <trans-unit id="6McSABV" resname="Affero GNU General public licence, Version 3, 19 November 2007">
+        <source>Affero GNU General public licence, Version 3, 19 November 2007</source>
+        <target>Affero GNU General public licence, Version 3, 19 November 2007</target>
+      </trans-unit>
+      <trans-unit id="mUKHiXV" resname="Additional Terms to the Affero GNU General public licence, Version 3">
+        <source>Additional Terms to the Affero GNU General public licence, Version 3</source>
+        <target>Additional Terms to the Affero GNU General public licence, Version 3</target>
       </trans-unit>
     </body>
   </file>

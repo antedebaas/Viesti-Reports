@@ -603,27 +603,27 @@
       </trans-unit>
       <trans-unit id="vsM4tSv" resname="There is already an account with this email">
         <source>There is already an account with this email</source>
-        <target>__There is already an account with this email</target>
+        <target>There is already an account with this email</target>
       </trans-unit>
       <trans-unit id="B7yoMOR" resname="Please enter a password">
         <source>Please enter a password</source>
-        <target>__Please enter a password</target>
+        <target>Please enter a password</target>
       </trans-unit>
       <trans-unit id="_OmnKuR" resname="Your password should be at least {{ limit }} characters">
         <source>Your password should be at least {{ limit }} characters</source>
-        <target>__Your password should be at least {{ limit }} characters</target>
+        <target>Your password should be at least {{ limit }} characters</target>
       </trans-unit>
       <trans-unit id="cxKjSt2" resname="Please upload a valid SVG image">
         <source>Please upload a valid SVG image</source>
-        <target>__Please upload a valid SVG image</target>
+        <target>Please upload a valid SVG image</target>
       </trans-unit>
       <trans-unit id="d9aNUw8" resname="Please upload a valid Certificate file">
         <source>Please upload a valid Certificate file</source>
-        <target>__Please upload a valid Certificate file</target>
+        <target>Please upload a valid Certificate file</target>
       </trans-unit>
       <trans-unit id="7VWHcE0" resname="Please enter your email">
         <source>Please enter your email</source>
-        <target>__Please enter your email</target>
+        <target>Please enter your email</target>
       </trans-unit>
     </body>
   </file>
