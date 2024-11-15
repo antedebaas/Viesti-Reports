@@ -16,7 +16,7 @@ class SMTPTLS_Reports
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'SMTPTLS_Reports')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Domains $domain = null;
 

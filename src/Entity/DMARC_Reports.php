@@ -52,7 +52,7 @@ class DMARC_Reports
     #[ORM\OneToMany(mappedBy: 'Report', targetEntity: DMARC_Records::class, orphanRemoval: true)]
     private Collection $records;
 
-    #[ORM\ManyToOne(inversedBy: 'reports')]
+    #[ORM\ManyToOne(inversedBy: 'DMARC_Reports')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Domains $domain = null;
 
