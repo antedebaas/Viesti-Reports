@@ -17,11 +17,6 @@ final class Version20230809184012 extends AbstractMigration
         return '';
     }
 
-    public function isTransactional(): bool
-    {
-        return false;
-    }
-
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
