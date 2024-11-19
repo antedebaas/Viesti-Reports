@@ -1,0 +1,6 @@
+# Read the README file for more detailed configuration information
+# https://github.com/gpslab/geoip2
+gpslab_geoip:
+    license: '%env(MAXMIND_LICENCE)%'
+    edition: 'GeoLite2-Country'
+    path: '%kernel.project_dir%/var/data/GeoLite2-Country.mmdb'

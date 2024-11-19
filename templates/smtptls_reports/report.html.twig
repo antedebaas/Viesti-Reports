@@ -61,16 +61,14 @@
                                   <li class="list-group-item">
                                     <div class="clearfix">
                                       <span class="float-start"><b>Domain: </b> </span>
-                                      <span class="float-end">
-                                          {{ policy.policydomain.fqdn }}
-                                      </span>
+                                      <span class="float-end">{{ geoip('country',policy.policydomain.fqdn|domain2ip) }}</span>
                                     </div>
                                   </li>
                                   {% for mxrecord in policy.smtptls_mxrecords|sort((a, b) => a.priority <=> b.priority) %}
                                     <li class="list-group-item">
                                       <div class="clearfix">
                                         <span class="float-start"><b>MX: </b> </span>
-                                        <span class="float-end"> {{ mxrecord.mxrecord.name }}</span>
+                                        <span class="float-end"> {{ geoip('country',mxrecord.mxrecord.name|domain2ip) }}</span>
                                       </div>
                                     </li>
                                   {% endfor %}
@@ -201,7 +199,7 @@
                                             <li class="list-group-item">
                                               <div class="clearfix">
                                                 <span class="float-start"><b>Receiving MX Hostname: </b> </span>
-                                                <span class="float-end"> {{ failuredetail.receivingmxhostname.name }}</span>
+                                                <span class="float-end"> {{ geoip('country',failuredetail.receivingmxhostname.name|domain2ip) }}</span>
                                               </div>
                                             </li>
                                             <li class="list-group-item">
@@ -223,13 +221,13 @@
                                             <li class="list-group-item">
                                               <div class="clearfix">
                                                 <span class="float-start"><b>Sending MTA IP: </b> </span>
-                                                <span class="float-end"> {{ failuredetail.sendingmtaip }}</span>
+                                                <span class="float-end"> {{ geoip('country',failuredetail.sendingmtaip) }}</span>
                                               </div>
                                             </li>
                                             <li class="list-group-item">
                                               <div class="clearfix">
                                                 <span class="float-start"><b>Receiving IP: </b> </span>
-                                                <span class="float-end"> {{ failuredetail.receivingip }}</span>
+                                                <span class="float-end"> {{ geoip('country',failuredetail.receivingip) }}</span>
                                               </div>
                                             </li>
                                           </ul>

@@ -29,6 +29,18 @@
             "./migrations/.gitignore"
         ]
     },
+    "gpslab/geoip2": {
+        "version": "2.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "2.0",
+            "ref": "53d2ed1e0f747555711cdc3573a5a9cbc9ddcf19"
+        },
+        "files": [
+            "./config/packages/gpslab_geoip.yaml"
+        ]
+    },
     "phpunit/phpunit": {
         "version": "9.6",
         "recipe": {

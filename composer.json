@@ -12,6 +12,7 @@
         "doctrine/doctrine-bundle": "^2.12",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^3.1",
+        "gpslab/geoip2": "^2.1",
         "secit-pl/imap-bundle": "^3.1",
         "serhiy/pushover": "*",
         "symfony/apache-pack": "^1.0",
@@ -71,7 +72,8 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "geoip2:update": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"

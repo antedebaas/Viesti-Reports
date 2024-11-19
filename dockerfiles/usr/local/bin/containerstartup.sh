@@ -14,6 +14,7 @@ if [ ! -f "/var/www/html/.env.local" ]; then
     echo "ENABLE_REGISTRATION=\"$ENABLE_REGISTRATION\"" >> /var/www/html/.env.local
     echo "PUSHOVER_API_KEY=\"$PUSHOVER_API_KEY\"" >> /var/www/html/.env.local
     echo "PUSHOVER_USER_KEY=\"$PUSHOVER_USER_KEY\"" >> /var/www/html/.env.local
+    echo "MAXMIND_LICENCE=\"$MAXMIND_LICENCE\"" >> /var/www/html/.env.local
 fi
 
 echo "Check if attachments directory exists"

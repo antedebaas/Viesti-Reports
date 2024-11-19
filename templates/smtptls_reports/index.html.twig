@@ -29,7 +29,7 @@
 						{% if app.user in report.seen %}{% else %}<span class="badge bg-yellow"></span>{% endif %}
 					</td>
 					<td><span class="badge bg-blue me-1 text-white">{{ report.smtptls_policies.count }}</span></td>
-					<td class="d-none d-lg-table-cell">{{ report.domain.fqdn }}</td>
+					<td class="d-none d-lg-table-cell">{{ geoip('country',report.domain.fqdn|domain2ip) }}</td>
 					<td class="d-none d-lg-table-cell">{{ report.begintime|date("d-M-Y H:i:s") }}</td>
 					<td class="d-none d-lg-table-cell">{{ report.organisation }}</td>
 						{% set successfulcount = 0 %}
