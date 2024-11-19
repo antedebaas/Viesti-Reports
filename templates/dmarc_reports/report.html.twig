@@ -11,7 +11,7 @@
                                 <li class="list-group-item">
                                   <div class="clearfix">
                                     <span class="float-start"><b>Reporting for: </b> </span>
-                                    <span class="float-end"> {{ report.domain.fqdn }}</span>
+                                    <span class="float-end"> {{ geoip('country',report.domain.fqdn|domain2ip) }}</span>
                                   </div>
                                 </li>
                                 <li class="list-group-item">
@@ -23,7 +23,7 @@
                                 <li class="list-group-item">
                                   <div class="clearfix">
                                     <span class="float-start"><b>E-Mail: </b> </span>
-                                    <span class="float-end"> {{ report.email }}</span>
+                                    <span class="float-end"> {{ geoip('country',report.email|email2domain|domain2ip) }}</span>
                                   </div>
                                 </li>
                                 <li class="list-group-item">
@@ -170,25 +170,25 @@
                                   <li class="list-group-item">
                                     <div class="clearfix">
                                       <span class="float-start"><b>Envelope to: </b> </span>
-                                      <span class="float-end"> {{ record.envelopeto }}</span>
+                                      <span class="float-end"> {{ geoip('country',record.envelopeto|domain2ip) }}</span>
                                     </div>
                                   </li>
                                   <li class="list-group-item">
                                     <div class="clearfix">
                                       <span class="float-start"><b>Envelope from: </b> </span>
-                                      <span class="float-end"> {{ record.envelopefrom }}</span>
+                                      <span class="float-end"> {{ geoip('country',record.envelopefrom|domain2ip) }}</span>
                                     </div>
                                   </li>
                                   <li class="list-group-item">
                                     <div class="clearfix">
                                       <span class="float-start"><b>Header from: </b> </span>
-                                      <span class="float-end"> {{ record.headerfrom }}</span>
+                                      <span class="float-end"> {{ geoip('country',record.headerfrom|domain2ip) }}</span>
                                     </div>
                                   </li>
                                   <li class="list-group-item">
                                     <div class="clearfix">
                                       <span class="float-start"><b>IP Address: </b> </span>
-                                      <span class="float-end"> {{ record.sourceip }}</span>
+                                      <span class="float-end"> {{ geoip('country',record.sourceip) }}</span>
                                     </div>
                                   </li>
                                 </ul> 

@@ -38,6 +38,7 @@ services:
       MAILER_PASSWORD: 
       DELETE_PROCESSED_MAILS: false
       ENABLE_REGISTRATION: false
+      MAXMIND_LICENCE:
       MAILCHECK_SCHEDULE: "0 * * * *"
     restart: unless-stopped
     depends_on:
