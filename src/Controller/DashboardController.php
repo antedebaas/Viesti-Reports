@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -81,6 +82,15 @@ class DashboardController extends AbstractController
             'dmarcreports' => $dmarcreports,
             'smtptlsreports' => $smtptlsreports,
             'logs' => $logs,
+        ]);
+    }
+
+    #[Route('/version', name: 'app_version')]
+    public function version(): JsonResponse
+    {
+       return new JsonResponse([
+            'success' => true,
+            'version' => '1.22.4'
         ]);
     }
 }

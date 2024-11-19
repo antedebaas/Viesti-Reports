@@ -28,6 +28,9 @@ class SecurityController extends AbstractController
         if ($this->getUser()) {
             return $this->redirectToRoute('app_dashboard');
         }
+        if (!file_exists(dirname(__FILE__).'/../../.env.local')) {
+            return $this->redirectToRoute('app_setup');
+        }
 
 
         // get the login error if there is one

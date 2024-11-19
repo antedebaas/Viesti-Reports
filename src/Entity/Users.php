@@ -43,6 +43,9 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $last_name = null;
 
+    #[ORM\Column(length: 2)]
+    private ?string $language = 'null';
+
     public function __construct()
     {
         $this->domains = new ArrayCollection();
@@ -174,6 +177,18 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastName(?string $last_name): static
     {
         $this->last_name = $last_name;
+
+        return $this;
+    }
+
+    public function getLanguage(): ?string
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(string $language): static
+    {
+        $this->language = $language;
 
         return $this;
     }

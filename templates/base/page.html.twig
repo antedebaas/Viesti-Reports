@@ -97,14 +97,6 @@
 					<div class="page-body px-2">
 						<div class="container-xl">
 							{% include "base/flash.html.twig" %}
-							{# <ol class="breadcrumb mb-2" aria-label="breadcrumbs">
-								{% if breadcrumbs is defined %}
-									{% for breadcrumb in breadcrumbs %}
-									<li class="breadcrumb-item{% if loop.last %} active{% endif %}">{% if loop.index != breadcrumbs|length %}<a href="{{ breadcrumb.url }}">{% endif %}{{ breadcrumb.name }} {% if loop.index != breadcrumbs|length %}</a>{% endif %}</li>
-									{% endfor %}
-								{% endif %}
-							</ol> #}
-							{# {% include '_tabler/dashboard.html' %} #}
 							{% block body %}{% endblock %}
 						</div>
 						<footer class="footer footer-transparent d-print-none">
