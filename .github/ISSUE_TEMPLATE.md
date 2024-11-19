@@ -19,6 +19,9 @@ A clear and concise description of what the bug is.
 - Yes
 - No
 
+**What version are you running?**
+- v1.xx.x
+
 **Database used**
 - MySQL/MariaDB
 - PostgreSQL

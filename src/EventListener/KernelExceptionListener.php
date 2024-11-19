@@ -31,7 +31,7 @@ class KernelExceptionListener
             case $exception instanceof \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException:
                 $response = new Response(
                     $this->templating->render('base/error.html.twig',['page' => array('title'=> 'Unauthorized'), 'message' => "Nope! Access denied!"]),
-                    Response::HTTP_INTERNAL_SERVER_ERROR
+                    Response::HTTP_UNAUTHORIZED
                 );
                 break;
             default:
