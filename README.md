@@ -76,7 +76,8 @@ See `LICENSE.txt` for both the license and the additional terms below.
    ```
 3. point the webserver root to the public/ directory
 4. point your webbrowser to http(s)://[yourhost]/setup and follow instructions
-   a. after the first page (which generates `.env.local`) if you are not using sqlite you need to run
+   
+   a. after the first page (which generates `.env.local`) if you are **not using sqlite** you need to run
    ```sh
    php [root path of this project]/bin/console cache:clear
    ```
