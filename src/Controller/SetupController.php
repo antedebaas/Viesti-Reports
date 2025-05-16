@@ -216,6 +216,7 @@ class SetupController extends AbstractController
             } catch (\Exception $e) {
                 return $this->render('base/error.html.twig', [
                     'message' => $e->getMessage(),
+                    'page'    => array('title' => $this->translator->trans('Setup')),
                 ]);
             }
         }
