@@ -86,6 +86,10 @@ class CreateEnvType extends AbstractType
             'label' =>  $this->translator->trans('Pushover user key'),
             'required' => false,
         ])
+        ->add('pushover_only_fails', TextType::class, [
+            'label' =>  $this->translator->trans('Send only fails'),
+            'required' => false,
+        ])
         ->add('delete_processed_mails', ChoiceType::class, [
             'label' =>  $this->translator->trans('For each mail that has been processed'),
             'choices'  => [
