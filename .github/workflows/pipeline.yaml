@@ -48,3 +48,12 @@ jobs:
         env:
           DATABASE_URL: sqlite:///%kernel.project_dir%/var/data.db
         run: vendor/bin/phpunit
+  codecov:
+    name: code coverage
+    needs: symfony-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
