@@ -1,54 +1,122 @@
-<!--
-Thanks for filing an issue! Before you fill this template out, there's something we need you to do:
+name: Bug Report
+description: Report a reproducible bug to help us fix it faster.
+title: "[BUG] <short description>"
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ensure you're using the latest version and that this issue hasn't already been reported (open or closed).
 
-- Ensure you are using the latest version of our software.
-- Search the existing issues to see if your issue has already been reported.
+  - type: dropdown
+    id: issue_check
+    attributes:
+      label: No relevant issue exists
+      description: Have you confirmed this bug is not already reported?
+      options:
+        - Yes, I have checked
+    validations:
+      required: true
 
-By providing the information below, you help us understand your problem and find a solution more quickly.
--->
+  - type: textarea
+    id: bug_description
+    attributes:
+      label: Describe the bug
+      description: Provide a clear and concise description of the bug.
+      placeholder: A short, factual summary of the issue.
+    validations:
+      required: true
 
-### Issue Template
+  - type: dropdown
+    id: docker_usage
+    attributes:
+      label: Are you using the Docker image?
+      options:
+        - Yes
+        - No
+    validations:
+      required: true
 
-**No relevant issue exists**
-Please check the open and closed issues if any relevant issues exist
+  - type: input
+    id: version
+    attributes:
+      label: What version are you running?
+      placeholder: e.g., v1.24.3
+    validations:
+      required: true
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+  - type: dropdown
+    id: db_used
+    attributes:
+      label: Database used
+      options:
+        - MySQL/MariaDB
+        - PostgreSQL
+        - SQLite
+    validations:
+      required: true
 
-**Are you using the Docker image?**
-- Yes
-- No
+  - type: dropdown
+    id: webserver
+    attributes:
+      label: Webserver used (when not using Docker)
+      options:
+        - Apache HTTPD
+        - Nginx
+        - Not applicable
+    validations:
+      required: true
 
-**What version are you running?**
-- v1.xx.x
+  - type: input
+    id: db_version
+    attributes:
+      label: Database version used
+      placeholder: e.g., 10.5, 16, 3
+    validations:
+      required: false
 
-**Database used**
-- MySQL/MariaDB
-- PostgreSQL
-- SQLite
+  - type: textarea
+    id: error_messages
+    attributes:
+      label: Error Messages
+      description: Paste any relevant error messages or logs.
+      render: shell
+    validations:
+      required: true
 
-**Webserver used (when not using docker) **
-- Apache HTTPD
-- Nginx
+  - type: textarea
+    id: reproduction_steps
+    attributes:
+      label: Steps to Reproduce
+      description: Provide detailed steps to reliably reproduce the issue.
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll to '...'
+        4. See error
+    validations:
+      required: true
 
-**Database version used**
-10.5 / 16 / 3
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected behavior
+      description: Describe what you expected to happen.
+    validations:
+      required: true
 
-**Error Messages**
-Please paste any error messages here.
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Add screenshots if applicable.
+    validations:
+      required: false
 
-**Steps to Reproduce**
-Please provide -detailed- steps to reproduce the problem:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
-
-**Expected behavior**
-A clear and concise description of what you expected to happen.
-
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
-
-**Additional context**
-Add any other context about the problem here.
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional context
+      description: Add any other relevant information about the issue.
+    validations:
+      required: false
