@@ -106,6 +106,7 @@ class GetReportsFromMailboxCommand extends Command
                 $pusover = $repository->getKey('enable_pushover');
                 $pusover_api_key = $repository->getKey('pushover_api_key');
                 $pushover_user_key = $repository->getKey('pushover_user_key');
+                $pushover_only_fails = $repository->getKey('pushover_only_fails');
                 if(!$pusover) {
                     $pusover = new Config();
                     $pusover->setName('enable_pushover');
@@ -137,11 +138,41 @@ class GetReportsFromMailboxCommand extends Command
                     if(!empty($pusover_api_key->getValue()) && !empty($pushover_user_key->getValue())) {
                         $count = $results['primary']->getDetails()["count"] + $results['secondary']->getDetails()["count"];
                         if($count > 0) {
-                            $application = new Application($pusover_api_key->getValue());
-                            $recipient = new Recipient($pushover_user_key->getValue());
-                            $message = new Message($count.' new emails have been processed by viesti reports', 'New reports processed.');
-                            $notification = new Notification($application, $recipient, $message);
-                            $notification->push();
+                            if($pushover_only_fails->getValue() == '1')
+                            {
+                                $countNotGood = 0;
+
+                                foreach ($results as $position)
+                                {
+                                    if ($position->getDetails()["count"] > 0)
+                                    {
+                                        foreach ($position->getDetails()["reports"] as $report)
+                                        {
+                                            if ($report->getState() != StateType::Good)
+                                            {
+                                                $countNotGood++;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if($countNotGood > 0)
+                                {
+                                    $application  = new Application($pusover_api_key->getValue());
+                                    $recipient    = new Recipient($pushover_user_key->getValue());
+                                    $message      = new Message("{$count} new emails with {$countNotGood} fails or warnings have been processed by viesti reports", 'New reports processed.');
+                                    $notification = new Notification($application, $recipient, $message);
+                                    $notification->push();
+                                }
+                            }
+                            else
+                            {
+                                $application  = new Application($pusover_api_key->getValue());
+                                $recipient    = new Recipient($pushover_user_key->getValue());
+                                $message      = new Message($count.' new emails have been processed by viesti reports', 'New reports processed.');
+                                $notification = new Notification($application, $recipient, $message);
+                                $notification->push();
+                            }
                         }
                     }
                 }
@@ -181,7 +212,7 @@ class GetReportsFromMailboxCommand extends Command
                         $log->setTime(new \DateTime());
                         $log->setState($results['secondary']->getState());
                         $log->setMessage($results['secondary']->getMessage());
-        
+
                         foreach ($results['secondary']->getDetails()["reports"] as $report) {
                             $report->setReport(null);
                         }
@@ -195,7 +226,7 @@ class GetReportsFromMailboxCommand extends Command
                 $lock->setValue('0');
                 $this->em->persist($lock);
                 $this->em->flush();
-        
+
                 if($results['primary']->getState() == true && $results['secondary']->getState() == true) {
                     $io->success($results['primary']->getMessage());
                     if($this->mailbox_secondary->isEnabled()) {
@@ -313,7 +344,7 @@ class GetReportsFromMailboxCommand extends Command
                 foreach ($attachments as $attachment) {
                     $report = new MailReportResponse();
                     $report->setMailId($mail->headers->message_id ?? "mail-id-".$mailid);
-    
+
                     $result = $this->open_archive($attachment->filePath, $lock);
                     if($result['success'] == true) {
                         $report->setState(StateType::Good, 'Report loaded successfully.');
