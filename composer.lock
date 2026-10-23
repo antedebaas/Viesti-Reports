@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9e8a1fa398c02ff056d8fada2f276f49",
+    "content-hash": "8921ee4da89e2b7c1c5bbbdfe68d078c",
     "packages": [
         {
             "name": "antedebaas/dns-parser",
@@ -9489,7 +9489,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.2",
+        "php": ">=8.5",
         "ext-ctype": "*",
         "ext-iconv": "*"
     },
