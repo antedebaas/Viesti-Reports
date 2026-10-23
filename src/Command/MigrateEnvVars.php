@@ -59,7 +59,7 @@ class MigrateEnvVars extends Command
                         if(!$config){
                             $config = new Config();
                             $config->setName('delete_processed_mails');
-                            $config->setValue($matches[2]); 
+                            $config->setValue($matches[2]);
                             $config->setType('boolean');
                             $this->em->persist($config);
                             $this->em->flush();
@@ -71,7 +71,7 @@ class MigrateEnvVars extends Command
                         if(!$config){
                             $config = new Config();
                             $config->setName('enable_registration');
-                            $config->setValue($matches[2]); 
+                            $config->setValue($matches[2]);
                             $config->setType('boolean');
                             $this->em->persist($config);
                             $this->em->flush();
@@ -93,11 +93,11 @@ class MigrateEnvVars extends Command
                         if(!$config_apikey){
                             $config_apikey = new Config();
                             $config_apikey->setName('pushover_api_key');
-                            $config_apikey->setValue(""); 
+                            $config_apikey->setValue("");
                             $config_apikey->setType('string');
                             if($matches[2] != ''){
                                 $config_pushover->setValue(1);
-                                $config_apikey->setValue($matches[2]); 
+                                $config_apikey->setValue($matches[2]);
                             }
                             $this->em->persist($config_apikey);
                             $this->em->flush();
@@ -109,12 +109,27 @@ class MigrateEnvVars extends Command
                         if(!$config_userkey){
                             $config_userkey = new Config();
                             $config_userkey->setName('pushover_user_key');
-                            $config_userkey->setValue(""); 
+                            $config_userkey->setValue("");
                             $config_userkey->setType('string');
                             if($matches[2] != ''){
-                                $config_userkey->setValue($matches[2]); 
+                                $config_userkey->setValue($matches[2]);
                             }
                             $this->em->persist($config_userkey);
+                            $this->em->flush();
+                            $migrated = true;
+                        }
+                        break;
+                    case 'PUSHOVER_ONLY_FAILS':
+                        $config_only_fails = $repository->getKey('pushover_only_fails');
+                        if(!$config_only_fails){
+                            $config_only_fails = new Config();
+                            $config_only_fails->setName('pushover_only_fails');
+                            $config_only_fails->setValue(0);
+                            $config_only_fails->setType('boolean');
+                            if($matches[2] != ''){
+                                $config_only_fails->setValue($matches[2]);
+                            }
+                            $this->em->persist($config_only_fails);
                             $this->em->flush();
                             $migrated = true;
                         }
