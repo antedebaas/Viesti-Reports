@@ -3,6 +3,7 @@ echo "Get latest information from git"
 git fetch --all
 TAG=$(git describe --abbrev=0 --tags $(git rev-list --tags --max-count=1))
 
+
 echo "Checkout to latest tag"
 git checkout $TAG
 git pull origin $TAG
