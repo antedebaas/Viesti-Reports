@@ -5,7 +5,7 @@ on: [pull_request]
 jobs:
   gitguardian-scan:
     name: GitGuardian scan
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,7 +22,7 @@ jobs:
   symfony-tests:
     name: Run Symfony tests
     needs: gitguardian-scan
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-ubuntu-24.04
     steps:
       - uses: shivammathur/setup-php@v2
         with:
