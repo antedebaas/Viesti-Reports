@@ -28,26 +28,27 @@ RUN apk --update add ca-certificates && \
     apk --no-cache add \
         curl \
         nginx \
-        php83 \
-        php83-ctype \
-        php83-curl \
-        php83-dom \
-        php83-fileinfo \
-        php83-fpm \
-        php83-iconv \
-        php83-imap \
-        php83-mbstring \
-        php83-pdo \
-        php83-pdo_mysql \
-        php83-pdo_pgsql \
-        php83-pdo_sqlite \
-        php83-phar \
-        php83-session \
-        php83-simplexml \
-        php83-tokenizer \
-        php83-xml \
-        php83-xmlwriter \
-        php83-zip \
+        php85 \
+        php85-ctype \
+        php85-curl \
+        php85-dom \
+        php85-fileinfo \
+        php85-fpm \
+        php85-iconv \
+        php85-imap \
+        php85-intl \
+        php85-mbstring \
+        php85-pdo \
+        php85-pdo_mysql \
+        php85-pdo_pgsql \
+        php85-pdo_sqlite \
+        php85-phar \
+        php85-session \
+        php85-simplexml \
+        php85-tokenizer \
+        php85-xml \
+        php85-xmlwriter \
+        php85-zip \
         supervisor \
         tzdata
 
@@ -57,17 +58,17 @@ RUN chmod +x /usr/local/bin/containerstartup.sh && \
     chmod +x /usr/local/bin/phpstartup.sh && \
     chmod +x /usr/local/bin/checkmail.sh && \
     mkdir -p /var/www/html && \
-    ln -s /usr/sbin/php-fpm83 /usr/sbin/php-fpm
+    ln -s /usr/sbin/php-fpm85 /usr/sbin/php-fpm
 
 WORKDIR /var/www/html
 COPY --chown=nobody . /var/www/html/
 RUN wget https://getcomposer.org/composer-stable.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer && \
     /usr/local/bin/composer install
 
-RUN chown -R nobody.nobody /var/www/html && \
-  chown -R nobody.nobody /run && \
-  chown -R nobody.nobody /var/lib/nginx && \
-  chown -R nobody.nobody /var/log/nginx
+RUN chown -R nobody:nobody /var/www/html && \
+  chown -R nobody:nobody /run && \
+  chown -R nobody:nobody /var/lib/nginx && \
+  chown -R nobody:nobody /var/log/nginx
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
