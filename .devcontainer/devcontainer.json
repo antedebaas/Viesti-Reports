@@ -1,0 +1,31 @@
+{
+    "name": "Viesti Reports",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "postCreateCommand": "composer install",
+    "remoteUser": "root",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "bmewburn.vscode-intelephense-client",
+                "felixfbecker.php-intellisense",
+                "mblode.twig-language-2",
+                "neilbrayfield.php-docblocker",
+                "editorconfig.editorconfig"
+            ],
+            "settings": {
+                "php.validate.enable": true,
+                "php.executablePath": "/usr/bin/php",
+                "intelephense.files.exclude": [
+                    "**/.git",
+                    "**/node_modules",
+                    "**/vendor"
+                ]
+            }
+        }
+    },
+    "remoteEnv": {
+        "SYMFONY_ENV": "dev"
+    }
+}
