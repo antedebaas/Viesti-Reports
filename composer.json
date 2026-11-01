@@ -29,7 +29,7 @@
         "symfony/security-bundle": "7.4.*",
         "symfony/translation": "7.4.*",
         "symfony/twig-bundle": "7.4.*",
-        "symfony/validator": "7.4.*",
+        "symfony/validator": "8.1.*",
         "symfony/yaml": "7.4.*",
         "symfonycasts/reset-password-bundle": "^1.22",
         "symfonycasts/verify-email-bundle": "^1.13"
