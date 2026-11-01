@@ -9,7 +9,7 @@
         "ext-iconv": "*",
         "antedebaas/dns-parser": "^1.2.2",
         "buzzingpixel/twig-switch": "^1.0",
-        "doctrine/doctrine-bundle": "^2.12",
+        "doctrine/doctrine-bundle": "^3.3",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^3.1",
         "gpslab/geoip2": "^2.1",
